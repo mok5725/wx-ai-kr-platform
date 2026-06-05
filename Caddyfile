@@ -1,0 +1,45 @@
+{
+	email admin@wx.ai.kr
+}
+
+(secure_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+# wx.ai.kr — 허브 랜딩(정적)
+wx.ai.kr {
+	import secure_headers
+	encode gzip
+	root * /srv/hub
+	file_server
+}
+
+# lab.wx.ai.kr — wx01 앱
+lab.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	reverse_proxy lab:8000
+}
+
+# lms.wx.ai.kr — dx 앱(LMS). /board 는 talk 로 일원화.
+lms.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	@board path /board /board/*
+	redir @board https://talk.wx.ai.kr{uri} permanent
+	reverse_proxy dx:8000
+}
+
+# talk.wx.ai.kr — dx 앱(소통방). 루트는 /board/ 로.
+talk.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	redir / /board/ permanent
+	reverse_proxy dx:8000
+}

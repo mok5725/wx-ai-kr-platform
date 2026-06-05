@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WX · wx.ai.kr</title>
+  <style>
+    :root { --bg:#0A1A2A; --card:#16263a; --line:#24405c; --accent:#00A5E5; --muted:#7d96ad; --text:#eef4fa; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+           background:radial-gradient(1200px 600px at 50% -10%, #143049, var(--bg)); color:var(--text);
+           display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px; }
+    h1 { font-size:2.4rem; font-weight:800; letter-spacing:-0.02em; margin:0 0 8px; }
+    p.lead { color:var(--muted); margin:0 0 40px; font-size:1.05rem; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; width:100%; max-width:860px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:28px 24px;
+            text-decoration:none; color:inherit; transition:transform .2s, box-shadow .2s, border-color .2s; }
+    .card.active:hover { transform:translateY(-4px); border-color:var(--accent);
+            box-shadow:0 16px 40px rgba(0,0,0,.4), 0 0 24px rgba(0,165,229,.25); }
+    .card .name { font-size:1.3rem; font-weight:700; margin-bottom:6px; }
+    .card .desc { color:var(--muted); font-size:.92rem; line-height:1.5; }
+    .badge { display:inline-block; margin-top:14px; font-size:.72rem; font-weight:700; letter-spacing:.04em;
+             padding:4px 10px; border-radius:999px; }
+    .badge.live { background:rgba(0,165,229,.15); color:var(--accent); }
+    .badge.soon { background:rgba(125,150,173,.15); color:var(--muted); }
+    .card.disabled { opacity:.6; cursor:default; }
+    footer { margin-top:48px; color:var(--muted); font-size:.8rem; }
+  </style>
+</head>
+<body>
+  <h1>WX</h1>
+  <p class="lead">wx.ai.kr — 학습·실습·소통을 한곳에서</p>
+  <div class="grid">
+    <a class="card active" href="https://lab.wx.ai.kr">
+      <div class="name">Lab</div>
+      <div class="desc">AI 실습·프롬프트 가이드. 지금 바로 둘러보세요.</div>
+      <span class="badge live">● LIVE</span>
+    </a>
+    <a class="card active" href="https://lms.wx.ai.kr">
+      <div class="name">LMS</div>
+      <div class="desc">학습 관리 시스템. 지금 이용하세요.</div>
+      <span class="badge live">● LIVE</span>
+    </a>
+    <a class="card active" href="https://talk.wx.ai.kr">
+      <div class="name">Talk</div>
+      <div class="desc">소통방·커뮤니케이션 채널. 지금 이용하세요.</div>
+      <span class="badge live">● LIVE</span>
+    </a>
+  </div>
+  <footer>© WX · wx.ai.kr</footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+# wx.ai.kr 통합 플랫폼 — 단일 컨트롤 플레인.
+# 영속 상태는 전부 ./data 아래(LUKS 암호화 마운트 /opt/wx-ai-kr).
+# 앱은 GHCR 프리빌트 이미지 pull(서버 빌드 없음). 비밀은 ./.env 한 곳.
+# DB 컨테이너는 edge 망에 올리지 않는다(Caddy·상대 앱이 DB 직접 접근 불가).
+services:
+  edge:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy/hub:/srv/hub:ro
+      - ./data/caddy/data:/data
+      - ./data/caddy/config:/config
+    depends_on:
+      - lab
+      - dx
+    networks: [edge]
+    restart: unless-stopped
+
+  lab:
+    image: ghcr.io/mok5725/wx01:${LAB_IMAGE_TAG:-latest}
+    environment:
+      - DATABASE_URL=postgresql+psycopg://${LAB_POSTGRES_USER}:${LAB_POSTGRES_PASSWORD}@lab-db:5432/${LAB_POSTGRES_DB}
+      - JWT_SECRET=${LAB_JWT_SECRET}
+      - JWT_EXPIRE_HOURS=${LAB_JWT_EXPIRE_HOURS:-12}
+      - ADMIN_PASSWORD=${LAB_ADMIN_PASSWORD}
+      - IMAGE_DIR=/app/data/images
+    volumes:
+      - ./data/lab-app:/app/data
+    depends_on:
+      lab-db:
+        condition: service_healthy
+    networks: [edge, lab-internal]
+    restart: unless-stopped
+
+  lab-db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${LAB_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${LAB_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${LAB_POSTGRES_DB}
+    volumes:
+      - ./data/lab-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LAB_POSTGRES_USER} -d ${LAB_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [lab-internal]
+    restart: unless-stopped
+
+  dx:
+    image: ghcr.io/mok5725/dx:${DX_IMAGE_TAG:-latest}
+    environment:
+      - DATABASE_URL=postgresql+psycopg://${DX_POSTGRES_USER}:${DX_POSTGRES_PASSWORD}@dx-db:5432/${DX_POSTGRES_DB}
+      - JWT_SECRET=${DX_JWT_SECRET}
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRE_HOURS=${DX_JWT_EXPIRE_HOURS:-8}
+      - ENCRYPTION_KEY=${DX_ENCRYPTION_KEY}
+      - INITIAL_ADMIN_EMAIL=${DX_INITIAL_ADMIN_EMAIL}
+      - INITIAL_ADMIN_PASSWORD=${DX_INITIAL_ADMIN_PASSWORD}
+      - OPENAI_API_KEY=${DX_OPENAI_API_KEY}
+      - OPENAI_MODEL=${DX_OPENAI_MODEL:-gpt-4o-mini}
+      - GEMINI_API_KEY=${DX_GEMINI_API_KEY}
+      - admin_id=${DX_BOARD_ADMIN_ID}
+      - admin_pw=${DX_BOARD_ADMIN_PW}
+      - secret_key=${DX_BOARD_SECRET_KEY}
+      - session_hours=${DX_BOARD_SESSION_HOURS:-12}
+      - public_base_url=https://talk.wx.ai.kr
+      - COOKIE_DOMAIN=wx.ai.kr
+      - STORAGE_BACKEND=local
+      - STORAGE_LOCAL_ROOT=/app/data
+      - UPLOAD_DIR=/app/data/uploads
+      - data_dir=/app/data
+    volumes:
+      - ./data/dx-app:/app/data
+    depends_on:
+      dx-db:
+        condition: service_healthy
+    networks: [edge, dx-internal]
+    restart: unless-stopped
+
+  dx-db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${DX_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DX_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DX_POSTGRES_DB}
+    volumes:
+      - ./data/dx-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DX_POSTGRES_USER} -d ${DX_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [dx-internal]
+    restart: unless-stopped
+
+networks:
+  edge:
+  lab-internal:
+  dx-internal:
