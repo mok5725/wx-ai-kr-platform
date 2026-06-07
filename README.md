@@ -29,6 +29,29 @@ cd /opt/wx-ai-kr && ./deploy.sh        # pull + up -d
 # 또는 컷오버 직후 통합 스택 실패 시: docker compose down 후 /opt/dx 원복(컷오버 절차 참조)
 ```
 
+## 백업
+```bash
+sudo bash scripts/backup.sh          # 두 DB 논리덤프 + 앱데이터 tar → ./backups/<날짜>/
+```
+자동화(root 크론, 매일 03:30):
+```bash
+sudo mkdir -p /opt/dx/platform/backups
+( sudo crontab -l 2>/dev/null; \
+  echo '30 3 * * * bash /opt/dx/platform/scripts/backup.sh >> /opt/dx/platform/backups/backup.log 2>&1' ) \
+  | sudo crontab -
+```
+최근 14개 보존(회전). `backups/`는 암호화 마운트 내부 — **오프사이트 사본**은 다른 PC에서
+`scp -r deploy@<VPS_IP>:/opt/dx/platform/backups/<날짜> .` 로 외부 저장매체에 주기적으로 당겨둔다.
+
+### 복원
+```bash
+# DB: 컨테이너로 덤프를 흘려넣어 복원(-c = 기존 객체 정리 후)
+docker compose exec -T lab-db sh -c 'pg_restore -c -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < lab-db.dump
+docker compose exec -T dx-db  sh -c 'pg_restore -c -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < dx-db.dump
+# 앱 데이터: 스택 정지 후 풀기
+docker compose down && tar xzf lab-app.tar.gz -C data && tar xzf dx-app.tar.gz -C data && docker compose up -d
+```
+
 ## 트러블슈팅
 - TLS 실패: DNS가 VPS IP로 가는지, 80/443(ufw+카페24 보안그룹) 열렸는지.
 - 로그: `docker compose logs -f edge|lab|dx`.
