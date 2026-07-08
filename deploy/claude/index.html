@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클로드 코드 교육과정 — 커리큘럼 허브</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    /* index 전용 소량 보강 (공용 토큰만 사용) */
+    .journey { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:24px; }
+    .journey .step { display:inline-flex; align-items:center; gap:6px; background:var(--color-surface-card); color:var(--color-ink); border-radius:var(--radius-pill); padding:6px 14px; font-weight:500; font-size:14px; }
+    .journey .arrow { color:var(--color-muted-soft); }
+    .journey .step.is-key { background:var(--color-primary); color:var(--color-on-primary); }
+
+    /* 커리큘럼 카드 — 상단 색상 일러스트 헤더(스티커 팔레트) + 흰 본문 */
+    a.mod-link { text-decoration:none; color:inherit; display:block; height:100%; }
+    .mod-card { padding:0; overflow:hidden; display:flex; flex-direction:column; height:100%; transition:transform .14s ease, box-shadow .14s ease; }
+    a.mod-link:hover .mod-card { transform:translateY(-3px); box-shadow:var(--shadow-soft); }
+    a.mod-link:hover .mod-illus img { transform:scale(1.05); }
+    .mod-illus { height:132px; overflow:hidden; }
+    .mod-illus img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .2s ease; }
+    /* 히어로 배너 이미지 */
+    .hero-img { display:block; width:100%; max-width:760px; margin-top:32px; border-radius:var(--radius-xl); border:1px solid var(--color-hairline); background:#fff; }
+    .mod-body { padding:20px; display:flex; flex-direction:column; gap:8px; flex:1 1 auto; }
+    .mod-top { display:flex; align-items:center; gap:8px; }
+    .mod-card h5 { margin:0; color:var(--color-ink); }
+    .mod-body p { margin:0; }
+    .mod-meta { display:flex; align-items:center; gap:8px; margin-top:auto; padding-top:4px; }
+    .status-ready { color:var(--color-success); font-weight:600; font-size:13px; }
+    .status-todo  { color:var(--color-muted); font-weight:600; font-size:13px; }
+    .resource-list { list-style:none; padding:0; margin:12px 0 0; }
+    .resource-list li { padding:6px 0; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <!-- 상단 네비 -->
+  <nav class="top-nav">
+    <strong class="nav-link" style="font-size:16px;">✳ 클로드 코드 교육</strong>
+    <span><a class="nav-link" href="#modules">커리큘럼</a> &nbsp; <a class="btn btn-primary" href="install.html">설치 시작</a></span>
+  </nav>
+
+  <!-- 히어로 + 여정 대시보드 (크림) -->
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">1일 과정</span>
+      <span class="badge">Windows · PowerShell</span>
+      <h1 style="margin-top:16px;">터미널에서 클로드 코드 사용하기</h1>
+      <p class="body-md text-muted" style="max-width:620px;"><strong>이해 → 설치 → 첫 실행 → 워크플로우 → 직무 응용 → 정착</strong>까지, 하루 동안 스스로 해내도록 설계된 과정입니다.</p>
+
+      <div class="journey" aria-label="학습 여정">
+        <span class="step is-key">이해</span><span class="arrow">→</span>
+        <span class="step">설치</span><span class="arrow">→</span>
+        <span class="step">첫 실행</span><span class="arrow">→</span>
+        <span class="step">워크플로우</span><span class="arrow">→</span>
+        <span class="step">직무 응용</span><span class="arrow">→</span>
+        <span class="step">정착</span>
+      </div>
+
+      <p style="margin-top:24px;"><a class="btn btn-primary" href="install.html">사전과제(설치)부터 시작 →</a></p>
+      <img class="hero-img" src="images/그림1.jpg" alt="클로드 코드 실행 화면 예시">
+
+    </div>
+  </header>
+
+  <!-- 모듈 카드 목록 -->
+  <section id="modules" class="section band-soft">
+    <div class="container">
+      <h2>커리큘럼</h2>
+      <p class="body-md text-muted">각 단계를 눌러 교안으로 이동하세요. 1단계(설치)부터 8단계(현업 적용)까지 순서대로 진행합니다.</p>
+
+      <div class="grid grid-3" style="margin-top:32px;">
+
+        <!-- 사전과제 -->
+        <a class="mod-link" href="install.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/install.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge-coral">1단계</span><span class="badge">20–30분</span></div>
+              <h5>환경 세팅 — 설치</h5>
+              <p class="body-md">단계별로 따라 설치. 탐색기 주소창 실행법 포함. 목표는 <code>claude --version</code> 성공.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M0 -->
+        <a class="mod-link" href="m0.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m0.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">2단계</span><span class="badge">20분</span></div>
+              <h5>오리엔테이션 &amp; 안전 사용</h5>
+              <p class="body-md">과정 목표, 기본 규칙(더미데이터 원칙), AI의 한계 인식. 안전 사용 규칙을 진술한다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M1 -->
+        <a class="mod-link" href="m1.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m1.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">3단계</span><span class="badge">60분</span></div>
+              <h5>개념 이해</h5>
+              <p class="body-md">GUI/CLI·터미널, AI 에이전트, 채팅과의 결정적 차이(내 파일 직접 조작·자동화).</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M2 -->
+        <a class="mod-link" href="m2.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m2.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">4단계</span><span class="badge">60분</span></div>
+              <h5>첫 실행 &amp; 기본 조작</h5>
+              <p class="body-md">작업폴더·실행·로그인, 모델/토큰 절약. 지정 폴더에서 실행하고 기본 요청을 해낸다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M3 -->
+        <a class="mod-link" href="m3.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m3.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">5단계</span><span class="badge">90분</span></div>
+              <h5>핵심 워크플로우</h5>
+              <p class="body-md">탐색→계획→구현, Plan 모드, 계획 검토·수정. 계획을 1회 수정한 뒤 산출물을 완성한다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M4 -->
+        <a class="mod-link" href="m4.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m4.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">6단계</span><span class="badge">90분</span></div>
+              <h5>직무 응용 &amp; 미니 프로젝트</h5>
+              <p class="body-md">여러 파일 정리·요약·변환, 간단 도구화(더미데이터). 반복 업무 흐름을 설계한다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M5 -->
+        <a class="mod-link" href="m5.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m5.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">7단계</span><span class="badge">50분</span></div>
+              <h5>안전·한계·검증 &amp; 오류 대처</h5>
+              <p class="body-md">결과 검증 습관, 오류 대응(설치오류·화면 캡처 질문). 오류/한계 상황에 대처한다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- M6 -->
+        <a class="mod-link" href="m6.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/m6.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge">8단계</span><span class="badge">20분</span></div>
+              <h5>마무리 &amp; 현업 적용</h5>
+              <p class="body-md">개인별 "내 업무 적용 1가지" 액션플랜. 현업 적용 과제 1건을 정의한다.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- 심화: 스킬 라이브러리 -->
+        <a class="mod-link" href="skills.html">
+          <div class="card mod-card">
+            <div class="mod-illus"><img src="images/skills.svg" alt="" loading="lazy"></div>
+            <div class="mod-body">
+              <div class="mod-top"><span class="badge-coral">부록</span><span class="badge">선택 · 심화</span></div>
+              <h5>스킬 라이브러리 — 추천 스킬 6선</h5>
+              <p class="body-md">설치 이후 단계. Superpowers·Humanizer·agentmemory 등 확장 스킬을 설치법·원리·장단점·예시로.</p>
+              <div class="mod-meta"><span class="status-ready">● 준비 완료</span></div>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 강사/담당자 자료 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h4>강사 자료</h4>
+      <ul class="resource-list body-md">
+        <li>· <a href="troubleshooting.html">강사용 트러블슈팅 대응표</a> — 증상 → 원인 → 조치</li>
+        <li>· 실습용 더미데이터 — <code>실습자료/</code> 폴더(교육신청명단·만족도설문·수료자명단)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="site-footer">
+    <div class="container">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정</p>
+      <p class="body-sm text-muted">1일 과정 · Windows 10/11 + PowerShell 환경</p>
+    </div>
+  </footer>
+
+</body>
+</html>

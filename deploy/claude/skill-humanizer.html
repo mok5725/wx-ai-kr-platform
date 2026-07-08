@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스킬 챕터 · Humanizer — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .cat { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--color-hairline); }
+    .cat .n { display:inline-flex; align-items:center; justify-content:center; min-width:30px; height:30px; padding:0 8px; border-radius:var(--radius-pill); background:var(--color-surface-cream-strong); color:var(--color-ink); font-size:13px; font-weight:500; flex:0 0 auto; }
+    .sev { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .sev .box { flex:1 1 180px; border-radius:var(--radius-md); padding:12px 14px; background:var(--color-surface-card); }
+    .ba { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+    .ba .box { border-radius:var(--radius-md); padding:14px; }
+    .ba .before { background:rgba(198,69,69,0.08); }
+    .ba .after { background:rgba(93,184,114,0.10); }
+    @media (max-width:768px){ .ba { grid-template-columns:1fr; } }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="skills.html">← 스킬 라이브러리</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">한글 글쓰기</span> <span class="badge">추천도 <span class="stars">★★★★☆</span></span> <span class="badge">한국어 전용</span>
+      <h1 style="margin-top:16px;">Humanizer</h1>
+      <p class="hero-sub">AI 한글 말투를 사람 글로</p>
+      <p class="body-md text-muted lead">AI가 쓴 <strong>한국어</strong>의 어색한 패턴(과한 쉼표·번역투·명사 과다 등 40여 개)을 탐지해, <strong>의미는 유지하며</strong> 자연스러운 사람 글로 다듬습니다. 한국어 언어학 논문(KatFishNet, ACL 2025)에 근거합니다.</p>
+      <div class="goal-box">
+        <strong>🎯 이 장에서 배우는 것</strong><br>
+        <span class="body-md">한글 결과물의 "AI 티"를 <strong>근거 있게</strong> 없애는 원리·설치·사용법.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 한눈에 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>한눈에</h3>
+      <div class="spec">
+        <div class="cell"><p class="k">무엇인가</p><p class="v">한국어 AI 문체 탐지·자연화 스킬 (맞춤법·스타일 스킬 동봉)</p></div>
+        <div class="cell"><p class="k">핵심 원리</p><p class="v">40개 패턴 6범주 탐지 + 심각도(S1/S2/S3) + 의미 보존 검증</p></div>
+        <div class="cell"><p class="k">설치 난이도</p><p class="v">쉬움</p></div>
+        <div class="cell"><p class="k">사용자 추천도 <span class="text-muted">(참고)</span></p><p class="v"><span class="stars">★★★★☆</span> — 한글로 문서 쓰는 사용자에게 강력</p></div>
+        <div class="cell"><p class="k">만든이 · 라이선스</p><p class="v">DaleSeo · MIT · korean-skills 묶음</p></div>
+        <div class="cell"><p class="k">근거</p><p class="v">KatFishNet 논문(ArXiv 2503.00032, ACL 2025)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 원리 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>작동 원리 (자세히)</h3>
+      <p class="body-md text-muted lead">단순 "다시 써줘"가 아니라, <strong>어디가 왜 AI 티인지</strong> 근거와 함께 짚고 고칩니다.</p>
+
+      <h5 style="margin-top:24px;">탐지하는 6가지 범주 (총 40패턴)</h5>
+      <div style="margin-top:8px;">
+        <div class="cat"><span class="n">문장부호</span><p class="body-md" style="margin:0;">과한 쉼표·영어식 쉼표·줄표 남발 등. <span class="text-muted">(쉼표는 AI 61% vs 사람 26% — 논문 근거, 94.88% AUC)</span></p></div>
+        <div class="cat"><span class="n">띄어쓰기</span><p class="body-md" style="margin:0;">경직된 의존명사·보조용언 띄어쓰기 등. <span class="text-muted">(79.51% AUC)</span></p></div>
+        <div class="cat"><span class="n">품사</span><p class="body-md" style="margin:0;">명사 과다·동사/형용사 빈곤 등 단조로움. <span class="text-muted">(82.99% AUC)</span></p></div>
+        <div class="cat"><span class="n">어휘</span><p class="body-md" style="margin:0;">AI 버즈워드, 불필요한 한자어, 영어 관용구 직역, 과장 어휘 등.</p></div>
+        <div class="cat"><span class="n">구조</span><p class="body-md" style="margin:0;">문장 리듬 부족, 3박자 나열 과다, 접속사 과다, 지나친 경어체 균일성.</p></div>
+        <div class="cat"><span class="n">번역투</span><p class="body-md" style="margin:0;">"~에 대해", "~을 통해", 이중 피동 "~되어진다", "~에 의해" 등.</p></div>
+      </div>
+
+      <h5 style="margin-top:28px;">심각도로 구분해 과하게 안 고칩니다</h5>
+      <div class="sev">
+        <div class="box"><strong>S1 (치명)</strong><p class="body-md" style="margin:4px 0 0;">한 번만 나와도 결정적 AI 신호 → 무조건 수정 권장.</p></div>
+        <div class="box"><strong>S2 (강함)</strong><p class="body-md" style="margin:4px 0 0;">1~2회는 허용, 3회 이상 반복이면 AI 신호.</p></div>
+        <div class="box"><strong>S3 (약함)</strong><p class="body-md" style="margin:4px 0 0;">혼자선 약하지만 다른 패턴과 겹치면 결정적.</p></div>
+      </div>
+
+      <div class="goal-box" style="border-color:var(--color-accent-teal);margin-top:24px;">
+        <span class="body-md"><strong>안전장치(중요):</strong> 고치기 전 <strong>의미 보존 6항 검증</strong>(숫자·날짜·고유명사 보존, 인과·부정 뒤집힘 없음, 인용 유지 등)을 하고, <strong>변경률이 50%를 넘으면 바로 출력하지 않고</strong> 사용자에게 더 보수적으로 다듬을지 되묻습니다. 자연도 등급(A~D)도 매깁니다.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 설치 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">설치</h3>
+      <p class="lbl" style="color:var(--color-on-dark-soft);">방법 A — Claude Code 플러그인 마켓</p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="hz-a">복사</button></div>
+        <pre id="hz-a">/plugin marketplace add daleseo/korean-skills
+/plugin install korean-skills@korean-skills</pre>
+      </div>
+      <p class="lbl" style="color:var(--color-on-dark-soft);margin-top:20px;">방법 B — npx (Node.js 필요) / 방법 C — gh skill (버전 고정 가능·프리뷰)</p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">터미널</span><button class="copy-btn" data-copy="hz-b">복사</button></div>
+        <pre id="hz-b">npx skills add daleseo/korean-skills@humanizer
+gh skill install daleseo/korean-skills humanizer --agent claude-code</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-on-dark-soft);margin-top:12px;">설치하면 <code>/korean-skills:humanizer</code>(맞춤법·스타일 스킬도 함께) 명령이 생깁니다.</p>
+    </div>
+  </section>
+
+  <!-- 사용법 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>사용법</h3>
+      <p class="body-md text-muted lead">한국어 텍스트를 <strong>인자·대화·파일</strong> 중 아무 방식으로나 주면 됩니다. <code>/humanizer</code> 뒤에 붙여넣는 게 가장 쉽습니다.</p>
+      <div class="code-window" style="margin-top:12px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">Claude Code</span></div>
+        <pre>&gt; /humanizer
+  (여기에 다듬을 한국어 글 붙여넣기)</pre>
+      </div>
+      <div class="goal-box" style="margin-top:16px;">
+        <span class="body-md"><strong>권장 3단계 파이프라인:</strong> ① <code>humanizer</code>(AI 티 제거) → ② <code>grammar-checker</code>(맞춤법·띄어쓰기) → ③ <code>style-guide</code>(문서 일관성). 변화가 큰 순서대로 적용합니다.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 예시 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>예시 (Before → After)</h3>
+      <p class="lbl">이중 피동 "~되어진다" (S1)</p>
+      <div class="ba">
+        <div class="box before"><strong class="text-muted">Before (AI)</strong><p class="body-md" style="margin:6px 0 0;">데이터는 신중하게 분석되어집니다. 결과는 통계적으로 검증되어진 후 보고되어집니다.</p></div>
+        <div class="box after"><strong class="text-coral">After</strong><p class="body-md" style="margin:6px 0 0;">데이터를 신중하게 분석합니다. 결과는 통계적으로 검증한 뒤 보고합니다.</p></div>
+      </div>
+      <p class="lbl" style="margin-top:20px;">"~에 기반하여/바탕으로" 남발 + 피동</p>
+      <div class="ba">
+        <div class="box before"><strong class="text-muted">Before (AI)</strong><p class="body-md" style="margin:6px 0 0;">이번 결정은 시장 조사에 기반하여 이뤄졌으며, 사용자 데이터를 바탕으로 검증됐고, 전문가 의견에 기반해 보완됐다.</p></div>
+        <div class="box after"><strong class="text-coral">After</strong><p class="body-md" style="margin:6px 0 0;">이번 결정은 시장 조사로 내렸고, 사용자 데이터로 검증했으며, 전문가 의견을 보고 보완했다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 장단점 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>장점 · 단점</h3>
+      <div class="pc">
+        <div class="box pro"><h6>👍 장점</h6><p class="body-md" style="margin:0;">논문 근거 + 근거를 설명(교육적). 심각도로 과교정 방지. 의미 보존·과다변경 안전장치. 격식·형식 유지. 한국어에 특화(영어권 도구가 놓치는 번역투 포함).</p></div>
+        <div class="box con"><h6>👎 단점</h6><p class="body-md" style="margin:0;">한국어 전용(번역 작업 X). 40패턴 중 25개는 경험적(과학적 검증은 부호·띄어쓰기·품사 13개). 짧은 글(1~2문장)엔 부정확. 심각도·변경률은 추정치 → 최종 확인 필요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 언제 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">when</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">언제 쓰고, 언제 피하나</h3>
+        <p class="body-md" style="opacity:.94;max-width:660px;"><strong>쓰기 좋을 때:</strong> AI로 쓰거나 다듬은 한국어 문서·보고서·안내문을 발행 전에 자연스럽게 만들 때. <br><strong>피할 때:</strong> 한국어가 아니거나 번역 작업, 아주 짧은 글, 이미 사람이 쓴 자연스러운 글, 숫자·법적으로 민감한 문서(의미 보존 결과를 꼭 검토).</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="superpowers.html">← 이전: Superpowers</a>
+        <a class="btn btn-primary" href="skill-agentmemory.html">다음: agentmemory →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육 · 스킬 챕터: Humanizer</p>
+      <p class="src">출처: github.com/DaleSeo/korean-skills · KatFishNet arxiv.org/abs/2503.00032 (2026-07-07 확인)</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

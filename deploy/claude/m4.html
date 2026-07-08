@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6단계 직무 응용 & 미니 프로젝트 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .goal-box { background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-top:16px; }
+    .lead { max-width:640px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+    .copy-btn { margin-left:auto; flex:0 0 auto; background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-family:var(--font-body); font-size:12px; cursor:pointer; }
+    .copy-btn:active { background:var(--color-primary-active); }
+    .io { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin-top:24px; }
+    .io .box { background:var(--color-surface-card); border-radius:var(--radius-lg); padding:20px; flex:1 1 160px; min-width:150px; }
+    .io .box h5 { margin:0 0 6px; }
+    .io .arrow { align-self:center; color:var(--color-muted-soft); font-size:20px; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge">6단계</span> <span class="badge">90분</span>
+      <h1 style="margin-top:16px;">직무 응용 &amp; 미니 프로젝트</h1>
+      <p class="body-md text-muted lead">이제 배운 걸 <strong>진짜 내 업무</strong>에 적용합니다. 여러 파일을 한 번에 정리·요약·변환하고, 반복 업무를 <strong>작은 도구</strong>로 만들어 봅니다. (모두 더미데이터)</p>
+      <div class="goal-box">
+        <strong>🎯 이 단계를 마치면</strong><br>
+        <span class="body-md">내 <strong>반복 업무 1건</strong>의 처리 흐름을 설계할 수 있습니다.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 반복 업무 찾기 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>1. 먼저 "반복되는 일"을 찾으세요</h3>
+      <p class="body-md text-muted lead">클로드 코드가 가장 큰 힘을 내는 곳은 <strong>매번 똑같이 하는 지루한 일</strong>입니다. 아래에 해당하면 좋은 후보입니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card"><h5>🔁 매번 같은 형식</h5><p class="body-md">파일 이름 규칙, 보고서 양식처럼 형식이 정해진 일.</p></div>
+        <div class="card"><h5>📚 양이 많음</h5><p class="body-md">파일·행이 수십~수백 개라 손으로 하면 오래 걸리는 일.</p></div>
+        <div class="card"><h5>📋 규칙이 분명함</h5><p class="body-md">"이럴 땐 이렇게"가 명확해 설명할 수 있는 일.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 여러 파일 한 번에 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">2. 여러 파일을 한 번에 — 정리 · 요약 · 변환</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:640px;">폴더에 파일을 모아 두고, 이렇게 요청해 보세요. (연습용 가짜 파일로)</p>
+      <div class="code-window" style="margin-top:20px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">Claude Code — 예시 요청</span>
+          <button class="copy-btn" data-copy="m4-ex">복사</button>
+        </div>
+        <pre id="m4-ex">&gt; 이 폴더 파일 이름을 '연도-월-제목' 형식으로 통일해줘
+&gt; 이 설문 결과(csv)를 핵심 3가지로 요약해서 표로 만들어줘
+&gt; 이 회의록들을 한 페이지 요약본으로 합쳐줘</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 실습: 부서별 집계 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>3. 실습 따라하기 — 신청 명단을 부서별로 집계</h3>
+      <p class="body-md text-muted lead"><code>실습자료/교육신청명단.csv</code>를 부서별 인원으로 집계해 봅니다. (연습용 더미데이터)</p>
+      <p class="lbl" style="margin-top:16px;">① 이렇게 요청</p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="m4-agg">복사</button></div>
+        <pre id="m4-agg">&gt; 이 폴더의 교육신청명단.csv를 부서별 인원 수로 집계해줘.
+  같은 사람이 중복 신청한 건 한 번만 세고,
+  결과를 표로 정리해서 부서별집계.md로 저장해줘.</pre>
+      </div>
+      <p class="lbl" style="margin-top:20px;">② 이런 결과 <span class="text-muted">(예시)</span></p>
+      <div class="card" style="max-width:520px;">
+        <p class="body-md" style="margin:0;line-height:2;">
+          인사팀 — 3명<br>교육팀 — 3명<br>디지털전략팀 — 3명<br>경영지원팀 — 2명<br><strong>합계 — 11명</strong>
+        </p>
+      </div>
+      <div class="goal-box" style="max-width:720px;"><span class="body-md"><strong>검증 팁:</strong> 원본은 12줄인데 홍길동이 2번 신청 → 중복을 빼면 <strong>11명</strong>이 맞습니다. 이렇게 숫자를 직접 검산하는 게 검증 습관입니다(7단계).</span></div>
+    </div>
+  </section>
+
+  <!-- 4. 간단 도구화 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>4. 한 번 만들면 계속 쓰는 "작은 도구"</h3>
+      <p class="body-md text-muted lead">매달 반복하는 계산·정리라면, 아예 <strong>작은 도구(웹페이지)</strong>로 만들어 두면 다음부터는 클릭만 하면 됩니다.</p>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div class="card"><h5>🧮 교육비 계산기</h5><p class="body-md">인원·시간을 넣으면 비용·이수시간이 자동 계산되는 페이지.</p></div>
+        <div class="card"><h5>📊 설문 대시보드</h5><p class="body-md">결과 파일을 넣으면 그래프·요약이 나오는 페이지.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 미니 프로젝트: 흐름 설계 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>5. 미니 프로젝트 — 내 업무 흐름 설계</h3>
+      <p class="body-md text-muted lead">내 반복 업무 하나를 골라 <strong>입력 → 처리 → 출력</strong>의 세 칸으로 정리해 보세요. 이게 곧 클로드 코드에게 줄 요청이 됩니다.</p>
+      <div class="io">
+        <div class="box"><h5>입력</h5><p class="body-md" style="margin:0;">무엇을 넣는가?<br><span class="text-muted">예: 월별 교육 신청 명단(csv)</span></p></div>
+        <span class="arrow">→</span>
+        <div class="box"><h5>처리</h5><p class="body-md" style="margin:0;">어떤 규칙으로?<br><span class="text-muted">예: 부서별 인원 집계, 중복 제거</span></p></div>
+        <span class="arrow">→</span>
+        <div class="box"><h5>출력</h5><p class="body-md" style="margin:0;">무엇이 나오는가?<br><span class="text-muted">예: 부서별 집계표(요약본)</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 콜아웃 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">try</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">내 업무 1건, 흐름으로 적어보기</h3>
+        <p class="body-md" style="opacity:.92;">내 반복 업무 하나를 <strong>입력 → 처리 → 출력</strong>로 적고, 그걸 그대로 클로드 코드에 요청해 계획을 받아 보세요. 6단계 목표 달성입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="m3.html">← 이전: 5단계 워크플로우</a>
+        <a class="btn btn-primary" href="m5.html">다음: 7단계 검증·오류 대처 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 6단계 직무 응용</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

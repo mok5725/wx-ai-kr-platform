@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강사용 트러블슈팅 대응표 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .ts td, .ts th { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; text-align:left; }
+    .ts th { color:var(--color-muted); font-weight:600; border-bottom:2px solid var(--color-hairline); }
+    .ts code { color:var(--color-primary); }
+    .cat-head { display:flex; align-items:center; gap:10px; margin-top:8px; }
+    .cat-head .badge { }
+    .lead { max-width:680px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <!-- 히어로 -->
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">강사용</span> <span class="badge">운영 자료</span>
+      <h1 style="margin-top:16px;">트러블슈팅 대응표</h1>
+      <p class="hero-sub">증상 → 원인 → 조치</p>
+      <p class="body-md text-muted lead">교육 현장에서 자주 나오는 문제를 빠르게 해결하기 위한 강사용 참고표입니다. 설치 명령·요구사항은 공식 문서(code.claude.com/docs, 2026-07-07 확인) 기준입니다.</p>
+    </div>
+  </header>
+
+  <!-- 1. 설치·실행 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="cat-head"><span class="badge-coral">1</span><h3>설치 · 실행</h3></div>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="ts body-md" style="width:100%;min-width:680px;border-collapse:collapse;">
+          <thead><tr><th style="width:34%;">증상</th><th style="width:28%;">원인</th><th>조치</th></tr></thead>
+          <tbody>
+            <tr><td>"claude를 인식할 수 없습니다"</td><td>설치 후 터미널 미재시작 / PATH 미반영</td><td>PowerShell을 닫고 다시 열기 → 그래도 안 되면 <code>%USERPROFILE%\.local\bin</code>을 사용자 PATH에 추가</td></tr>
+            <tr><td>PowerShell 명령이 오류가 남</td><td>CMD에 붙여넣음(셸 혼동)</td><td><code>PS C:\</code>(PowerShell)에서 실행. <code>irm … | iex</code>는 PowerShell 전용</td></tr>
+            <tr><td>npm 설치가 실패/경고</td><td>Node.js 22 미만</td><td>Node.js 22+(LTS) 설치, 또는 네이티브 설치 <code>irm https://claude.ai/install.ps1 | iex</code> 사용</td></tr>
+            <tr><td><code>winget</code>이 없음</td><td>App Installer 부재 / 구형 Windows</td><td>Microsoft Store에서 "App Installer" 설치, 또는 네이티브 설치 사용</td></tr>
+            <tr><td>"32-bit Windows" 오류</td><td>Windows Terminal의 x86 항목 실행</td><td>일반 PowerShell(64비트)로 실행</td></tr>
+            <tr><td>설치가 계속 실패</td><td>사내망 프록시/방화벽</td><td><code>claude doctor</code>로 진단, 사외망에서 재시도, 프록시 설정 확인</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 로그인·인증 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="cat-head"><span class="badge-coral">2</span><h3>로그인 · 인증</h3></div>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="ts body-md" style="width:100%;min-width:680px;border-collapse:collapse;">
+          <thead><tr><th style="width:34%;">증상</th><th style="width:28%;">원인</th><th>조치</th></tr></thead>
+          <tbody>
+            <tr><td>브라우저가 자동으로 안 열림</td><td>원격/제한 환경</td><td>터미널에서 <code>c</code>를 눌러 로그인 URL 복사 → 브라우저에 붙여넣기</td></tr>
+            <tr><td>로그인했는데 진행이 안 됨</td><td>인증 콜백 미완료</td><td>브라우저에서 "허용/완료"까지 누른 뒤 터미널로 복귀</td></tr>
+            <tr><td>"구독이 필요" 안내</td><td>Pro/Max 미구독</td><td>Claude Pro/Max 구독, 또는 Anthropic Console API 키 사용</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 사용 중 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="cat-head"><span class="badge-coral">3</span><h3>사용 중</h3></div>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="ts body-md" style="width:100%;min-width:680px;border-collapse:collapse;">
+          <thead><tr><th style="width:34%;">증상</th><th style="width:28%;">원인</th><th>조치</th></tr></thead>
+          <tbody>
+            <tr><td>"파일을 못 찾음" / 엉뚱한 파일을 봄</td><td>작업 폴더 밖에서 실행</td><td>대상 폴더에서 실행 — 탐색기 주소창에 <code>powershell</code> → <code>claude</code></td></tr>
+            <tr><td>결과가 요청과 다름</td><td>요청이 모호 / AI 한계</td><td>무엇이 다른지 구체적으로 알려주고 재요청. 숫자·사실은 사람이 검증</td></tr>
+            <tr><td>사용량 한도 도달</td><td>요청 과다 / 긴 대화 누적</td><td>새 대화로 정리, 요청을 더 간결하게, 잠시 후 재시도</td></tr>
+            <tr><td>응답이 느리거나 멈춤</td><td>큰 작업 / 일시 네트워크</td><td>작업을 작게 나눠 요청, 재시도</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 스킬·플러그인 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="cat-head"><span class="badge-coral">4</span><h3>스킬 · 플러그인 (심화)</h3></div>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="ts body-md" style="width:100%;min-width:680px;border-collapse:collapse;">
+          <thead><tr><th style="width:34%;">증상</th><th style="width:28%;">원인</th><th>조치</th></tr></thead>
+          <tbody>
+            <tr><td>스킬 설치가 안 됨</td><td>마켓 미등록 / 네트워크</td><td><code>/plugin</code>으로 설치 상태 확인, 저장소명·최신 정보 재확인</td></tr>
+            <tr><td>claude-video가 동작 안 함(Windows)</td><td><code>ffmpeg</code>·<code>yt-dlp</code> 미설치</td><td>winget/pip로 수동 설치 후 PATH 등록(자동 설치는 macOS 중심)</td></tr>
+            <tr><td>agentmemory 설치·연결 실패</td><td>Node.js/엔진 요건, Windows 네이티브 제약</td><td>Node.js 설치, Windows는 WSL2 권장</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 운영 팁 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="cat-head"><span class="badge-coral">5</span><h3>강사 운영 팁</h3></div>
+      <div class="grid grid-2" style="margin-top:20px;">
+        <div class="card"><h5>사전과제 미완료자 대응</h5><p class="body-md">당일 <strong>15분 버퍼</strong> 확보. 네이티브 설치 한 줄(<code>irm https://claude.ai/install.ps1 | iex</code>)로 즉시 따라오게.</p></div>
+        <div class="card"><h5>질문은 "캡처해서 그대로"</h5><p class="body-md">오류 화면을 캡처해 원문 그대로 보여주게 유도 — 진단이 가장 빠릅니다.</p></div>
+        <div class="card"><h5>공통 실수 Top 3 미리 시연</h5><p class="body-md">① 작업 폴더 밖에서 실행 ② PowerShell↔CMD 혼동 ③ 설치 후 터미널 미재시작.</p></div>
+        <div class="card"><h5>더미데이터 원칙 재강조</h5><p class="body-md">실습엔 실제 개인정보·기밀 금지. 연습은 가짜 데이터로.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="index.html">← 커리큘럼 허브</a>
+        <a class="btn btn-primary" href="install.html">설치편 보기 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-hairline);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 강사용 트러블슈팅 대응표</p>
+      <p class="src" style="color:var(--color-muted-soft);font-size:12px;">설치 관련 항목은 공식 문서(code.claude.com/docs) 검증(2026-07-07).</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스킬 챕터 · agentmemory — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:20px; }
+    .flow .node { background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border-radius:var(--radius-md); padding:10px 14px; font-size:14px; font-weight:500; }
+    .flow .arrow { color:var(--color-on-dark-soft); }
+    .tier { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
+    @media (max-width:768px){ .tier { grid-template-columns:1fr 1fr; } }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="skills.html">← 스킬 라이브러리</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">기억력</span> <span class="badge">추천도 <span class="stars">★★★★☆</span></span> <span class="badge">Node.js 필요</span>
+      <h1 style="margin-top:16px;">agentmemory</h1>
+      <p class="hero-sub">세션을 넘어 기억하기</p>
+      <p class="body-md text-muted lead">클로드 코드는 대화가 끝나면 맥락을 잊습니다. 이 스킬은 작업 내용을 <strong>배경에서 기록·압축·검색</strong>해, 다음에 시작할 때 관련 맥락을 자동으로 불러옵니다. <em>"코드를 다시 설명하지 마세요."</em></p>
+      <div class="goal-box">
+        <strong>🎯 이 장에서 배우는 것</strong><br>
+        <span class="body-md">에이전트 기억이 <strong>어떻게 저장·검색</strong>되는지, 설치 부담과 프라이버시 유의점.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 한눈에 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>한눈에</h3>
+      <div class="spec">
+        <div class="cell"><p class="k">무엇인가</p><p class="v">AI 코딩 에이전트용 영구 기억 미들웨어(훅+스킬+MCP)</p></div>
+        <div class="cell"><p class="k">핵심 원리</p><p class="v">활동 자동 기록 → 압축 → 임베딩 → 하이브리드 검색으로 재주입</p></div>
+        <div class="cell"><p class="k">설치 난이도</p><p class="v">어려움 (Node 20↑·로컬 서버, Windows는 WSL2 권장)</p></div>
+        <div class="cell"><p class="k">사용자 추천도 <span class="text-muted">(참고)</span></p><p class="v"><span class="stars">★★★★☆</span> — 같은 프로젝트를 오래 이어갈 때</p></div>
+        <div class="cell"><p class="k">만든이 · 라이선스</p><p class="v">rohitg00 · Apache-2.0 · TypeScript</p></div>
+        <div class="cell"><p class="k">저장</p><p class="v">로컬 SQLite + 로컬 임베딩(외부 DB 불필요)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 원리 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">작동 원리 (자세히)</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:660px;">클로드 코드의 <strong>수명주기 훅</strong>이 작업을 감지하면, 아래 파이프라인을 배경에서 돌립니다.</p>
+      <div class="flow">
+        <span class="node">활동 감지(훅)</span><span class="arrow">→</span>
+        <span class="node">비밀정보 필터</span><span class="arrow">→</span>
+        <span class="node">LLM 압축</span><span class="arrow">→</span>
+        <span class="node">임베딩(로컬 기본)</span><span class="arrow">→</span>
+        <span class="node">색인(키워드+벡터+그래프)</span>
+      </div>
+
+      <h5 style="color:var(--color-on-dark);margin-top:28px;">4단계 기억 정리</h5>
+      <div class="tier">
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h6 style="color:var(--color-on-dark);margin:0 0 4px;">작업(Working)</h6><p class="body-sm" style="color:var(--color-on-dark-soft);margin:0;">원시 관찰</p></div>
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h6 style="color:var(--color-on-dark);margin:0 0 4px;">에피소드</h6><p class="body-sm" style="color:var(--color-on-dark-soft);margin:0;">세션 요약</p></div>
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h6 style="color:var(--color-on-dark);margin:0 0 4px;">의미(Semantic)</h6><p class="body-sm" style="color:var(--color-on-dark-soft);margin:0;">추출된 사실·패턴</p></div>
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h6 style="color:var(--color-on-dark);margin:0 0 4px;">절차(Procedural)</h6><p class="body-sm" style="color:var(--color-on-dark-soft);margin:0;">워크플로우·결정</p></div>
+      </div>
+      <p class="body-sm" style="color:var(--color-on-dark-soft);margin-top:14px;">자주 쓰는 기억은 강화되고, 오래된 건 자동으로 밀려납니다. 검색은 <strong>키워드(BM25)+벡터+그래프</strong>를 합쳐(RRF) 관련 기억을 뽑아 새 세션에 주입합니다.</p>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:8px;">▸ 프로젝트 상태나 결정을 <strong>문서 파일로 직접 정리</strong>하던 일을 자동화한 버전이라고 볼 수 있습니다.</p>
+    </div>
+  </section>
+
+  <!-- 설치 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>설치</h3>
+      <p class="lbl">플러그인 마켓 + 훅 연결</p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">Claude Code / 터미널</span><button class="copy-btn" data-copy="am-a">복사</button></div>
+        <pre id="am-a">/plugin marketplace add rohitg00/agentmemory
+/plugin install agentmemory
+# 훅 연결(터미널):
+agentmemory connect claude-code</pre>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-warning);margin-top:20px;">
+        <span class="body-md"><strong>⚠️ 전제조건 · Windows 주의:</strong> <strong>Node.js 20 이상</strong>이 필요하고, 로컬 서버(포트 3111~3113)를 띄웁니다. <strong>Windows 네이티브는 설정이 까다로워 WSL2를 권장</strong>합니다(<code>agentmemory connect</code>가 네이티브에서 미지원). 설치 부담이 큰 편이라, 개념만 익히고 필요할 때 도전하세요.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 사용법 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>사용법</h3>
+      <div class="code-window" style="margin-top:12px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">Claude Code</span></div>
+        <pre>&gt; /remember 이 프로젝트는 더미데이터 원칙을 지킨다
+&gt; /recall 지난번에 정한 색상 규칙이 뭐였지?
+&gt; /session-history        (최근 세션 목록)
+&gt; /forget                 (특정 기억 삭제)</pre>
+      </div>
+      <p class="body-sm text-muted" style="margin-top:12px;">검색은 키워드가 달라도 의미로 찾아줍니다. 예: "데이터베이스 성능 최적화"로 검색 → 저장된 "N+1 쿼리 수정" 기억을 회수.</p>
+    </div>
+  </section>
+
+  <!-- 성능/예시 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>수치로 보는 강점 <span class="text-muted" style="font-size:15px;">(제작자 자체 벤치마크)</span></h3>
+      <div class="grid grid-3" style="margin-top:20px;">
+        <div class="card"><h5>검색 정확도</h5><p class="body-md">상위 5개 회수율 <strong>95.2%</strong> (기준 대비 향상).</p></div>
+        <div class="card"><h5>토큰 절약</h5><p class="body-md">전체 붙여넣기 대비 약 <strong>92%</strong> 절감(로컬 임베딩 시 비용 0에 근접).</p></div>
+        <div class="card"><h5>속도</h5><p class="body-md">상위 5개 회수 지연 중앙값 약 <strong>14ms</strong>.</p></div>
+      </div>
+      <p class="body-sm text-muted" style="margin-top:12px;">※ 위 수치는 저장소가 밝힌 자체 측정값으로, 독립 검증된 값은 아닙니다.</p>
+    </div>
+  </section>
+
+  <!-- 장단점 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>장점 · 단점</h3>
+      <div class="pc">
+        <div class="box pro"><h6>👍 장점</h6><p class="body-md" style="margin:0;">자동 기록(수동 입력 불필요). 의미 기반 하이브리드 검색. 외부 DB 불필요(로컬 저장). 여러 에이전트 공유 가능. 로컬 임베딩은 무료·오프라인.</p></div>
+        <div class="box con"><h6>👎 단점</h6><p class="body-md" style="margin:0;">설치가 무거움(엔진·로컬 서버). <strong>Windows 네이티브 취약(WSL2 권장)</strong>. <strong>배경에서 활동을 항상 기록 → 프라이버시 유의</strong>(비밀정보 필터는 있음). 신생·빠른 변화로 API 변동 가능. 웹 뷰어는 인증 없음 → 외부 노출 금지.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 언제 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">when</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">언제 쓰고, 언제 피하나</h3>
+        <p class="body-md" style="opacity:.94;max-width:660px;"><strong>쓰기 좋을 때:</strong> 같은 코드베이스를 여러 세션에 걸쳐 오래 작업하고, 매번 재설명이 싫을 때. 로컬 서버 운영에 거부감이 없을 때. <br><strong>피할 때:</strong> WSL2 없는 Windows, 데몬 없는 단순 방식을 원할 때, 배경 상시 기록이 부담스러울 때(작은 프로젝트는 <code>CLAUDE.md</code>로 충분).</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="skill-humanizer.html">← 이전: Humanizer</a>
+        <a class="btn btn-primary" href="skill-understand.html">다음: Understand-Anything →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육 · 스킬 챕터: agentmemory</p>
+      <p class="src">출처: github.com/rohitg00/agentmemory (2026-07-07 확인) · 수치는 자체 벤치마크</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

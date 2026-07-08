@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스킬 챕터 · claude-video — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:20px; }
+    .flow .node { background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border-radius:var(--radius-md); padding:10px 14px; font-size:14px; font-weight:500; }
+    .flow .arrow { color:var(--color-on-dark-soft); }
+    .fl td, .fl th { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; text-align:left; }
+    .fl th { color:var(--color-muted); font-weight:500; border-bottom:2px solid var(--color-hairline); }
+    .fl code { color:var(--color-primary); }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="skills.html">← 스킬 라이브러리</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">영상 이해</span> <span class="badge">추천도 <span class="stars">★★★☆☆</span></span> <span class="badge">외부도구 필요</span>
+      <h1 style="margin-top:16px;">claude-video</h1>
+      <p class="hero-sub">클로드가 영상을 "보게" 하기</p>
+      <p class="body-md text-muted lead">클로드는 웹페이지·코드는 읽어도 <strong>영상은 기본으로 못 봅니다.</strong> 이 <code>/watch</code> 스킬은 영상의 <strong>화면(프레임)과 소리(자막·전사)</strong>를 뽑아 클로드에게 넘겨, 실제 내용을 근거로 답하게 합니다.</p>
+      <div class="goal-box">
+        <strong>🎯 이 장에서 배우는 것</strong><br>
+        <span class="body-md">영상 분석 파이프라인의 <strong>원리·설치(특히 Windows)·명령·주의</strong>.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 한눈에 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>한눈에</h3>
+      <div class="spec">
+        <div class="cell"><p class="k">무엇인가</p><p class="v">영상을 다운로드·프레임 추출·전사해 클로드가 분석하게 하는 스킬</p></div>
+        <div class="cell"><p class="k">핵심 원리</p><p class="v">자막 우선 → 필요 시 다운로드 → 장면변화 프레임 + Whisper 전사</p></div>
+        <div class="cell"><p class="k">설치 난이도</p><p class="v">보통 (Windows는 ffmpeg·yt-dlp 수동 설치)</p></div>
+        <div class="cell"><p class="k">사용자 추천도 <span class="text-muted">(참고)</span></p><p class="v"><span class="stars">★★★☆☆</span> — 강력하지만 준비물·비용 있음</p></div>
+        <div class="cell"><p class="k">만든이 · 라이선스</p><p class="v">Brad Bonanno · MIT</p></div>
+        <div class="cell"><p class="k">지원 소스</p><p class="v">YouTube·TikTok·Vimeo·로컬 파일 등 100+</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 원리 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">작동 원리 (자세히)</h3>
+      <div class="flow">
+        <span class="node">자막 있으면 자막만(빠름)</span><span class="arrow">→</span>
+        <span class="node">없으면 영상 다운로드</span><span class="arrow">→</span>
+        <span class="node">장면변화 프레임 추출</span><span class="arrow">→</span>
+        <span class="node">비슷한 프레임 제거</span><span class="arrow">→</span>
+        <span class="node">Whisper 전사</span>
+      </div>
+      <p class="body-md" style="color:var(--color-on-dark-soft);margin-top:20px;max-width:660px;">프레임은 <strong>고정 간격이 아니라 장면이 바뀌는 지점</strong>을 골라 뽑고, 거의 같은 프레임은 버려 토큰을 아낍니다(자막이 있으면 다운로드·이미지 토큰 0). 프레임에는 <strong>MM:SS 타임스탬프</strong>가 붙어, "30초에 뭐가?" 같은 질문에 정확히 답할 수 있습니다.</p>
+
+      <h5 style="color:var(--color-on-dark);margin-top:28px;">상세 모드(--detail)</h5>
+      <p class="body-md" style="color:var(--color-on-dark-soft);"><code style="color:var(--color-on-dark);">transcript</code>(자막만·0토큰) · <code style="color:var(--color-on-dark);">efficient</code>(키프레임·빠름) · <code style="color:var(--color-on-dark);">balanced</code>(기본·장면변화) · <code style="color:var(--color-on-dark);">token-burner</code>(최대 커버리지). 전사는 Groq(기본)·OpenAI Whisper를 쓰며 <strong>자막이 없을 때만</strong> 필요합니다.</p>
+    </div>
+  </section>
+
+  <!-- 설치 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>설치</h3>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="cv-a">복사</button></div>
+        <pre id="cv-a">/plugin marketplace add bradautomates/claude-video
+/plugin install watch@claude-video</pre>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-warning);margin-top:20px;">
+        <span class="body-md"><strong>⚠️ 전제조건 · Windows 주의:</strong> <code>ffmpeg</code>와 <code>yt-dlp</code>가 필요합니다. <strong>macOS는 첫 실행 때 자동 설치</strong>되지만, <strong>Windows는 자동 설치가 안 되고</strong> 안내(winget/pip)만 나오므로 직접 설치해 PATH에 등록해야 합니다. Whisper API 키(Groq/OpenAI)는 <strong>자막 없는 영상</strong>에만 필요(선택).</span>
+      </div>
+      <p class="body-sm text-muted" style="margin-top:12px;">참고: <code>npx skills add bradautomates/claude-video -g</code> 로 다른 호스트에도 설치 가능. claude.ai 웹은 릴리스의 <code>watch.skill</code> 업로드.</p>
+    </div>
+  </section>
+
+  <!-- 사용법 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>사용법</h3>
+      <p class="body-md text-muted lead">형식: <code>/watch &lt;URL 또는 경로&gt; [질문] [옵션]</code></p>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="fl body-md" style="width:100%;min-width:560px;border-collapse:collapse;">
+          <thead><tr><th style="width:30%;">옵션</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><code>--detail [모드]</code></td><td>화질/속도 조절(transcript~token-burner)</td></tr>
+            <tr><td><code>--start / --end</code></td><td>특정 구간만(예: 2:15~2:45) — 촘촘·저비용</td></tr>
+            <tr><td><code>--timestamps</code></td><td>특정 시점 프레임 콕 집기</td></tr>
+            <tr><td><code>--resolution W</code></td><td>프레임 가로폭(기본 512, 글자 읽으려면 1024)</td></tr>
+            <tr><td><code>--no-whisper / --no-dedup</code></td><td>전사 끄기 / 중복 프레임 유지</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span><span class="code-window__title">예시</span></div>
+        <pre>&gt; /watch https://youtu.be/영상ID  30초쯤 무슨 일이 일어나?
+&gt; /watch ~/영상/화면녹화.mp4  UI가 언제 깨져?
+&gt; /watch "URL" --start 2:15 --end 2:45      (구간 집중)
+&gt; /watch video.mp4 --detail token-burner --resolution 1024</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 장단점 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>장점 · 단점</h3>
+      <div class="pc">
+        <div class="box pro"><h6>👍 장점</h6><p class="body-md" style="margin:0;">영상의 실제 내용을 질문 가능. 자막 우선·장면변화·중복 제거로 토큰 효율. 타임스탬프로 정확한 참조. 폭넓은 소스·로컬 파일 지원.</p></div>
+        <div class="box con"><h6>👎 단점</h6><p class="body-md" style="margin:0;"><strong>Windows 설치 마찰</strong>(ffmpeg·yt-dlp 수동). 자막 없는 영상은 <strong>유료 Whisper API 비용</strong>. 다운로드·처리 시간. 긴 영상은 커버리지 얇아짐(구간 지정 권장). 플랫폼 변경·로그인 게이트로 다운로드 실패 가능.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 언제 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">when</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">언제 쓰고, 언제 피하나</h3>
+        <p class="body-md" style="opacity:.94;max-width:660px;"><strong>쓰기 좋을 때:</strong> 긴 영상 요약, 영상 구조·훅 분석, 화면 녹화로 버그 진단, 튜토리얼의 특정 순간 추출. <br><strong>피할 때:</strong> 이미 좋은 자막을 붙여넣을 수 있을 때(더 쌈), 로그인 게이트·미지원 소스, ffmpeg·yt-dlp를 깔 수 없는 Windows, 매우 긴 영상을 구간 지정 없이 볼 때(비용).</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="skill-understand.html">← 이전: Understand-Anything</a>
+        <a class="btn btn-primary" href="skill-karpathy.html">다음: Karpathy Guidelines →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육 · 스킬 챕터: claude-video</p>
+      <p class="src">출처: github.com/bradautomates/claude-video (v0.2.0, 2026-07-07 확인)</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

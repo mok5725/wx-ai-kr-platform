@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7단계 안전·한계·검증 & 오류 대처 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .goal-box { background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-top:16px; }
+    .lead { max-width:640px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+    .checklist { list-style:none; padding:0; margin:16px 0 0; max-width:640px; }
+    .checklist li { padding:10px 0; border-bottom:1px solid var(--color-hairline); }
+    .tbl td, .tbl th { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; text-align:left; }
+    .tbl th { color:var(--color-muted); font-weight:500; border-bottom:2px solid var(--color-hairline); }
+    .copy-btn { margin-left:auto; flex:0 0 auto; background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-family:var(--font-body); font-size:12px; cursor:pointer; }
+    .copy-btn:active { background:var(--color-primary-active); }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge">7단계</span> <span class="badge">50분</span>
+      <h1 style="margin-top:16px;">검증하는 습관 &amp; 오류 대처</h1>
+      <p class="body-md text-muted lead">클로드 코드는 강력하지만 완벽하지 않습니다. <strong>결과를 확인하는 습관</strong>과 <strong>막혔을 때 푸는 법</strong>을 익히면, 안심하고 오래 쓸 수 있습니다.</p>
+      <div class="goal-box">
+        <strong>🎯 이 단계를 마치면</strong><br>
+        <span class="body-md">결과를 <strong>검증</strong>하고, 오류·한계 상황에 <strong>스스로 대처</strong>할 수 있습니다.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 검증 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>1. "그대로 믿지 않기"가 기본</h3>
+      <p class="body-md text-muted lead">AI가 만든 결과는 <strong>초안</strong>입니다. 특히 숫자·사실·이름은 사람이 확인해야 합니다. 이게 안전의 첫걸음입니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card"><h5>🔢 숫자</h5><p class="body-md">합계·계산은 한 번 눈으로 검산.</p></div>
+        <div class="card"><h5>📌 사실</h5><p class="body-md">근거가 있는지, 지어낸 건 아닌지 확인.</p></div>
+        <div class="card"><h5>📄 원본 대조</h5><p class="body-md">요약이 원본과 어긋나지 않는지 비교.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 검증 체크리스트 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>2. 완료 전 검증 체크리스트</h3>
+      <p class="body-md text-muted lead">"끝!"이라고 하기 전에 아래를 스스로 물어보세요. 클로드에게 시켜도 됩니다.</p>
+      <ul class="checklist body-md">
+        <li>☐ 요청한 내용이 <strong>빠짐없이</strong> 반영됐는가?</li>
+        <li>☐ 숫자·날짜·이름이 <strong>맞는가?</strong></li>
+        <li>☐ 결과 파일이 <strong>실제로 저장</strong>됐는가?</li>
+        <li>☐ 실제 화면(브라우저 등)에서 <strong>제대로 보이는가?</strong></li>
+      </ul>
+      <div class="goal-box" style="border-color:var(--color-accent-teal);"><span class="body-md"><strong>이렇게 시켜보세요:</strong> "방금 만든 결과가 내 요청을 다 반영했는지 스스로 점검하고, 빠진 게 있으면 알려줘."</span></div>
+    </div>
+  </section>
+
+  <!-- 3. 오류 대처 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">3. 막혔을 때 — 캡처해서 그대로 보여주기</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:640px;">오류가 나도 당황하지 마세요. 가장 빠른 해결법은 <strong>오류 화면(빨간 글씨)을 그대로 전달</strong>하는 것입니다. 클로드에게든 강사에게든 똑같습니다.</p>
+      <div class="code-window" style="margin-top:20px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">Claude Code — 오류 물어보기</span>
+          <button class="copy-btn" data-copy="m5-err">복사</button>
+        </div>
+        <pre id="m5-err">&gt; 이런 오류가 났어. 무슨 뜻이고 어떻게 고치면 돼?
+  (여기에 오류 메시지를 붙여넣기)</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:12px;">▸ 오류 메시지는 "문제의 힌트"입니다. 숨기지 말고 그대로 보여주는 게 정답입니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. 자주 나는 오류 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>4. 자주 만나는 상황</h3>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="tbl body-md" style="width:100%;min-width:560px;border-collapse:collapse;">
+          <thead><tr><th style="width:36%;">상황</th><th>대처</th></tr></thead>
+          <tbody>
+            <tr><td>설치·명령어가 "인식 안 됨"</td><td>PowerShell을 닫고 다시 열기 → 재시도</td></tr>
+            <tr><td>결과가 요청과 다름</td><td>무엇이 다른지 구체적으로 알려주고 다시 요청</td></tr>
+            <tr><td>사용량 한도 도달</td><td>대화를 정리하거나 잠시 후 재시도, 요청을 더 간결하게</td></tr>
+            <tr><td>도무지 안 풀림</td><td>화면 캡처 + 무엇을 하려 했는지 한 줄 → 강사에게 문의</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 콜아웃 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">check</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">검증 한 문장 + 오류 대처 한 문장</h3>
+        <p class="body-md" style="opacity:.92;"><strong>"결과는 초안이니 숫자·사실을 확인한다. 막히면 오류를 그대로 캡처해 묻는다."</strong> 이 두 가지를 말할 수 있으면 7단계 목표 달성입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="m4.html">← 이전: 6단계 직무 응용</a>
+        <a class="btn btn-primary" href="m6.html">다음: 8단계 마무리 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 7단계 검증·오류 대처</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

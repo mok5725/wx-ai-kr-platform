@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>심화 · 스킬 라이브러리 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    a.mod-link { text-decoration:none; color:inherit; display:block; height:100%; }
+    .mod-card { display:flex; flex-direction:column; gap:10px; height:100%; transition:transform .12s ease, box-shadow .12s ease; }
+    a.mod-link:hover .mod-card { transform:translateY(-2px); box-shadow:var(--shadow-soft); }
+    .mod-top { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .mod-card h5 { margin:0; color:var(--color-ink); }
+    .mod-meta { display:flex; align-items:center; gap:8px; margin-top:auto; }
+    .cmp td, .cmp th { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; text-align:left; }
+    .cmp th { color:var(--color-muted); font-weight:500; border-bottom:2px solid var(--color-hairline); }
+    .go { color:var(--color-primary); font-weight:500; font-size:13px; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <!-- 히어로 -->
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">심화 · 선택</span> <span class="badge">추천 스킬 6선</span>
+      <h1 style="margin-top:16px;">스킬 라이브러리</h1>
+      <p class="hero-sub">확장 스킬로 능력 더하기</p>
+      <p class="body-md text-muted lead">클로드 코드는 <strong>'스킬(플러그인)'</strong>을 설치해 능력을 늘릴 수 있습니다. 각 스킬을 <strong>설치법·원리·장단점·사용법·예시</strong>로 자세히 다룬 전용 장으로 정리했습니다. 카드를 눌러 각 장으로 이동하세요.</p>
+      <div class="goal-box">
+        <strong>🎯 이 부록에서</strong><br>
+        <span class="body-md">필요한 스킬을 <strong>골라 설치</strong>하고 무엇을 위한 도구인지 설명할 수 있습니다. (아래 추천도는 <strong>클로드 코드 사용자 전반</strong> 기준의 참고치입니다.)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 공통: 스킬이란 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>먼저 — 스킬은 어떻게 설치하나요?</h3>
+      <p class="body-md text-muted lead">대부분 <strong>클로드 코드 안에서</strong> <code>/plugin</code> 명령으로 설치합니다. (터미널이 아니라, 클로드와 대화하는 칸에 <code>/</code>로 시작하는 명령을 칩니다.)</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">기본 패턴</span>
+        </div>
+        <pre>/plugin marketplace add [제작자/저장소]   ← 스킬 상점 등록
+/plugin install [스킬이름]@[상점]         ← 설치
+/plugin                                   ← 설치된 스킬 확인·관리</pre>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-warning);">
+        <span class="body-md"><strong>⚠️ 안전 주의:</strong> 스킬은 남이 만든 코드를 내 컴퓨터에서 실행합니다. <strong>신뢰할 수 있는 출처</strong>인지 확인하고, 회사 PC라면 <strong>사내 정책</strong>을 먼저 확인하세요. 아래 정보는 2026-07-07 공개 저장소 기준이며, 설치 전 각 저장소에서 최신 정보를 재확인하는 습관을 권장합니다.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6개 스킬 카드(전용 장 링크) -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>추천 스킬 6선 — 전용 장으로</h3>
+      <div class="grid grid-2" style="margin-top:32px;">
+
+        <a class="mod-link" href="superpowers.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">워크플로우</span><span class="badge">추천 <span class="stars">★★★★★</span></span></div>
+            <h5>Superpowers</h5>
+            <p class="body-md">계획·검증 워크플로우를 자동으로 씌우는 스킬 프레임워크. 요청만 하면 브레인스토밍→계획→TDD→리뷰가 자동으로.</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+        <a class="mod-link" href="skill-humanizer.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">한글 글쓰기</span><span class="badge">추천 <span class="stars">★★★★☆</span></span></div>
+            <h5>Humanizer</h5>
+            <p class="body-md">AI가 쓴 한국어의 어색한 패턴을 탐지해 자연스러운 사람 글로. 논문(KatFishNet) 근거 + 의미 보존 안전장치.</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+        <a class="mod-link" href="skill-agentmemory.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">기억력</span><span class="badge">추천 <span class="stars">★★★★☆</span></span></div>
+            <h5>agentmemory</h5>
+            <p class="body-md">세션을 넘어 맥락을 기억. 작업을 배경에서 기록·압축·검색해 다음 세션에 자동 주입. (Node 필요·다소 무거움)</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+        <a class="mod-link" href="skill-understand.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">코드 이해</span><span class="badge">추천 <span class="stars">★★★★☆</span></span></div>
+            <h5>Understand-Anything</h5>
+            <p class="body-md">코드베이스를 대화형 지식 그래프로. 낯설거나 거대한 코드를 탐색·검색·질문. 구조 파싱 + AI 의미 분석.</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+        <a class="mod-link" href="skill-video.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">영상 이해</span><span class="badge">추천 <span class="stars">★★★☆☆</span></span></div>
+            <h5>claude-video</h5>
+            <p class="body-md">클로드가 영상을 "보게" 하기. 프레임·자막을 뽑아 실제 내용을 질문. (ffmpeg·yt-dlp 필요, Windows 수동)</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+        <a class="mod-link" href="skill-karpathy.html">
+          <div class="card mod-card">
+            <div class="mod-top"><span class="badge">개발 원칙</span><span class="badge">추천 <span class="stars">★★★★☆</span></span></div>
+            <h5>Karpathy Guidelines</h5>
+            <p class="body-md">AI 코딩 함정을 막는 4원칙(생각 먼저·단순함·최소 수정·목표와 검증). 아주 가볍고 안전.</p>
+            <div class="mod-meta"><span class="go">자세히 보기 →</span></div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 비교표 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>한눈에 비교</h3>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="cmp body-md" style="width:100%;min-width:640px;border-collapse:collapse;">
+          <thead><tr><th>스킬</th><th>한 줄 용도</th><th>설치 난이도</th><th>사용자 추천도</th></tr></thead>
+          <tbody>
+            <tr><td>Superpowers</td><td>체계적 작업 흐름(계획·검증)</td><td>쉬움</td><td class="stars">★★★★★</td></tr>
+            <tr><td>Humanizer</td><td>한글 AI 문체 자연화</td><td>쉬움</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>agentmemory</td><td>세션 넘는 기억</td><td>어려움(Node)</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Understand-Anything</td><td>코드 지식 그래프</td><td>보통</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>claude-video</td><td>영상 이해</td><td>보통(외부도구)</td><td class="stars">★★★☆☆</td></tr>
+            <tr><td>Karpathy Guidelines</td><td>좋은 코딩 습관 4원칙</td><td>매우 쉬움</td><td class="stars">★★★★☆</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-sm text-muted" style="margin-top:8px;">※ 추천도는 <strong>클로드 코드 사용자 전반</strong> 관점의 주관적 참고치입니다. 정확한 요구사항·설치 난이도는 각 저장소에서 최종 확인하세요.</p>
+    </div>
+  </section>
+
+  <!-- 콜아웃 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">tip</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">뭐부터 써볼까?</h3>
+        <p class="body-md" style="opacity:.94;max-width:660px;">체계적으로 일하고 싶으면 <strong>Superpowers</strong>, 한글 문서를 다듬는다면 <strong>Humanizer</strong>부터. 코드가 낯설면 <strong>Understand-Anything</strong>, 프로젝트를 오래 이어간다면 <strong>agentmemory</strong>를 얹어 보세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 페이저 + 푸터 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="index.html">← 커리큘럼 허브</a>
+        <a class="btn btn-primary" href="superpowers.html">첫 장: Superpowers →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 심화: 스킬 라이브러리</p>
+      <p class="src">각 스킬 정보는 2026-07-07 공개 저장소 확인. 설치 전 최신 정보를 각 저장소에서 재확인 권장.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

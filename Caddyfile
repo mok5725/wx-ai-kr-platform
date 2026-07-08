@@ -20,6 +20,14 @@ wx.ai.kr {
 	file_server
 }
 
+# claude.wx.ai.kr — 클로드코드 교육 사이트(정적)
+claude.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	root * /srv/claude
+	file_server
+}
+
 # lab.wx.ai.kr — wx01 앱
 lab.wx.ai.kr {
 	import secure_headers

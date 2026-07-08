@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5단계 핵심 워크플로우 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .goal-box { background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-top:16px; }
+    .lead { max-width:640px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+    .copy-btn { margin-left:auto; flex:0 0 auto; background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-family:var(--font-body); font-size:12px; cursor:pointer; }
+    .copy-btn:active { background:var(--color-primary-active); }
+    .flow3 { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:24px; }
+    .flow3 .node { background:var(--color-surface-card); border-radius:var(--radius-lg); padding:16px 20px; flex:1 1 160px; min-width:150px; }
+    .flow3 .node h5 { margin:0 0 4px; }
+    .flow3 .arrow { color:var(--color-muted-soft); font-size:20px; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge">5단계</span> <span class="badge">90분</span>
+      <h1 style="margin-top:16px;">핵심 워크플로우</h1>
+      <p class="hero-sub">탐색 → 계획 → 구현</p>
+      <p class="body-md text-muted lead">클로드 코드를 잘 쓰는 사람의 비결은 딱 하나입니다. <strong>바로 만들지 말고, 계획을 먼저 받아 검토하는 것.</strong> 이 습관이 결과 품질을 좌우합니다.</p>
+      <div class="goal-box">
+        <strong>🎯 이 단계를 마치면</strong><br>
+        <span class="body-md">계획을 <strong>한 번 수정한 뒤</strong> 산출물을 완성할 수 있습니다.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 3박자 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>1. 좋은 작업의 3박자</h3>
+      <div class="flow3">
+        <div class="node"><h5>① 탐색</h5><p class="body-md" style="margin:0;">지금 폴더에 뭐가 있고 무엇이 필요한지 파악.</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><h5>② 계획</h5><p class="body-md" style="margin:0;">무엇을 어떤 순서로 만들지 <strong>글로 정리</strong>.</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><h5>③ 구현</h5><p class="body-md" style="margin:0;">승인된 계획대로 실제 결과물을 제작.</p></div>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-accent-teal);"><span class="body-md">가장 흔한 실수는 <strong>②를 건너뛰는 것</strong>입니다. 계획을 먼저 보면, 엉뚱한 결과에 시간을 버리지 않습니다.</span></div>
+    </div>
+  </section>
+
+  <!-- 2. Plan 모드 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">2. Plan 모드 — "만들기 전에 계획부터"</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:640px;">클로드 코드에는 <strong>바로 파일을 고치지 않고 계획만 먼저 세워 보여주는</strong> 방식이 있습니다. 계획을 보고 "좋아, 이대로 해줘"라고 승인하면 그때 실제 작업이 시작됩니다.</p>
+      <div class="code-window" style="margin-top:20px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">Claude Code</span>
+          <button class="copy-btn" data-copy="m3-plan">복사</button>
+        </div>
+        <pre id="m3-plan">&gt; 바로 만들지 말고, 먼저 계획을 세워서 보여줘.
+  내가 확인하고 승인하면 그때 진행해줘.</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:12px;">▸ 이렇게 요청하면 클로드가 단계별 계획을 먼저 제시합니다. <strong>Shift+Tab</strong>을 눌러 <strong>계획(Plan) 모드</strong>로 바꾸면, 클로드가 읽고 계획만 세우고 <strong>파일은 고치지 않습니다</strong> — 계획을 승인해야 실제 작업이 시작됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 계획 검토·수정 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>3. 계획을 검토·수정하기 (진짜 실력)</h3>
+      <p class="body-md text-muted lead">계획을 그냥 통과시키지 말고, <strong>빠진 것·바꿀 것</strong>을 짚어 수정하게 하세요. 이게 클로드 코드 활용의 핵심 역량입니다.</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">Claude Code</span>
+          <button class="copy-btn" data-copy="m3-fix">복사</button>
+        </div>
+        <pre id="m3-fix">&gt; 계획 좋아. 그런데 2번에 '수료번호 자동 생성'을 추가하고,
+  전체를 모바일에서도 보이게 반응형으로 바꿔줘. 그다음 진행해.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 대표 실습 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>4. 대표 실습 — 수료증 생성기 <span class="text-muted" style="font-size:16px;">(따라하기 · 더미데이터)</span></h3>
+      <p class="body-md text-muted lead">배운 3박자(탐색→계획→구현)를 그대로 적용해 봅니다. 아래 순서대로 따라오세요. (연습용 데이터: <code>실습자료/수료자명단.csv</code>)</p>
+
+      <p class="lbl" style="margin-top:20px;">① 요청 — 바로 만들지 말고 계획부터</p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="m3-task">복사</button></div>
+        <pre id="m3-task">&gt; 교육 수료증을 만드는 간단한 웹페이지를 만들고 싶어.
+  이름과 과정명을 입력하면 수료증 미리보기가 나오게.
+  바로 만들지 말고 계획부터 세워서 보여줘. (연습용 가짜 데이터로)</pre>
+      </div>
+
+      <p class="lbl" style="margin-top:20px;">② 클로드가 이런 계획을 보여줍니다 <span class="text-muted">(예시)</span></p>
+      <div class="card" style="max-width:720px;">
+        <p class="body-md" style="margin:0;line-height:2;">
+          1. 이름·과정명·수료일 <strong>입력 폼</strong> 만들기 → 확인: 화면에 폼이 보이는가<br>
+          2. 입력을 즉시 반영하는 <strong>수료증 미리보기 카드</strong> → 확인: 글자를 치면 바로 바뀌는가<br>
+          3. <strong>인쇄·저장 버튼</strong> 추가 → 확인: 미리보기가 인쇄 형식으로 나오는가
+        </p>
+      </div>
+
+      <p class="lbl" style="margin-top:20px;">③ 계획을 한 번 수정 <span class="text-muted">(핵심 역량)</span></p>
+      <div class="code-window" style="max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="m3-fix">복사</button></div>
+        <pre id="m3-fix">&gt; 계획 좋아. 그런데 2번에 '수료번호 자동 생성'을 추가하고,
+  전체를 모바일에서도 보이게 반응형으로 바꿔줘. 그다음 진행해.</pre>
+      </div>
+
+      <p class="lbl" style="margin-top:20px;">④ 완성 &amp; 확인</p>
+      <div class="goal-box" style="max-width:720px;"><span class="body-md">승인하면 클로드가 실제 파일(예: <code>certificate.html</code>)을 만듭니다. 브라우저로 열어 이름·과정명을 넣어 보고, <strong>결과가 요청대로인지 눈으로 확인</strong>하세요(다음 7단계 검증 습관). 어긋난 점은 다시 말해 고치면 됩니다.</span></div>
+
+      <p class="body-md text-muted" style="margin-top:24px;">같은 흐름으로 아래도 만들어 볼 수 있습니다.</p>
+      <div class="grid grid-3" style="margin-top:12px;">
+        <div class="card"><h5>대안 A</h5><p class="body-md">만족도 설문 결과 대시보드 <span class="text-muted">(만족도설문.csv)</span></p></div>
+        <div class="card"><h5>대안 B</h5><p class="body-md">교육비 · 이수시간 계산기</p></div>
+        <div class="card"><h5>대안 C</h5><p class="body-md">교육과정 안내 원페이지</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 콜아웃 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">try</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">계획을 "한 번 고쳐" 완성하기</h3>
+        <p class="body-md" style="opacity:.92;">계획을 받은 뒤 <strong>최소 1가지를 수정 요청</strong>하고, 그다음 완성까지 진행해 보세요. "계획→수정→완성"을 경험하면 5단계 목표 달성입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="m2.html">← 이전: 4단계 첫 실행</a>
+        <a class="btn btn-primary" href="m4.html">다음: 6단계 직무 응용 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 5단계 핵심 워크플로우</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4단계 첫 실행 & 기본 조작 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .goal-box { background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-top:16px; }
+    .lead { max-width:640px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+    .copy-btn { margin-left:auto; flex:0 0 auto; background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-family:var(--font-body); font-size:12px; cursor:pointer; }
+    .copy-btn:active { background:var(--color-primary-active); }
+    .step-num { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-weight:500; font-size:14px; flex:0 0 auto; }
+    .step-head { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+    .step-head h5 { margin:0; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge">4단계</span> <span class="badge">60분</span>
+      <h1 style="margin-top:16px;">첫 실행 &amp; 기본 조작</h1>
+      <p class="body-md text-muted lead">이제 실제로 클로드 코드를 켜서 첫 요청을 넣어 봅니다. 핵심은 딱 하나 — <strong>"내 작업 폴더에서 실행하기"</strong>입니다.</p>
+      <div class="goal-box">
+        <strong>🎯 이 단계를 마치면</strong><br>
+        <span class="body-md">원하는 폴더에서 클로드 코드를 <strong>실행하고, 첫 요청</strong>을 해낼 수 있습니다.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 작업 폴더 개념 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>1. "작업 폴더"가 핵심입니다</h3>
+      <p class="body-md text-muted lead">클로드 코드는 <strong>지금 열려 있는 폴더</strong>의 파일만 봅니다. 그래서 "어디서 실행하느냐"가 제일 중요합니다. 정리할 파일들이 있는 그 폴더에서 켜야 합니다.</p>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div class="card"><h5>🗂️ 폴더 = 작업실</h5><p class="body-md">클로드 코드에게 그 폴더가 "작업실"입니다. 폴더 안 파일을 읽고 고칩니다.</p></div>
+        <div class="card"><h5>📍 그래서</h5><p class="body-md">바탕화면 아무 데서나 켜지 말고, <strong>대상 폴더 안에서</strong> 켜세요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 폴더에서 실행 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>2. 내 폴더에서 실행하기 (탐색기 주소창)</h3>
+      <div class="step-head" style="margin-top:20px;"><span class="step-num">1</span><h5>작업할 폴더를 탐색기에서 연다</h5></div>
+      <div class="step-head"><span class="step-num">2</span><h5>위쪽 주소창을 클릭하고 <code>powershell</code> 입력 → Enter</h5></div>
+      <div class="code-window" style="margin:8px 0 20px;max-width:680px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">탐색기 주소창</span>
+          <button class="copy-btn" data-copy="m2-ps">복사</button>
+        </div>
+        <pre id="m2-ps">powershell</pre>
+      </div>
+      <div class="step-head"><span class="step-num">3</span><h5>열린 창에 <code>claude</code> 입력 → Enter</h5></div>
+      <div class="code-window" style="margin-top:8px;max-width:680px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">PowerShell (내 작업 폴더)</span>
+          <button class="copy-btn" data-copy="m2-run">복사</button>
+        </div>
+        <pre id="m2-run">claude</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 로그인 확인 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">3. 로그인 상태 확인</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:640px;">사전과제에서 이미 로그인했다면 바로 대화가 시작됩니다. 만약 로그인 화면이 나오면, 브라우저에서 Claude 계정으로 로그인하고 "허용"을 누르면 됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. 첫 요청 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>4. 첫 요청 해보기</h3>
+      <p class="body-md text-muted lead">대화 칸에 한국어로 요청하면 됩니다. 처음엔 아래처럼 <strong>가볍게</strong> 시작해 보세요.</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span><span class="code-window__dot code-window__dot--y"></span><span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">Claude Code</span>
+          <button class="copy-btn" data-copy="m2-first">복사</button>
+        </div>
+        <pre id="m2-first">&gt; 이 폴더에 어떤 파일들이 있는지 알려줘</pre>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-accent-teal);margin-top:16px;"><span class="body-md"><strong>팁:</strong> 요청은 <strong>구체적으로</strong> — "무엇을, 어떻게, 어떤 결과로"를 적을수록 정확한 결과가 나옵니다. 예: "이 폴더의 txt 파일들을 하나의 표로 요약해서 summary.md로 저장해줘."</span></div>
+    </div>
+  </section>
+
+  <!-- 5. 권한/모드 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">5. 클로드가 "이렇게 할까요?" 물어볼 때</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:660px;">클로드 코드는 파일을 고치거나 명령을 실행하기 <strong>전에</strong> 물어봅니다(기본값). 내용을 확인하고 허용하면 그때 실행됩니다. 그래서 안심하고 써도 됩니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h5 style="color:var(--color-on-dark);">🙋 기본 — 물어봄</h5><p class="body-md" style="color:var(--color-on-dark-soft);">편집·명령 전에 확인을 구합니다. 처음엔 이 모드를 권장.</p></div>
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h5 style="color:var(--color-on-dark);">⏩ 편집 자동 승인</h5><p class="body-md" style="color:var(--color-on-dark-soft);">파일 편집을 매번 안 묻고 자동 진행(익숙해진 뒤에).</p></div>
+        <div class="card-dark" style="background:var(--color-surface-dark-elevated);"><h5 style="color:var(--color-on-dark);">📝 계획(Plan) 모드</h5><p class="body-md" style="color:var(--color-on-dark-soft);">읽고 계획만 세우고 <strong>파일은 안 고침</strong>. 계획을 승인해야 실제 작업.</p></div>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:14px;">▸ <strong>Shift+Tab</strong>으로 모드가 바뀝니다(수동 → 편집 자동 → 계획). 하단 표시줄에서 현재 모드를 볼 수 있어요. 작업을 멈추려면 <strong>Esc</strong>, 되돌리려면 <strong>Esc 두 번</strong> 또는 <code style="color:var(--color-on-dark);">/rewind</code>.</p>
+    </div>
+  </section>
+
+  <!-- 6. 명령·단축키 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>6. 꼭 알아둘 명령과 단축키</h3>
+      <p class="body-md text-muted lead">대화 칸에 <code>/</code>만 쳐도 명령 목록이 뜹니다. 아래만 알아도 충분합니다.</p>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div class="card">
+          <h5>자주 쓰는 명령</h5>
+          <p class="body-md" style="margin:8px 0 0;line-height:2.1;">
+            <code>/help</code> 명령 목록 보기<br>
+            <code>/clear</code> 새 대화 시작(맥락 비우기)<br>
+            <code>/model</code> 사용할 모델 바꾸기<br>
+            <code>/context</code> 맥락(대화)이 얼마나 찼는지<br>
+            <code>/status</code> 버전·모델·계정 상태<br>
+            <code>/init</code> 이 프로젝트용 CLAUDE.md 만들기<br>
+            <code>/exit</code> 종료 (또는 Ctrl+D)
+          </p>
+        </div>
+        <div class="card">
+          <h5>단축키</h5>
+          <p class="body-md" style="margin:8px 0 0;line-height:2.1;">
+            <strong>Shift+Tab</strong> 모드 전환(수동→편집자동→계획)<br>
+            <strong>Esc</strong> 하던 작업 멈추기<br>
+            <strong>Esc 두 번</strong> 또는 <code>/rewind</code> 되돌리기<br>
+            <strong>↑</strong> 이전에 보낸 요청 다시 불러오기<br>
+            <strong>/</strong> 명령 목록 열기
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 모델/토큰 절약 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>7. 똑똑하게 아껴 쓰기 (모델 · 토큰)</h3>
+      <p class="body-md text-muted lead">클로드 코드는 사용량에 한도가 있습니다. 아래를 습관화하면 오래, 효율적으로 쓸 수 있습니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card"><h5>🎯 요청은 구체적으로</h5><p class="body-md">한 번에 명확히 요청하면 왔다갔다(=사용량)가 줄어듭니다.</p></div>
+        <div class="card"><h5>🧹 대화는 주제별로</h5><p class="body-md">새 작업은 새 대화로. 긴 대화가 쌓이면 무거워집니다.</p></div>
+        <div class="card"><h5>⚙️ 무거운 모델은 필요할 때만</h5><p class="body-md">간단한 일엔 가벼운 설정으로 충분합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 스스로 점검 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>스스로 점검</h3>
+      <ul class="body-md" style="max-width:660px;line-height:2;list-style:none;padding:0;margin-top:12px;">
+        <li>☐ 내 작업 폴더에서 클로드 코드를 실행할 수 있다.</li>
+        <li>☐ 요청을 한국어로 입력해 답을 받아봤다.</li>
+        <li>☐ 클로드가 권한을 물어볼 때 확인하고 허용할 줄 안다.</li>
+        <li>☐ <code>/clear</code>로 새 대화를 시작하고 <strong>Esc</strong>로 멈출 수 있다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 콜아웃 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">try</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">직접 해보기</h3>
+        <p class="body-md" style="opacity:.92;">연습용 폴더를 하나 만들고, 그 안에서 클로드 코드를 실행해 <strong>"이 폴더에 뭐가 있는지 알려줘"</strong>를 요청해 보세요. 답이 오면 4단계 목표 달성입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="m1.html">← 이전: 3단계 개념 이해</a>
+        <a class="btn btn-primary" href="m3.html">다음: 5단계 핵심 워크플로우 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 4단계 첫 실행</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy); if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText; btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

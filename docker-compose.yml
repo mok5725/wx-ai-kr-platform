@@ -11,6 +11,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./deploy/hub:/srv/hub:ro
+      - ./deploy/claude:/srv/claude:ro
       - ./data/caddy/data:/data
       - ./data/caddy/config:/config
     depends_on:

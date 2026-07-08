@@ -1,0 +1,367 @@
+/* ============================================================
+   tokens.css — 클로드 코드 교육과정 공용 디자인 토큰 (1벌)
+   출처: DESIGN-notion.md (Notion: 따뜻한 종이 캔버스 · 근검정 Inter · 단일 블루)
+   원칙: 모든 교안 페이지가 이 파일 하나를 공유한다. 페이지마다
+        색·폰트·간격을 새로 정의하지 않는다. (CLAUDE.md §3·§5)
+   버전: v2.0 (2026-07-07) — Claude 트리니티 → Notion 시스템으로 전면 교체
+        (변수·클래스 이름은 유지해 전 페이지가 자동 리스킨되도록 함)
+   ============================================================ */
+
+/* ---------- 웹폰트 ----------
+   단일 패밀리: 한글·라틴 모두 Pretendard(Inter 계열 휴머니스트 산세).
+   세리프 없음(노션 원칙). 코드만 JetBrains Mono. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* ===== 색상 — Notion =====
+     구조색은 오직 블루 하나. 스티커 팔레트(퍼플·핑크 등)는 장식에만. */
+
+  /* 브랜드/액센트 */
+  --color-primary:          #0075de;  /* 노션 블루 — 유일한 구조색(CTA·링크·포커스) */
+  --color-primary-active:   #005bab;  /* press */
+  --color-primary-disabled: #cfe2f6;
+  --color-secondary:        #213183;  /* 딥 인디고 — "밤" 히어로 밴드 */
+  --color-accent-teal:      #2a9d99;  /* 이하 스티커 팔레트: 장식 전용 */
+  --color-accent-amber:     #dd5b00;
+  --color-accent-purple:    #d6b6f6;
+  --color-accent-pink:      #ff64c8;
+  --color-accent-green:     #1aae39;
+  --color-accent-sky:       #62aef0;
+
+  /* 표면 — 따뜻한 종이 캔버스 + 흰 카드 */
+  --color-canvas:               #f6f5f4;  /* 페이지 바탕(따뜻한 종이) — 순백 금지 */
+  --color-surface-soft:         #f6f5f4;  /* 콘텐츠 밴드(동일 톤) */
+  --color-surface-card:         #ffffff;  /* 카드·패널·폼 = 흰색 */
+  --color-surface-cream-strong: #eeece9;  /* 살짝 진한 종이(선택 탭 등) */
+
+  /* 표면 — 다크(코드창·"밤" 밴드·다크 CTA) */
+  --color-surface-dark:          #201e29;  /* 코드 터미널/다크 밴드 */
+  --color-surface-dark-elevated: #2c2938;
+  --color-surface-dark-soft:     #17161f;
+
+  /* 텍스트(잉크) */
+  --color-ink:         #1a1a1a;  /* 헤드라인·본문 강조(근검정) */
+  --color-body-strong: #000000;
+  --color-body:        #31302e;  /* 기본 본문(따뜻한 차콜) */
+  --color-muted:       #615d59;
+  --color-muted-soft:  #a39e98;
+  --color-on-primary:  #ffffff;  /* 블루/딥인디고 위 텍스트 */
+  --color-on-dark:     #f6f5f4;  /* 다크 위 텍스트 */
+  --color-on-dark-soft:#a7a3b0;
+
+  /* 헤어라인(테두리) */
+  --color-hairline:      #e6e6e6;
+  --color-hairline-soft: #efefee;
+
+  /* 시맨틱 (노션은 스티커 팔레트로 상태 표현) */
+  --color-success: #1aae39;
+  --color-warning: #dd5b00;
+  --color-error:   #d93b3b;
+
+  /* ===== 폰트 패밀리 (단일 산세) ===== */
+  --font-display: "Pretendard", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-body:    "Pretendard", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-code:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ===== 타이포 스케일 (Notion — 굵고 타이트) ===== */
+  --fs-display-xl: 52px; --lh-display-xl: 1.03; --ls-display-xl: -1.8px;
+  --fs-display-lg: 40px; --lh-display-lg: 1.08; --ls-display-lg: -1.1px;
+  --fs-display-md: 30px; --lh-display-md: 1.2;  --ls-display-md: -0.6px;
+  --fs-display-sm: 24px; --lh-display-sm: 1.25; --ls-display-sm: -0.3px;
+  --fs-title-lg:   20px; --lh-title-lg:   1.4;
+  --fs-title-md:   18px; --lh-title-md:   1.4;
+  --fs-title-sm:   16px; --lh-title-sm:   1.4;
+  --fs-body-md:    16px; --lh-body-md:    1.6;
+  --fs-body-sm:    15px; --lh-body-sm:    1.5;
+  --fs-caption:    14px; --lh-caption:    1.45;
+  --fs-caption-up: 12px; --ls-caption-up: 0.3px;
+  --fs-code:       14px; --lh-code:       1.6;
+
+  /* ===== 간격 (base 4px) ===== */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-xxl: 48px;
+  --space-section: 88px;
+
+  /* ===== 라운드 (Notion) ===== */
+  --radius-xs:   4px;
+  --radius-sm:   5px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-pill: 9999px;
+
+  /* ===== 그림자 (거의 안 보이는 레이어드) ===== */
+  --shadow-soft: 0 1px 2px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.03);
+
+  /* ===== 레이아웃 ===== */
+  --container-max: 1120px;
+}
+
+/* ============================================================
+   베이스 리셋 & 기본 타이포
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--color-canvas);   /* 따뜻한 종이 */
+  color: var(--color-body);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  word-break: keep-all;                     /* 한글이 단어 중간에서 잘려 줄바꿈되지 않게 */
+}
+
+/* 반응형 안전장치 */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+table { max-width: 100%; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* 헤드라인 — 산세리프 700, 음수 자간(노션 보이스). 세리프 없음 */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-md);
+  letter-spacing: -0.5px;
+}
+h1 { font-size: var(--fs-display-xl); line-height: var(--lh-display-xl); letter-spacing: var(--ls-display-xl); }
+h2 { font-size: var(--fs-display-lg); line-height: var(--lh-display-lg); letter-spacing: var(--ls-display-lg); }
+h3 { font-size: var(--fs-display-md); line-height: var(--lh-display-md); letter-spacing: var(--ls-display-md); }
+
+h4, h5, h6 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-sm);
+}
+h4 { font-size: var(--fs-title-lg); line-height: var(--lh-title-lg); }
+h5 { font-size: var(--fs-title-md); line-height: var(--lh-title-md); }
+h6 { font-size: var(--fs-title-sm); line-height: var(--lh-title-sm); }
+
+p { margin: 0 0 var(--space-md); }
+
+a { color: var(--color-primary); text-decoration: none; }   /* 블루 인라인 링크 */
+a:hover { text-decoration: underline; }
+
+code, pre, kbd, samp {
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+}
+
+/* ============================================================
+   타이포 유틸리티 클래스
+   ============================================================ */
+.display-xl { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display-xl); line-height: var(--lh-display-xl); letter-spacing: var(--ls-display-xl); color: var(--color-ink); }
+.display-lg { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display-lg); line-height: var(--lh-display-lg); letter-spacing: var(--ls-display-lg); color: var(--color-ink); }
+.display-md { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display-md); line-height: var(--lh-display-md); letter-spacing: var(--ls-display-md); color: var(--color-ink); }
+.display-sm { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display-sm); line-height: var(--lh-display-sm); letter-spacing: var(--ls-display-sm); color: var(--color-ink); }
+.title-lg  { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-title-lg); line-height: var(--lh-title-lg); }
+.title-md  { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-title-md); line-height: var(--lh-title-md); }
+.title-sm  { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-title-sm); line-height: var(--lh-title-sm); }
+.body-md   { font-size: var(--fs-body-md); line-height: var(--lh-body-md); }
+.body-sm   { font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); }
+.caption   { font-size: var(--fs-caption); line-height: var(--lh-caption); }
+.caption-up{ font-size: var(--fs-caption-up); font-weight: 600; letter-spacing: var(--ls-caption-up); text-transform: uppercase; }
+
+.text-muted { color: var(--color-muted); }
+.text-coral { color: var(--color-primary); }   /* 이름은 유지, 이제 블루 */
+
+/* ============================================================
+   레이아웃 헬퍼
+   ============================================================ */
+.container { max-width: var(--container-max); margin-inline: auto; padding-inline: var(--space-lg); }
+.section   { padding-block: var(--space-section); }
+.grid      { display: grid; gap: var(--space-lg); }
+.grid-3    { grid-template-columns: repeat(3, 1fr); }
+.grid-2    { grid-template-columns: repeat(2, 1fr); }
+
+/* 표면 밴드 — 따뜻한 종이(라이트) / 딥 다크(코드·밤) */
+.band-canvas { background: var(--color-canvas); color: var(--color-body); }
+.band-soft   { background: var(--color-surface-soft); color: var(--color-body); }
+.band-dark   { background: var(--color-surface-dark); color: var(--color-on-dark); }
+.band-dark h1, .band-dark h2, .band-dark h3 { color: var(--color-on-dark); }
+
+/* ============================================================
+   컴포넌트 (Notion)
+   ============================================================ */
+
+/* ---- 버튼 (마케팅 CTA = 알약) ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-weight: 500; font-size: 15px; line-height: 1;
+  height: 42px; padding: 12px 22px; border-radius: var(--radius-pill);
+  border: 1px solid transparent; cursor: pointer; transition: background-color .15s ease, transform .1s ease;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary   { background: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover { background: var(--color-primary-active); text-decoration: none; }
+.btn-primary[disabled], .btn-primary.is-disabled { background: var(--color-primary-disabled); color: #ffffff; cursor: not-allowed; }
+.btn-secondary { background: var(--color-surface-card); color: var(--color-ink); border-color: var(--color-hairline); box-shadow: var(--shadow-card); }
+.btn-secondary:hover { text-decoration: none; }
+/* 이름 유지: 이제 라이트 푸터에서도 어울리는 흰 보조 버튼 */
+.btn-on-dark   { background: var(--color-surface-card); color: var(--color-ink); border-color: var(--color-hairline); box-shadow: var(--shadow-card); }
+.btn-on-dark:hover { text-decoration: none; }
+/* 유틸 버튼은 8px */
+.btn-icon      { width: 36px; height: 36px; padding: 0; border-radius: var(--radius-pill); background: var(--color-surface-card); border-color: var(--color-hairline); color: var(--color-ink); }
+
+/* ---- 상단 네비 (흰 바 + 하단 헤어라인) ---- */
+.top-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; padding-inline: var(--space-lg);
+  background: var(--color-surface-card); color: var(--color-ink);
+  border-bottom: 1px solid var(--color-hairline);
+}
+.nav-link { font-family: var(--font-body); font-weight: 500; font-size: 15px; color: var(--color-ink); }
+
+/* ---- 히어로 ---- */
+.hero-band { padding-block: var(--space-section); }
+
+/* ---- 카드류 (흰 카드 + 헤어라인 + 미세 그림자) ---- */
+.card {
+  background: var(--color-surface-card); color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg); padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+}
+.card-dark {
+  background: var(--color-surface-dark); color: var(--color-on-dark);
+  border-radius: var(--radius-lg); padding: var(--space-lg);
+}
+.card-outline {
+  background: var(--color-surface-card); color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg); padding: var(--space-lg);
+}
+
+/* ---- code-window (다크 터미널) ---- */
+.code-window {
+  background: var(--color-surface-dark); color: var(--color-on-dark);
+  border-radius: var(--radius-lg); padding: var(--space-lg);
+  overflow: hidden;
+}
+.code-window__bar {
+  display: flex; align-items: center; gap: 8px;
+  margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)) var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-surface-dark-elevated);
+}
+/* 창 컨트롤·신호등 없이 제목만 있는 심플한 상단바.
+   (맥 신호등 마크업 .code-window__dot 은 CSS로 숨겨 전 페이지 자동 반영) */
+.code-window__dot { display: none; }
+.code-window__title { flex: 1 1 auto; color: var(--color-on-dark-soft); font-family: var(--font-body); font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-window pre {
+  margin: 0; background: var(--color-surface-dark-soft);
+  border-radius: var(--radius-md); padding: var(--space-md);
+  color: var(--color-on-dark); line-height: var(--lh-code);
+  overflow-x: auto; white-space: pre;
+}
+
+/* ---- 콜아웃 (가장 중요한 CTA = 블루 풀블리드) ---- */
+.callout-coral {
+  background: var(--color-primary); color: var(--color-on-primary);
+  border-radius: var(--radius-xl); padding: var(--space-xxl);
+}
+.callout-coral .btn-secondary { background: var(--color-surface-card); border-color: transparent; }
+
+/* ---- CTA 밴드 ---- */
+.cta-band-coral { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--radius-xl); padding: 56px; }
+.cta-band-dark  { background: var(--color-secondary); color: var(--color-on-primary); border-radius: var(--radius-xl); padding: 56px; }
+
+/* ---- 배지 (아이브로 알약) ---- */
+.badge {
+  display: inline-flex; align-items: center;
+  background: var(--color-surface-card); color: var(--color-muted);
+  font-size: var(--fs-caption-up); font-weight: 600; letter-spacing: 0.3px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill); padding: 4px 10px;
+}
+.badge-coral {
+  display: inline-flex; align-items: center;
+  background: var(--color-primary); color: var(--color-on-primary);
+  font-size: var(--fs-caption-up); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+  border-radius: var(--radius-pill); padding: 4px 10px;
+}
+
+/* ---- 입력 (타이트한 4px) ---- */
+.input {
+  height: 40px; padding: 8px 12px;
+  background: var(--color-surface-card); color: var(--color-ink);
+  font-family: var(--font-body); font-size: var(--fs-body-sm);
+  border: 1px solid #dddddd; border-radius: var(--radius-xs);
+}
+.input:focus {
+  outline: none; border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 117, 222, 0.15);
+}
+
+/* ---- 탭 ---- */
+.tab { background: transparent; color: var(--color-muted); font-family: var(--font-body); font-weight: 500; font-size: 15px; padding: 8px 14px; border: none; border-radius: var(--radius-md); cursor: pointer; }
+.tab.is-active { background: var(--color-surface-card); color: var(--color-ink); border: 1px solid var(--color-hairline); }
+
+/* ---- 헤어라인 구분선 ---- */
+.hr { border: none; border-top: 1px solid var(--color-hairline); margin-block: var(--space-lg); }
+
+/* ---- 푸터 (따뜻한 종이 + 상단 헤어라인) ---- */
+.site-footer {
+  background: var(--color-canvas); color: var(--color-ink-secondary, var(--color-body));
+  border-top: 1px solid var(--color-hairline);
+  padding: 56px var(--space-lg);
+}
+.site-footer a:not(.btn) { color: var(--color-primary); }   /* 버튼(.btn)은 제외 — 파란버튼 흰글자 유지 */
+
+/* ============================================================
+   교안 공용 유틸 (모듈·챕터 페이지 공용)
+   ============================================================ */
+.lead { max-width: 660px; }
+/* 히어로 소제목 — 제목(1줄) 아래 규칙 있는 소제목 1줄 */
+.hero-sub { font-family: var(--font-body); font-size: var(--fs-title-lg); font-weight: 500; line-height: 1.4; color: var(--color-muted); margin: -8px 0 0; }
+.goal-box { border-left: 3px solid var(--color-primary); background: var(--color-surface-card); border: 1px solid var(--color-hairline); border-left: 3px solid var(--color-primary); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); margin-top: 16px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+.copy-btn { margin-left: auto; flex: 0 0 auto; background: var(--color-surface-dark-elevated); color: var(--color-on-dark); border: none; border-radius: var(--radius-sm); padding: 4px 10px; font-family: var(--font-body); font-size: 12px; cursor: pointer; }
+.copy-btn:active { background: var(--color-primary); }
+.lbl { font-size: 13px; font-weight: 600; color: var(--color-muted); margin: 6px 0 4px; }
+.src { font-size: 12px; color: var(--color-muted-soft); margin: 0; }
+.pc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.pc .box { border-radius: var(--radius-md); padding: 12px 14px; }
+.pc .pro { background: rgba(26, 174, 57, 0.10); }
+.pc .con { background: rgba(217, 59, 59, 0.08); }
+.pc h6 { margin: 0 0 6px; }
+.spec { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+.spec .cell { background: var(--color-surface-card); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 16px 18px; }
+.spec .cell .k { font-size: 13px; color: var(--color-muted); margin: 0 0 4px; }
+.spec .cell .v { margin: 0; font-weight: 500; color: var(--color-ink); }
+.stars { color: var(--color-primary); font-weight: 600; white-space: nowrap; }
+@media (max-width: 768px) { .pc, .spec { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   반응형 — 모바일에선 그리드 열 수만 축소, 코드는 가로 스크롤
+   ============================================================ */
+@media (max-width: 1024px) {   /* 태블릿 */
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {    /* 모바일 */
+  :root {
+    --fs-display-xl: 34px; --ls-display-xl: -1px;
+    --fs-display-lg: 28px; --ls-display-lg: -0.6px;
+    --fs-display-md: 24px;
+    --space-section: 52px;
+  }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .callout-coral, .cta-band-coral, .cta-band-dark { padding: var(--space-xl); }
+  .container { padding-inline: var(--space-md); }
+}

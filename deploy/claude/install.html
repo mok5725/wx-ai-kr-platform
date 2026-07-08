@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1단계 · 환경 세팅 — 클로드 코드 설치</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .step-num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-weight:600; font-size:15px; flex:0 0 auto; }
+    .step-head { display:flex; align-items:center; gap:var(--space-md); margin-bottom:var(--space-sm); }
+    .step-head h3 { margin:0; }
+    .tip { border-left:3px solid var(--color-accent-teal); background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-accent-teal); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin:var(--space-md) 0; }
+    .tip strong { color:var(--color-ink); }
+    .copy-btn { margin-left:auto; flex:0 0 auto; background:var(--color-surface-dark-elevated); color:var(--color-on-dark); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-family:var(--font-body); font-size:12px; cursor:pointer; }
+    .copy-btn:active { background:var(--color-primary); }
+    .progress-rail { display:flex; flex-wrap:wrap; gap:8px; }
+    .trouble td { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; }
+    .trouble th { text-align:left; padding:var(--space-sm) var(--space-md); border-bottom:2px solid var(--color-hairline); color:var(--color-muted); font-weight:600; }
+    .lead { max-width:660px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <!-- 상단 네비 -->
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <!-- 히어로 -->
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge-coral">1단계</span>
+      <span class="badge">소요 20–30분</span>
+      <h1 style="margin-top:16px;">클로드 코드 설치하기</h1>
+      <p class="hero-sub">명령어는 "복사 → 붙여넣기"가 전부입니다.</p>
+      <p class="body-md text-muted lead">검은 화면(터미널)이 낯설어도 괜찮습니다. 이 문서의 명령어는 <strong>복사 버튼</strong>을 눌러 그대로 붙여넣기만 하면 됩니다. 순서대로 따라오면 <code>claude --version</code> 성공 화면을 보게 됩니다.</p>
+      <div class="progress-rail" style="margin-top:20px;">
+        <span class="badge">0 준비물</span>
+        <span class="badge">1 PowerShell 열기</span>
+        <span class="badge">2 클로드 코드 설치</span>
+        <span class="badge">3 로그인</span>
+        <span class="badge">4 설치 확인</span>
+        <span class="badge">5 폴더에서 실행</span>
+      </div>
+      <p class="body-sm text-muted" style="margin-top:14px;">✅ 이 문서는 <strong>Windows 10/11</strong> 기준이며, 명령어는 <strong>공식 문서(code.claude.com/docs)로 검증</strong>했습니다.</p>
+    </div>
+  </header>
+
+  <!-- 0단계: 준비물 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="step-head"><span class="step-num">0</span><h3>준비물 확인</h3></div>
+      <p class="body-md text-muted lead">시작 전에 아래 3가지만 있으면 됩니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card"><h5>🪟 Windows 10 또는 11</h5><p class="body-md">64비트 PC. 관리자 권한이 없어도 대부분 설치됩니다.</p></div>
+        <div class="card"><h5>🌐 인터넷 연결</h5><p class="body-md">설치 파일을 내려받고 로그인할 때 필요합니다.</p></div>
+        <div class="card"><h5>🔑 Claude 계정</h5><p class="body-md"><strong>Claude Pro/Max 구독</strong>이 필요합니다. (또는 Anthropic Console API 키)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1단계: PowerShell 열기 -->
+  <section class="section band-dark">
+    <div class="container">
+      <div class="step-head"><span class="step-num">1</span><h3 style="color:var(--color-on-dark);">PowerShell 열기</h3></div>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:660px;">"PowerShell"은 명령어를 입력하는 검은 창입니다. 여는 방법은 두 가지 — 편한 걸로 하세요.</p>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div>
+          <h6 style="color:var(--color-on-dark);">방법 A — 시작 메뉴</h6>
+          <p class="body-md" style="color:var(--color-on-dark-soft);">키보드 <strong>Windows 키</strong>를 누르고 <strong>powershell</strong> 이라고 친 뒤 Enter.</p>
+        </div>
+        <div>
+          <h6 style="color:var(--color-on-dark);">방법 B — 탐색기 주소창 (추천)</h6>
+          <p class="body-md" style="color:var(--color-on-dark-soft);">폴더 창(탐색기) 위쪽 <strong>주소창</strong>을 클릭해 아래 글자를 치고 Enter. 그 폴더에서 바로 PowerShell이 열립니다.</p>
+          <div class="code-window" style="margin-top:12px;">
+            <div class="code-window__bar"><span class="code-window__title">탐색기 주소창</span></div>
+            <pre>powershell</pre>
+          </div>
+        </div>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:14px;">▸ 창 맨 앞이 <code style="color:var(--color-on-dark);">PS C:\</code> 로 시작하면 PowerShell입니다. (<code style="color:var(--color-on-dark);">C:\</code> 만 있으면 CMD — 명령이 다를 수 있어요.)</p>
+    </div>
+  </section>
+
+  <!-- 2단계: 클로드 코드 설치 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="step-head"><span class="step-num">2</span><h3>클로드 코드 설치 (공식 권장 방식)</h3></div>
+      <p class="body-md text-muted lead">아래 한 줄을 복사해 PowerShell에 붙여넣고 Enter. 자동으로 설치되고, 이후 업데이트도 알아서 됩니다. (이 방식은 <strong>Node.js 없이</strong> 설치됩니다.)</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="cmd-install">복사</button></div>
+        <pre id="cmd-install">irm https://claude.ai/install.ps1 | iex</pre>
+      </div>
+      <div class="tip"><strong>💡 설치가 끝나면</strong> PowerShell 창을 <strong>닫았다가 다시 열어</strong> 주세요. 새로 설치된 명령을 인식하려면 창을 새로 열어야 합니다(PATH 반영).</div>
+
+      <h5 style="margin-top:28px;">다른 설치 방법 (선택)</h5>
+      <div class="grid grid-3" style="margin-top:12px;">
+        <div class="card"><h6>npm</h6><p class="body-md"><code>npm install -g @anthropic-ai/claude-code</code><br><span class="text-muted">Node.js 22 이상 필요. 수동 업데이트.</span></p></div>
+        <div class="card"><h6>winget</h6><p class="body-md"><code>winget install Anthropic.ClaudeCode</code><br><span class="text-muted">수동 업데이트.</span></p></div>
+        <div class="card"><h6>Claude Desktop 앱</h6><p class="body-md">GUI로 Claude Code 포함.<br><span class="text-muted">단, 터미널 <code>claude</code> 명령은 별도 CLI 설치 필요. Windows는 Git 설치 필요.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3단계: 로그인 -->
+  <section class="section band-dark">
+    <div class="container">
+      <div class="step-head"><span class="step-num">3</span><h3 style="color:var(--color-on-dark);">로그인</h3></div>
+      <p class="body-md" style="color:var(--color-on-dark-soft);max-width:660px;">아래를 입력하면 <strong>브라우저가 자동으로 열립니다.</strong> Claude 계정으로 로그인하고 "허용"을 누르면 끝.</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="cmd-login">복사</button></div>
+        <pre id="cmd-login">claude</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-on-dark-soft);margin-top:12px;">▸ 브라우저가 안 열리면 터미널에서 <strong>c</strong> 를 눌러 로그인 주소를 복사한 뒤 브라우저에 붙여넣으세요.<br>▸ 계정은 <strong>Claude Pro/Max 구독</strong>(개인 권장) · Team/Enterprise · Anthropic Console(API) 중 하나면 됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 4단계: 설치 확인 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="step-head"><span class="step-num">4</span><h3>설치 확인 — 이 화면이 나오면 성공!</h3></div>
+      <p class="body-md text-muted lead">버전 번호가 보이면 설치 완료입니다. 문제가 있으면 <code>claude doctor</code>가 원인을 알려줍니다.</p>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="cmd-verify">복사</button></div>
+        <pre id="cmd-verify">claude --version    # 버전이 나오면 성공
+claude doctor       # 설치·설정 상태 진단</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:12px;">▸ <code>--version</code>은 설치 버전을, <code>doctor</code>는 설치·PATH·업데이트 상태를 점검합니다.</p>
+    </div>
+  </section>
+
+  <!-- 5단계: 폴더에서 실행 -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="step-head"><span class="step-num">5</span><h3>내 작업 폴더에서 실행하기</h3></div>
+      <p class="body-md text-muted lead">클로드 코드는 "지금 열려 있는 폴더"의 파일을 다룹니다. 그래서 <strong>작업할 폴더에서 실행</strong>하는 게 핵심입니다. 탐색기 주소창을 쓰면 가장 쉽습니다.</p>
+      <ol class="body-md" style="max-width:660px;line-height:1.9;">
+        <li>작업할 폴더를 탐색기에서 엽니다.</li>
+        <li>위쪽 <strong>주소창</strong>을 클릭하고 <code>powershell</code> 입력 → Enter. (그 폴더에서 PowerShell이 열림)</li>
+        <li>이어서 <code>claude</code> 를 입력 → Enter. 이제 그 폴더에서 대화를 시작할 수 있습니다.</li>
+      </ol>
+      <div class="code-window" style="margin-top:16px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">PowerShell (내 작업 폴더)</span><button class="copy-btn" data-copy="cmd-run">복사</button></div>
+        <pre id="cmd-run">claude</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 코랄 콜아웃: 완료 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">done</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">설치 완료!</h3>
+        <p class="body-md" style="opacity:.94;">이제 클로드 코드를 쓸 준비가 끝났습니다. 위 확인 단계(<code>claude --version</code>)가 통과했다면 다음 단계로 넘어가세요. 잘 안 되는 부분은 화면을 캡처해 두면 해결이 빠릅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 함께 설치하면 좋은 도구 (선택) -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>함께 설치하면 좋은 도구 <span class="text-muted" style="font-size:16px;">(선택 · 심화)</span></h3>
+      <p class="body-md text-muted lead">클로드 코드만으로도 실습은 가능합니다. 아래는 <strong>더 넓은 작업</strong>(파일 버전 관리, 데이터, GitHub 연동)을 하고 싶을 때 추가로 설치하면 좋은 것들입니다. 명령은 <strong>PowerShell에 붙여넣으면</strong> 됩니다(winget 사용).</p>
+
+      <!-- Git -->
+      <div class="card" style="margin-top:24px;max-width:820px;">
+        <h5>🧰 Git for Windows</h5>
+        <p class="body-md">파일 버전 관리 + <strong>Git Bash</strong>. 클로드 코드에 필수는 아니지만(없으면 PowerShell을 셸로 사용), GitHub 연동·Bash 도구엔 필요합니다.</p>
+        <div class="code-window" style="margin-top:12px;">
+          <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="t-git">복사</button></div>
+          <pre id="t-git">winget install --id Git.Git -e</pre>
+        </div>
+        <p class="body-sm text-muted" style="margin-top:8px;">winget이 안 되면 <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">git-scm.com</a>에서 설치 파일을 받아 "다음 → 다음"으로 설치.</p>
+      </div>
+
+      <!-- Node.js -->
+      <div class="card" style="margin-top:16px;max-width:820px;">
+        <h5>📦 Node.js (LTS)</h5>
+        <p class="body-md"><code>npm</code>으로 각종 스킬을 설치할 때 필요합니다. 안정적인 <strong>LTS 버전</strong>을 설치하세요.</p>
+        <div class="code-window" style="margin-top:12px;">
+          <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="t-node">복사</button></div>
+          <pre id="t-node">winget install --id OpenJS.NodeJS.LTS -e</pre>
+        </div>
+        <p class="body-sm text-muted" style="margin-top:8px;">winget이 안 되면 <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>에서 <strong>LTS</strong>를 받아 설치. 설치 후 <code>node -v</code> 로 확인.</p>
+      </div>
+
+      <!-- GitHub CLI -->
+      <div class="card" style="margin-top:16px;max-width:820px;">
+        <h5>🔗 GitHub CLI</h5>
+        <p class="body-md">에이전트가 GitHub와 연동해 작업할 때 사용합니다. 설치 후 로그인까지 하면 됩니다.</p>
+        <div class="code-window" style="margin-top:12px;">
+          <div class="code-window__bar"><span class="code-window__title">PowerShell</span><button class="copy-btn" data-copy="t-gh">복사</button></div>
+          <pre id="t-gh">winget install --id GitHub.cli -e
+gh auth login</pre>
+        </div>
+        <p class="body-sm text-muted" style="margin-top:8px;"><code>gh auth login</code> 실행 후 안내가 나오면 방향키로 선택하고 Enter → 브라우저에서 GitHub 로그인.</p>
+      </div>
+
+      <!-- VSCode (설치 방법 제외, 소개만) -->
+      <div class="card" style="margin-top:16px;max-width:820px;">
+        <h5>📝 코드 에디터 (VSCode 등)</h5>
+        <p class="body-md">코드를 보기 좋게 편집하고, 에디터 안에서 터미널을 열어(<code>Ctrl+`</code>) <code>claude</code>를 바로 실행할 수 있습니다. 원하는 에디터를 홈페이지에서 내려받아 설치하세요. (예: <a href="https://code.visualstudio.com" target="_blank" rel="noopener">VSCode</a> — 확장: Python·Jupyter)</p>
+      </div>
+
+      <p class="body-sm text-muted" style="margin-top:14px;">※ 데이터·AI 실습까지 하려면 <strong>Python</strong>도 추가하세요 — <code>winget install --id Python.Python.3.12 -e</code> (또는 <a href="https://python.org/downloads" target="_blank" rel="noopener">python.org</a>에서 설치, 이때 "Add Python to PATH" 체크).</p>
+    </div>
+  </section>
+
+  <!-- 프로젝트 이어하기 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>교육용 노트북 → 개인 노트북으로 이어하기</h3>
+      <p class="body-md text-muted lead"><strong>가이드 문서 하나만 가져가면</strong> 개인 노트북에서도 에이전트가 알아서 세팅해 줍니다.</p>
+      <div class="step-head" style="margin-top:20px;"><span class="step-num">1</span><h5 style="margin:0;">교육용 노트북에서 — 가이드 문서 만들기</h5></div>
+      <p class="body-md text-muted">아래를 교육용 노트북의 에이전트에 그대로 입력하세요.</p>
+      <div class="code-window" style="margin-top:8px;max-width:720px;">
+        <div class="code-window__bar"><span class="code-window__title">Claude Code</span><button class="copy-btn" data-copy="cmd-handoff">복사</button></div>
+        <pre id="cmd-handoff">현재 프로젝트를 GitHub에 올려줘.
+이후에 다른 컴퓨터에서 이 프로젝트를 이어서 작업할 수 있도록,
+아래 내용을 포함한 가이드 문서를 만들어줘.
+- 이 프로젝트의 GitHub 주소
+- 새 컴퓨터에서 clone하는 방법
+- 에이전트에게 문서를 주고 작업을 이어달라고 하는 방법
+누구나 쉽게 따라할 수 있는 수준으로 작성해줘.</pre>
+      </div>
+      <div class="step-head" style="margin-top:24px;"><span class="step-num">2</span><h5 style="margin:0;">개인 노트북에서 — 가이드 문서를 에이전트에게 주기</h5></div>
+      <p class="body-md text-muted">세팅을 마친 개인 노트북에서 에이전트를 열고, STEP 1에서 만든 <strong>가이드 문서를 그대로 붙여넣으세요.</strong> 에이전트가 프로젝트를 자동으로 clone하고 이어서 작업할 준비를 해줍니다. (<em>"이전에 작업하던 내용 파악해줘"</em>라고 하면 코드 흐름까지 읽어줍니다.)</p>
+    </div>
+  </section>
+
+  <!-- 트러블슈팅 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>자주 막히는 지점</h3>
+      <div class="table-scroll" style="margin-top:16px;">
+        <table class="trouble body-md" style="width:100%;min-width:560px;border-collapse:collapse;">
+          <thead><tr><th style="width:38%;">증상</th><th style="width:26%;">원인</th><th>조치</th></tr></thead>
+          <tbody>
+            <tr><td>명령어를 쳤는데 "인식할 수 없다"고 나옴</td><td>설치 후 창을 안 닫음 / PATH 미반영</td><td>PowerShell을 닫고 다시 열기. 그래도 안 되면 <code>%USERPROFILE%\.local\bin</code>을 PATH에 추가</td></tr>
+            <tr><td>명령이 이상하게 동작</td><td>PowerShell 명령을 CMD에 붙여넣음</td><td><code>PS C:\</code>(PowerShell)에서 실행. 가장 흔한 실수</td></tr>
+            <tr><td>브라우저 로그인 후에도 그대로</td><td>인증 창을 못 닫음</td><td>브라우저에서 로그인 완료 후 PowerShell로 돌아오기. 창이 안 뜨면 <code>c</code>로 URL 복사</td></tr>
+            <tr><td>npm 설치가 실패/경고</td><td>Node.js 버전 낮음</td><td>Node.js 22 이상(LTS) 설치, 또는 위 네이티브 설치 사용</td></tr>
+            <tr><td>빨간 글씨(에러)가 잔뜩</td><td>일시적 네트워크/권한</td><td><code>claude doctor</code> 실행 후 화면을 캡처해 강사에게 문의</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="index.html">← 커리큘럼 허브</a>
+        <a class="btn btn-primary" href="m0.html">다음: 2단계 오리엔테이션 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-hairline);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 설치편</p>
+      <p class="src" style="color:var(--color-muted-soft);font-size:12px;">설치 명령·요구사항은 공식 문서(code.claude.com/docs)로 검증(2026-07-07). 배포 전 실제 Windows 1회 재현 권장.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(function () {
+          var old = btn.innerText;
+          btn.innerText = '복사됨 ✓';
+          setTimeout(function () { btn.innerText = old; }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

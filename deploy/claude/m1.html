@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3단계 개념 이해 — 클로드 코드 교육</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .goal-box { background:var(--color-surface-card); border:1px solid var(--color-hairline); border-left:3px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-top:16px; }
+    .compare td, .compare th { padding:var(--space-sm) var(--space-md); border-bottom:1px solid var(--color-hairline); vertical-align:top; text-align:left; }
+    .compare th { color:var(--color-muted); font-weight:500; border-bottom:2px solid var(--color-hairline); }
+    .compare .col-claude { background:var(--color-surface-card); }
+    .lead { max-width:640px; }
+    .pager { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:32px; }
+    .analogy { display:flex; gap:12px; align-items:flex-start; }
+    .analogy .emoji { font-size:26px; line-height:1; flex:0 0 auto; }
+  </style>
+  <script>if("scrollRestoration" in history)history.scrollRestoration="manual";window.addEventListener("pageshow",function(){window.scrollTo(0,0);});</script>
+</head>
+<body>
+
+  <!-- 상단 네비 -->
+  <nav class="top-nav">
+    <a class="nav-link" href="index.html" style="text-decoration:none;">✳ 클로드 코드 교육</a>
+    <span><a class="nav-link" href="index.html">← 커리큘럼 허브</a></span>
+  </nav>
+
+  <!-- 히어로 -->
+  <header class="hero-band band-canvas">
+    <div class="container">
+      <span class="badge">3단계</span> <span class="badge">60분</span>
+      <h1 style="margin-top:16px;">개념 이해</h1>
+      <p class="hero-sub">도대체 클로드 코드가 뭔가요?</p>
+      <p class="body-md text-muted lead">새 도구를 배우기 전, "이게 무엇이고 채팅과 뭐가 다른지"부터 잡고 갑니다. 어려운 용어는 그때그때 쉬운 말로 풀어 드릴게요.</p>
+      <div class="goal-box">
+        <strong>🎯 이 단계를 마치면</strong><br>
+        <span class="body-md">"클로드 코드가 무엇을 해주는 도구인지"를 <strong>내 말로, 예를 들어</strong> 설명할 수 있습니다.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. GUI vs CLI -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>1. 그림을 클릭하기 vs 글자로 명령하기</h3>
+      <p class="body-md text-muted lead">우리가 컴퓨터에 일을 시키는 방법은 크게 두 가지입니다.</p>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div class="card">
+          <div class="analogy"><span class="emoji">🖱️</span><div>
+            <h5>GUI — 그림을 보고 클릭</h5>
+            <p class="body-md">아이콘·버튼·메뉴를 마우스로 누릅니다. 우리가 매일 쓰는 방식(폴더 열기, 엑셀 클릭 등).</p>
+          </div></div>
+        </div>
+        <div class="card">
+          <div class="analogy"><span class="emoji">⌨️</span><div>
+            <h5>CLI — 글자로 명령</h5>
+            <p class="body-md">"이걸 해줘"를 <strong>글로 적어</strong> 시킵니다. 클로드 코드가 사는 곳이 바로 여기입니다.</p>
+          </div></div>
+        </div>
+      </div>
+      <div class="goal-box" style="border-color:var(--color-accent-teal);">
+        <span class="body-md"><strong>왜 글자로?</strong> 클릭은 한 번에 하나씩이지만, 글로 시키면 <strong>"100개 파일 이름을 한꺼번에 바꿔줘"</strong>처럼 반복 작업을 한 문장으로 끝낼 수 있기 때문입니다.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 터미널 -->
+  <section class="section band-dark">
+    <div class="container">
+      <h3 style="color:var(--color-on-dark);">2. 그 "검은 창"의 정체 — 터미널</h3>
+      <p class="body-md" style="color:var(--color-on-dark-soft);" >글자로 명령을 주고받는 창을 <strong>터미널</strong>(또는 PowerShell)이라고 부릅니다. 영화 속 해커 화면처럼 보이지만, 사실은 <strong>그냥 "명령을 입력하는 칸"</strong>일 뿐입니다.</p>
+      <div class="code-window" style="margin-top:20px;max-width:680px;">
+        <div class="code-window__bar">
+          <span class="code-window__dot code-window__dot--r"></span>
+          <span class="code-window__dot code-window__dot--y"></span>
+          <span class="code-window__dot code-window__dot--g"></span>
+          <span class="code-window__title">PowerShell</span>
+        </div>
+        <pre>PS C:\내작업폴더&gt; claude
+안녕하세요! 무엇을 도와드릴까요?
+&gt; 이 폴더의 엑셀 파일들을 요약해줘</pre>
+      </div>
+      <p class="body-sm" style="color:var(--color-accent-teal);margin-top:12px;">▸ 보시다시피, 안에서는 그냥 <strong>한국어로 대화</strong>합니다. 무서워할 필요가 전혀 없습니다.</p>
+    </div>
+  </section>
+
+  <!-- 3. AI 에이전트 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>3. AI 에이전트란? — "일하는 AI"</h3>
+      <p class="body-md text-muted lead">'에이전트(agent)'는 <strong>대신 일을 처리해 주는 대리인</strong>이라는 뜻입니다. 클로드 코드는 단순히 답만 말해주는 게 아니라, <strong>직접 손을 움직여</strong> 파일을 읽고 고치고 만들어 줍니다.</p>
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="card"><h5>① 읽고</h5><p class="body-md">내 폴더의 문서·표·코드를 직접 열어 봅니다.</p></div>
+        <div class="card"><h5>② 고치고</h5><p class="body-md">내용을 정리·수정·변환해 실제 파일로 저장합니다.</p></div>
+        <div class="card"><h5>③ 자동화</h5><p class="body-md">반복되는 작업을 대신 처리하는 도구까지 만들어 줍니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 채팅과의 결정적 차이 -->
+  <section class="section band-soft">
+    <div class="container">
+      <h3>4. 채팅(ChatGPT식)과 무엇이 다른가</h3>
+      <p class="body-md text-muted lead">가장 중요한 대목입니다. 일반 챗봇은 <strong>말로 알려주기</strong>까지, 클로드 코드는 <strong>내 파일을 직접 처리</strong>합니다.</p>
+      <div class="table-scroll" style="margin-top:20px;">
+        <table class="compare body-md" style="width:100%;min-width:560px;border-collapse:collapse;">
+          <thead><tr><th style="width:26%;"></th><th style="width:37%;">일반 채팅 AI</th><th style="width:37%;" class="col-claude">클로드 코드</th></tr></thead>
+          <tbody>
+            <tr><td><strong>결과물</strong></td><td>화면에 "이렇게 하세요" 설명</td><td class="col-claude">내 폴더에 <strong>실제 파일</strong>을 만들어 줌</td></tr>
+            <tr><td><strong>내 파일</strong></td><td>직접 건드리지 못함(복붙 필요)</td><td class="col-claude">직접 열어 읽고 고침</td></tr>
+            <tr><td><strong>반복 작업</strong></td><td>매번 사람이 따라 해야 함</td><td class="col-claude">한 번에 여러 개를 자동 처리</td></tr>
+            <tr><td><strong>비유</strong></td><td>요리법을 알려주는 사람</td><td class="col-claude">주방에 들어가 요리까지 해주는 사람</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="goal-box"><span class="body-md"><strong>한 줄 요약:</strong> 채팅은 <em>말해주고</em>, 클로드 코드는 <em>해준다</em>. 이 차이가 "내 파일 직접 조작 · 자동화"입니다.</span></div>
+    </div>
+  </section>
+
+  <!-- 5. 사무직 활용 예시 -->
+  <section class="section band-canvas">
+    <div class="container">
+      <h3>5. 그래서 내 업무에 뭘 할 수 있나 <span class="text-muted" style="font-size:16px;">(예시 · 더미데이터)</span></h3>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div class="card"><h5>📁 파일 정리</h5><p class="body-md">"이 폴더 파일 이름을 '날짜_제목'으로 통일해줘" — 100개도 한 번에.</p></div>
+        <div class="card"><h5>📊 자료 요약</h5><p class="body-md">"이 설문 결과(csv)를 표로 요약하고 핵심 3가지만 뽑아줘."</p></div>
+        <div class="card"><h5>📝 초안 작성</h5><p class="body-md">"이 교육과정 안내를 한 페이지 웹으로 만들어줘." (오늘 실습!)</p></div>
+        <div class="card"><h5>🔁 반복 업무 도구화</h5><p class="body-md">"매달 하는 이 계산을 대신 해주는 간단한 계산기를 만들어줘."</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 정리 (코랄 콜아웃) -->
+  <section class="section band-soft">
+    <div class="container">
+      <div class="callout-coral">
+        <span class="badge-coral" style="background:var(--color-canvas);color:var(--color-primary);">check</span>
+        <h3 style="color:var(--color-on-primary);margin-top:12px;">스스로 말해보기</h3>
+        <p class="body-md" style="opacity:.92;">옆 사람에게 <strong>"클로드 코드는 ___를 대신 해주는 도구야. 예를 들면 ___."</strong> 라고 한 문장으로 설명해 보세요. 그게 되면 3단계 목표 달성입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 페이저 + 푸터 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="pager">
+        <a class="btn btn-on-dark" href="m0.html">← 이전: 2단계 오리엔테이션</a>
+        <a class="btn btn-primary" href="m2.html">다음: 4단계 첫 실행 →</a>
+      </div>
+      <hr class="hr" style="border-color:var(--color-surface-dark-elevated);">
+      <p class="body-sm">✳ 포스코인재창조원 · 디지털교육그룹 — 클로드 코드 교육과정 · 3단계 개념 이해</p>
+    </div>
+  </footer>
+
+</body>
+</html>
