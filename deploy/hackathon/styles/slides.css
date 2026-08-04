@@ -1,6 +1,27 @@
 /* 슬라이드 평면. 22장이 (챕터, 행) 격자에 놓이고, 평면 전체에
    translate3d 하나만 걸어 이동한다. 오프셋은 JS가 --dx/--dy에 넣는다. */
 
+/* 무대 — 내용이 담기는 16:9 상자.
+   화면이 16:9보다 넓으면(휴대폰 가로 21:10, 울트라와이드) 좌우를 비우고
+   가운데에 둔다. 그렇게 하지 않으면 같은 높이에 더 넓은 화면이 되어 세로
+   예산이 상대적으로 줄고, 아래가 잘린다. 16:9보다 좁은 화면(4:3 프로젝터,
+   세로 휴대폰)에서는 화면을 그대로 다 쓴다 — 위아래를 비우면 무대에서
+   글자만 작아진다. 크기의 원본은 tokens.css의 --stage-w / --stage-h이고,
+   순수 CSS 식이라 스크립트 없이도 창 크기를 따라간다.
+   우주 배경(.bg)은 이 상자 밖 #viewport 직속이라 언제나 화면 전체를 채운다. */
+#stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  margin-left: calc(var(--stage-w) / -2);
+  /* 여기에 걸어야 한다. #deck은 --dx/--dy로 움직이므로 거기에 걸면
+     잘리는 자리도 함께 움직여, 좌우 여백으로 옆 장이 새어 나온다. */
+  overflow: hidden;
+  z-index: 1;
+}
+
 #deck {
   position: absolute;
   inset: 0;
@@ -23,7 +44,7 @@ body.is-resizing #deck {
 .chapter {
   position: absolute;
   display: flex;
-  height: 100vh;
+  height: var(--stage-h);
 }
 
 /* 첫 그림과 main.js 실행 사이의 한 순간을 가린다.
@@ -49,9 +70,9 @@ html.is-booting #deck {
 
 .slide {
   position: relative;
-  flex: 0 0 100vw;
-  width: 100vw;
-  height: 100vh;
+  flex: 0 0 var(--stage-w);
+  width: var(--stage-w);
+  height: var(--stage-h);
   padding: var(--pad);
   /* 상단 로고 바를 피할 만큼만 위를 비운다. --pad와 **더하지 않는다** —
      더하면 1280×720에서 115px이 되어 세로 예산의 16%가 여백으로 사라지고,
@@ -681,10 +702,12 @@ html.is-booting #deck {
   color: #5A5A86;
 }
 
-/* 휴대폰으로 이미 들어와 있는 사람에게 QR은 잡음이다. 프로젝터는 절대
-   이 폭으로 떨어지지 않으므로 화면 폭으로 가른다(손가락 여부로 가르면
-   터치스크린 노트북에서 프로젝터의 QR이 사라진다). */
-@media (max-width: 900px) {
+/* 휴대폰으로 이미 들어와 있는 사람에게 QR은 잡음이다. 손가락 여부로 가르면
+   터치스크린 노트북에서 프로젝터의 QR이 사라지므로 화면 크기로 가른다.
+   **높이도 함께 본다.** 폭만 보면 21:10 휴대폰을 가로로 눕혔을 때(932×430)
+   폭이 900을 넘어 QR이 그대로 남고, 좁아진 세로 예산을 먹어 표지가 넘쳤다.
+   프로젝터는 이 둘 어느 쪽으로도 떨어지지 않는다. */
+@media (max-width: 900px), (max-height: 680px) {
   .cover-qr { display: none; }
 }
 
@@ -1777,6 +1800,23 @@ body.is-fullscreen .fs-hint { opacity: 0; }
   /* 하단 목차는 22칸이라 좁은 화면에서 점이 뭉친다. */
   .progress { transform: scale(0.8); transform-origin: bottom center; }
   .fs-hint { display: none; }
+}
+
+/* 세로가 짧은 화면의 안전망.
+   tokens.css가 바닥값을 걷어 비례를 되돌려 놓았으므로 원칙적으로는 넘치지
+   않는다. 다만 개별 요소에 남은 rem 바닥이 걸리는 경우가 있을 수 있어,
+   넘치면 손가락으로 꺼내 볼 수 있게 열어 둔다 — 글이 말없이 사라지는 것이
+   가장 나쁘다. safe center라서 다 들어갈 때는 가운데 정렬 그대로다.
+   가로 쓸기는 그대로 넘기기가 맡는다(pan-y는 세로만 브라우저에 넘긴다). */
+@media (max-height: 680px) {
+  .slide {
+    overflow-y: auto;
+    justify-content: safe center;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide:not(.slide--center) { justify-content: safe center; }
+  .task { justify-content: safe center; }
 }
 
 /* 연도별 경쟁률. 막대는 뺐다 — 눈금이 없는 상대 막대는 "어느 쪽이 긴가"

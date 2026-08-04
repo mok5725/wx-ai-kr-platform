@@ -59,6 +59,12 @@
     </div>
   </header>
 
+  <!-- 무대. 내용은 언제나 16:9로 담긴다. 화면이 16:9보다 넓으면 좌우를 비우고
+       가운데에 놓인다 — 우주 배경(.bg)은 이 밖이라 비율과 무관하게 화면 전체를
+       채운다. 크기는 tokens.css의 --stage-w / --stage-h가 정한다.
+       overflow: hidden이 여기 걸려야 한다 — #deck은 --dx/--dy로 움직이므로
+       거기에 걸면 잘리는 자리도 함께 움직여 옆 장이 여백으로 새어 나온다. -->
+  <div id="stage">
   <div id="deck">
 
     <!-- 챕터 1 — 오프닝 -->
@@ -487,6 +493,7 @@
       </article>
     </section>
 
+  </div>
   </div>
 
   <div class="progress" id="progress" aria-hidden="true"></div>

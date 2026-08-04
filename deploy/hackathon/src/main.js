@@ -20,11 +20,23 @@ const brandEventEl = document.querySelector('.brandbar__event');
 // 챕터를 계단식으로 놓는다. 챕터는 세로로 쌓이고, 한 챕터의 장들은
 // 가로로 늘어선다. CSS에 nth-child로 박아두면 챕터가 하나 늘 때 조용히
 // 화면 밖으로 나가므로, 좌표의 원본인 deck.js에서 계산해 넣는다.
-// vw/vh 단위라 창 크기가 바뀌어도 다시 계산할 필요가 없다.
+//
+// **px이 아니라 무대 단위(--stage-w/--stage-h)로 넣는다.** px으로 박으면
+// 창이 바뀔 때마다 다시 써야 하고, 전체화면 진입처럼 resize 이벤트를 놓칠 수
+// 있는 자리에서 챕터가 통째로 어긋난다. 무대 크기는 tokens.css가 가지고
+// 있어서, calc로 걸어두면 창이 바뀌는 대로 저절로 따라간다.
 [...document.querySelectorAll('.chapter')].forEach((el, i) => {
-  el.style.left = `${chapterLeft(i) * 100}vw`;
-  el.style.top = `${i * 100}vh`;
+  el.style.left = `calc(var(--stage-w) * ${chapterLeft(i)})`;
+  el.style.top = `calc(var(--stage-h) * ${i})`;
 });
+
+// #deck을 미는 양은 px이어야 해서, tokens.css의 --stage-w/--stage-h와 같은
+// 식을 여기서 한 번 더 계산한다. 두 곳이 어긋나면 장이 반쯤 걸쳐 선다 —
+// 식을 고칠 일이 생기면 반드시 함께 고친다.
+function stageSize() {
+  const height = window.innerHeight;
+  return { w: Math.min(window.innerWidth, height * (16 / 9)), h: height };
+}
 
 const background = createBackground({
   far: document.getElementById('stars-far'),
@@ -64,14 +76,15 @@ function render(isResize = false) {
     document.body.classList.add('is-resizing');
   }
 
+  const stage = stageSize();
   const { chapter, row } = positionOf(index);
 
   // 계단식 배치라 챕터 안에서 움직이면 --dx만, 챕터가 바뀌면 --dy만
   // 달라진다. 둘이 동시에 바뀌지 않으므로 화면은 언제나 상하좌우로만
   // 미끄러진다. 가로 = 같은 맥락, 세로 = 맥락이 바뀜.
   const x = absoluteCol(chapter, row);
-  deckEl.style.setProperty('--dx', `${-x * window.innerWidth}px`);
-  deckEl.style.setProperty('--dy', `${-chapter * window.innerHeight}px`);
+  deckEl.style.setProperty('--dx', `${-x * stage.w}px`);
+  deckEl.style.setProperty('--dy', `${-chapter * stage.h}px`);
   background.moveTo(x, chapter);
 
   slideEls.forEach((el, i) => el.classList.toggle('is-active', i === index));
