@@ -263,6 +263,31 @@ html.is-booting #deck {
   margin: 0;
 }
 
+/* 한 장 안에서 이야기가 둘로 나뉠 때 그 사이에 세우는 머리줄(6-1의
+   '솔루션 평가' / '완주 특전'). 제목은 아니라 크기를 올리지 않고, 왼쪽
+   짧은 막대로 "여기서부터 다른 이야기"만 표시한다. */
+.slide__section {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: var(--step-0);
+  font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.slide__section::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 0.28em;
+  height: 1.05em;
+  border-radius: 2px;
+  background: var(--glow-violet);
+}
+
+.slide__section strong { color: var(--kw); font-weight: 800; }
+
 /* 번호가 붙은 3분할. 1-3과 7-2가 같은 레이아웃을 쓴다 —
    "아침에 말한 세 가지가 여기서 나온다"가 읽히도록. */
 .trio {
@@ -663,7 +688,8 @@ html.is-booting #deck {
   top: 0;
   bottom: 0;
   z-index: 2;
-  display: flex;
+  /* 기본은 감춤이다. 아래 미디어 블록이 "빔프로젝터 모양"일 때만 켠다. */
+  display: none;
   align-items: center;
   pointer-events: none;
 }
@@ -673,7 +699,10 @@ html.is-booting #deck {
   flex-direction: column;
   align-items: center;
   gap: 0.45em;
-  width: clamp(9rem, min(23vw, 34vh), 20rem);
+  /* 34vh였던 것을 31vh로 내렸다. 34vh면 1280×720에서 "마스터 트랙"
+     레터링과의 간격이 12px밖에 남지 않아, 화면 비율이 조금만 달라져도
+     카드가 글자 위로 올라탔다. 31vh면 같은 자리에서 35px이 남는다. */
+  width: clamp(9rem, min(23vw, 31vh), 20rem);
   padding: calc(var(--gap) * 1.15);
   border-radius: var(--radius);
   background: #FFFFFF;
@@ -702,13 +731,25 @@ html.is-booting #deck {
   color: #5A5A86;
 }
 
-/* 휴대폰으로 이미 들어와 있는 사람에게 QR은 잡음이다. 손가락 여부로 가르면
-   터치스크린 노트북에서 프로젝터의 QR이 사라지므로 화면 크기로 가른다.
-   **높이도 함께 본다.** 폭만 보면 21:10 휴대폰을 가로로 눕혔을 때(932×430)
-   폭이 900을 넘어 QR이 그대로 남고, 좁아진 세로 예산을 먹어 표지가 넘쳤다.
-   프로젝터는 이 둘 어느 쪽으로도 떨어지지 않는다. */
-@media (max-width: 900px), (max-height: 680px) {
-  .cover-qr { display: none; }
+/* QR은 **빔프로젝터를 향해 찍는 물건**이다. 그 화면에서만 켠다.
+   휴대폰으로 이미 사이트에 들어와 있는 사람에게는 같은 주소로 가는 QR이
+   잡음일 뿐이고, 무엇보다 자리를 차지해 레터링을 덮는다.
+
+   세 조건을 모두 만족할 때만 켠다.
+   - 폭 901px 이상 · 높이 681px 이상 — 손가락 여부로 가르면 터치스크린
+     노트북에서 프로젝터의 QR이 사라진다. 크기로 가른다. 높이도 함께 보는
+     이유는 21:10 휴대폰을 눕혔을 때(932×430) 폭만으로는 걸러지지 않아서다.
+   - **가로세로비 16:9 이상** — 이것이 2026-08-05에 추가된 조건이다.
+     카드(왼쪽 세로 한 칸)와 가운데 레터링은 둘 다 화면 높이에서 크기를
+     받는데, 화면이 16:9보다 좁으면 폭만 줄어들어 둘이 겹친다. 실제로
+     1180×820(태블릿 가로)에서 카드가 "마스터 트랙" 위로 97px 올라탔고,
+     1024×1366(태블릿 세로)에서는 121px 덮었다.
+     16:9 이상에서는 무대(--stage-w)가 정확히 16:9로 잡히므로 간격이
+     화면 높이의 4.8%로 일정하다 — 720p에서 35px, 1080p에서 52px.
+   덱 자체가 16:9로 만들어졌으므로, 이 조건에서 빠지는 화면은 애초에
+   위아래가 남는 화면이다. */
+@media (min-width: 901px) and (min-height: 681px) and (min-aspect-ratio: 16 / 9) {
+  .cover-qr { display: flex; }
 }
 
 /* 휴대폰 전체화면 버튼. 왼쪽 아래 한 자리에서 "전체화면"과 "닫기"를
@@ -939,6 +980,28 @@ html.is-booting #deck {
   font-size: var(--step-4);
 }
 
+/* 이 장의 주인공은 숫자다. step-4(제목과 같은 단계)로는 제목에 묻혀
+   뒷줄에서 읽히지 않아, 이 슬라이드에서만 한 단계 위로 올린다.
+   --step-5를 그대로 쓰면 1280×720에서 아래가 잘리므로 그 사이 값을 쓴다. */
+.slide[data-slide-id="selected"] .stat__value {
+  font-size: clamp(2.1rem, min(5.6vw, 10vh), 6.8rem);
+  letter-spacing: -0.01em;
+}
+/* 단위는 숫자에 붙되 한 단계 작고 연하게 — 눈이 숫자에 먼저 앉는다. */
+.stat__unit {
+  font-size: 0.44em;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-left: 0.08em;
+}
+/* 3팀과 22명을 갈라주는 구분자. 숫자 사이라 좌우 여백을 조금 더 준다. */
+.stat__slash {
+  font-size: 0.5em;
+  font-weight: 500;
+  color: var(--ink-faint);
+  margin: 0 0.22em;
+}
+
 /* 2-2 투 트랙 — 마스터 쪽에만 발광, 챌린저는 내린다.
    청중이 마스터 크루이므로 대비 자체가 메시지다.
 
@@ -1031,10 +1094,13 @@ html.is-booting #deck {
 
 .track--dim { opacity: 0.45; }
 
+/* 마스터 트랙 카드. 금색 네온으로 굵게 둘러 청중이 자기 트랙을 먼저
+   찾게 한다 — 옆의 챌린저는 --dim으로 내려가 있어 대비가 곧 메시지다. */
 .track--lit {
-  border-color: rgba(132, 137, 245, 0.55);
-  background: rgba(132, 137, 245, 0.12);
-  box-shadow: 0 0 44px rgba(132, 137, 245, 0.24);
+  border-width: 3px;
+  border-color: rgba(242, 193, 78, 0.85);
+  background: rgba(242, 193, 78, 0.09);
+  box-shadow: 0 0 44px rgba(242, 193, 78, 0.3), inset 0 0 24px rgba(242, 193, 78, 0.06);
 }
 
 .track__kicker { font-size: var(--step-0); color: var(--glow-violet); letter-spacing: 0.12em; }
@@ -1117,6 +1183,12 @@ html.is-booting #deck {
 .tstep--last { border-top-color: rgba(138, 240, 198, 0.6); }
 .tstep--last::before { background: var(--kw); }
 .tstep--last .tstep__when { color: var(--kw); }
+
+/* 기간 표기를 셋 다 형광으로. 카드 테두리가 금색이 되면서 금색 글자가
+   테두리와 같은 색으로 묻힌다 — 안쪽 글자는 반대쪽 색을 쓴다. */
+.track__steps--green .tstep { border-top-color: rgba(138, 240, 198, 0.45); }
+.track__steps--green .tstep::before { background: var(--kw); }
+.track__steps--green .tstep__when { color: var(--kw); }
 
 .tstep__when { font-family: var(--font-title); font-size: var(--step-0); font-weight: 700; color: var(--gold); line-height: 1.15; }
 .tstep__what { font-size: var(--step-0); font-weight: 700; color: var(--ink); line-height: var(--leading-tight); margin-top: 0.15em; }
@@ -1535,9 +1607,15 @@ body.is-fullscreen .fs-hint { opacity: 0; }
    원 크기를 바꾸면 레일이 따라온다. */
 .timetable[data-timetable="all"] {
   --dot: calc(var(--step-1) * 2.3);
+  /* 번호 위에 그림 글자가 한 줄 선다. 레일의 세로 위치를 이 두 값에서
+     계산하므로, 그림 크기를 바꾸면 레일이 따라 내려온다. */
+  --icon: calc(var(--step-2) * 1.15);
+  --rowgap: calc(var(--gap) * 0.3);
   position: relative;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  /* 오후 세 세션은 한 칸으로 묶여 있다(schedule.js의 FLOW). 일곱이 아니라
+     다섯이라 칸마다 폭이 40% 넓어지고, 그만큼 글자를 키울 수 있다. */
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
   align-items: start;
 }
@@ -1552,12 +1630,15 @@ body.is-fullscreen .fs-hint { opacity: 0; }
 .timetable[data-timetable="all"]::before {
   content: '';
   position: absolute;
-  left: calc(100% / 14);
-  right: calc(100% / 14);
-  top: calc(var(--dot) / 2 - 1px);
+  left: calc(100% / 10);
+  right: calc(100% / 10);
+  top: calc(var(--icon) + var(--rowgap) + var(--dot) / 2 - 1px);
   height: 2px;
   border-radius: 1px;
-  background: linear-gradient(to right, var(--glow-violet), rgba(132, 137, 245, 0.28));
+  /* 다섯 칸이 같은 무게로 서므로 레일도 끝까지 같은 밝기로 간다.
+     예전에는 오른쪽으로 갈수록 옅어져 뒤쪽 칸이 덜 중요해 보였다. */
+  background: var(--glow-violet);
+  opacity: 0.55;
 }
 
 .timetable[data-timetable="all"] .tt-row {
@@ -1566,12 +1647,49 @@ body.is-fullscreen .fs-hint { opacity: 0; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.4em;
+  gap: var(--rowgap);
   /* 글자를 키운 만큼 칸 안쪽 여백을 줄여 줄바꿈 자리를 벌어 준다. */
-  padding: 0 calc(var(--gap) * 0.15);
+  padding: 0 calc(var(--gap) * 0.3);
   border: 0;
   border-radius: 0;
   background: none;
+  /* 이 장에서는 지난 칸을 흐리게 내리지 않는다. 다섯 칸이 같은 밝기다. */
+  opacity: 1;
+}
+
+/* 번호 위의 그림 글자. 무슨 시간인지가 글자를 읽기 전에 잡힌다. */
+.tt-flow__icon {
+  height: var(--icon);
+  font-size: calc(var(--icon) * 0.86);
+  line-height: var(--icon);
+}
+
+/* 정거장 아래의 시각 범위. 순서가 주인공인 장이라 시각은 작게 받친다. */
+.tt-flow__when {
+  font-size: var(--step-00);
+  color: var(--glow-violet);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* 묶음 칸(5~7)이 덮는 세션 이름들. 가운데 정렬이라 글머리 기호를 쓰지
+   않는다 — 점을 붙이면 세 줄이 왼쪽으로 쏠려 다른 칸과 축이 어긋난다. */
+.tt-flow__lines {
+  list-style: none;
+  margin: 0.35em 0 0;
+  padding: 0;
+  font-size: var(--step-00);
+  color: var(--ink-soft);
+  line-height: var(--leading-tight);
+}
+.tt-flow__lines li + li { margin-top: 0.2em; }
+
+/* 제목만으로 빠지는 내용을 한 줄 덧붙이는 자리(1번 칸의 스폰서 소개). */
+.tt-flow__sub {
+  margin-top: 0.35em;
+  font-size: var(--step-00);
+  color: var(--kw);
+  line-height: var(--leading-tight);
 }
 
 /* 정거장. 배경을 불투명한 배경색으로 채운다 — 반투명이면 뒤로 지나가는
@@ -1594,14 +1712,6 @@ body.is-fullscreen .fs-hint { opacity: 0; }
 .timetable[data-timetable="all"] .tt-row__body { width: 100%; }
 .timetable[data-timetable="all"] .tt-row__title { font-size: var(--step-1); line-height: var(--leading-tight); }
 .timetable[data-timetable="all"] .tt-row__owner { text-align: center; }
-.timetable[data-timetable="all"] .tt-row__mark { text-align: center; }
-
-/* 진행 중인 정거장만 원을 채운다. */
-.timetable[data-timetable="all"] .tt-row.is-current .tt-row__no {
-  background: var(--glow-violet);
-  color: #0B0930;
-  box-shadow: 0 0 0 6px rgba(132, 137, 245, 0.22);
-}
 
 /* 점심은 세션이 아니라 쉬는 시간이다. 원을 점선으로 비워 구분한다.
    가로 타임라인에서는 행 배경(.tt-row--break)이 사라졌기 때문이다. */
@@ -1764,10 +1874,13 @@ body.is-fullscreen .fs-hint { opacity: 0; }
     padding: 0;
   }
 
+  /* 세로형에서는 그림 글자가 번호 원 위가 아니라 왼쪽 칸의 첫 줄이 된다 —
+     레일이 왼쪽으로 누웠으므로 원이 그 줄에 걸려야 한다. */
+  .timetable[data-timetable="all"] .tt-flow__icon { display: none; }
   .timetable[data-timetable="all"] .tt-row__no { grid-column: 1; grid-row: 1 / -1; }
+  .timetable[data-timetable="all"] .tt-flow__when,
   .timetable[data-timetable="all"] .tt-row__body,
-  .timetable[data-timetable="all"] .tt-row__owner,
-  .timetable[data-timetable="all"] .tt-row__mark { grid-column: 2; text-align: left; }
+  .timetable[data-timetable="all"] .tt-row__owner { grid-column: 2; text-align: left; }
 
   /* 시간표 — 시각·제목·담당자·표식 4열이 375px에 들어가지 않는다.
      시각을 위로 올리고 나머지를 아래에 쌓는다. */
@@ -1880,10 +1993,35 @@ body.is-fullscreen .fs-hint { opacity: 0; }
 
 .rate__num small { font-size: 0.42em; font-weight: 700; color: var(--ink-faint); margin-left: 0.15em; }
 
-/* 마스터가 청중의 트랙이다. 그 줄만 밝힌다. */
-.rate--lit { background: rgba(138, 240, 198, 0.1); }
-.rate--lit .rate__tag { color: var(--kw); }
-.rate--lit .rate__num { color: var(--kw); }
+/* 마스터가 청중의 트랙이다. 그 줄만 금색 네온 테두리로 둘러 세운다.
+   같은 표 안에서 배경 밝기만 다르면 프로젝터에서 두 줄의 차이가 거의
+   안 보인다 — 선이 있어야 뒷줄에서도 "저기가 우리"가 잡힌다.
+   테두리 두께만큼 줄이 밀리지 않도록 .rate 쪽에 투명 테두리를 깔아 둔다. */
+.rate {
+  /* 테두리 두께만큼 안쪽 여백에서 덜어낸다. 그냥 얹으면 2025·2026 칸이
+     각각 4px씩 높아져 1024×768에서 아래가 12px 잘렸다. */
+  border: 2px solid transparent;
+  padding: calc(0.45em - 2px) calc(0.7em - 2px);
+}
+.rate--lit {
+  background: rgba(242, 193, 78, 0.1);
+  border-color: rgba(242, 193, 78, 0.8);
+  box-shadow: 0 0 20px rgba(242, 193, 78, 0.35), inset 0 0 16px rgba(242, 193, 78, 0.08);
+}
+.rate--lit .rate__tag { color: var(--gold); }
+.rate--lit .rate__num { color: var(--gold); }
+.rate--lit .rate__flow { color: var(--ink); }
+
+/* 6-1은 평가와 보상을 한 장에 담는다. 두 이야기가 들어오면서 세로가
+   1280×720에서 15px 넘쳤다 — 두 칸 사이 여백만 줄여 되돌린다.
+   글자 크기는 건드리지 않는다. 프로젝터 뒷줄이 읽는 크기가 기준이다. */
+.slide[data-slide-id="reward"] { gap: calc(var(--gap) * 0.55); }
+.slide[data-slide-id="reward"] .evals { margin-top: calc(var(--gap) * 0.5); gap: calc(var(--gap) * 0.8); }
+.slide[data-slide-id="reward"] .eval { padding: calc(var(--gap) * 0.75); }
+.slide[data-slide-id="reward"] .eval__tags { padding-top: 0.5em; }
+
+/* 4-4 대시보드도 같은 이유로 칸 안쪽 여백만 조인다. */
+.slide[data-slide-id="support"] { gap: calc(var(--gap) * 0.6); }
 
 /* ── #6/2 솔루션 평가 — 2 Track ────────────────────────────────────────
    두 갈래를 나란히 세운다. 2-2 투 트랙과 같은 문법이라, 하루 안에서

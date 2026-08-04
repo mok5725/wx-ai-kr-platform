@@ -6,15 +6,50 @@
 
 // 4-1 스폰서 넷 중 한 분이자 4-2 환영사를 맡는 분.
 // photo는 assets/people/<photo>.webp 를 가리킨다(원정대와 같은 규칙).
+// role은 네임카드에서 이름 **위**에 서는 한 줄이다. 넷을 나란히 세우면
+// "누가 어느 과제를 받치는가"가 안 보여서, 이름보다 먼저 읽히는 자리에
+// 과제 이름을 올렸다. 센터장만 과제가 아니라 트랙 전체를 맡으므로 '디렉터'다.
 export const WELCOME = {
   name: '김경철', title: '센터장', org: '포스코인재창조원',
+  role: '디렉터',
   photo: 'kim-kyungchul',
 };
 
 export const SPONSORS = [
-  { name: '유재홍', title: '실장',     org: '포스코세이프티솔루션', taskId: 'safety' },
-  { name: '하종범', title: '실장',     org: '포스코플로우',        taskId: 'logistics' },
-  { name: '박용삼', title: '연구위원', org: '포스코경영연구원',    taskId: 'market' },
+  { name: '유재홍', title: '실장',     org: '포스코세이프티솔루션', role: '안전 과제',      taskId: 'safety' },
+  { name: '하종범', title: '실장',     org: '포스코플로우',        role: '물류 과제',      taskId: 'logistics' },
+  { name: '박용삼', title: '연구위원', org: '포스코경영연구원',    role: '마켓 센싱 과제', taskId: 'market' },
+];
+
+// 4-3 과제를 함께 푸는 코치들. 미래연 자문 1인 + 팀스파르타 코치 2인이
+// 과제마다 한 묶음이다 — 사람을 소속별로 늘어놓지 않고 과제별로 묶어야
+// "내 과제는 누가 봐주는가"가 바로 읽힌다.
+// 미래연 자문 세 분의 이름은 TASKS의 advisor 멤버와 같은 사람이다.
+export const COACHES = [
+  {
+    taskId: 'safety', no: 1, task: '안전 과제',
+    advisor: { name: '김현중', title: '수석연구원', org: '미래기술연구원' },
+    coaches: [
+      { name: '김민수', title: '코치', org: '팀스파르타' },
+      { name: '임지연', title: '코치', org: '팀스파르타' },
+    ],
+  },
+  {
+    taskId: 'logistics', no: 2, task: '물류 과제',
+    advisor: { name: '이수장', title: '수석연구원', org: '미래기술연구원' },
+    coaches: [
+      { name: '김나연', title: '코치', org: '팀스파르타' },
+      { name: '정수현', title: '코치', org: '팀스파르타' },
+    ],
+  },
+  {
+    taskId: 'market', no: 3, task: '마켓 센싱 과제',
+    advisor: { name: '안치경', title: '수석연구원', org: '미래기술연구원' },
+    coaches: [
+      { name: '이경복', title: '코치', org: '팀스파르타' },
+      { name: '신동호', title: '코치', org: '팀스파르타' },
+    ],
+  },
 ];
 
 // 별칭을 크게, 이름을 작게 쓴다. 딱딱한 운영진 소개를 아이스브레이킹으로
@@ -26,9 +61,9 @@ export const EXPEDITION = [
   { nickname: '대장 감독',     name: '김두환', title: '리더', photo: 'kim-doohwan' },
   { nickname: '무대미학 감독', name: '이종은', title: '차장', photo: 'lee-jongeun' },
   { nickname: 'PM',            name: '노영은', title: '과장', photo: 'noh-youngeun' },
-  { nickname: '소통 감독',     name: '박은영', title: '과장', photo: 'park-eunyoung' },
+  { nickname: '타임라인 감독', name: '박은영', title: '과장', photo: 'park-eunyoung' },
   { nickname: '기술 감독',     name: '안서희', title: '사원', photo: 'an-seohee' },
-  { nickname: '타임라인 감독', name: '이지영', title: '사원', photo: 'lee-jiyoung' },
+  { nickname: '소통 감독',     name: '이지영', title: '사원', photo: 'lee-jiyoung' },
 ];
 
 export const TASKS = [
@@ -141,13 +176,17 @@ export const TASKS = [
 ];
 
 const TONE_BY_COMPANY = {
-  '포스코': 'warm',
+  '팀스파르타': 'orchid',
+  // 2026-08-05: 포스코와 포스코경영연구원의 색을 맞바꿨다. 연구 조직
+  // (경영연구원·RIST·미래연)이 모두 연보라로 묶여 있었는데, 경영연구원은
+  // 크루로 들어온 사업 조직 쪽이라 나머지 사업회사와 같은 계열에 둔다.
+  '포스코': 'neutral',
+  '포스코경영연구원': 'warm',
   '포스코플로우': 'warm',
   '포스코인터내셔널': 'warm',
   '포스코세이프티솔루션': 'warm',
   '포스코인재창조원': 'warm',
   '포스코DX': 'green',
-  '포스코경영연구원': 'neutral',
   'RIST': 'neutral',
   '미래기술연구원': 'neutral',
 };
@@ -167,7 +206,7 @@ export function crewCount(taskId) {
   );
 }
 
-// 4-3 지원 체계 조직도.
+// 4-4 지원 체계 조직도.
 //
 // 원본은 크루를 "마스터 크루 4인"으로 적었으나 확정 명단은 7~8인이다.
 // 챌린저 트랙의 팀당 4명에서 온 기획 초기 수치로 보인다. 두 장 건너
@@ -212,91 +251,6 @@ export const ORG_TIERS = {
       body: '실사용자의 테스트와 피드백을 기술 코치에게 즉시 반영해 현장 안착 제고' },
   ],
 };
-
-// 4-5 마스터 트랙 역할분담.
-//
-// 원본 장표(2×2 네 그룹)의 글을 그대로 옮겼다. duties는 원본에서 파란
-// 굵은 글씨로 "/"로 이어 붙였던 실무 항목이고, 화면에서는 칩으로 흩어
-// 놓는다 — 한 문단으로 이어 붙이면 네 항목이 한 덩어리로 읽힌다.
-// notes는 칩으로 쪼갤 수 없는 문장(인프라 그룹의 저장소 안내)이다.
-export const ROLE_GROUPS = [
-  {
-    tag: 'Core',
-    label: '해커톤 마스터 트랙 선발팀',
-    tone: 'core',
-    roles: [
-      {
-        name: '과제 수행자', en: 'Task Owner/PM',
-        desc: '과제의 실질적 리더로서, 전체 일정 관리, 내/외부 소통, 산출물 퀄리티 컨트롤 담당',
-      },
-      {
-        name: '도메인 전문가', en: 'Domain Expert',
-        desc: '현업의 진짜 Pain-point와 복잡한 비즈니스 로직(안전 법규, 해운 선적 프로세스 등)을 정확하게 파악하고 제공하는 브레인',
-        duties: [
-          '프로젝트 범위 설정', '문제 정의', '아웃풋 이미지 구체화', '도메인 지식 공유',
-          '산출물(솔루션) 개발 — 참여자 중 P-DX 직원이 담당', '솔루션 테스트 및 보완',
-        ],
-      },
-    ],
-  },
-  {
-    tag: 'Tech & Advisory',
-    label: '기술 구현 및 자문 그룹',
-    tone: 'tech',
-    roles: [
-      {
-        name: '미래기술연구원', en: 'Advisor',
-        desc: '과제별 전담 연구원 1인. 주 1~2회 수시 자문을 통해 솔루션의 격을 높임',
-        duties: [
-          '프로젝트 범위 설정 시 의견 제시(과도 or 부족, 달성 가능 여부 등)',
-          '핵심 알고리즘 or AI 기술 제안 및 멘토링(필요 시 개발 일부 참여)',
-          '솔루션 테스트 후 성능 체크 및 향상 노하우·조언',
-          '기타 구현 장애요소 해결을 위한 조언 및 경험 공유',
-        ],
-      },
-      {
-        name: '외부 기술 코치', en: '팀스파르타',
-        desc: 'AX 솔루션팀 2명으로 구성되어 도메인 전문가의 아이디어를 실제 작동하는 AI/UX로 구현(바이브코딩 등)하는 실무자',
-        duties: [
-          '프로젝트 일정 및 To-Do list 도출', '마일스톤 도출',
-          '마일스톤 관리 및 진도 체크', '솔루션 개발 지원(필요 시 직접 개발에 참여)',
-        ],
-      },
-    ],
-  },
-  {
-    tag: 'Support',
-    label: '현장 검증 및 피드백 그룹',
-    tone: 'support',
-    roles: [
-      {
-        name: '실사용자', en: 'End-User / 고객',
-        desc: '프로토타입이 나올 때마다 "이게 진짜 현장에 필요한가?", "UX가 직관적인가?"를 검증해 주는 현업 실무자',
-      },
-      {
-        name: '사내 기술 지원', en: 'Internal Tech Supporter',
-        desc: '기존 시스템(안전보건플랫폼, GIH 등)의 데이터 구조를 가장 잘 아는 현업 IT/데이터 담당자. 스파르타 코치들이 API 연동을 할 때 필수적인 길잡이 역할',
-      },
-    ],
-  },
-  {
-    tag: 'Infra',
-    label: '인프라 및 보안 그룹',
-    tone: 'infra',
-    roles: [
-      {
-        name: '포스코DX', en: 'Infra & Security',
-        desc: 'P-Cloud 환경 세팅 지원. 민감 데이터 외부 연동 시 보안 가이드라인 제시 및 방화벽/접근 권한 관리',
-        notes: [
-          { label: '코드 저장소', body: 'Code 공유 및 협업을 위한 Code Repository로 Gitlab 제공 (P-DX 협조요청 완료)' },
-          { label: '산출물 저장소', body: '그룹 공통망의 P-Cloud 내 Agentee 플랫폼에 저장 (P-DX 협조요청 완료)',
-            sub: '단, 과제1(안전)은 안전보건플랫폼 내 하위 기능이므로 플랫폼 내 개발계에 구현·저장' },
-          { label: '기타', body: '예산/인력/장비/SW/라이선스 등 지원 필요사항이 있을 경우 인창원에서 최대한 지원 예정' },
-        ],
-      },
-    ],
-  },
-];
 
 // 7-3 트랙별 특전. 챌린저 트랙 특전은 넣지 않는다 — 청중이 마스터
 // 크루이므로 남의 트랙 보상은 잡음이다(콘텐츠 문서 §7-3).

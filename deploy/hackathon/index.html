@@ -53,9 +53,12 @@
       <span class="brandbar__x" aria-hidden="true">✕</span>
       <span class="brand brand--hrdi mask-art" role="img" aria-label="포스코인재창조원"></span>
     </div>
-    <div class="brandbar__event">
+    <!-- '2026 (마크) 해커톤'. 마크가 'WX' 자리를 대신하므로 글자로는
+         적지 않는다 — 낭독기에는 컨테이너의 aria-label 한 줄만 들려준다. -->
+    <div class="brandbar__event" role="img" aria-label="2026 WX해커톤">
+      <span class="brandbar__name" aria-hidden="true">2026</span>
       <span class="brand brand--mark mask-art" aria-hidden="true"></span>
-      <span class="brandbar__name">WX해커톤</span>
+      <span class="brandbar__name" aria-hidden="true">해커톤</span>
     </div>
   </header>
 
@@ -111,12 +114,21 @@
         <img class="medal" src="assets/medal.webp" alt="" decoding="async">
         <h2 class="slide__title">여러분은 <span class="kw">마스터 크루</span>입니다</h2>
         <p class="slide__lead">포스코홀딩스와 인재창조원이 공동 주관하는<br>2026 WX해커톤 마스터 트랙 크루로 선정되었습니다.</p>
+        <!-- 뒷줄에서도 읽히도록 숫자를 키우고, 숫자마다 단위를 붙여
+             "116"이 아니라 "116명"으로 읽히게 한다. 단위는 숫자보다
+             작게·연하게 두어 눈이 숫자에 먼저 앉는다.
+             카운트업은 숫자 span에만 걸린다 — 단위까지 덮어쓰면 애니메이션이
+             "명"을 지운다. -->
         <div class="stat-row">
-          <div class="stat"><div class="stat__value" data-countup="115">115</div><div class="stat__label">지원</div></div>
+          <div class="stat">
+            <div class="stat__value"><span data-countup="116">116</span><span class="stat__unit">명</span></div>
+            <div class="stat__label">지원</div>
+          </div>
           <div class="stat__arrow">→</div>
-          <div class="stat"><div class="stat__value" data-countup="22">22</div><div class="stat__label">선발</div></div>
-          <div class="stat__arrow">·</div>
-          <div class="stat"><div class="stat__value">3</div><div class="stat__label">과제당 7~8명</div></div>
+          <div class="stat">
+            <div class="stat__value"><span data-countup="3">3</span><span class="stat__unit">팀</span><span class="stat__slash">/</span><span data-countup="22">22</span><span class="stat__unit">명</span></div>
+            <div class="stat__label">선발</div>
+          </div>
         </div>
       </article>
 
@@ -126,8 +138,8 @@
         <div class="trio trio--icons">
           <div class="trio__item">
             <div class="trio__no">1</div>
-            <h3 class="trio__title">재정의된 과제</h3>
-            <p class="trio__body">주어진 과제가 아니라, 우리 팀이 직접 다시 정의한 한 문장</p>
+            <h3 class="trio__title">과제 재정의하기</h3>
+            <p class="trio__body">주어진 과제가 아니라,<br>우리 팀이 직접 다시 정의한 한 문장</p>
             <!-- 다시 쓴 한 문장 — 카드 위에 반짝임 -->
             <div class="trio__icon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg1)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
@@ -146,8 +158,8 @@
           </div>
           <div class="trio__item">
             <div class="trio__no">2</div>
-            <h3 class="trio__title">함께 갈 사람</h3>
-            <p class="trio__body">도메인 전문가 · 개발자 · 기술 코치가 하나의 팀이 되는 것</p>
+            <h3 class="trio__title">함께 갈 우리팀</h3>
+            <p class="trio__body">도메인 전문가, AX개발자, 기술 코치 및 자문이<br>하나의 팀이 되는 것</p>
             <!-- 셋이 하나의 팀 — 가운데가 한 걸음 앞에 선 세 사람 -->
             <div class="trio__icon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg2)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
@@ -168,8 +180,8 @@
           </div>
           <div class="trio__item">
             <div class="trio__no">3</div>
-            <h3 class="trio__title">9월까지의 마일스톤</h3>
-            <p class="trio__body">본선(9/10~11)까지 남은 5주의 주차별 계획</p>
+            <h3 class="trio__title">본선까지의 마일스톤</h3>
+            <p class="trio__body">본선까지 남은 5주 동안 개발 완성을 위해<br>세우는 주차별 계획</p>
             <!-- 9월 10일, 송도 — 지도에 찍는 표식 -->
             <div class="trio__icon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg3)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
@@ -225,13 +237,13 @@
             <div class="rates">
               <div class="rate">
                 <div class="rate__tag">챌린저</div>
-                <div class="rate__flow">지원 54팀 → 선발 8팀 (32명)</div>
-                <div class="rate__num">6.8<small>:1</small></div>
+                <div class="rate__flow">지원 55팀 → 선발 8팀 (32명)</div>
+                <div class="rate__num">6.9<small>:1</small></div>
               </div>
               <div class="rate rate--lit">
                 <div class="rate__tag">마스터</div>
-                <div class="rate__flow">지원 115명 → 선발 22명 (3팀)</div>
-                <div class="rate__num">5.2<small>:1</small></div>
+                <div class="rate__flow">지원 116명 → 선발 3팀/22명</div>
+                <div class="rate__num">5.3<small>:1</small></div>
               </div>
             </div>
           </div>
@@ -273,20 +285,22 @@
               </div>
             </div>
 
-            <div class="track__steps">
+            <!-- 세 단계의 기간 표기를 모두 형광(--kw)으로 맞춘다. 예전에는
+                 앞의 둘이 금색이고 마지막만 형광이라 "여기까지 간다"를 뜻했는데,
+                 지금은 셋이 한 줄기의 일정이라 색으로 갈라 놓지 않는다. -->
+            <div class="track__steps track__steps--green">
               <div class="tstep">
-                <div class="tstep__when">~6월</div>
-                <div class="tstep__what">과제 발굴</div>
-                <div class="tstep__note">경영진 인터뷰</div>
+                <div class="tstep__when">5월~7월</div>
+                <div class="tstep__what">마스터 과제 발굴</div>
+                <div class="tstep__note">각 사업회사 임원진 인터뷰</div>
               </div>
               <div class="tstep">
-                <div class="tstep__when">~9월</div>
-                <div class="tstep__what">조기 과제수행</div>
-                <div class="tstep__note">전문가 팀 실행</div>
+                <div class="tstep__when">8월 5일~9월 본선 전</div>
+                <div class="tstep__what">마스터 크루 실행팀<br>과제 수행</div>
               </div>
               <div class="tstep tstep--last">
-                <div class="tstep__when">9/10~11</div>
-                <div class="tstep__what">본선 검증 · 고도화</div>
+                <div class="tstep__when">9월 10일~11일 본선</div>
+                <div class="tstep__what">검증 · 고도화</div>
                 <div class="tstep__note">전문 평가단 집중 평가</div>
               </div>
             </div>
@@ -341,7 +355,7 @@
     <section class="chapter" data-chapter="today">
       <article class="slide" data-slide-id="timetable-all">
         <p class="slide__eyebrow">09:30 ~ 16:30 · 7개 세션</p>
-        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">팀밋업의 흐름</span>은</h2>
+        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">팀밋업 순서</span></h2>
         <div class="timetable" data-timetable="all"></div>
       </article>
       <article class="slide" data-slide-id="timetable-am">
@@ -359,34 +373,24 @@
     <!-- 챕터 4 — 함께하는 사람들 (roster.js가 채운다) -->
     <section class="chapter" data-chapter="people">
       <article class="slide" data-slide-id="sponsors">
-        <p class="slide__eyebrow">함께하는 사람들</p>
-        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">함께해 주신 스폰서</span></h2>
+        <p class="slide__eyebrow">든든한 후원자</p>
+        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">함께해 주신 스폰서</span>를 소개합니다</h2>
         <div data-roster="sponsors"></div>
-      </article>
-      <article class="slide slide--center" data-slide-id="welcome">
-        <p class="slide__eyebrow">환영사</p>
-        <h2 class="slide__title slide__title--mid">김경철 센터장</h2>
-        <div data-roster="welcome"></div>
       </article>
       <article class="slide" data-slide-id="expedition">
         <p class="slide__eyebrow">오늘부터 9월까지, 여러분 옆에 있습니다</p>
         <h2 class="slide__title slide__title--mid"><span class="kw">인창원 해커톤 원정대</span>를 소개합니다</h2>
         <div data-roster="expedition"></div>
       </article>
+      <article class="slide" data-slide-id="coaches">
+        <p class="slide__eyebrow">과제마다 자문 1인 · 기술 코치 2인</p>
+        <h2 class="slide__title slide__title--mid">우리의 <span class="kw">해결사 코치</span>를 소개합니다</h2>
+        <div data-roster="coaches"></div>
+      </article>
       <article class="slide" data-slide-id="support">
         <p class="slide__eyebrow">지원 체계</p>
         <h2 class="slide__title slide__title--mid"><span class="kw">혼자</span> 만들지 않습니다</h2>
-        <div data-roster="org"></div>
-      </article>
-      <article class="slide" data-slide-id="roles-make">
-        <p class="slide__eyebrow">마스터 트랙 역할분담 &nbsp;·&nbsp; 만드는 쪽</p>
-        <h2 class="slide__title slide__title--mid">과제를 <span class="kw">만드는 사람들</span></h2>
-        <div data-roster="roles-make"></div>
-      </article>
-      <article class="slide" data-slide-id="roles-back">
-        <p class="slide__eyebrow">마스터 트랙 역할분담 &nbsp;·&nbsp; 받치는 쪽</p>
-        <h2 class="slide__title slide__title--mid">그 팀을 <span class="kw">받치는 사람들</span></h2>
-        <div data-roster="roles-back"></div>
+        <div data-roster="support"></div>
       </article>
     </section>
 
@@ -404,16 +408,14 @@
 
     <!-- 챕터 6 — 완주 혜택 (roster.js가 채운다) -->
     <section class="chapter" data-chapter="reward">
-      <article class="slide" data-slide-id="perks">
-        <p class="slide__eyebrow">트랙별 특전</p>
-        <h2 class="slide__title slide__title--mid">완주한 크루에게 드리는 <span class="kw">혜택</span></h2>
-        <div data-roster="perks"></div>
-      </article>
-
-      <article class="slide" data-slide-id="evaluation">
-        <p class="slide__eyebrow">본선 평가 방식</p>
-        <h2 class="slide__title slide__title--mid">솔루션 <span class="kw">평가</span></h2>
-        <p class="slide__lead">마스터 과제 평가는 <strong>2 Track</strong>으로 실시합니다</p>
+      <!-- 평가와 보상을 한 장에 겹쳐 놓는다. 두 장으로 나뉘어 있을 때는
+           "무엇으로 평가받나"와 "완주하면 무엇이 남나"가 따로 놀았는데,
+           크루에게 이 둘은 한 문장이다 — 위에서 기준을 보고 그대로 아래로
+           내려가 보상을 본다. 아래 칸은 마스터 특전만 싣는다. -->
+      <article class="slide" data-slide-id="reward">
+        <p class="slide__eyebrow">본선 평가 방식과 완주 특전</p>
+        <h2 class="slide__title slide__title--mid">무엇으로 <span class="kw">평가받고</span>, 무엇이 <span class="kw">남는가</span></h2>
+        <p class="slide__section">솔루션 평가 — 마스터 과제는 <strong>2 Track</strong>으로 실시합니다</p>
         <div class="evals">
           <!-- 영문 이름(Verification·Validation)은 부르는 이름일 뿐이다.
                정작 읽어야 할 것은 "무엇을 보는가"라서, 영문은 작은 머리표로
@@ -436,6 +438,35 @@
             </div>
           </div>
         </div>
+        <p class="slide__section">완주 특전 — 마스터 트랙</p>
+        <div data-roster="perks"></div>
+      </article>
+
+      <!-- 팀 빌딩 세션으로 넘기는 다리 슬라이드. 오늘 하루의 나머지가
+           여기서 정해진 팀으로 굴러가므로, 글을 늘어놓지 않고 해야 할
+           세 가지만 크게 세운다. -->
+      <article class="slide slide--center" data-slide-id="teambuilding">
+        <p class="slide__eyebrow">09:30 ~ 11:00 · 오리엔테이션 및 팀 빌딩</p>
+        <h2 class="slide__title">이제, <span class="kw">팀 빌딩</span></h2>
+        <p class="slide__lead">과제는 정해졌습니다. 이제 팀을 정할 차례입니다.</p>
+        <div class="tb-steps">
+          <div class="tb-step">
+            <span class="tb-step__no">1</span>
+            <span class="tb-step__name">PM을 뽑습니다</span>
+            <span class="tb-step__body">크루 안에서 직접. 일정과 소통을 끌고 갈 사람</span>
+          </div>
+          <div class="tb-step">
+            <span class="tb-step__no">2</span>
+            <span class="tb-step__name">역할을 나눕니다</span>
+            <span class="tb-step__body">도메인 전문가와 AX 개발자가 무엇을 맡을지</span>
+          </div>
+          <div class="tb-step">
+            <span class="tb-step__no">3</span>
+            <span class="tb-step__name">팀 이름을 정합니다</span>
+            <span class="tb-step__body">9월 10일 본선 무대에서 불릴 이름</span>
+          </div>
+        </div>
+        <p class="slide__foot">과제별로 모여 앉습니다 &nbsp;·&nbsp; 진행 노영은 과장 · 이종은 차장</p>
       </article>
     </section>
 

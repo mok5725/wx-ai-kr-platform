@@ -1,34 +1,33 @@
 // 타임테이블 슬라이드 3장을 시간표 데이터에서 생성하고 현재 시각의
 // 세션을 강조한다. 시간표가 바뀌면 schedule.js만 고치면 세 장이 함께 바뀐다.
 
-import { SESSIONS, MORNING, AFTERNOON } from './schedule.js';
+import { SESSIONS, MORNING, AFTERNOON, FLOW, flowLabel } from './schedule.js';
 import { currentSessionIndex, dayPhase } from './clock.js';
 
 // 오후는 시간표 행이 아니라 renderSessionTrio의 3분할로 나간다(#3/3).
-// 그래서 여기에는 afternoon 뷰가 없다.
+// #3/1(all)은 세션 행이 아니라 FLOW 묶음으로 나가므로 여기에도 없다.
 const VIEWS = {
-  all: () => SESSIONS.map((_, i) => i),
   morning: () => SESSIONS.map((s, i) => (MORNING.includes(s.id) ? i : -1)).filter((i) => i >= 0),
 };
 
-// ordinal이 숫자면 첫 칸에 시각 대신 순번을 넣는다. 전체 보기(#3/1)는
-// "몇 시에 무엇을"이 아니라 "무엇 다음에 무엇을"을 말하는 장이라, 시각을
-// 빼고 1~7로 세는 편이 흐름 자체를 보여준다. 시각이 필요한 오전·오후
-// 확대판(#3/2, #3/3)은 그대로 session.label을 쓴다.
-function buildRow(session, sessionIndex, withDetails, ordinal) {
+// 여러 줄짜리 문구를 <br>로 넣는다. 원본(schedule.js)은 줄바꿈을 \n으로
+// 적는다 — innerHTML을 쓰지 않고 텍스트 노드로만 짓는다.
+function fillLines(node, text) {
+  String(text).split('\n').forEach((line, i) => {
+    if (i) node.appendChild(document.createElement('br'));
+    node.appendChild(document.createTextNode(line));
+  });
+}
+
+function buildRow(session, sessionIndex, withDetails) {
   const row = document.createElement('div');
   row.className = 'tt-row';
   if (session.isBreak) row.classList.add('tt-row--break');
   row.dataset.sessionIndex = String(sessionIndex);
 
   const lead = document.createElement('div');
-  if (ordinal === null) {
-    lead.className = 'tt-row__time';
-    lead.textContent = session.label;
-  } else {
-    lead.className = 'tt-row__no';
-    lead.textContent = String(ordinal);
-  }
+  lead.className = 'tt-row__time';
+  lead.textContent = session.label;
 
   const body = document.createElement('div');
   body.className = 'tt-row__body';
@@ -37,17 +36,7 @@ function buildRow(session, sessionIndex, withDetails, ordinal) {
   title.className = 'tt-row__title';
   // 소요시간은 붙이지 않는다. 시각 범위(label)가 이미 같은 것을 말하고,
   // 활동 이름 뒤의 괄호는 제목을 읽는 눈을 한 번씩 끊는다.
-  //
-  // 가로 타임라인(#3/1)은 칸이 좁아 줄바꿈 자리를 schedule.js가 정해 준다.
-  // titleLines가 없으면 예전처럼 한 줄로 넣고 브라우저에 맡긴다.
-  if (ordinal !== null && session.titleLines) {
-    session.titleLines.forEach((line, i) => {
-      if (i) title.appendChild(document.createElement('br'));
-      title.appendChild(document.createTextNode(line));
-    });
-  } else {
-    title.textContent = session.title;
-  }
+  title.textContent = session.title;
   body.appendChild(title);
 
   if (withDetails && session.details.length) {
@@ -55,7 +44,7 @@ function buildRow(session, sessionIndex, withDetails, ordinal) {
     list.className = 'tt-row__details';
     for (const detail of session.details) {
       const li = document.createElement('li');
-      li.textContent = detail;
+      fillLines(li, detail);
       list.appendChild(li);
     }
     body.appendChild(list);
@@ -72,23 +61,71 @@ function buildRow(session, sessionIndex, withDetails, ordinal) {
   return row;
 }
 
+// #3/1 순서 슬라이드의 한 칸.
+//
+// **강조를 걸지 않는다.** 예전에는 지금 진행 중인 칸만 발광하고 지나간
+// 칸은 흐려졌는데, 이 장은 "지금 어디"가 아니라 "오늘 무엇을 어떤 순서로"를
+// 말하는 장이다. 일곱 중 하나만 밝으면 나머지 여섯이 배경으로 내려앉는다.
+// 그래서 다섯 칸 모두 같은 밝기로 세우고, 시각 강조는 오전·오후 확대판
+// (#3/2·#3/3)에 맡긴다.
+function buildFlowStep(step, position) {
+  const sessions = step.sessions.map((id) => SESSIONS.find((s) => s.id === id)).filter(Boolean);
+  const first = sessions[0];
+
+  const row = document.createElement('div');
+  row.className = 'tt-row tt-flow';
+  if (sessions.every((s) => s.isBreak)) row.classList.add('tt-row--break');
+
+  row.appendChild(el('div', 'tt-flow__icon', step.icon));
+  row.appendChild(el('div', 'tt-row__no', step.no ?? String(position + 1)));
+  row.appendChild(el('div', 'tt-flow__when', flowLabel(step)));
+
+  const body = el('div', 'tt-row__body');
+  const title = el('div', 'tt-row__title');
+  // 칸 폭이 좁아 줄바꿈 자리를 schedule.js가 정해 준다(titleLines).
+  // 묶음 칸은 세션 제목이 셋이라 대표 제목(step.title)을 따로 갖는다.
+  if (step.title) title.textContent = step.title;
+  else fillLines(title, (first.titleLines ?? [first.title]).join('\n'));
+  body.appendChild(title);
+
+  // 묶인 세션들의 이름. 무엇 셋이 한 덩어리로 묶였는지가 보여야 한다.
+  if (step.lines) {
+    const list = el('ul', 'tt-flow__lines');
+    for (const line of step.lines) list.appendChild(el('li', null, line));
+    body.appendChild(list);
+  }
+  if (step.sub) body.appendChild(el('div', 'tt-flow__sub', step.sub));
+  row.appendChild(body);
+
+  // 담당이 모두 같을 때만 한 줄로 적는다. 묶음 칸(5~7)이 팀스파르타
+  // 하나로 적히는 것이 이 슬라이드에서 셋을 묶은 이유이기도 하다.
+  const owners = [...new Set(sessions.map((s) => s.owner).filter(Boolean))];
+  row.appendChild(el('div', 'tt-row__owner', owners.length === 1 ? owners[0] : ''));
+
+  return row;
+}
+
 export function createTimetable(roots) {
   const rendered = [];
 
   for (const root of roots) {
     const view = root.dataset.timetable;
-    const indices = (VIEWS[view] ?? VIEWS.all)();
-    // 세부 항목을 펼칠지는 슬라이드가 정한다. 전체 보기(#3/1)는 늘 접고,
-    // 나머지는 data-detail="off"로 끌 수 있다.
+    root.innerHTML = '';
+
+    if (view === 'all') {
+      FLOW.forEach((step, i) => root.appendChild(buildFlowStep(step, i)));
+      continue;
+    }
+
+    const indices = (VIEWS[view] ?? VIEWS.morning)();
+    // 세부 항목을 펼칠지는 슬라이드가 정한다. data-detail="off"로 끌 수 있다.
     //
     // #3/3(오후)이 이것을 끈 상태다. 세부까지 펼치면 #7/2(오후 상세)와
     // 세션 제목·항목이 글자까지 똑같이 두 번 나온다. 오전에는 예고만 하고
     // 실제로 오후가 시작될 때 #7/2에서 펼치는 편이 낫다.
-    const withDetails = view !== 'all' && root.dataset.detail !== 'off';
-    const numbered = view === 'all';
-    root.innerHTML = '';
-    const rows = indices.map((sessionIndex, position) => {
-      const row = buildRow(SESSIONS[sessionIndex], sessionIndex, withDetails, numbered ? position + 1 : null);
+    const withDetails = root.dataset.detail !== 'off';
+    const rows = indices.map((sessionIndex) => {
+      const row = buildRow(SESSIONS[sessionIndex], sessionIndex, withDetails);
       root.appendChild(row);
       return row;
     });
@@ -164,7 +201,7 @@ export function renderSessionTrio(root) {
     const list = document.createElement('ul');
     for (const detail of session.details) {
       const li = document.createElement('li');
-      li.textContent = detail;
+      fillLines(li, detail);
       list.appendChild(li);
     }
     body.appendChild(list);
@@ -178,20 +215,11 @@ export function renderSessionTrio(root) {
 
     root.appendChild(item);
   }
-
-  // 오후는 하루의 끝이다. 마지막 칸 오른쪽에 종료 시각을 세워, 세 세션이
-  // 어디까지 가는지가 화면 안에서 닫히게 한다.
-  if (root.dataset.trio === 'afternoon') {
-    const end = document.createElement('div');
-    end.className = 'trio__item trio__item--end';
-    end.append(el('div', 'trio__no', '16:30'), el('div', 'trio__end', '종료'));
-    root.appendChild(end);
-  }
 }
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
-  node.className = className;
-  node.textContent = text;
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
   return node;
 }

@@ -4,7 +4,7 @@
 // member.strength는 렌더하지 않는다. 프로젝터 뒷줄에서 읽히지 않는
 // 길이라, 진행자가 호명하며 읽도록 노트 창에만 띄운다(notes.js).
 
-import { WELCOME, SPONSORS, EXPEDITION, TASKS, ORG_TIERS, ROLE_GROUPS, PERKS, chipTone } from './content.js';
+import { WELCOME, SPONSORS, EXPEDITION, COACHES, TASKS, ORG_TIERS, PERKS, chipTone } from './content.js';
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -18,48 +18,28 @@ function chip(company) {
   return node;
 }
 
-// 4-2 환영사 — 한 사람만 서는 장이다. 마이크를 넘기고 띄워두는 화면이라
-// **글을 짓지 않는다.** 이름과 직함은 제목이 이미 말하고 있으므로 여기서는
-// 사진과 소속만 낸다. 원정대(4-3)와 같은 흑백 처리를 CSS에서 건다.
-function renderWelcome(root) {
-  root.className = 'welcome';
-
-  const photo = document.createElement('img');
-  photo.className = 'welcome__photo';
-  photo.src = `assets/people/${WELCOME.photo}.webp`;
-  // 이름은 슬라이드 제목에 있다. alt를 채우면 낭독기가 두 번 읽는다.
-  photo.alt = '';
-  photo.decoding = 'async';
-  // 파일이 아직 없을 때 깨진 이미지 아이콘이 뜨지 않게 한다. 파일을
-  // 넣으면 클래스가 붙지 않으므로 그대로 나온다.
-  photo.addEventListener('error', () => root.classList.add('welcome--nophoto'));
-
-  root.append(photo, el('span', 'chip chip--plain', WELCOME.org));
-}
-
-// 4-2 오늘 함께해 주신 스폰서.
+// 4-1 오늘 함께해 주신 스폰서.
 //
-// 넷을 같은 레벨의 네임카드로 나란히 세운다. 어느 과제의 스폰서인지는
-// 뒤의 과제 슬라이드에서 다시 나오므로 여기서는 짚지 않는다.
+// 넷을 같은 레벨의 네임카드로 나란히 세운다.
 //
-// **김경철 센터장도 여기 있다.** 네 분 모두 스폰서이고, 그중 센터장이
-// 환영사도 맡는다 — 다음 장이 그 환영사 자리다.
-// 역할 라벨('환영사'·'과제 스폰서')은 2026-08-04에 뺐다. 카드에 남는 것은
-// 이름과 소속뿐이다.
-// 소속 칩도 회사별 색을 쓰지 않는다 — 이 장은 회사를 구분하는 자리가
+// **역할이 이름 위에 선다.** 넷을 그냥 늘어놓으면 "높은 분 네 명"으로만
+// 읽히고 누가 내 과제를 받치는지가 안 보인다. 카드를 위에서 아래로 훑을 때
+// 과제 이름이 먼저 걸리도록 이름보다 위에 두었다.
+//
+// **김경철 센터장도 여기 있다.** 네 분 모두 스폰서이고, 센터장은 트랙
+// 전체의 디렉터이면서 이 자리에서 환영사도 맡는다.
+// 소속 칩은 회사별 색을 쓰지 않는다 — 이 장은 회사를 구분하는 자리가
 // 아니라 네 분을 나란히 소개하는 자리라, 색이 갈리면 없는 편이 생긴다.
 // 색으로 회사를 구분하는 곳은 크루 명단(5-2~5-4)뿐이다.
 function renderSponsors(root) {
   root.className = 'namecards';
 
-  const people = [
-    { name: WELCOME.name, title: WELCOME.title, org: WELCOME.org },
-    ...SPONSORS,
-  ];
+  const people = [WELCOME, ...SPONSORS];
 
   for (const p of people) {
     const card = el('div', 'namecard');
     card.append(
+      el('div', 'namecard__role', p.role),
       el('div', 'namecard__name', `${p.name} ${p.title}`),
       el('span', 'chip chip--plain', p.org),
     );
@@ -89,6 +69,42 @@ function renderExpedition(root) {
     );
 
     card.append(photo, plate);
+    root.appendChild(card);
+  }
+}
+
+// 4-3 우리의 해결사 코치.
+//
+// 사람을 소속별로 늘어놓지 않고 **과제별로 묶는다.** 크루가 이 장에서
+// 찾는 것은 "팀스파르타가 몇 명인가"가 아니라 "내 과제는 누가 봐주는가"다.
+// 묶음 안에서도 자문과 코치를 갈라 놓는다 — 오는 빈도가 다르기 때문이다
+// (자문 주 1~2회, 코치 상시). 그 빈도를 묶음 머리에 못 박아 둔다.
+function renderCoaches(root) {
+  root.className = 'coach-grid';
+
+  for (const group of COACHES) {
+    const card = el('div', 'coach-card');
+
+    const head = el('div', 'coach-card__head');
+    head.append(
+      el('span', 'coach-card__no', `과제 ${group.no}`),
+      el('span', 'coach-card__task', group.task),
+    );
+    card.appendChild(head);
+
+    const line = (person, when) => {
+      const row = el('div', 'coach-person');
+      const name = el('div', 'coach-person__name', person.name);
+      name.appendChild(el('small', 'coach-person__title', person.title));
+      row.append(name, chip(person.org), el('div', 'coach-person__when', when));
+      return row;
+    };
+
+    card.appendChild(el('div', 'coach-card__label', '자문'));
+    card.appendChild(line(group.advisor, '주 1~2회'));
+    card.appendChild(el('div', 'coach-card__label', '기술 코치'));
+    for (const c of group.coaches) card.appendChild(line(c, '상시'));
+
     root.appendChild(card);
   }
 }
@@ -198,81 +214,28 @@ function renderOrg(root) {
   root.appendChild(principles);
 }
 
-// 4-5·4-6 마스터 트랙 역할분담.
-//
-// **네 그룹을 두 장에 나눠 싣는다.** 원본 장표는 2×2였지만 그대로 옮기면
-// 1280×720에서 카드 하나에 227px밖에 못 준다 — 글을 다 넣으려면 본문을
-// 14px에 행간 1.25까지 눌러야 했고, 그러면 프로젝터 뒷줄에서 읽히지
-// 않는다. 두 장으로 나누면 카드마다 455px을 쓸 수 있어 본문을 16px에
-// 정상 행간으로 되돌릴 수 있다.
-//
-// 그룹마다 색을 달리해 "어느 무리의 이야기인가"를 먼저 잡게 하고,
-// 실무 항목(duties)은 칩으로 흩어 놓는다. 원본처럼 "/"로 이어 붙이면
-// 네댓 항목이 한 문단으로 뭉쳐 어디서 끊어 읽을지가 안 잡힌다.
-function renderRoles(root, tones) {
-  root.className = 'roles';
-
-  for (const g of ROLE_GROUPS.filter((x) => tones.includes(x.tone))) {
-    const card = el('div', `role-group role-group--${g.tone}`);
-
-    const head = el('div', 'role-group__head');
-    head.append(el('span', 'role-group__tag', g.tag), el('span', 'role-group__label', g.label));
-    card.appendChild(head);
-
-    for (const r of g.roles) {
-      const item = el('div', 'role');
-      const name = el('div', 'role__name', r.name);
-      name.appendChild(el('small', 'role__en', r.en));
-      item.append(name, el('p', 'role__desc', r.desc));
-
-      if (r.duties) {
-        const chips = el('div', 'role__duties');
-        for (const d of r.duties) chips.appendChild(el('span', 'role__duty', d));
-        item.appendChild(chips);
-      }
-
-      // 칩으로 쪼갤 수 없는 문장은 라벨 붙은 줄로 낸다.
-      if (r.notes) {
-        const list = el('ul', 'role__notes');
-        for (const n of r.notes) {
-          const li = document.createElement('li');
-          li.append(el('span', 'role__note-label', n.label), document.createTextNode(n.body));
-          if (n.sub) li.appendChild(el('span', 'role__note-sub', n.sub));
-          list.appendChild(li);
-        }
-        item.appendChild(list);
-      }
-
-      card.appendChild(item);
-    }
-
-    root.appendChild(card);
-  }
-}
-
 // 5-1 마스터 과제 3종 — 관점·과제명·기대효과만. 상세는 5-2~5-4에서 푼다.
 //
-// 카드 순서는 **라벨 → 이미지 → 과제명 → 기대효과**다. 어느 과제인지가
-// 사진보다 먼저 와야 세 칸을 왼쪽부터 훑을 때 번호가 먼저 잡힌다.
-// 인원 줄(크루 N명 · 자문 1명)은 2026-08-04에 뺐다 — 같은 숫자가 바로
-// 다음 장의 범례에 다시 나온다.
+// 카드 순서는 **번호 → 관점 → 과제명 → 기대효과**다.
+//
+// 사진은 2026-08-05에 뺐다. 분위기 사진 세 장이 카드 높이의 절반을
+// 가져가면서 정작 읽어야 할 과제명이 눌려 있었다. 사진이 빠진 자리를
+// 과제명에 돌려주고, 대신 번호를 크게 세워 세 칸을 왼쪽부터 셀 수 있게
+// 한다. 인원 줄(크루 N명 · 자문 1명)은 바로 다음 장의 범례에 다시 나온다.
 function renderTaskOverview(root) {
-  root.className = 'card-grid card-grid--tall';
+  root.className = 'card-grid card-grid--tasks';
   for (const t of TASKS) {
     const card = el('div', 'card');
-    card.appendChild(el('div', 'card__label', `과제${t.no} · ${t.perspective}`));
 
-    // 과제 분위기를 담은 이미지. 글만 있는 카드 셋보다 훨씬 빨리 읽힌다.
-    if (t.image) {
-      const img = document.createElement('img');
-      img.className = 'card__art';
-      img.src = `assets/tasks/${t.image}`;
-      img.alt = '';
-      img.decoding = 'async';
-      card.appendChild(img);
-    }
+    const head = el('div', 'card__head');
+    head.append(
+      el('span', 'card__no', String(t.no)),
+      el('span', 'card__perspective', t.perspective),
+    );
+    card.appendChild(head);
 
     card.appendChild(el('div', 'card__title card__title--sm', t.title));
+
     const list = el('ul', 'card__effects');
     for (const effect of t.effects) list.appendChild(el('li', null, effect));
     card.appendChild(list);
@@ -408,55 +371,46 @@ function productArt(item) {
   return node;
 }
 
+// 6-1 아래 절반 — 완주한 크루에게 남는 것.
+//
+// **마스터 트랙만 싣는다.** 청중이 마스터 크루라 남의 트랙 보상은 잡음이다.
+// 평가 기준과 한 장에 들어가면서 세로 예산이 반으로 줄었으므로, 예전의
+// 두 열(마스터·챌린저)을 버리고 **한 줄 세 칸**으로 눕혔다.
 function renderPerks(root) {
-  root.className = 'perks';
+  root.className = 'perks perks--row';
 
-  // "수상팀 전원 / CEO 명의 상장"을 두 줄로 가운데 세운다. '두 트랙 공통'
-  // 꼬리표는 라벨 옆에 붙여 셋째 줄을 만들지 않는다 — 이 슬라이드는
-  // 1280×720에서 세로 여유가 거의 없다.
-  const common = el('div', 'perk-common');
-  const head = el('div', 'perk-common__head');
-  head.append(
-    el('span', 'perk-common__label', PERKS.common.label),
-    el('span', 'perk-common__tag', '두 트랙 공통'),
+  const master = PERKS.tracks.find((t) => t.lit);
+
+  // 공통 상장이 첫 칸이다. 수상팀이면 트랙과 무관하게 받는 것이라
+  // 제품 두 칸보다 앞에 둔다.
+  const common = el('div', 'perk-cell perk-cell--common');
+  common.append(
+    el('div', 'perk-cell__rank', `${PERKS.common.label} · 두 트랙 공통`),
+    el('div', 'perk-cell__product', PERKS.common.body),
   );
-  common.append(head, el('div', 'perk-common__body', PERKS.common.body));
   root.appendChild(common);
 
-  const grid = el('div', 'perk-tracks');
-  for (const t of PERKS.tracks) {
-    const col = el('div', `perk-track${t.lit ? ' perk-track--lit' : ''}`);
-    col.appendChild(el('div', 'perk-track__name', t.name));
+  for (const item of master.items) {
+    const cell = el('div', `perk-cell${item.only ? ' perk-cell--only' : ''}`);
+    cell.appendChild(productArt(item));
 
-    for (const item of t.items) {
-      const row = el('div', `perk-item${item.only ? ' perk-item--only' : ''}`);
-      row.appendChild(productArt(item));
-
-      const text = el('div', 'perk-item__text');
-      text.append(
-        el('div', 'perk-item__rank', `${item.rank} · ${item.teams}`),
-        el('div', 'perk-item__product', item.product),
-      );
-      if (item.kind) text.appendChild(el('div', 'perk-item__kind', item.kind));
-      row.appendChild(text);
-      if (item.only) row.appendChild(el('div', 'perk-item__badge', item.onlyLabel));
-      col.appendChild(row);
-    }
-
-    if (t.lit) col.appendChild(el('div', 'perk-track__note', PERKS.masterNote));
-    grid.appendChild(col);
+    const text = el('div', 'perk-cell__text');
+    text.append(
+      el('div', 'perk-cell__rank', `${item.rank} · ${item.teams}`),
+      el('div', 'perk-cell__product', item.product),
+    );
+    if (item.kind) text.appendChild(el('div', 'perk-cell__kind', item.kind));
+    cell.appendChild(text);
+    if (item.only) cell.appendChild(el('div', 'perk-cell__badge', item.onlyLabel));
+    root.appendChild(cell);
   }
-  root.appendChild(grid);
 }
 
 const RENDERERS = {
-  welcome: renderWelcome,
-  // 만드는 쪽(Core·Tech)과 받치는 쪽(Support·Infra)으로 갈라 두 장에 싣는다.
-  'roles-make': (root) => renderRoles(root, ['core', 'tech']),
-  'roles-back': (root) => renderRoles(root, ['support', 'infra']),
   sponsors: renderSponsors,
   expedition: renderExpedition,
-  org: renderOrg,
+  coaches: renderCoaches,
+  support: renderOrg,
   tasks: renderTaskOverview,
   perks: renderPerks,
 };
