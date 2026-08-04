@@ -147,8 +147,7 @@
   line-height: 1.2;
 }
 
-/* 4-2 원정대 — 별칭을 크게, 이름을 작게 */
-/* 4-2 원정대 — 사진 한 줄과 그 아래 이름표.
+/* 4-2 운영진 — 사진 한 줄과 그 아래 이름표.
    한 줄에 전부 세우는 것이 핵심이다. 여러 줄로 접히면 "한 팀"으로 안 보인다.
    인원이 늘면 auto-fit이 칸을 좁히고, 그래도 모자라면 사진이 작아진다. */
 .expedition {
@@ -381,24 +380,33 @@
   row-gap: calc(var(--gap) * 0.25);
 }
 
+/* **상자는 불투명한 흰색이다.** 예전에는 우주 배경 위에 반투명 판
+   (--panel, 알파 0.05)을 얹고 옅은 글자를 올렸는데, 뒤로 별과 오로라가
+   지나가면서 판과 글자의 대비가 함께 무너졌다. 도식은 상자가 곧 정보라
+   판이 배경에서 확실히 떨어져 나와야 한다.
+   흰 판 위의 글자는 --on-light 계열을 쓴다(tokens.css). 어두운 배경용
+   --ink 계열을 그대로 얹으면 흰 바탕에 흰 글씨가 된다. */
 .org-tier {
   padding: calc(var(--gap) * 0.28);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(11, 9, 48, 0.16);
   border-radius: var(--radius);
-  background: var(--panel);
+  background: #FFFFFF;
   text-align: center;
 }
 
 /* 상자 제목. 뒷줄에서 먼저 잡혀야 하는 글자라 한 단계 키우고 800으로
    세운다 — 나눔스퀘어는 800(ExtraBold)에 실제 자족이 있다. */
-.org-tier__label { font-size: var(--step-1); font-weight: 800; }
-.org-tier__body { font-size: var(--step-00); color: var(--ink-soft); margin: 0.1em 0 0; line-height: var(--leading-tight); white-space: pre-line; }
+.org-tier__label { font-size: var(--step-1); font-weight: 800; color: var(--on-light); }
+.org-tier__body { font-size: var(--step-00); color: var(--on-light-soft); margin: 0.1em 0 0; line-height: var(--leading-tight); white-space: pre-line; }
 
-.org-tier--sponsor { border-color: rgba(242, 193, 78, 0.4); background: rgba(242, 193, 78, 0.08); }
-.org-tier--sponsor .org-tier__label { color: var(--gold); }
-.org-tier--user    { border-color: rgba(63, 199, 173, 0.4); background: rgba(63, 199, 173, 0.08); }
-.org-tier--user .org-tier__label { color: var(--chip-green-ink); }
-.org-tier--side .org-tier__label { color: var(--glow-orchid); }
+/* 상자별 색은 테두리와 제목에만 남긴다 — 바탕은 넷 다 흰색이라
+   "같은 종류의 상자"로 읽히고, 색은 어느 자리인지만 가리킨다. */
+.org-tier--sponsor { border-color: rgba(199, 154, 30, 0.85); }
+.org-tier--sponsor .org-tier__label { color: var(--on-light-gold); }
+.org-tier--user    { border-color: rgba(15, 97, 82, 0.6); }
+.org-tier--user .org-tier__label { color: var(--on-light-green); }
+.org-tier--side    { border-color: rgba(107, 63, 160, 0.55); }
+.org-tier--side .org-tier__label { color: var(--on-light-orchid); }
 
 /* 흐름 화살표. 선과 머리는 SVG로 그린다 — '▼' 글자는 크기를 키우면
    금세 뭉개지고 방향이 하나뿐이라 주고받는 관계를 못 그린다. */
@@ -446,14 +454,16 @@
 /* 실행팀이 도식의 중심이다. 제목을 한 단계 더 키워 다른 상자와 구분한다. */
 .org-core {
   padding: calc(var(--gap) * 0.35);
-  border: 1px solid rgba(132, 137, 245, 0.5);
+  border: 2px solid var(--on-light-violet);
   border-radius: var(--radius);
-  background: rgba(132, 137, 245, 0.12);
-  box-shadow: 0 0 34px rgba(132, 137, 245, 0.2);
+  background: #FFFFFF;
+  /* 발광은 판 바깥으로만 남긴다. 흰 판이 배경에서 떠 보이게 하는 장치라,
+     판 안쪽 대비에는 영향을 주지 않는다. */
+  box-shadow: 0 0 34px rgba(132, 137, 245, 0.35);
   text-align: center;
 }
 
-.org-core .org-tier__label { font-size: var(--step-2); color: var(--glow-violet); }
+.org-core .org-tier__label { font-size: var(--step-2); color: var(--on-light-violet); }
 
 /* 실행팀 상자 안쪽 — 마스터 크루 묶음 + 그 밖의 외부 기술 코치.
    셋을 나란히 늘어놓으면 코치가 크루의 일원처럼 읽힌다. 원본 도식이
@@ -469,12 +479,12 @@
   flex: 1 1 auto;
   min-width: 0;
   padding: calc(var(--gap) * 0.18);
-  border: 1px dashed rgba(238, 240, 255, 0.3);
+  border: 1px dashed rgba(11, 9, 48, 0.35);
   border-radius: 14px;
-  background: rgba(238, 240, 255, 0.06);
+  background: #EEF1F7;
 }
 
-.org-crew__label { font-size: var(--step-00); font-weight: 800; color: var(--ink); margin-bottom: 0.08em; line-height: 1.15; }
+.org-crew__label { font-size: var(--step-00); font-weight: 800; color: var(--on-light); margin-bottom: 0.08em; line-height: 1.15; }
 
 .org-crew__roles { display: flex; align-items: stretch; gap: calc(var(--gap) * 0.3); }
 .org-crew__roles .org-role { flex: 1 1 0; min-width: 0; }
@@ -486,15 +496,18 @@
 .org-role {
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(8, 6, 42, 0.4);
+  border: 1px solid rgba(11, 9, 48, 0.14);
+  background: #FFFFFF;
   display: flex;
   flex-direction: column;
 }
 
+/* 이름 띠만 색을 채운다. 흰 판이 이어지는 안쪽에서 이 띠가 유일한
+   색 덩어리라, 역할 이름이 먼저 잡힌다. */
 .org-role__name {
   padding: 0.14em 0.4em;
-  background: rgba(132, 137, 245, 0.28);
-  color: var(--gold);
+  background: var(--on-light-violet);
+  color: #FFFFFF;
   font-size: var(--step-00);
   font-weight: 800;
   line-height: var(--leading-tight);
@@ -510,7 +523,7 @@
   justify-content: center;
   padding: 0.16em 0.4em;
   font-size: var(--step-00);
-  color: var(--ink-soft);
+  color: var(--on-light-soft);
   margin: 0;
   line-height: var(--leading-tight);
 }
@@ -630,7 +643,7 @@
 /* ── 휴대폰 (세로) ────────────────────────────────────────────────────
    slides.css에도 같은 미디어 블록이 있지만, 이 파일이 나중에 로드되므로
    여기 있는 선택자는 반드시 여기서 덮어야 한다. 저쪽에 적으면 조용히
-   무시된다 — 실제로 그렇게 새서 원정대가 28열로 깔렸다. */
+   무시된다 — 실제로 그렇게 새서 운영진이 28열로 깔렸다. */
 @media (max-width: 820px) and (orientation: portrait) {
   .card-grid,
   .coach-grid,
@@ -666,9 +679,12 @@
   .namecards { grid-auto-flow: row; max-width: none; margin-top: calc(var(--gap) * 1.5); }
   .namecard { aspect-ratio: auto; padding: calc(var(--gap) * 1.1) var(--gap); }
 
-  /* 원정대는 두 열. 여섯을 한 줄에 세우면 얼굴이 안 보이고, 한 열로 두면
-     여섯 번 스크롤해야 한다. */
-  .expedition { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); }
+  /* 운영진은 세 열. 일곱을 한 줄에 세우면 얼굴이 안 보이고, 한 열로 두면
+     일곱 번 스크롤해야 한다.
+     **두 열이 아니라 세 열이다.** 두 열이면 일곱이 네 줄이 되어 375×812에서
+     230px 넘친다(여섯일 때는 세 줄로 겨우 들어갔다). 세 열이면 세 줄로
+     끝나고, 손에 들고 보는 화면이라 얼굴도 충분히 알아본다. */
+  .expedition { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); gap: calc(var(--gap) * 0.9); }
 
   /* 크루 명단도 두 열. 이름만 있는 짧은 칸이라 들어간다. */
   .crew__grid { grid-template-columns: repeat(2, 1fr); }

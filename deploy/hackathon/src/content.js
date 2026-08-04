@@ -25,9 +25,11 @@ export const SPONSORS = [
 // 과제마다 한 묶음이다 — 사람을 소속별로 늘어놓지 않고 과제별로 묶어야
 // "내 과제는 누가 봐주는가"가 바로 읽힌다.
 // 미래연 자문 세 분의 이름은 TASKS의 advisor 멤버와 같은 사람이다.
+// task에는 '과제'를 붙이지 않는다 — 화면에서 '과제 1' 뒤에 붙어
+// "과제 1  안전 과제"처럼 같은 낱말이 두 번 나온다.
 export const COACHES = [
   {
-    taskId: 'safety', no: 1, task: '안전 과제',
+    taskId: 'safety', no: 1, task: '안전',
     advisor: { name: '김현중', title: '수석연구원', org: '미래기술연구원' },
     coaches: [
       { name: '김민수', title: '코치', org: '팀스파르타' },
@@ -35,7 +37,7 @@ export const COACHES = [
     ],
   },
   {
-    taskId: 'logistics', no: 2, task: '물류 과제',
+    taskId: 'logistics', no: 2, task: '물류',
     advisor: { name: '이수장', title: '수석연구원', org: '미래기술연구원' },
     coaches: [
       { name: '김나연', title: '코치', org: '팀스파르타' },
@@ -43,7 +45,7 @@ export const COACHES = [
     ],
   },
   {
-    taskId: 'market', no: 3, task: '마켓 센싱 과제',
+    taskId: 'market', no: 3, task: '마켓 센싱',
     advisor: { name: '안치경', title: '수석연구원', org: '미래기술연구원' },
     coaches: [
       { name: '이경복', title: '코치', org: '팀스파르타' },
@@ -58,6 +60,7 @@ export const EXPEDITION = [
   // photo는 assets/people/<photo>.webp 를 가리킨다. 원본 사진의 파일명이
   // 한글이라 배포 서버의 URL 인코딩 문제를 피하려고 ASCII로 옮겼다.
   // 순서는 화면에 서는 순서 그대로다.
+  { nickname: '총감독',        name: '김민정', title: '그룹장', photo: 'kim-minjeong' },
   { nickname: '대장 감독',     name: '김두환', title: '리더', photo: 'kim-doohwan' },
   { nickname: '무대미학 감독', name: '이종은', title: '차장', photo: 'lee-jongeun' },
   { nickname: 'PM',            name: '노영은', title: '과장', photo: 'noh-youngeun' },

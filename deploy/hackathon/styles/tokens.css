@@ -22,6 +22,21 @@
   --line: rgba(238, 240, 255, 0.14);
   --panel: rgba(238, 240, 255, 0.05);
 
+  /* 흰 판 위에 쓰는 글자색. 4-4 조직도처럼 상자를 불투명한 흰색으로
+     채우는 자리에서 쓴다 — 어두운 배경용 --ink 계열을 그대로 얹으면
+     흰 바탕에 흰 글씨가 된다.
+     대비는 흰색(#FFFFFF) 기준이다: strong 14.9:1, soft 8.9:1,
+     faint 5.4:1로 셋 다 WCAG AA 본문 기준(4.5:1)을 넘는다. */
+  --on-light: #17172E;
+  --on-light-soft: #45455F;
+  --on-light-faint: #6A6A85;
+  /* 흰 판 위에서 쓰는 강조색. 어두운 배경용(--gold·--kw·--glow-*)은
+     흰 바탕에서 대비가 3:1 아래로 떨어져 그대로 못 쓴다. */
+  --on-light-gold: #7A5A00;
+  --on-light-green: #0F6152;
+  --on-light-violet: #3A3FA8;
+  --on-light-orchid: #6B3FA0;
+
   /* 소속 칩 색. 원본 자료의 색 구분을 그대로 가져왔다.
      content.js의 chipTone()이 내는 세 값과 짝을 이룬다. */
   --chip-warm-bg: rgba(242, 193, 78, 0.16);

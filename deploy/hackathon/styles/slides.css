@@ -1149,7 +1149,17 @@ html.is-booting #deck {
 
 /* 목표 타일만 문장이라 왼쪽 정렬로 두고 남는 폭을 다 가져간다. */
 .tstat--goal { flex: 1 1 auto; min-width: 0; text-align: left; }
-.tstat--goal .tstat__value { font-size: var(--step-1); color: var(--glow-violet); }
+
+/* 목표 타일은 글자가 길어 값의 글씨를 한 단계 낮춘다. 그러면 줄 상자도
+   같이 낮아져서 **옆 타일의 라벨과 줄이 어긋난다** — 실제로 1280×720에서
+   6px 위로 올라앉아 세 타일의 아랫줄이 계단처럼 보였다.
+   줄 높이를 옆 타일과 같은 절대값(--step-2 × 1.1)으로 못 박아, 글씨
+   크기는 달라도 줄 상자는 같게 만든다. */
+.tstat--goal .tstat__value {
+  font-size: var(--step-1);
+  line-height: calc(var(--step-2) * 1.1);
+  color: var(--glow-violet);
+}
 
 .track--lit .tstat { border-color: rgba(242, 193, 78, 0.35); background: rgba(242, 193, 78, 0.08); }
 .track--lit .tstat__value { color: var(--gold); }

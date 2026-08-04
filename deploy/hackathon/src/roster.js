@@ -49,7 +49,7 @@ function renderSponsors(root) {
   }
 }
 
-// 4-2 인창원 해커톤 원정대 — 별칭을 크게, 이름을 작게.
+// 4-2 인창원 해커톤 운영진 — 별칭을 크게, 이름을 작게.
 // 딱딱한 운영진 소개를 아이스브레이킹으로 바꾸는 장치다.
 function renderExpedition(root) {
   root.className = 'expedition';
