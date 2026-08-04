@@ -18,6 +18,15 @@
    회사 셋(warm·green·neutral)과 겹치지 않는 난초색을 따로 쓴다. */
 .chip--orchid { background: rgba(205, 160, 255, 0.16); color: var(--glow-orchid); }
 
+/* 크루 명단(5-2~5-4)의 소속 칩은 회사가 아니라 **역할** 색을 쓴다.
+   범례 → 왼쪽 띠 → 칩이 같은 색으로 이어져야 "도메인 몇 · 개발 몇"이
+   한 번에 세어진다. 회사별로 갈라 놓았을 때는 한 칸 안에서 색이 둘로
+   나뉘어 어느 쪽이 역할인지가 흐려졌다. */
+.chip--role-domain     { background: var(--role-domain-bg);     color: var(--role-domain); }
+.chip--role-dev        { background: var(--role-dev-bg);        color: var(--role-dev); }
+.chip--role-domain-dev { background: var(--role-domain-dev-bg); color: var(--role-domain-dev); }
+.chip--role-advisor    { background: var(--role-advisor-bg);    color: var(--role-advisor); }
+
 /* 공통 카드 */
 .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
 .card-grid--tall { align-items: stretch; }
@@ -564,8 +573,19 @@
   font-weight: 800;
 }
 
-/* 제품 사진은 한 줄 판에 맞게 예전(10.2em)의 절반으로 줄인다. */
-.perks--row .perk-art { flex: 0 0 auto; width: 5.4em; }
+/* 제품 사진. 이 슬라이드의 유일한 그림이라 작게 두면 글자 옆의 장식으로
+   내려앉는다. **4:3 가로형으로 키운다** — 원본이 가로로 긴 노트북이라
+   6em×6em 정사각으로 잘랐을 때는 좌우가 잘려 무엇인지 알아보기 어려웠다.
+   높이가 이 칸의 높이를 정하므로 두 칸의 그림 크기는 같아야 한다. */
+.perks--row .perk-art,
+.perks--row .perk-art--photo {
+  flex: 0 0 auto;
+  /* 9em이 이 슬라이드의 상한이다. 그림 높이가 곧 아래 칸의 높이라,
+     11em으로 두면 1280×720에서 아래가 33px 잘렸다. */
+  width: 9em;
+  height: calc(9em * 3 / 4);
+  object-fit: cover;
+}
 
 /* ── 6-2 팀 빌딩 ──────────────────────────────────────────────────────
    다리 슬라이드다. 할 일 셋만 크게 세운다. */

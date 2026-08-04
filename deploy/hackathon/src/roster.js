@@ -26,15 +26,17 @@ function chip(company) {
 // 읽히고 누가 내 과제를 받치는지가 안 보인다. 카드를 위에서 아래로 훑을 때
 // 과제 이름이 먼저 걸리도록 이름보다 위에 두었다.
 //
-// **김경철 센터장도 여기 있다.** 네 분 모두 스폰서이고, 센터장은 트랙
-// 전체의 디렉터이면서 이 자리에서 환영사도 맡는다.
+// **김경철 센터장이 맨 오른쪽이다.** 네 분 모두 스폰서이지만 센터장만
+// 과제가 아니라 트랙 전체를 맡는다. 과제 셋을 1·2·3 순서로 먼저 훑고
+// 마지막에 디렉터로 닫는 편이, 앞의 과제 슬라이드 순서와도 맞는다.
+// 센터장은 이 자리에서 환영사도 맡는다.
 // 소속 칩은 회사별 색을 쓰지 않는다 — 이 장은 회사를 구분하는 자리가
 // 아니라 네 분을 나란히 소개하는 자리라, 색이 갈리면 없는 편이 생긴다.
 // 색으로 회사를 구분하는 곳은 크루 명단(5-2~5-4)뿐이다.
 function renderSponsors(root) {
   root.className = 'namecards';
 
-  const people = [WELCOME, ...SPONSORS];
+  const people = [...SPONSORS, WELCOME];
 
   for (const p of people) {
     const card = el('div', 'namecard');
@@ -333,7 +335,11 @@ function renderTaskDetail(root, taskId) {
     // 그것까지 붙이면 같은 줄에 선 카드의 글자 수가 혼자 길어져 명단이
     // 들쭉날쭉해진다. 직책은 진행자 노트에만 남는다.
     const name = el('div', 'crew-cell__name', m.name);
-    cell.append(name, chip(m.company));
+    // 소속 칩도 **역할 색**을 쓴다. 회사별 색을 쓰던 때는 한 칸 안에서
+    // 왼쪽 띠(역할)와 칩(회사)이 다른 색으로 갈려, 범례에서 본 색이
+    // 카드에서 두 번 다르게 나타났다. 이 장에서 세는 것은 회사가 아니라
+    // 도메인 몇 · 개발 몇 · 자문 몇이므로 색을 역할 하나로 모은다.
+    cell.append(name, el('span', `chip chip--role chip--role-${m.role}`, m.company));
     // 미래연 자문 세 분은 부서 표기가 비어 있다. 그 자리에 직책을 넣어
     // 카드 높이를 다른 크루와 맞추고, 빈 칸이 남지 않게 한다.
     const under = m.dept || m.title;
