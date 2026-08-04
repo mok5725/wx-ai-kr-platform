@@ -180,4 +180,9 @@ window.addEventListener('hashchange', () => goTo(fromHash(window.location.hash))
 
 render();
 
+// 챕터가 제자리에 놓였다. 이제 보여준다 — 이 클래스가 붙어 있는 동안은
+// 여덟 챕터가 (0,0)에 겹쳐 있어서 25장의 제목이 한 덩어리로 보인다
+// (styles/slides.css의 html.is-booting 규칙).
+document.documentElement.classList.remove('is-booting');
+
 window.__deck = { goTo, current: () => index };
