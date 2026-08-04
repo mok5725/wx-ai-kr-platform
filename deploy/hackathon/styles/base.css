@@ -1,0 +1,45 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  /* 한글은 기본값(word-break: normal)이면 단어 한가운데서도 줄이 바뀐다.
+     keep-all이면 띄어쓰기에서만 끊어져 낱말이 쪼개지지 않는다.
+     아주 긴 영문 한 덩어리처럼 그래도 넘치는 경우만 break-word가 받는다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-height: var(--leading-body);
+  color: var(--ink);
+  background: var(--void);
+  /* 슬라이드 평면이 뷰포트 밖으로 뻗어 있다. 스크롤바가 뜨면 안 된다. */
+  overflow: hidden;
+}
+
+#viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 팝업 차단 안내. 4초 뒤 사라진다. */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.8em 1.4em;
+  border-radius: var(--radius-pill);
+  background: rgba(11, 9, 48, 0.94);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: var(--step-0);
+}

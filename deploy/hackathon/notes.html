@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>진행자 노트 — 팀밋업</title>
+<link rel="stylesheet" href="styles/fonts.css">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/notes.css">
+</head>
+<body class="notes">
+  <div class="notes__bar">
+    <span class="notes__clock" id="notes-clock">--:--:--</span>
+    <span class="notes__position" id="notes-position">연결 중…</span>
+  </div>
+
+  <h1 class="notes__title" id="notes-title">—</h1>
+  <div class="notes__note" id="notes-note">본 화면과 연결을 기다리는 중입니다.</div>
+  <div id="notes-crew"></div>
+
+  <button class="notes__bg" id="notes-bg" type="button">배경 끄기</button>
+
+  <p class="notes__hint">
+    이 창에서도 Enter · Space · ↓ · PageDown 으로 다음 장,<br>
+    ↑ · PageUp · Backspace 로 이전 장으로 넘어갑니다.<br>
+    이 창을 닫아도 발표 화면은 그대로 진행됩니다.
+  </p>
+
+<script type="module">
+  import { createNotesClient } from './src/notes.js';
+  createNotesClient({
+    title: document.getElementById('notes-title'),
+    note: document.getElementById('notes-note'),
+    crew: document.getElementById('notes-crew'),
+    position: document.getElementById('notes-position'),
+    clock: document.getElementById('notes-clock'),
+    bgButton: document.getElementById('notes-bg'),
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+:root {
+  /* 팔레트 — 딥 인디고 위의 발광 보라·시안. 참고 사이트의 배경 톤. */
+  --void: #08062A;
+  --void-high: #150F45;
+  --ink: #EEF0FF;
+  /* 보조 글자 두 단계. 예전 값(#A6A8D4 / #666A9B)은 배경 #08062A 위에서
+     각각 8.6:1과 **3.8:1**이었다. faint는 WCAG AA 본문 기준(4.5:1)에
+     미달이라 흐릿했고, 뒤로 별과 오로라가 지나가면 더 나빠졌다.
+     지금 값은 11.8:1과 8.3:1이다 — 위계는 남기고 바닥을 올렸다. */
+  --ink-soft: #C3C6EE;
+  --ink-faint: #A3A7D8;
+  --glow-violet: #8489F5;
+  --glow-orchid: #CDA0FF;
+  --glow-cyan: #CCE8FE;
+  --glow-rose: #B591E9;
+  --warn: #FFD166;
+  /* 제목 안의 핵심 낱말에만 쓰는 형광. 과하지 않은 연한 민트-연두로,
+     어두운 배경에서 스스로 빛나 보이되 제목 전체를 잡아먹지 않는다.
+     **한 제목에 한 낱말만.** 두 군데 이상 칠하면 강조가 사라진다. */
+  --kw: #8AF0C6;
+  --gold: #F2C14E;
+  --line: rgba(238, 240, 255, 0.14);
+  --panel: rgba(238, 240, 255, 0.05);
+
+  /* 소속 칩 색. 원본 자료의 색 구분을 그대로 가져왔다.
+     content.js의 chipTone()이 내는 세 값과 짝을 이룬다. */
+  --chip-warm-bg: rgba(242, 193, 78, 0.16);
+  --chip-warm-ink: #F2C14E;
+  --chip-green-bg: rgba(63, 199, 173, 0.16);
+  --chip-green-ink: #3FC7AD;
+  --chip-neutral-bg: rgba(166, 168, 212, 0.14);
+  --chip-neutral-ink: #A6A8D4;
+
+  /* 크루 역할 색. 범례(크루 구성 · 도메인 5 · 개발 2 …)와 네임카드가
+     **같은 색을 쓴다.** 범례에서 본 색이 카드에 그대로 나타나야 "구성대로
+     나뉘어 있다"가 한눈에 읽힌다. 소속 칩은 회사를 나타내는 다른 축이므로
+     역할은 색이 아니라 카드 왼쪽 띠로 구분한다. */
+  --role-domain: #F2C14E;
+  --role-domain-bg: rgba(242, 193, 78, 0.12);
+  --role-dev: #3FC7AD;
+  --role-dev-bg: rgba(63, 199, 173, 0.12);
+  --role-domain-dev: #B98FE8;
+  --role-domain-dev-bg: rgba(185, 143, 232, 0.12);
+  --role-advisor: #8FB8FF;
+  --role-advisor-bg: rgba(143, 184, 255, 0.1);
+
+  --radius: 18px;
+  --radius-pill: 999px;
+
+  /* 글꼴. 제목은 페이퍼로지, 소제목과 본문은 나눔스퀘어.
+     둘 다 한글 서브셋이라 드문 음절이 빠질 수 있는데, 그런 글자만
+     자동으로 뒤쪽 폰트로 떨어진다(글자 단위 대체). 그래서 나눔스퀘어를
+     제목 스택에도 두 번째로 넣어둔다 — 페이퍼로지에 없는 글자가
+     시스템 고딕으로 튀는 것보다 나눔스퀘어로 받는 편이 덜 어긋난다. */
+  --font-title: 'Paperlogy', 'NanumSquare', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --font-body: 'NanumSquare', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+
+  /* 프로젝터 타이포 스케일.
+     선호값은 너비와 높이 중 작은 쪽을 따른다. vw만 쓰면 화면이 16:9보다
+     세로로 길 때 글자가 뷰포트보다 느리게 줄어 내용이 잘린다.
+     아래 vw/vh 쌍은 16:9에서 같은 값이 되도록 맞췄다.
+
+     **크기와 줄간격은 함께 정한다 (2026-08-03).** 한 번은 너무 작아
+     (1280×720에서 가장 작은 글자 9px) 뒷줄에서 안 읽혔고, 한 번은 너무
+     키워 줄이 서로 붙었다. 지금 값은 그 사이다 — 글자를 키우는 대신
+     남는 자리를 줄간격에 쓴다. 한글은 라틴보다 글자 밀도가 높아 같은
+     크기라도 행간이 더 필요하다(본문 1.7).
+
+     1280×720 기준: step-00 14px, step-0 16px, step-1 21px, step-2 26px. */
+  --step-00: clamp(0.82rem, min(1.09vw, 1.94vh), 1.15rem);
+  --step-0: clamp(0.92rem, min(1.25vw, 2.22vh), 1.35rem);
+  --step-1: clamp(1.05rem, min(1.64vw, 2.92vh), 1.75rem);
+  --step-2: clamp(1.2rem, min(2.03vw, 3.61vh), 2.2rem);
+  --step-3: clamp(1.5rem, min(2.9vw, 5.16vh), 3.5rem);
+  --step-4: clamp(1.9rem, min(4.5vw, 8vh), 5.4rem);
+  --step-5: clamp(2.4rem, min(7.5vw, 13.33vh), 9rem);
+
+  /* 줄간격. 한 곳에서 정해 두어 슬라이드마다 제각각이 되지 않게 한다. */
+  --leading-body: 1.7;
+  --leading-tight: 1.5;
+
+  /* 상단 로고 바. --brand-h는 로고 높이, --brandbar-h는 바가 차지하는
+     전체 높이(로고 + 위아래 여백)로 슬라이드 여백 계산에 쓴다. */
+  --brand-h: clamp(1.4rem, min(2.4vw, 4.27vh), 2.6rem);
+  --brandbar-h: calc(var(--brand-h) + var(--pad) * 0.9);
+
+  --gap: clamp(0.4rem, min(0.8vw, 1.42vh), 1.2rem);
+  --pad: clamp(1rem, min(3.5vw, 6.2vh), 4.5rem);
+
+  --ease-slide: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-slide: 700ms;
+}

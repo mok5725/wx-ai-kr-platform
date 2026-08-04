@@ -28,6 +28,14 @@ claude.wx.ai.kr {
 	file_server
 }
 
+# hackathon.wx.ai.kr — 마스터 트랙 팀밋업 발표 덱(정적)
+hackathon.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	root * /srv/hackathon
+	file_server
+}
+
 # lab.wx.ai.kr — wx01 앱
 lab.wx.ai.kr {
 	import secure_headers

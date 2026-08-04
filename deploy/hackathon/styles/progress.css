@@ -1,0 +1,43 @@
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--pad) * 0.6);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  /* 배경과 마찬가지로 조작 대상이 아니다. 마우스가 지나가도 반응 없다. */
+  pointer-events: none;
+}
+
+.progress__dot {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(238, 240, 255, 0.2);
+  overflow: hidden;
+  transition: width 460ms var(--ease-slide), background-color 460ms var(--ease-slide);
+}
+
+.progress__dot.is-past { background: rgba(238, 240, 255, 0.42); }
+
+.progress__dot.is-current {
+  width: 4.5rem;
+  background: rgba(238, 240, 255, 0.18);
+}
+
+.progress__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glow-violet);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 460ms var(--ease-slide);
+}
+
+/* prefers-reduced-motion 블록을 뺐다 (2026-08-03 결정).
+   사유는 styles/background.css 파일 끝 주석을 본다. */

@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>26 WX해커톤 마스터 트랙 팀밋업</title>
+<!-- 표지에 바로 쓰이는 두 굵기만 미리 받는다. 나머지는 @font-face가
+     필요할 때 받아온다. 전부 preload하면 첫 화면이 오히려 늦어진다. -->
+<link rel="preload" href="assets/fonts/Paperlogy-9Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/NanumSquareR.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles/fonts.css">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/background.css">
+<link rel="stylesheet" href="styles/slides.css">
+<link rel="stylesheet" href="styles/roster.css">
+<link rel="stylesheet" href="styles/progress.css">
+</head>
+<body>
+<div id="viewport">
+  <div class="bg" aria-hidden="true">
+    <div class="bg__base"></div>
+    <div class="bg__deep" id="layer-deep">
+      <div class="galaxy galaxy--spiral"></div>
+      <div class="galaxy galaxy--elliptical"></div>
+      <div class="nebula"></div>
+    </div>
+    <div class="bg__aurora" id="layer-aurora">
+      <div class="orb orb--1"></div>
+      <div class="orb orb--2"></div>
+      <div class="orb orb--3"></div>
+      <div class="orb orb--4"></div>
+    </div>
+    <div class="bg__stars" id="layer-far"><canvas id="stars-far"></canvas></div>
+    <div class="bg__stars" id="layer-near"><canvas id="stars-near"></canvas></div>
+  </div>
+
+  <!-- 모든 슬라이드 위에 고정으로 뜨는 주최 표기. #deck 밖에 두어야
+       슬라이드가 움직여도 제자리에 남는다. 로고는 전부 단색 SVG라
+       마스크로 모양만 쓰고 흰색으로 칠한다. -->
+  <header class="brandbar">
+    <div class="brandbar__hosts">
+      <span class="brand brand--holdings mask-art" role="img" aria-label="POSCO HOLDINGS"></span>
+      <span class="brandbar__x" aria-hidden="true">✕</span>
+      <span class="brand brand--hrdi mask-art" role="img" aria-label="포스코인재창조원"></span>
+    </div>
+    <div class="brandbar__event">
+      <span class="brand brand--mark mask-art" aria-hidden="true"></span>
+      <span class="brandbar__name">WX해커톤</span>
+    </div>
+  </header>
+
+  <div id="deck">
+
+    <!-- 챕터 1 — 오프닝 -->
+    <section class="chapter" data-chapter="opening">
+      <article class="slide slide--center" data-slide-id="title">
+        <p class="cover-event">
+          <span class="cover-event__mark mask-art" aria-hidden="true"></span>
+          2026 WX해커톤
+        </p>
+        <h1 class="cover-title">
+          <span class="cover-title__art" role="img" aria-label="마스터 트랙">
+            <span class="cover-title__master mask-art"></span>
+            <span class="cover-title__track mask-art"></span>
+          </span>
+          <span class="cover-title__main">팀밋업</span>
+        </h1>
+        <div class="cover-sub">
+          <p class="cover-title__en">Master Track Team Meet-up</p>
+          <p class="slide__when">2026. 8. 5 (수) · 송도캠퍼스 러닝센터</p>
+        </div>
+        <div class="slogan-lockup">
+          <span class="slogan-lockup__pre">End-to-End:</span>
+          <span class="slogan-art" role="img" aria-label="Idea to Impact">
+            <span class="slogan-art__idea mask-art"></span>
+            <span class="slogan-art__to mask-art"></span>
+            <span class="slogan-art__impact mask-art"></span>
+          </span>
+        </div>
+      </article>
+
+      <article class="slide slide--center" data-slide-id="selected">
+        <img class="medal" src="assets/medal.webp" alt="" decoding="async">
+        <h2 class="slide__title">여러분은 <span class="kw">마스터 크루</span>입니다</h2>
+        <p class="slide__lead">포스코홀딩스와 인재창조원이 공동 주관하는<br>2026 WX해커톤 마스터 트랙 크루로 선정되었습니다.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat__value" data-countup="115">115</div><div class="stat__label">지원</div></div>
+          <div class="stat__arrow">→</div>
+          <div class="stat"><div class="stat__value" data-countup="22">22</div><div class="stat__label">선발</div></div>
+          <div class="stat__arrow">·</div>
+          <div class="stat"><div class="stat__value">3</div><div class="stat__label">과제당 7~8명</div></div>
+        </div>
+      </article>
+
+      <article class="slide" data-slide-id="three-things">
+        <p class="slide__eyebrow">오늘을 한 문장으로</p>
+        <h2 class="slide__title">오늘 집에 갈 때 <span class="kw">손에 쥐고 갈 것</span></h2>
+        <div class="trio trio--icons">
+          <div class="trio__item">
+            <div class="trio__no">1</div>
+            <h3 class="trio__title">재정의된 과제</h3>
+            <p class="trio__body">주어진 과제가 아니라, 우리 팀이 직접 다시 정의한 한 문장</p>
+            <!-- 다시 쓴 한 문장 — 카드 위에 반짝임 -->
+            <div class="trio__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg1)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                  <linearGradient id="tg1" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" class="ic-g0"></stop>
+                    <stop offset="1" class="ic-g1"></stop>
+                  </linearGradient>
+                </defs>
+                <rect x="6" y="16" width="38" height="38" rx="8"></rect>
+                <path d="M15 32H35"></path>
+                <path d="M15 42H29"></path>
+                <path d="M53 6Q53 14 61 14Q53 14 53 22Q53 14 45 14Q53 14 53 6Z" fill="url(#tg1)" stroke-width="2"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="trio__item">
+            <div class="trio__no">2</div>
+            <h3 class="trio__title">함께 갈 사람</h3>
+            <p class="trio__body">도메인 전문가 · 개발자 · 기술 코치가 하나의 팀이 되는 것</p>
+            <!-- 셋이 하나의 팀 — 가운데가 한 걸음 앞에 선 세 사람 -->
+            <div class="trio__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg2)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                  <linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" class="ic-g0"></stop>
+                    <stop offset="1" class="ic-g1"></stop>
+                  </linearGradient>
+                </defs>
+                <circle cx="12" cy="26" r="6.5"></circle>
+                <path d="M3 47a9 9 0 0 1 18 0"></path>
+                <circle cx="32" cy="21" r="7.5"></circle>
+                <path d="M22 47a10 10 0 0 1 20 0"></path>
+                <circle cx="52" cy="26" r="6.5"></circle>
+                <path d="M43 47a9 9 0 0 1 18 0"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="trio__item">
+            <div class="trio__no">3</div>
+            <h3 class="trio__title">9월까지의 마일스톤</h3>
+            <p class="trio__body">본선(9/10~11)까지 남은 5주의 주차별 계획</p>
+            <!-- 9월 10일, 송도 — 지도에 찍는 표식 -->
+            <div class="trio__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="url(#tg3)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                  <linearGradient id="tg3" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" class="ic-g0"></stop>
+                    <stop offset="1" class="ic-g1"></stop>
+                  </linearGradient>
+                </defs>
+                <path d="M32 57.7s20-18.6 20-31.4a20 20 0 1 0-40 0c0 12.8 20 31.4 20 31.4z"></path>
+                <circle cx="32" cy="26.3" r="7.2"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 챕터 2 — 해커톤 개요 -->
+    <section class="chapter" data-chapter="overview">
+      <article class="slide" data-slide-id="what-is">
+        <p class="slide__eyebrow">해커톤 개요</p>
+        <h2 class="slide__title slide__title--mid"><span class="kw">WX해커톤</span>은 어떤 대회인가요</h2>
+        <p class="slide__lead">디지털 기반의 일하는 방식 혁신을 통해<br>창의적 문제해결과 숨은 디지털 인재를 발굴하는 도전형 개발 대회</p>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat__value">2024</div>
+            <div class="rates">
+              <div class="rate">
+                <div class="rate__tag">해커톤</div>
+                <div class="rate__flow">지원 345명 → 선발 50명 (10팀)</div>
+                <div class="rate__num">6.9<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">2025</div>
+            <div class="rates">
+              <div class="rate">
+                <div class="rate__tag">해커톤</div>
+                <div class="rate__flow">지원 112명 → 선발 60명 (15팀)</div>
+                <div class="rate__num">1.9<small>:1</small></div>
+              </div>
+              <div class="rate">
+                <div class="rate__tag">제로톤</div>
+                <div class="rate__flow">지원 145팀 → 선발 20팀 (60명)</div>
+                <div class="rate__num">7.3<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">2026</div>
+            <div class="rates">
+              <div class="rate">
+                <div class="rate__tag">챌린저</div>
+                <div class="rate__flow">지원 54팀 → 선발 7팀 (28명)</div>
+                <div class="rate__num">7.7<small>:1</small></div>
+              </div>
+              <div class="rate rate--lit">
+                <div class="rate__tag">마스터</div>
+                <div class="rate__flow">지원 115명 → 선발 22명 (3팀)</div>
+                <div class="rate__num">5.2<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-slide-id="two-track">
+        <p class="slide__eyebrow">올해는 투 트랙</p>
+        <h2 class="slide__title slide__title--mid">창의성과 전략성을 결합한 <span class="kw">Two-Track</span></h2>
+        <div class="tracks">
+          <div class="tracks__rail">경영진 · 그룹 전략</div>
+          <div class="track track--dim track--up">
+            <span class="track__flow" aria-hidden="true"></span>
+            <div class="track__kicker">Bottom-up · 창의성</div>
+            <div class="track__name">챌린저 트랙 <small>Challenger Track</small></div>
+            <p class="track__lead">자발적 팀 주도의 현업 과제 발굴<br>AI 에이전트(바이브코딩) 기반 워크플로우 재설계</p>
+            <div class="track__stats">
+              <div class="tstat"><div class="tstat__value">7</div><div class="tstat__label">팀</div></div>
+              <div class="tstat"><div class="tstat__value">4</div><div class="tstat__label">명 / 팀</div></div>
+            </div>
+          </div>
+          <div class="track track--lit track--down">
+            <span class="track__flow" aria-hidden="true"></span>
+            <div class="track__kicker">Top-down · 전략성</div>
+            <div class="track__name">마스터 트랙 <small>Master Track</small></div>
+            <p class="track__lead">그룹 공통 비즈니스 과제에 전문가 팀을 구성해 실질적 비즈니스 임팩트 창출</p>
+
+            <!-- 개조식 세 줄(주제·대상·방식)을 셋의 성격대로 갈라 놓았다.
+                 대상은 숫자라 타일로, 방식은 시간 순서라 진행 막대로,
+                 주제는 한 문장짜리 목표라 배지로. 같은 글을 dt/dd로
+                 늘어놓았을 때보다 "무엇이 몇 개이고 언제 무엇을 하는가"가
+                 훨씬 빨리 잡힌다. -->
+            <div class="track__stats">
+              <div class="tstat"><div class="tstat__value">3</div><div class="tstat__label">과제 팀</div></div>
+              <div class="tstat"><div class="tstat__value">7~8</div><div class="tstat__label">명 / 팀</div></div>
+              <div class="tstat tstat--goal">
+                <div class="tstat__value">핵심 난제 해결</div>
+                <div class="tstat__label">즉각 PoC · 정규 프로젝트 전환</div>
+              </div>
+            </div>
+
+            <div class="track__steps">
+              <div class="tstep">
+                <div class="tstep__when">~6월</div>
+                <div class="tstep__what">과제 발굴</div>
+                <div class="tstep__note">경영진 인터뷰</div>
+              </div>
+              <div class="tstep">
+                <div class="tstep__when">~9월</div>
+                <div class="tstep__what">조기 과제수행</div>
+                <div class="tstep__note">전문가 팀 실행</div>
+              </div>
+              <div class="tstep tstep--last">
+                <div class="tstep__when">9/10~11</div>
+                <div class="tstep__what">본선 검증 · 고도화</div>
+                <div class="tstep__note">전문 평가단 집중 평가</div>
+              </div>
+            </div>
+          </div>
+          <div class="tracks__rail">현업 · 팀</div>
+        </div>
+      </article>
+
+      <article class="slide" data-slide-id="process">
+        <p class="slide__eyebrow">해커톤 개요</p>
+        <h2 class="slide__title slide__title--mid">마스터 트랙은 <span class="kw">이렇게 진행됩니다</span></h2>
+        <div class="timeline">
+          <div class="tl-step tl-step--done">
+            <div class="tl-step__when">5~6월</div>
+            <p class="tl-step__what">Top-down 과제 선정</p>
+            <ul class="tl-step__note">
+              <li>(5월) 사업회사별 임원 대상 후보과제 선정 요청 — 비즈니스 임팩트가 큰 과제 선정을 위한 질문지 제공, FGI 실시</li>
+              <li>(6월) 기술 타당성 및 비즈니스 파급력 등을 종합 검증하여 최종 과제 3개 확정</li>
+            </ul>
+          </div>
+          <div class="tl-step tl-step--done">
+            <div class="tl-step__when">7월</div>
+            <p class="tl-step__what">참가자 모집 → 3팀 구성</p>
+          </div>
+          <div class="tl-step tl-step--current">
+            <div class="tl-step__when">8~9월</div>
+            <p class="tl-step__what">전문가 밀착 코칭<br>솔루션 집중 개발</p>
+            <span class="tl-here">오늘 여기</span>
+          </div>
+          <div class="tl-step">
+            <div class="tl-step__when">9/10~11</div>
+            <p class="tl-step__what">본선 참가</p>
+            <ul class="tl-step__note">
+              <li>전문 평가단</li>
+              <li>실사용 검증 및 평가</li>
+            </ul>
+          </div>
+          <div class="tl-step">
+            <div class="tl-step__when">9/11</div>
+            <p class="tl-step__what">공동마무리</p>
+            <ul class="tl-step__note">
+              <li>인사이트 공유 발표</li>
+              <li>전문 심사위원 평가</li>
+              <li>시상식 &amp; 네트워킹</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 챕터 3 — 오늘의 흐름 (timetable.js가 채운다) -->
+    <section class="chapter" data-chapter="today">
+      <article class="slide" data-slide-id="timetable-all">
+        <p class="slide__eyebrow">09:30 ~ 16:30 · 7개 세션</p>
+        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">팀밋업의 흐름</span>은</h2>
+        <div class="timetable" data-timetable="all"></div>
+      </article>
+      <article class="slide" data-slide-id="timetable-am">
+        <p class="slide__eyebrow">09:30 ~ 13:00</p>
+        <h2 class="slide__title slide__title--mid"><span class="title-box">오전</span> 듣고, 알고, 친해지는 시간</h2>
+        <div class="trio trio--four" data-trio="morning"></div>
+      </article>
+      <article class="slide" data-slide-id="afternoon">
+        <p class="slide__eyebrow">오후 · 진행 팀스파르타</p>
+        <h2 class="slide__title slide__title--mid"><span class="title-box">오후</span> 우리 과제를 우리 손으로</h2>
+        <div class="trio trio--end" data-trio="afternoon"></div>
+      </article>
+    </section>
+
+    <!-- 챕터 4 — 함께하는 사람들 (roster.js가 채운다) -->
+    <section class="chapter" data-chapter="people">
+      <article class="slide" data-slide-id="sponsors">
+        <p class="slide__eyebrow">함께하는 사람들</p>
+        <h2 class="slide__title slide__title--mid">오늘 <span class="kw">함께해 주신 스폰서</span></h2>
+        <div data-roster="sponsors"></div>
+      </article>
+      <article class="slide slide--center" data-slide-id="welcome">
+        <p class="slide__eyebrow">환영사</p>
+        <h2 class="slide__title slide__title--mid">김경철 센터장</h2>
+        <div data-roster="welcome"></div>
+      </article>
+      <article class="slide" data-slide-id="expedition">
+        <p class="slide__eyebrow">오늘부터 9월까지, 여러분 옆에 있습니다</p>
+        <h2 class="slide__title slide__title--mid"><span class="kw">인창원 해커톤 원정대</span>를 소개합니다</h2>
+        <div data-roster="expedition"></div>
+      </article>
+      <article class="slide" data-slide-id="support">
+        <p class="slide__eyebrow">지원 체계</p>
+        <h2 class="slide__title slide__title--mid"><span class="kw">혼자</span> 만들지 않습니다</h2>
+        <div data-roster="org"></div>
+      </article>
+      <article class="slide" data-slide-id="roles-make">
+        <p class="slide__eyebrow">마스터 트랙 역할분담 &nbsp;·&nbsp; 만드는 쪽</p>
+        <h2 class="slide__title slide__title--mid">과제를 <span class="kw">만드는 사람들</span></h2>
+        <div data-roster="roles-make"></div>
+      </article>
+      <article class="slide" data-slide-id="roles-back">
+        <p class="slide__eyebrow">마스터 트랙 역할분담 &nbsp;·&nbsp; 받치는 쪽</p>
+        <h2 class="slide__title slide__title--mid">그 팀을 <span class="kw">받치는 사람들</span></h2>
+        <div data-roster="roles-back"></div>
+      </article>
+    </section>
+
+    <!-- 챕터 5 — 우리 과제와 크루 (roster.js가 채운다) -->
+    <section class="chapter" data-chapter="tasks">
+      <article class="slide" data-slide-id="tasks-all">
+        <p class="slide__eyebrow">경영진 인터뷰와 FGI를 거쳐 기술 타당성과 비즈니스 파급력을 검증한 결과입니다</p>
+        <h2 class="slide__title slide__title--mid">최종 선발된 <span class="kw">세 개의 과제</span></h2>
+        <div data-roster="tasks"></div>
+      </article>
+      <article class="slide" data-slide-id="task-safety"><div data-roster="task:safety"></div></article>
+      <article class="slide" data-slide-id="task-logistics"><div data-roster="task:logistics"></div></article>
+      <article class="slide" data-slide-id="task-market"><div data-roster="task:market"></div></article>
+    </section>
+
+    <!-- 챕터 6 — 완주 혜택 (roster.js가 채운다) -->
+    <section class="chapter" data-chapter="reward">
+      <article class="slide" data-slide-id="perks">
+        <p class="slide__eyebrow">트랙별 특전</p>
+        <h2 class="slide__title slide__title--mid">완주한 크루에게 드리는 <span class="kw">혜택</span></h2>
+        <div data-roster="perks"></div>
+      </article>
+
+      <article class="slide" data-slide-id="evaluation">
+        <p class="slide__eyebrow">본선 평가 방식</p>
+        <h2 class="slide__title slide__title--mid">솔루션 <span class="kw">평가</span></h2>
+        <p class="slide__lead">마스터 과제 평가는 <strong>2 Track</strong>으로 실시합니다</p>
+        <div class="evals">
+          <!-- 영문 이름(Verification·Validation)은 부르는 이름일 뿐이다.
+               정작 읽어야 할 것은 "무엇을 보는가"라서, 영문은 작은 머리표로
+               올리고 한글 기준과 본문을 키웠다. -->
+          <div class="eval">
+            <span class="eval__name">Verification</span>
+            <div class="eval__what">비즈니스 임팩트</div>
+            <p class="eval__desc">기술적 난이도와 <strong>무관하게</strong>, 솔루션의 비즈니스 임팩트에 대한 평가</p>
+            <div class="eval__tags">
+              <span class="eval__tag">AIReX 기반 실시</span>
+              <span class="eval__tag eval__tag--who">본부장급 임원 참여</span>
+            </div>
+          </div>
+          <div class="eval">
+            <span class="eval__name">Validation</span>
+            <div class="eval__what">기술 완성도</div>
+            <p class="eval__desc">기술적 난이도, 기능구현의 완성도, 솔루션의 <strong>실제 기간시스템 접목 가능성</strong> 등에 대한 평가</p>
+            <div class="eval__tags">
+              <span class="eval__tag eval__tag--who">실장급 임원 참여</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 챕터 7 — 개발 준비 -->
+    <section class="chapter" data-chapter="devprep">
+      <article class="slide" data-slide-id="governance">
+        <p class="slide__eyebrow">10:30 ~ 11:00 · 김두환 리더</p>
+        <h2 class="slide__title slide__title--mid">바이브 코딩, 이것만은 지킵니다</h2>
+        <p class="slide__lead">과제 및 개발 관련 주의사항 안내</p>
+        <div class="handoff-rows">
+          <dl class="handoff-row"><dt>과제</dt><dd>마스터 트랙 과제 설명 (안전 · 물류 · 마켓 센싱)</dd></dl>
+          <dl class="handoff-row"><dt>거버넌스</dt><dd>바이브 코딩 거버넌스 공유</dd></dl>
+        </div>
+        <p class="slide__foot">이어지는 내용은 김두환 리더 화면으로 진행합니다.</p>
+      </article>
+      <article class="slide" data-slide-id="agentee">
+        <p class="slide__eyebrow">11:00 ~ 12:00 · 김우겸 프로 (P-DX)</p>
+        <h2 class="slide__title slide__title--mid">개발 환경 — Agentee 플랫폼</h2>
+        <p class="slide__lead">마스터 과제 솔루션 안착을 위한 개발 환경 안내</p>
+        <div class="handoff-rows">
+          <dl class="handoff-row"><dt>플랫폼</dt><dd>Agentee 플랫폼 소개</dd></dl>
+          <dl class="handoff-row"><dt>지원사항</dt><dd>과제별 지원사항 논의</dd></dl>
+        </div>
+        <p class="slide__foot">이어지는 내용은 김우겸 프로 화면으로 진행합니다.</p>
+      </article>
+    </section>
+
+    <!-- 챕터 8 — 점심과 클로징 -->
+    <section class="chapter" data-chapter="closing">
+      <article class="slide slide--center" data-slide-id="networking">
+        <p class="slide__eyebrow">12:00 ~ 13:00 · 도시락 타임</p>
+        <h2 class="slide__title">잠깐, <span class="kw">밥먹고 합시다!</span></h2>
+        <!-- 도시락 사진. 이 장은 글이 세 줄뿐이라 가운데가 비어 있었다.
+             큰 그림 하나가 들어가야 "밥 먹으러 간다"가 말보다 먼저 읽힌다. -->
+        <img class="bento" src="assets/bento.webp" alt="" decoding="async">
+        <p class="slide__lead">마스터 트랙 참가를 축하하는 시간<br>편하게 소통하고 친해지는 시간</p>
+      </article>
+
+      <article class="slide slide--center" data-slide-id="closing">
+        <h2 class="slide__title"><span class="kw">9월 10일</span>,<br>송도에서 본선으로 다시 만나요</h2>
+        <p class="slide__lead">오늘부터 본선까지 5주</p>
+        <div class="closing-rows">
+          <dl class="closing-row"><dt>주 1~2회</dt><dd>미래연 자문 (과제별 전담 연구원)</dd></dl>
+          <dl class="closing-row"><dt>상시</dt><dd>팀스파르타 기술 코치</dd></dl>
+          <dl class="closing-row closing-row--final"><dt>본선</dt><dd>2026. 9. 10 ~ 11 · 송도캠퍼스 컨벤션센터</dd></dl>
+        </div>
+<div class="slogan-lockup">
+          <span class="slogan-lockup__pre">End-to-End:</span>
+          <span class="slogan-art" role="img" aria-label="Idea to Impact">
+            <span class="slogan-art__idea mask-art"></span>
+            <span class="slogan-art__to mask-art"></span>
+            <span class="slogan-art__impact mask-art"></span>
+          </span>
+        </div>
+      </article>
+    </section>
+
+  </div>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <p class="fs-hint" id="fs-hint">Enter · 휠 · → 다음 · F 전체화면 · P 진행자 노트</p>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

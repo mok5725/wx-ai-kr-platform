@@ -1,0 +1,70 @@
+/* 색은 가능한 한 tokens.css의 팔레트 변수를 쓴다. 본 화면과 팔레트가
+   갈라지지 않게 하기 위함이다. 정확히 일치하는 토큰이 없는 값
+   (배경 #0B0930, 본문 #D6D8FF, 크루 항목 #C9CBF0, 버튼 테두리/호버의
+   rgba 투명도)은 억지로 비슷한 토큰에 끼워 맞추지 않고 그대로 남겼다. */
+body.notes {
+  margin: 0;
+  padding: 1.6rem;
+  background: #0B0930;
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow: auto;
+}
+
+.notes__bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.notes__clock { font-size: 2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.notes__position { color: var(--ink-soft); font-size: 0.95rem; }
+
+.notes__title { font-size: 1.5rem; font-weight: 700; margin: 1.4rem 0 0.8rem; }
+
+.notes__note {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #D6D8FF;
+  white-space: pre-wrap;
+}
+
+.notes__subtitle {
+  font-size: 1rem;
+  color: var(--glow-violet);
+  margin: 1.6rem 0 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.notes__crew-item {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #C9CBF0;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(238, 240, 255, 0.07);
+}
+
+.notes__crew-name { font-weight: 700; color: var(--ink); }
+
+.notes__hint {
+  margin-top: 2rem;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.notes__bg {
+  margin-top: 1.2rem;
+  padding: 0.6em 1.2em;
+  border: 1px solid rgba(238, 240, 255, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.notes__bg:hover { background: rgba(238, 240, 255, 0.08); }
