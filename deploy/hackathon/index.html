@@ -2,7 +2,13 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 아이폰 사파리는 요소 전체화면 API가 없다. 대신 "홈 화면에 추가"로 열면
+     이 두 줄 덕분에 주소창·탭바 없이 뜬다 — 아이폰에서 전체화면에 가장
+     가까운 길이다. 안드로이드는 src/mobile.js의 버튼이 맡는다. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WX 팀밋업">
 <title>26 WX해커톤 마스터 트랙 팀밋업</title>
 <!-- 표지에 바로 쓰이는 두 굵기만 미리 받는다. 나머지는 @font-face가
      필요할 때 받아온다. 전부 preload하면 첫 화면이 오히려 늦어진다. -->
@@ -77,6 +83,18 @@
             <span class="slogan-art__to mask-art"></span>
             <span class="slogan-art__impact mask-art"></span>
           </span>
+        </div>
+        <!-- 교육생이 자기 자리에서 빔프로젝터를 향해 찍는 QR이다. 뒷줄에서도
+             잡히도록 크게 두고, 어두운 배경 위에서 대비가 죽지 않게 흰 카드에
+             얹는다. 파일로 구워 두어 강의장 인터넷이 끊겨도 뜬다.
+             **맨 끝에 둔다.** 등장 지연이 nth-child로 걸려 있어 앞에 끼어들면
+             표지의 다른 요소가 통째로 한 칸씩 밀린다. -->
+        <div class="cover-qr">
+          <div class="cover-qr__card">
+            <img class="cover-qr__img" src="assets/qr-site.svg" alt="hackathon.wx.ai.kr 바로가기 QR 코드" decoding="async">
+            <p class="cover-qr__lead">휴대폰으로 찍으면<br>내 자리에서 함께 봅니다</p>
+            <p class="cover-qr__url">hackathon.wx.ai.kr</p>
+          </div>
         </div>
       </article>
 
@@ -470,6 +488,8 @@
 
   <div class="progress" id="progress" aria-hidden="true"></div>
   <p class="fs-hint" id="fs-hint">Enter · 휠 · → 다음 · F 전체화면 · P 진행자 노트</p>
+  <!-- 휴대폰에서만 뜬다. src/mobile.js가 손가락 장치인지 확인한 뒤 hidden을 푼다. -->
+  <button class="fs-btn" id="fs-btn" type="button" hidden>⤢&nbsp;&nbsp;전체화면</button>
 </div>
 <script type="module" src="src/main.js"></script>
 </body>

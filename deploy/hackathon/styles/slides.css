@@ -604,6 +604,100 @@ body.is-resizing #deck {
   padding-bottom: 22vh;
 }
 
+/* 표지 왼쪽 가운데의 사이트 QR.
+   교육생이 **자기 자리에서 빔프로젝터를 향해** 찍는 물건이라, 기준은
+   "예쁘게 작게"가 아니라 "뒷줄에서 잡히도록 크게"다. 스크린 폭의 1/4쯤을
+   차지하게 두었다 — 3m 스크린이면 QR 한 변이 0.5m를 넘어 강의장 뒤에서도
+   잡힌다.
+   어두운 오로라 위에 검은 QR을 그대로 얹으면 대비가 죽어 인식률이 떨어진다.
+   흰 카드에 올려 여백(quiet zone)까지 카드가 만들게 한다.
+   흐름에서 빠진 absolute라 표지의 세로 예산(여유 20px)을 건드리지 않는다.
+
+   **가운데 정렬을 transform으로 하지 않는다.** 진입 애니메이션이
+   `.slide.is-active > *`에 transform을 걸어 덮어써 버린다. 위아래를 0으로
+   붙인 껍데기를 두고 flex로 가운데에 놓으면, 애니메이션은 자기 몫인
+   16px 떠오르기만 하고 정렬은 그대로 남는다.
+   껍데기는 손가락 입력을 받지 않는다 — 표지 위를 쓸어 넘기는 것을 막지 않기
+   위해서다. */
+.cover-qr {
+  position: absolute;
+  left: var(--pad);
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.cover-qr__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45em;
+  width: clamp(9rem, min(23vw, 34vh), 20rem);
+  padding: calc(var(--gap) * 1.15);
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  box-shadow: 0 0 3.2em rgba(132, 137, 245, 0.38);
+}
+
+.cover-qr__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.cover-qr__lead {
+  margin: 0;
+  font-size: var(--step-00);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  color: #1B1B3A;
+}
+
+.cover-qr__url {
+  margin: 0;
+  font-size: calc(var(--step-00) * 0.9);
+  letter-spacing: 0.02em;
+  color: #5A5A86;
+}
+
+/* 휴대폰으로 이미 들어와 있는 사람에게 QR은 잡음이다. 프로젝터는 절대
+   이 폭으로 떨어지지 않으므로 화면 폭으로 가른다(손가락 여부로 가르면
+   터치스크린 노트북에서 프로젝터의 QR이 사라진다). */
+@media (max-width: 900px) {
+  .cover-qr { display: none; }
+}
+
+/* 휴대폰 전체화면 버튼. 왼쪽 아래 한 자리에서 "전체화면"과 "닫기"를
+   번갈아 맡는다. src/mobile.js가 손가락 장치인지 확인한 뒤에만 hidden을
+   풀기 때문에, 발표 노트북 화면에는 나타나지 않는다.
+   노치를 피하려고 안전영역을 함께 본다(viewport-fit=cover와 짝). */
+.fs-btn {
+  position: fixed;
+  left: max(var(--pad), env(safe-area-inset-left));
+  bottom: max(calc(var(--pad) * 0.7), env(safe-area-inset-bottom));
+  z-index: 6;
+  /* 손가락으로 누르는 것이라 최소 44px을 확보한다. */
+  min-height: 44px;
+  padding: 0.5em 1.15em;
+  border: 1px solid rgba(238, 240, 255, 0.38);
+  border-radius: var(--radius-pill);
+  background: rgba(18, 16, 54, 0.74);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--step-00);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.fs-btn[hidden] { display: none; }
+
 /* 슬로건 — Idea.svg / to.svg / Impact.svg 를 겹쳐 쓴다.
    세 파일은 Idea_to_Impact.svg 와 같은 4710×1294 좌표계를 나눠 자른
    조각이라, 각자의 viewBox를 그 좌표계에 대한 비율로 환산해 절대 배치하면

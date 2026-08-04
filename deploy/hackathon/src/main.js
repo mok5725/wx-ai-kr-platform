@@ -10,6 +10,7 @@ import { mountRoster } from './roster.js';
 import { createNotesHost } from './notes.js';
 import { runCountUp } from './countup.js';
 import { typeInto } from './typing.js';
+import { initMobileFullscreen } from './mobile.js';
 
 const deckEl = document.getElementById('deck');
 const slideEls = [...document.querySelectorAll('.slide')];
@@ -162,6 +163,10 @@ bindSwipe(window, act);
 document.addEventListener('fullscreenchange', () => {
   document.body.classList.toggle('is-fullscreen', Boolean(document.fullscreenElement));
 });
+
+// 휴대폰으로 들어온 사람에게만 왼쪽 아래 전체화면 버튼을 띄운다.
+// 노트북(마우스)에서는 아무것도 하지 않는다 — 진행자는 F 키를 쓴다.
+initMobileFullscreen();
 
 // 창 크기가 바뀌면 px로 계산한 좌표가 어긋난다. 다시 그린다.
 // 인덱스는 그대로이므로 내비게이션처럼 미끄러지면 안 된다 — isResize를
