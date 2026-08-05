@@ -640,6 +640,140 @@
 .tb-step__name { font-family: var(--font-title); font-size: var(--step-2); font-weight: 700; line-height: 1.2; }
 .tb-step__body { font-size: var(--step-00); color: var(--ink-soft); line-height: var(--leading-tight); }
 
+/* ── 8-3 팀 빌딩 보드 ──────────────────────────────────────────────────
+   원본 양식은 1:1에 가까운 한 장이다. 그대로 16:9에 얹으면 좌우가 남고
+   글자만 작아지므로 **3:4 세로 종이 두 장**으로 나눴다. 세로 종이는
+   슬라이드 높이를 다 쓰므로 같은 내용이 훨씬 크게 들어간다.
+
+   높이가 기준이다 — 종이 폭은 높이에서 3:4로 따라온다. 두 장을 합쳐도
+   1280×720에서 가로를 다 쓰지 않아 좌우로 넉넉히 남는다. 그 여백이
+   "책상에 종이 두 장을 놓은" 인상을 만든다. */
+.board {
+  display: flex;
+  gap: calc(var(--gap) * 1.6);
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.sheet {
+  aspect-ratio: 3 / 4;
+  height: 100%;
+  min-height: 0;
+  padding: calc(var(--gap) * 0.6) calc(var(--gap) * 0.8);
+  border-radius: calc(var(--radius) * 0.7);
+  background: #FFFFFF;
+  /* 종이가 배경에서 떠 보이게 하는 그림자. 4-4 조직도와 같은 이유로
+     판 바깥에만 건다 — 안쪽 대비에는 영향이 없다. */
+  box-shadow: 0 0.6em 2.2em rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  /* 2장은 문장이 길어 세 칸을 합치면 종이보다 30px 높았다. 글자를 줄이는
+     대신 칸 사이와 줄간격에서 그만큼을 걷었다 — 뒷줄 가독성이 먼저다. */
+  gap: calc(var(--gap) * 0.22);
+}
+
+.sheet__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--on-light);
+}
+
+.sheet__name { font-family: var(--font-title); font-size: var(--step-0); font-weight: 700; color: var(--on-light); letter-spacing: 0.01em; }
+.sheet__no   { font-size: var(--step-00); color: var(--on-light-faint); font-variant-numeric: tabular-nums; }
+
+/* 한 줄짜리 항목 — 왼쪽에 라벨, 오른쪽에 채운 칸. */
+.bd-row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gap) * 0.5);
+}
+
+/* 역할 묶음만 남은 높이를 다 쓴다. 라벨은 위로 붙인다. */
+.bd-row--roles { flex: 1 1 auto; align-items: flex-start; min-height: 0; }
+.bd-row--roles .bd-label { padding-top: 0.35em; }
+
+/* 여러 줄짜리 항목 — 라벨이 위, 내용이 아래. 2장은 문장이 길어
+   가로로 라벨을 두면 칸이 좁아진다. */
+.bd-block { display: flex; flex-direction: column; gap: 0.25em; }
+.bd-block--rules { flex: 1 1 auto; min-height: 0; }
+
+.bd-label {
+  flex: 0 0 auto;
+  width: 4.2em;
+  font-size: var(--step-0);
+  font-weight: 800;
+  color: var(--on-light);
+  letter-spacing: 0.18em;
+  line-height: var(--leading-tight);
+}
+.bd-block > .bd-label { width: auto; letter-spacing: 0.12em; }
+.bd-label small { font-size: 0.72em; font-weight: 400; letter-spacing: 0; color: var(--on-light-faint); margin-left: 0.4em; }
+
+/* 채워 넣은 칸. 원본 양식의 주황 막대를 그대로 쓴다 — 이 덱의 색은
+   아니지만 이미 쓰던 양식의 얼굴이라 바꾸지 않는 편이 알아보기 쉽다.
+   글씨는 손글씨체다(개구). 유성매직으로 눌러 쓴 느낌을 내려고 자간을
+   조금 좁히고 굵기를 올렸다. */
+.bd-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.12em 0.6em;
+  border-radius: 6px;
+  background: var(--board-ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+/* 역할 다섯 줄. 라벨 칸을 좁게 잡아 이름 쪽에 폭을 몰아준다. */
+.bd-roles {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 3.4em 1fr;
+  align-items: center;
+  column-gap: calc(var(--gap) * 0.4);
+  row-gap: calc(var(--gap) * 0.34);
+  align-content: start;
+}
+
+.bd-sub { font-size: var(--step-00); font-weight: 700; color: var(--on-light-soft); }
+
+/* 여러 줄 칸. 한 줄씩 따로 막대를 두르면 종이가 얼룩덜룩해져서,
+   묶음 하나를 두르고 안에서 줄을 나눈다. */
+.bd-list {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0.3em 0.6em;
+  list-style: none;
+  border-radius: 6px;
+  background: var(--board-ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: var(--step-0);
+  line-height: 1.38;
+  color: #FFFFFF;
+  word-break: keep-all;
+}
+
+.bd-list li { position: relative; padding-left: 0.75em; }
+.bd-list li + li { margin-top: 0.2em; }
+.bd-list li::before { content: '·'; position: absolute; left: 0; }
+
+/* 규칙 넷은 두 칸으로. 한 줄씩 쌓으면 종이 아래가 비고, 두 칸이면
+   원본처럼 좌우로 읽힌다. */
+.bd-list--two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.9em; align-content: center; }
+.bd-list--two li + li { margin-top: 0; }
+.bd-list--two li:nth-child(n+3) { margin-top: 0.2em; }
+
 /* ── 휴대폰 (세로) ────────────────────────────────────────────────────
    slides.css에도 같은 미디어 블록이 있지만, 이 파일이 나중에 로드되므로
    여기 있는 선택자는 반드시 여기서 덮어야 한다. 저쪽에 적으면 조용히
@@ -673,6 +807,17 @@
 
   .perks--row { grid-template-columns: 1fr; }
   .tb-steps { grid-template-columns: 1fr; }
+
+  /* 팀 빌딩 보드는 세로형에서 종이를 위아래로 쌓는다. 3:4를 유지한 채
+     나란히 두면 두 장이 1004px이 되어 375px 화면에서 왼쪽 장이 통째로
+     잘린다. 세로에서는 비율을 놓고 **폭에 맞춘 뒤 높이는 내용이 정한다** —
+     종이 모양보다 글자가 다 보이는 것이 먼저다. */
+  .board { flex-direction: column; gap: calc(var(--gap) * 0.8); }
+  .sheet { aspect-ratio: auto; height: auto; width: 100%; }
+  .bd-row--roles, .bd-block--rules { flex: 0 0 auto; }
+  .bd-list--two { grid-template-columns: 1fr; }
+  .bd-list--two li:nth-child(n+3) { margin-top: 0; }
+  .bd-list--two li + li { margin-top: 0.2em; }
 
   /* 정사각형은 가로형 화면에서만이다. 한 열로 쌓이면 카드 한 장이
      화면 폭만큼 높아져 셋이 세 화면을 먹는다. */

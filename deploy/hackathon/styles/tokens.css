@@ -36,6 +36,10 @@
   --on-light-green: #0F6152;
   --on-light-violet: #3A3FA8;
   --on-light-orchid: #6B3FA0;
+  /* 팀 빌딩 보드(8-3)의 채운 칸. 원본 양식의 주황을 그대로 옮겼다 —
+     이 덱의 색은 아니지만 이미 쓰던 양식의 얼굴이다. 흰 글자와의
+     대비는 5.1:1로 본문 기준(4.5:1)을 넘는다. */
+  --board-ink: #C05A17;
 
   /* 소속 칩 색. 원본 자료의 색 구분을 그대로 가져왔다.
      content.js의 chipTone()이 내는 세 값과 짝을 이룬다. */
@@ -69,6 +73,11 @@
      시스템 고딕으로 튀는 것보다 나눔스퀘어로 받는 편이 덜 어긋난다. */
   --font-title: 'Paperlogy', 'NanumSquare', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
   --font-body: 'NanumSquare', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  /* 손글씨 — 팀 빌딩 보드(8-3)에 사람이 채워 넣은 글씨에만 쓴다.
+     **보드에 쓰인 글자만 남긴 조각 파일이다(19KB).** 문구를 고치면
+     없는 글자가 뒤쪽 폰트로 떨어져 그 글자만 고딕으로 튄다 —
+     그때는 폰트를 다시 자른다(assets/fonts/LICENSES.md). */
+  --font-hand: 'Gaegu', 'NanumSquare', 'Apple SD Gothic Neo', cursive;
 
   /* 프로젝터 타이포 스케일.
      선호값은 너비와 높이 중 작은 쪽을 따른다. vw만 쓰면 화면이 16:9보다

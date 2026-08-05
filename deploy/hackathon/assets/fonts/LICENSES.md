@@ -1,6 +1,6 @@
 # 이 폴더의 폰트
 
-두 폰트 모두 **SIL Open Font License 1.1** 이다. 자체 호스팅과 웹 배포가
+세 폰트 모두 **SIL Open Font License 1.1** 이다. 자체 호스팅과 웹 배포가
 허용된다. 금지되는 것은 폰트 파일 자체를 파는 것과 라이선스를 바꾸는 것뿐이다.
 
 OFL은 폰트를 재배포할 때 라이선스 전문을 함께 두도록 요구한다. 이 덱을
@@ -28,6 +28,26 @@ OFL 1.1 전문은 `NanumSquare-LICENSE.txt`에 들어 있는 것과 같은 문�
 | 저작권 | © 2010 NAVER Corporation |
 | 라이선스 | SIL Open Font License 1.1 — 전문은 `NanumSquare-LICENSE.txt` |
 | 웹 배포 | 허용 |
+
+## 개구 (Gaegu) — 손글씨
+
+| | |
+|---|---|
+| 파일 | `Gaegu-Bold-board.woff2` |
+| 만든 사람 | 윤디자인 (Yoon Design) |
+| 배포 | Google Fonts — https://fonts.google.com/specimen/Gaegu |
+| 라이선스 | SIL Open Font License 1.1 |
+| 웹 배포 | 허용 |
+
+**쓰이는 곳은 팀 빌딩 보드(`#8/3`) 한 장뿐이다.** 유성매직으로 눌러 쓴
+느낌을 내려고 넣었다. 원본은 2.9MB짜리 한글 폰트라 그대로 얹으면 인터넷
+없이 뜨는 덱에 무겁다 — **보드에 실제로 쓰인 114자만 남겨 19KB로 줄였다.**
+
+> 보드 문구를 고치면 **없는 글자가 네모로 뜬다.** 그때는 원본을 다시 받아
+> 새 글자 목록으로 다시 잘라야 한다:
+> ```
+> python -m fontTools.subset Gaegu-Bold.ttf --text-file=글자목록.txt >   --flavor=woff2 --layout-features='' --no-hinting --desubroutinize >   --output-file=Gaegu-Bold-board.woff2
+> ```
 
 ## 원본 파일
 

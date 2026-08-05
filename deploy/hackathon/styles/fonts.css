@@ -28,6 +28,21 @@
   font-display: swap;
 }
 
+/* 손글씨 — 개구(Gaegu) Bold. 팀 빌딩 보드(#8/3)의 채워 넣은 글씨에만 쓴다.
+   유성매직으로 눌러 쓴 느낌을 내는 자리다.
+
+   **보드에 실제로 쓰인 114자만 남긴 조각 파일이다(2.9MB → 19KB).** 한글
+   폰트를 통째로 얹으면 인터넷 없이 떠야 하는 이 덱에 너무 무겁다.
+   보드 문구를 고치면 없는 글자가 네모로 뜬다 — 다시 자르는 법은
+   assets/fonts/LICENSES.md에 적어 두었다. */
+@font-face {
+  font-family: 'Gaegu';
+  src: url('../assets/fonts/Gaegu-Bold-board.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 본문·소제목용 — 나눔스퀘어. 뒷줄 가독성이 이 폰트에 걸려 있다. */
 @font-face {
   font-family: 'NanumSquare';
