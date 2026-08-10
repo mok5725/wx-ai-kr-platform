@@ -36,6 +36,14 @@ hackathon.wx.ai.kr {
 	file_server
 }
 
+# hackathon2.wx.ai.kr — 챌린저 트랙 팀밋업 발표 덱(정적)
+hackathon2.wx.ai.kr {
+	import secure_headers
+	encode gzip
+	root * /srv/hackathon2
+	file_server
+}
+
 # lab.wx.ai.kr — wx01 앱
 lab.wx.ai.kr {
 	import secure_headers

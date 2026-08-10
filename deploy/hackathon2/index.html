@@ -1,0 +1,523 @@
+<!doctype html>
+<!-- is-booting: main.js가 챕터를 제자리에 놓을 때까지 덱을 감춘다.
+     첫 render()가 끝나면 main.js가 이 클래스를 뗀다. 자세한 사유는
+     styles/slides.css의 같은 이름 규칙 주석에 있다. -->
+<html lang="ko" class="is-booting">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 아이폰 사파리는 요소 전체화면 API가 없다. 대신 "홈 화면에 추가"로 열면
+     이 두 줄 덕분에 주소창·탭바 없이 뜬다 — 아이폰에서 전체화면에 가장
+     가까운 길이다. 안드로이드는 src/mobile.js의 버튼이 맡는다. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WX 팀밋업">
+<title>26 WX해커톤 챌린저 트랙 온라인 팀밋업</title>
+<!-- 표지에 바로 쓰이는 두 굵기만 미리 받는다. 나머지는 @font-face가
+     필요할 때 받아온다. 전부 preload하면 첫 화면이 오히려 늦어진다. -->
+<link rel="preload" href="assets/fonts/Paperlogy-9Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/NanumSquareR.woff2" as="font" type="font/woff2" crossorigin>
+<!-- 첫 씬은 표지가 뜨는 순간 함께 보여야 한다. background.js가 만드는
+     <img>는 모듈이 다 받아진 뒤에 생기므로, 그 사이의 빈 하늘을 줄인다. -->
+<link rel="preload" href="assets/scenes/ch1-raceday.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="styles/fonts.css">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/background.css">
+<link rel="stylesheet" href="styles/slides.css">
+<link rel="stylesheet" href="styles/scene.css">
+<link rel="stylesheet" href="styles/roster.css">
+<link rel="stylesheet" href="styles/progress.css">
+</head>
+<body>
+<div id="viewport">
+  <!-- 배경 씬. background.js가 이 안에 .scene 레이어를 만들어 넣는다.
+       씬 이미지가 겹쳐 있고 스크롤 진행도가 곧 카메라다.
+
+       **스크림도 이 안에 둔다.** 씬과 같은 상자(무대 크기)에 있어야 스크림의
+       퍼센트가 씬의 퍼센트와 같은 뜻이 된다 — 화면 전체를 기준으로 두면
+       16:9보다 넓은 창에서 스크림만 씬 밖으로 삐져 나간다.
+       겹은 둘뿐이다 — 브랜드바 뒤 얇은 띠와, 운영진 이름표 장에서만 켜지는
+       아래 띠. 넓은 스크림은 배경을 다 덮어 걷어냈다(2026-08-10 피드백).
+       본문 가독성은 글자 뒤에만 붙는 흰 판(scene.css)이 맡는다. -->
+  <div id="bg" aria-hidden="true">
+    <div class="scrim-top"></div>
+    <div class="scrim-bottom"></div>
+  </div>
+
+  <!-- 모든 슬라이드 위에 고정으로 뜨는 주최 표기. #deck 밖에 두어야
+       슬라이드가 움직여도 제자리에 남는다. 로고는 전부 단색 SVG라
+       마스크로 모양만 쓰고 네이비로 칠한다 — 흰색으로 두면 밝은 배경에서
+       그대로 사라진다. -->
+  <header class="brandbar">
+    <div class="brandbar__hosts">
+      <span class="brand brand--holdings mask-art" role="img" aria-label="POSCO HOLDINGS"></span>
+      <span class="brandbar__x" aria-hidden="true">✕</span>
+      <span class="brand brand--hrdi mask-art" role="img" aria-label="포스코인재창조원"></span>
+    </div>
+    <!-- '2026 (마크) 해커톤'. 마크가 'WX' 자리를 대신하므로 글자로는
+         적지 않는다 — 낭독기에는 컨테이너의 aria-label 한 줄만 들려준다. -->
+    <div class="brandbar__event" role="img" aria-label="2026 WX해커톤">
+      <span class="brandbar__name" aria-hidden="true">2026</span>
+      <span class="brand brand--mark mask-art" aria-hidden="true"></span>
+      <span class="brandbar__name" aria-hidden="true">해커톤</span>
+    </div>
+  </header>
+
+  <!-- 무대. 내용은 언제나 16:9로 담긴다. 화면이 16:9보다 넓으면 좌우를 비우고
+       가운데에 놓인다 — 배경(#bg)도 같은 상자에 맞춰 둔다.
+       overflow: hidden이 여기 걸려야 한다 — #deck은 --dx/--dy로 움직이므로
+       거기에 걸면 잘리는 자리도 함께 움직여 옆 장이 여백으로 새어 나온다. -->
+  <div id="stage">
+  <div id="deck">
+
+    <!-- ══ 챕터 1 — 오프닝 · 씬: 대회장 아침, 배번표 수령 ══════════════ -->
+    <section class="chapter" data-chapter="opening">
+
+      <!-- 표지. 씬의 위 2/3가 하늘이라 글자가 그 위에 앉는다. 스크림은
+           끈다(slides.js의 scrim: 'off') — 대회장 아침이 첫인상이다. -->
+      <article class="slide slide--center" data-slide-id="title">
+        <!-- 슬로건을 맨 위로 옮겼다(2026-08-10 요청) — 아래에 두면 체크인
+             부스와 인파를 가렸다. 표지에서는 오른쪽 위 브랜드바 락업을 감추므로
+             그 빈자리에 절대배치로 놓는다. 판은 없앴다(하늘 위라 필요 없다). -->
+        <div class="slogan-lockup">
+          <span class="slogan-lockup__pre">End-to-End:</span>
+          <span class="slogan-art" role="img" aria-label="Idea to Impact">
+            <span class="slogan-art__idea mask-art"></span>
+            <span class="slogan-art__to mask-art"></span>
+            <span class="slogan-art__impact mask-art"></span>
+          </span>
+        </div>
+        <!-- 글자로 적었던 '2026 WX해커톤'을 **로고 락업으로 교체**했다
+             (2026-08-10 요청). 브랜드바의 것과 같은 조각이고 크기만 이 자리의
+             글자 크기에 맞춘다 — 표지에서는 오른쪽 위 락업을 감추므로 같은
+             락업이 한 화면에 두 번 나오지 않는다. -->
+        <p class="cover__lockup" role="img" aria-label="2026 WX해커톤">
+          <span class="cover__lockup-name" aria-hidden="true">2026</span>
+          <span class="cover__lockup-mark mask-art" aria-hidden="true"></span>
+          <span class="cover__lockup-name" aria-hidden="true">해커톤</span>
+        </p>
+        <!-- 마스터 표지와 같은 붓글씨 락업. challenger.svg와 track.svg는
+             **같은 원본 붓글씨를 나눠 자른 조각**이라(둘 다 translate(0,3072)
+             좌표계), 합친 상자에 대한 비율로 놓으면 원본의 붓 간격이 그대로
+             복원된다. 두 글자가 조금 겹치는 것(챌린저 우변 3289 > 트랙 좌변
+             3119)이 원본의 커닝이므로 떼어놓지 않는다.
+             합친 상자: x 392~5107, y 789~2528 → 4715 × 1739.
+             **파일 안의 그라디언트는 쓰지 않는다** — 마스크로 붓 모양만 쓰고
+             색은 CSS가 칠한다(밝은 배경용 네이비·코랄). -->
+        <h1 class="cover__title">
+          <span class="cover__art" role="img" aria-label="챌린저 트랙">
+            <span class="cover__chal mask-art"></span>
+            <span class="cover__track mask-art"></span>
+          </span>
+          <span class="cover__main">팀밋업</span>
+        </h1>
+        <div class="cover__sub">
+          <p class="cover__en">Challenger Track Online Team Meet-up</p>
+          <p class="cover__when">2026. 8. 12 (수) 14:00 · 팀즈 영상회의</p>
+        </div>
+      </article>
+
+      <!-- 선정 축하. 마라톤 배번표(빕) 모양의 카드에 숫자를 싣는다 —
+           "크루로 선정되었다 = 배번표를 받았다"는 운영의 아이디어 그대로다.
+           네 귀퉁이 점이 옷핀 자리다. -->
+      <article class="slide slide--center" data-slide-id="congrats">
+        <p class="slide__eyebrow">2026 포스코그룹 WX해커톤</p>
+        <h2 class="slide__title">챌린저 트랙 크루 <span class="kw">선정을 축하드립니다!</span></h2>
+        <div class="bib">
+          <div class="bib__stats">
+            <div class="stat">
+              <div class="stat__value"><span data-countup="14">14</span><span class="stat__unit">개 사</span></div>
+              <div class="stat__label">참여 사업회사</div>
+            </div>
+            <div class="stat">
+              <div class="stat__value"><span data-countup="219">219</span><span class="stat__unit">명</span></div>
+              <div class="stat__label">총 신청 인원 · 55개 과제</div>
+            </div>
+            <div class="stat__arrow">→</div>
+            <div class="stat">
+              <div class="stat__value"><span data-countup="32">32</span><span class="stat__unit">명</span></div>
+              <div class="stat__label">최종 5개사 · 8개 과제 본선 진출</div>
+            </div>
+          </div>
+          <p class="bib__foot">최종 진출 5개사 — 포스코 · 포스코인터내셔널 · 포스코이앤씨 · 포스코DX · 포스코플로우</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 2 — 해커톤 소개 · 씬: 응원 관중석 ══════════════════════
+         마스터와 똑같은 연도별 구성. 불을 켜는 자리만 2026 챌린저로 바꿨다. -->
+    <section class="chapter" data-chapter="hackathon">
+      <!-- 소제목('해커톤 소개')을 뺐다 — 챕터 이름과 같은 말이었다.
+           제목과 본문에서 판을 전부 걷어냈다(2026-08-11 요청). 대신 본문을
+           제목과 같은 진한 네이비 굵은 글자로 세운다 — 판 두 겹이 관중석을
+           가리는 대신, 글자 자체의 굵기가 대비를 맡는다. -->
+      <article class="slide" data-slide-id="what-is">
+        <h2 class="slide__title slide__title--mid"><span class="kw">WX해커톤</span>은 어떤 대회인가요</h2>
+        <p class="slide__lead slide__lead--bold">디지털 기반의 일하는 방식 혁신을 통해<br>창의적 문제해결과 숨은 디지털 인재를 발굴하는 도전형 개발 대회</p>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat__value">2024</div>
+            <div class="rates">
+              <div class="rate">
+                <div class="rate__tag">해커톤</div>
+                <!-- 줄바꿈은 화살표 앞에서 끊는다(2026-08-11 요청). 자연
+                     줄바꿈에 맡기면 '(10팀)'이나 '선발'만 다음 줄로 떨어져
+                     지원과 선발의 경계가 줄과 어긋난다 — 화살표를 둘째 줄
+                     머리에 두면 두 줄이 곧 '지원 → 선발'이 된다. -->
+                <div class="rate__flow">지원 345명<br>→ 선발 50명 (10팀)</div>
+                <div class="rate__num">6.9<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">2025</div>
+            <div class="rates">
+              <div class="rate">
+                <div class="rate__tag">해커톤</div>
+                <div class="rate__flow">지원 112명<br>→ 선발 60명 (15팀)</div>
+                <div class="rate__num">1.9<small>:1</small></div>
+              </div>
+              <div class="rate">
+                <div class="rate__tag">제로톤</div>
+                <div class="rate__flow">지원 145팀<br>→ 선발 20팀 (60명)</div>
+                <div class="rate__num">7.3<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">2026</div>
+            <div class="rates">
+              <div class="rate rate--lit">
+                <div class="rate__tag">챌린저</div>
+                <div class="rate__flow">지원 219명 (55팀)<br>→ 선발 8팀 (32명)</div>
+                <div class="rate__num">6.9<small>:1</small></div>
+              </div>
+              <div class="rate">
+                <div class="rate__tag">마스터</div>
+                <div class="rate__flow">지원 116명<br>→ 선발 3팀/22명</div>
+                <div class="rate__num">5.3<small>:1</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 3 — 응원의 시간 · 씬: 센터장이 스타트라인에서 배웅 ══════
+         응원 메시지는 센터장이 마이크로 직접 전한다. 화면은 씬이 말하게
+         두고 이름만 적는다 — 인물은 그림 안에 있다(합성이 아니라 통짜 생성). -->
+    <section class="chapter" data-chapter="cheer">
+      <article class="slide" data-slide-id="cheer">
+        <p class="slide__eyebrow">응원의 시간</p>
+        <!-- 제목은 쉼표에서 끊는다(2026-08-11 요청) — '출발 전,'과
+             '파이팅 메시지'가 각자 한 줄이다. -->
+        <h2 class="slide__title">출발 전,<br><span class="kw">파이팅 메시지</span></h2>
+        <!-- 이름 석 자만 두 단 키운다(2026-08-11 요청) — '센터장'과 소속은
+             그대로 두어야 이름이 혼자 튀어 오른다. -->
+        <p class="cheer__who"><span class="cheer__name">김경철</span> 센터장<br><span class="cheer__org">포스코인재창조원 혁신기술센터</span></p>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 4 — 크루 소개 · 씬: 스타트라인 → 달리는 무리들 ══════════
+         팀 여덟 장은 씬 하나를 함께 쓰고 카메라만 자기 무리로 옮겨 간다.
+         전체 보기와 팀 장의 내용은 roster.js가 content.js의 TEAMS에서 찍는다.
+         팀 순서는 팀명 가나다순(한글 먼저, 영문 나중) — 운영 지시. -->
+    <section class="chapter" data-chapter="crew">
+      <!-- 소제목('크루 소개')을 뺐다 — 챕터 이름이 제목과 같은 말을 하고
+           있어서 한 줄이 그냥 위를 차지했다(2026-08-10 요청). -->
+      <article class="slide" data-slide-id="crew-all">
+        <h2 class="slide__title slide__title--mid">우리 <span class="kw">크루</span>를 소개합니다</h2>
+        <!-- '팀장이 직접 소개합니다' 안내 문장은 뺐다 — 진행자가 말로
+             전하는 내용이고, 씬 가운데 인파를 가리는 한 줄이었다. -->
+        <div data-roster="teams-all"></div>
+      </article>
+
+      <!-- **팀 여덟 장은 비어 있다.** 카드는 #deck 밖의 #teamcard가 하나만
+           들고 있고, 장이 바뀌면 그 안의 글자만 갈린다(2026-08-11 요청).
+           #deck은 --dx/--dy로 통째로 움직이므로, 카드가 이 안에 있는 한
+           장을 넘길 때마다 판이 함께 미끄러져 나갔다 들어온다 — 판을 세워
+           두려면 덱 밖으로 꺼내는 수밖에 없다.
+           빈 장이지만 그대로 둔다: 덱의 좌표계(22장)와 진행바·진행자 노트가
+           이 장들을 세고 있고, 배경 카메라도 장 인덱스로 팀 그룹을 찾는다. -->
+      <article class="slide" data-slide-id="team-1"></article>
+      <article class="slide" data-slide-id="team-2"></article>
+      <article class="slide" data-slide-id="team-3"></article>
+      <article class="slide" data-slide-id="team-4"></article>
+      <article class="slide" data-slide-id="team-5"></article>
+      <article class="slide" data-slide-id="team-6"></article>
+      <article class="slide" data-slide-id="team-7"></article>
+      <article class="slide" data-slide-id="team-8"></article>
+    </section>
+
+    <!-- ══ 챕터 5 — 운영진 소개 · 씬: 운영본부 텐트 (일곱 명이 그려져 있다) ══
+         인물은 씬 그림 안에 있다. 여기서 얹는 것은 이름표뿐이고, 이름표
+         위치는 content.js의 STAFF_TAGS가 가진다. 이 씬만 카메라를 세워
+         두었다 — 확대되면 이름표가 사람에게서 떨어져 나간다. -->
+    <section class="chapter" data-chapter="staff">
+      <!-- 소제목('ORGANIZING CREW')을 뺐다 — 제목이 같은 말을 하고 있어
+           한 줄이 그냥 위를 차지했다(2026-08-10 요청). -->
+      <article class="slide" data-slide-id="expedition">
+        <h2 class="slide__title"><span class="kw">운영진</span>을 소개합니다</h2>
+        <div data-roster="staff-tags"></div>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 6 — 팀 빌딩 게임 · 씬: 몸풀기 ════════════════════════
+         게임은 현장에서 진행자가 이끈다. 화면은 넘어가는 다리 한 장이면 된다. -->
+    <section class="chapter" data-chapter="game">
+      <!-- 소제목을 빼고 제목을 한 줄로 폈다(2026-08-10 요청). 제목은 판 없이
+           씬 위에 바로 얹고, 'PLAY' 한 줄만 판을 쓴다 — 이 장에서 유일하게
+           읽어야 할 것이 그 줄이다. -->
+      <article class="slide" data-slide-id="game">
+        <h2 class="slide__title">본격적인 레이스를 <span class="kw">시작</span>해볼까요</h2>
+        <p class="slide__lead">해커톤 팀빌딩 게임 <strong>PLAY</strong></p>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 7 — 레이스 안내 · 씬: 코스 지도 → 급수대 ═══════════════ -->
+    <section class="chapter" data-chapter="race">
+
+      <!-- 소제목('레이스 안내')을 뺐다 — 챕터 이름과 같은 말이었다. -->
+      <article class="slide" data-slide-id="course">
+        <h2 class="slide__title slide__title--mid">해커톤은 <span class="kw">어떻게 진행되나요</span></h2>
+        <div class="timeline">
+          <div class="tl-step tl-step--done">
+            <div class="tl-step__when">7. 20 ~ 26</div>
+            <p class="tl-step__what">참가자 지원</p>
+            <ul class="tl-step__note">
+              <li>챌린저 트랙 지원</li>
+              <li>포스코그룹 14개사,<br>총 219명(55개 팀) 지원</li>
+            </ul>
+          </div>
+          <div class="tl-step tl-step--done">
+            <div class="tl-step__when">7. 27 ~ 31</div>
+            <p class="tl-step__what">참가자 선발</p>
+            <ul class="tl-step__note">
+              <li>전문 심사단 평가 &amp; 아이디어 굴리기 챌린지</li>
+              <li>혁신성·파급력·협업적용도 평가,<br>전 직원 투표 합산</li>
+              <li>총 8개 팀 32명 선발</li>
+            </ul>
+          </div>
+          <div class="tl-step tl-step--current">
+            <div class="tl-step__when">8. 12</div>
+            <p class="tl-step__what">온라인 팀밋업</p>
+            <ul class="tl-step__note">
+              <li>팀 빌딩 및 R&amp;R 정립</li>
+              <li>크루·운영진 소개,<br>아이스 브레이킹</li>
+              <li>과제 수행 방법,<br>액션플랜 수립</li>
+            </ul>
+            <span class="tl-here">오늘 여기</span>
+          </div>
+          <div class="tl-step">
+            <div class="tl-step__when">8. 13 ~ 9. 9</div>
+            <p class="tl-step__what">사전학습</p>
+            <ul class="tl-step__note">
+              <li>n8n · replit · cursor 등 이러닝 사전 학습</li>
+              <li>마일스톤 추진,<br>본선 액션플랜 수립</li>
+            </ul>
+          </div>
+          <div class="tl-step">
+            <div class="tl-step__when">9. 10 ~ 11</div>
+            <p class="tl-step__what">본선대회</p>
+            <ul class="tl-step__note">
+              <li>무박 2일 끝장 개발 대회</li>
+              <li>솔루션 개발,<br>결과 발표</li>
+              <li>우수팀 시상</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 완주 선물. 급수대 씬 위 — 완주하면 선물 주듯이.
+           소제목('완주 보상')을 뺐고 제목에서 '마라톤'도 뺐다(2026-08-10 요청) —
+           씬이 이미 마라톤이라 글로 한 번 더 적을 필요가 없다. -->
+      <article class="slide" data-slide-id="gifts">
+        <h2 class="slide__title slide__title--mid"><span class="kw">완주자들에게 주는 선물</span></h2>
+        <div class="trio trio--icons trio--info">
+          <div class="trio__item">
+            <div class="trio__badge" aria-hidden="true">🎁</div>
+            <h3 class="trio__title">참가자 100% 선물 지급</h3>
+            <ul class="trio__list">
+              <li>에어팟 4세대 (노이즈캔슬링) <small>*수상팀은 제외</small></li>
+              <li>참가자 굿즈 — 티셔츠, 보조배터리, 파우치, 커스텀 토이, 메모지/볼펜 등</li>
+            </ul>
+          </div>
+          <div class="trio__item">
+            <div class="trio__badge" aria-hidden="true">🎓</div>
+            <h3 class="trio__title">교육 콘텐츠 무제한 제공</h3>
+            <ul class="trio__list">
+              <li>특별 강연 — 박종천 개발자</li>
+              <li>스파르타 코딩클럽 온라인 수강권 제공</li>
+              <li>AI Tool 유료 플랜 제공</li>
+            </ul>
+          </div>
+          <div class="trio__item">
+            <div class="trio__badge" aria-hidden="true">🤝</div>
+            <h3 class="trio__title">1:1 전문 코치 멘토링 지원</h3>
+            <ul class="trio__list">
+              <li>과제 계획서 &amp; 액션플랜 수립</li>
+              <li>기술 자문 및 코칭</li>
+              <li>과제 수행 밀착 관리 — 디스코드 활용 수시 피드백</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 평가. 75 + 25 두 덩어리가 이 장의 전부다 — 숫자가 크게 서야 한다. -->
+      <!-- 소제목('평가 방법')을 뺐다 — 제목이 같은 말을 하고 있었다. -->
+      <article class="slide" data-slide-id="evaluation">
+        <h2 class="slide__title slide__title--mid">우수팀이 되기 위한 <span class="kw">비결</span>은?</h2>
+        <div class="secret">
+          <div class="secret__part">
+            <div class="secret__num"><span data-countup="75">75</span><small>%</small></div>
+            <div class="secret__name">심사위원 평가 점수</div>
+            <p class="secret__desc">혁신성 · 실현가능성 · 파급력</p>
+            <p class="secret__note">평가 기준은 본선 1주 전,<br>입과 안내 메일과 함께 공지 예정</p>
+          </div>
+          <div class="secret__plus" aria-hidden="true">+<span>POINT UP!</span></div>
+          <div class="secret__part secret__part--up">
+            <div class="secret__num"><span data-countup="25">25</span><small>%</small></div>
+            <div class="secret__name">협업 점수</div>
+            <ul class="secret__list">
+              <li>온/오프라인 팀미팅 횟수</li>
+              <li>디스코드 소통 지수</li>
+              <li>사전학습 참여도</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 8 — 본선을 향해 · 씬: 반환점 ══════════════════════════
+         앞 두 장은 자료를 아직 받지 못한 자리다. ⚠︎ 배지는 main.js가
+         slides.js의 placeholder에서 만들어 붙인다. -->
+    <section class="chapter" data-chapter="finals">
+
+      <!-- 본선 시간표. 운영이 준 표를 그대로 옮겼다 — 시간 열 + 1일차 + 2일차,
+           그리고 트랙이 갈리는 구간만 두 칸으로 쪼갠다.
+           **배치는 grid-template-areas로 적는다**(styles/scene.css). 칸 병합이
+           많아서 grid-row/column 숫자로 적으면 한 칸을 옮길 때 나머지가 조용히
+           밀린다 — 이름으로 적으면 CSS가 표 모양 그대로 읽힌다. -->
+      <article class="slide" data-slide-id="finals-schedule">
+        <h2 class="slide__title slide__title--mid">본선 <span class="kw">일정</span></h2>
+        <!-- 고객여정맵 형태의 가로 흐름(2026-08-10 요청). 표(12행)로 짜니
+             720px에 들어가지 않아 잘렸다 — 이틀을 두 줄로 눕히면 같은 내용이
+             훨씬 여유롭게 들어가고, "왼쪽에서 오른쪽으로 흐른다"가 일정의
+             성격과도 맞는다. 트랙이 갈리는 구간만 칸 안에서 위아래로 쪼갠다. -->
+        <!-- 가운데 축에 날짜를 놓고 **1일차는 위로, 2일차는 아래로** 뻗는다
+             (2026-08-10 요청). 표(12행)도, 두 줄을 위아래로 늘어놓은 것도
+             720px에서 빠듯했는데, 축을 가운데 두면 두 날이 축을 공유해
+             같은 시간대가 위아래로 마주 보게 된다. -->
+        <!-- **가운데 축이 시간대다**(2026-08-10 요청). 위가 1일차, 아래가
+             2일차이고, 같은 시각이 축을 사이에 두고 위아래로 마주 본다 —
+             "같은 시각에 두 날은 무엇을 하는가"가 한눈에 읽힌다.
+
+             2026-08-11: 축을 **한 시간 눈금**으로 다시 깔았다. 예전 축은
+             '09~12'처럼 일정에 맞춰 칸을 뭉뚱그렸는데, 그러면 같은 폭의 칸이
+             1시간이기도 3시간이기도 해서 위아래 일정의 길이를 눈으로 비교할
+             수 없었다. 08시부터 18시까지 열한 칸을 같은 폭으로 깔고 일정은
+             제 시간만큼 칸을 차지한다 — 4hr짜리는 네 칸, 1hr짜리는 한 칸이다.
+             마지막 칸(18~08)만 예외로, 14시간을 한 칸에 접었다. 밤샘은
+             축척을 지키면 화면의 절반을 먹는다.
+
+             **각 일정의 시각은 소요시간(4hr·3hr·14hr) 표기에 맞춰 폈다.**
+             예전 축 눈금(1일차 09~12에 4hr짜리 일정)은 서로 어긋나 있었다. -->
+        <div class="jm">
+          <span class="jm__day jm__day--up">9. 10 <small>목</small></span>
+          <div class="jm__cell jm__c1"><span class="jm__what">참가자 접수</span></div>
+          <div class="jm__cell jm__c2"><span class="jm__what">개회식 및<br>오리엔테이션</span></div>
+          <div class="jm__cell jm__c3"><span class="jm__what">전문가 특강</span></div>
+          <div class="jm__cell jm__c4"><span class="jm__what">네트워킹 파티</span><span class="jm__hr">점심 포함</span></div>
+          <div class="jm__cell jm__c5 jm__cell--split">
+            <span class="jm__lane jm__lane--mine"><b>챌린저</b>과제 수행 4hr</span>
+            <span class="jm__lane jm__lane--other"><b>마스터</b>실사용 솔루션 구현·현장 시연 준비 4hr</span>
+          </div>
+          <div class="jm__cell jm__c6 jm__cell--mine"><span class="jm__what">1차 전문가<br>코칭·피드백</span></div>
+          <div class="jm__cell jm__c7 jm__cell--mine jm__cell--night"><span class="jm__what">과제 수행</span><span class="jm__hr">밤샘 14hr</span></div>
+
+          <!-- 축: 08시부터 한 시간 눈금. 숫자는 칸의 **시작 시각**이다. -->
+          <div class="jm__axis">
+            <span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span>
+            <span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span>
+            <span>16:00</span><span>17:00</span><span>18:00</span>
+          </div>
+
+          <span class="jm__day jm__day--down">9. 11 <small>금</small></span>
+          <div class="jm__cell jm__d1 jm__cell--mine"><span class="jm__what">2차 전문가<br>코칭·피드백</span></div>
+          <div class="jm__cell jm__d2 jm__cell--split">
+            <span class="jm__lane jm__lane--mine"><b>챌린저</b>과제 수행 4hr</span>
+            <span class="jm__lane jm__lane--other"><b>마스터</b>전문 평가단 참여·실사용 검증 및 평가 4hr</span>
+          </div>
+          <div class="jm__cell jm__d3 jm__cell--mine"><span class="jm__what">최종 코칭·<br>발표준비</span></div>
+          <div class="jm__cell jm__d4"><span class="jm__what">결과 발표회</span><span class="jm__hr">3hr</span></div>
+          <div class="jm__cell jm__d5 jm__cell--final"><span class="jm__what">우수팀 시상<br>및 폐회식</span></div>
+        </div>
+      </article>
+
+      <!-- 배치는 팀 빌딩 게임 장(#6/1)과 같게 맞췄다(2026-08-10 요청) —
+           소제목 없이, 제목은 판 없이 왼쪽 위.
+           설명 한 줄('사전학습 이러닝과 1:1 코칭을 함께하는 파트너입니다')은
+           뺐다(2026-08-11 요청) — 진행자가 말로 소개하는 자리다. -->
+      <article class="slide" data-slide-id="teamsparta">
+        <h2 class="slide__title"><span class="kw">팀스파르타</span>를 소개합니다</h2>
+      </article>
+
+      <!-- 소제목('FAQ')을 뺐다 — 제목이 같은 말이다. -->
+      <article class="slide" data-slide-id="faq">
+        <h2 class="slide__title slide__title--mid">자주 묻는 <span class="kw">질문</span></h2>
+        <div class="faq">
+          <div class="faq__item">
+            <p class="faq__q">팀밋업 설문은?</p>
+            <p class="faq__a">문자로 받은 링크를 통해 러닝플랫폼에서 참여해 주세요. <strong>8월 12일 오후 5시 ~ 13일 오후 5시</strong></p>
+          </div>
+          <div class="faq__item">
+            <p class="faq__q">본선 대회 입과 안내는?</p>
+            <p class="faq__a">본선 1주 전인 <strong>9월 3일</strong>에 개별 안내 메일을 드릴 예정입니다.</p>
+          </div>
+          <div class="faq__item">
+            <p class="faq__q">팀별 발표 시간은?</p>
+            <p class="faq__a">총 <strong>13분</strong> (발표 8분 + 질의응답 5분), 발표 순서는 당일에 결정합니다.</p>
+          </div>
+          <div class="faq__item">
+            <p class="faq__q">유료 라이선스 지원은?</p>
+            <p class="faq__a">팀별 메인 개발자 1명에게 <strong>Claude Code Premium Seat</strong>, 나머지 팀원 3명에게는 Claude Code Standard Seat 또는 ChatGPT Business 계정을 제공합니다.</p>
+          </div>
+          <!-- 다섯 번째만 두 열을 함께 쓴다(2026-08-11 요청). 한 열에 두면
+               답이 두 줄로 접혀 칸이 그만큼 길어지는데, 폭이 두 배가 되면
+               같은 답이 한 줄에 들어가 칸 높이가 절반이 된다. -->
+          <div class="faq__item faq__item--wide">
+            <p class="faq__q">궁금한 점은 어디에 문의하나요?</p>
+            <p class="faq__a">초대받은 <strong>디스코드 채널</strong>에서 해커톤 운영진과 자유롭게 의견을 나눌 수 있습니다.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ 챕터 9 — 마무리 · 씬: 결승선 ══════════════════════════════ -->
+    <section class="chapter" data-chapter="closing">
+      <!-- 제목은 한 줄로 펴서 위로, 날짜 줄은 아래로 내렸다(2026-08-10 요청) —
+           결승선 씬 가운데의 크루들이 가려지지 않게 위아래로 갈라 놓는다. -->
+      <article class="slide slide--center" data-slide-id="closing">
+        <h2 class="slide__title">우리는 <span class="kw">9월 10일</span>,<br>본선에서 다시 만나겠습니다!</h2>
+        <p class="slide__lead">2026. 9. 10 ~ 11 · 무박 2일 끝장 개발 대회</p>
+      </article>
+    </section>
+
+  </div>
+  <!-- 팀 소개 카드. #deck **밖**, 무대 안이다 — 덱은 통째로 미끄러지지만
+       이 판은 제자리에 서서 안의 글자만 갈린다.
+       여덟 팀을 한 번에 다 넣고 겹쳐 쌓는다(teamcard.js): 그러면 판의 크기가
+       여덟 중 가장 큰 것으로 저절로 통일되어, 팀마다 판이 커졌다 작아졌다
+       하지 않는다. -->
+  <div class="teamcard" id="teamcard" aria-hidden="true"></div>
+  </div>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <p class="fs-hint" id="fs-hint">Enter · 휠 · → 다음 · F 전체화면 · P 진행자 노트</p>
+  <!-- 휴대폰에서만 뜬다. src/mobile.js가 손가락 장치인지 확인한 뒤 hidden을 푼다. -->
+  <button class="fs-btn" id="fs-btn" type="button" hidden>⤢&nbsp;&nbsp;전체화면</button>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

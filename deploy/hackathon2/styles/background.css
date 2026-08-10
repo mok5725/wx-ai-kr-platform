@@ -1,0 +1,101 @@
+/* 배경 씬 레이어.
+
+   마스터 덱은 여기에 별 canvas 두 장과 blur 오브 네 개가 있었다. 이 덱은
+   씬 이미지를 겹쳐 두고 스크롤 진행도로 불투명도와 카메라를 준다.
+   background.js가 .scene 요소를 만들어 #bg에 넣는다. */
+
+/* **씬은 무대와 같은 상자에 둔다.** 화면 전체를 채우면 16:9보다 넓은 창에서
+   씬과 무대의 좌표가 갈라지고, 그림 위에 퍼센트로 얹는 것(운영진 이름표)이
+   사람에게서 떨어져 나간다. 16:9 화면(발표 상황)에서는 둘이 같다.
+   무대 밖 좌우 여백은 base.css의 body 바탕색이 이어 받는다. */
+#bg {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  margin-left: calc(var(--stage-w) / -2);
+  z-index: 0;
+  overflow: hidden;
+  /* 첫 씬이 뜨기 전의 바탕. 하늘색으로 두면 로딩 순간이 어색하지 않다. */
+  background: var(--void);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* 불투명도만 애니메이션한다. transform은 자식 img가 맡는다 —
+     한 요소에서 둘을 함께 바꾸면 합성 레이어가 매번 다시 만들어진다. */
+  will-change: opacity;
+}
+
+/* **가로를 맞춘다**(2026-08-11 요청).
+   cover는 상자의 짧은 쪽이 아니라 **넘치는 쪽**을 기준으로 채운다. 무대
+   상자는 16:9보다 세로로 긴 창에서 1:1에 가까워지는데(--stage-h가 100vh라
+   창 높이를 그대로 쓴다), 그러면 1.79:1짜리 씬이 높이에 맞춰 커지면서 좌우가
+   크게 잘려 나갔다 — 운영진 씬에서 맨 왼쪽 사람이 반쯤 잘리던 것이 그것이다.
+
+   contain은 이미지 전체가 상자 안에 들어가는 배율을 쓴다. 씬이 상자보다
+   가로로 넓으므로 그 배율은 곧 **가로를 맞추는** 배율이고, 남는 위아래는
+   #bg의 바탕색(하늘색)이 이어 받는다.
+   16:9 창(발표 상황)에서는 씬 비율과 상자 비율이 사실상 같아 cover와
+   결과가 다르지 않다 — 이 바꿈이 손해를 보는 자리는 없다. */
+.scene img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 50%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* 밝은 디오라마 위에서 글자가 읽히게 하는 겹.
+
+   처음에는 문구 쪽을 통째로 들어올리는 넓은 그라데이션 스크림을 깔았는데,
+   **씬을 절반 넘게 덮어 배경이 안 보인다는 피드백을 받고 걷어냈다**
+   (2026-08-10). 가독성은 이제 글자 뒤에만 붙는 작은 흰 판(scene.css의
+   카피 판)이 맡고, 씬은 판 사이로 그대로 보인다.
+
+   남은 겹은 둘뿐이다 — 브랜드바 뒤 얇은 띠와, 운영진 이름표가 서는
+   아래 띠. 둘 다 자기 자리만 덮는다. */
+.scrim-top,
+.scrim-bottom {
+  /* #bg 안에 있으므로 무대와 같은 상자를 기준으로 잡힌다. z-index로
+     씬 레이어(.scene, z-index 없음) 위에 올린다. */
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 320ms var(--ease-slide);
+}
+
+.scrim-top {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--brandbar-h) * 1.6);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .72), rgba(255, 255, 255, 0));
+}
+
+/* 운영진 이름표가 서는 아래 띠. **그 장에서만 켠다** — 다른 장의 바닥까지
+   하얗게 덮으면 씬의 발치(출발선·트랙·군중)가 늘 지워진 채 보인다. */
+.scrim-bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  opacity: 0;
+  background: linear-gradient(to top,
+    rgba(255, 255, 255, .90) 0%,
+    rgba(255, 255, 255, .62) 55%,
+    rgba(255, 255, 255, 0) 100%);
+}
+
+body[data-slide="expedition"] .scrim-bottom { opacity: 1; }
+
+/* prefers-reduced-motion을 보지 않는다 (마스터 덱 2026-08-03 결정을 승계).
+   무대 장비의 OS 설정 때문에 배경이 아무 표시 없이 정지하는 쪽이 더 나쁘다.
+   이 덱의 배경은 rAF 루프가 아니라 스크롤에 붙어 있으므로, 정지하면
+   스크롤해도 화면이 안 변하는 상태가 된다 — 더더욱 곤란하다. */

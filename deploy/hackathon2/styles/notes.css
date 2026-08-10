@@ -1,0 +1,79 @@
+/* **이 창은 어두운 채로 남긴다.** 본 화면은 밝은 디오라마로 뒤집었지만,
+   진행자 노트는 발표자 노트북에서만 보이고 어두운 강의장에서 눈이 편한
+   쪽이 낫다.
+
+   그래서 tokens.css의 글자색 토큰(--ink 계열)을 여기서는 **쓰지 않는다.**
+   그것들은 밝은 배경용 네이비로 뒤집혀 있어서, 그대로 쓰면 짙은 남색 판에
+   짙은 남색 글씨가 된다 — 마스터에서 물려받은 이 파일이 실제로 그랬다.
+   이 창의 색은 아래 네 변수로만 정해 본 화면 팔레트와 독립시킨다. */
+body.notes {
+  --note-ink: #EEF0FF;
+  --note-soft: #C9CBF0;
+  --note-faint: #8F92BE;
+  --note-line: rgba(238, 240, 255, 0.14);
+
+  margin: 0;
+  padding: 1.6rem;
+  background: #0B0930;
+  color: var(--note-ink);
+  font-family: var(--font-body);
+  overflow: auto;
+}
+
+.notes__bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--note-line);
+}
+
+.notes__clock { font-size: 2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.notes__position { color: var(--note-soft); font-size: 0.95rem; }
+
+.notes__title { font-size: 1.5rem; font-weight: 700; margin: 1.4rem 0 0.8rem; }
+
+.notes__note {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #D6D8FF;
+  white-space: pre-wrap;
+}
+
+.notes__subtitle {
+  font-size: 1rem;
+  color: #A8ADF0;
+  margin: 1.6rem 0 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.notes__crew-item {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--note-soft);
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(238, 240, 255, 0.07);
+}
+
+.notes__crew-name { font-weight: 700; color: var(--note-ink); }
+
+.notes__hint {
+  margin-top: 2rem;
+  color: var(--note-faint);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.notes__bg {
+  margin-top: 1.2rem;
+  padding: 0.6em 1.2em;
+  border: 1px solid rgba(238, 240, 255, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--note-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.notes__bg:hover { background: rgba(238, 240, 255, 0.08); }

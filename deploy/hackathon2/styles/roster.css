@@ -1,0 +1,837 @@
+/* 소속 칩. 색은 content.js의 chipTone()이 정한다. */
+.chip {
+  display: inline-block;
+  padding: 0.15em 0.7em;
+  border-radius: var(--radius-pill);
+  font-size: var(--step-00);
+  white-space: nowrap;
+}
+
+.chip--warm    { background: var(--chip-warm-bg);    color: var(--chip-warm-ink); }
+.chip--green   { background: var(--chip-green-bg);   color: var(--chip-green-ink); }
+.chip--neutral { background: var(--chip-neutral-bg); color: var(--chip-neutral-ink); }
+
+/* 회사를 구분하지 않는 자리(4-1 스폰서)에서 쓰는 한 가지 색.
+   색이 갈리면 넷 중 누군가는 없는 색을 받은 것처럼 보인다. */
+.chip--plain { background: rgba(18, 46, 82, 0.08); color: var(--ink-soft); }
+/* 팀스파르타. 크루 명단에는 안 나오고 코치 소개에만 서는 색이라,
+   회사 셋(warm·green·neutral)과 겹치지 않는 난초색을 따로 쓴다. */
+.chip--orchid { background: var(--chip-orchid-bg); color: var(--chip-orchid-ink); }
+
+/* 크루 명단(5-2~5-4)의 소속 칩은 회사가 아니라 **역할** 색을 쓴다.
+   범례 → 왼쪽 띠 → 칩이 같은 색으로 이어져야 "도메인 몇 · 개발 몇"이
+   한 번에 세어진다. 회사별로 갈라 놓았을 때는 한 칸 안에서 색이 둘로
+   나뉘어 어느 쪽이 역할인지가 흐려졌다. */
+.chip--role-domain     { background: var(--role-domain-bg);     color: var(--role-domain); }
+.chip--role-dev        { background: var(--role-dev-bg);        color: var(--role-dev); }
+.chip--role-domain-dev { background: var(--role-domain-dev-bg); color: var(--role-domain-dev); }
+.chip--role-advisor    { background: var(--role-advisor-bg);    color: var(--role-advisor); }
+
+/* 공통 카드 */
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+.card-grid--tall { align-items: stretch; }
+
+/* 5-1 과제 카드 — 사진을 뺀 판이다.
+   사진이 가져가던 높이를 과제명에 돌려주고, 번호를 큰 글자로 세워 세 칸을
+   왼쪽부터 세게 한다. 예전의 머리띠 라벨(.card__label)은 과제 번호와 관점을
+   한 줄에 우겨 넣느라 글자가 작았다 — 둘을 갈라 놓는다. */
+.card-grid--tasks { align-items: stretch; }
+.card-grid--tasks .card { gap: 0.5em; padding: var(--gap); }
+
+.card__head {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--line);
+}
+
+.card__no {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 50%;
+  background: rgba(132, 137, 245, 0.22);
+  border: 1px solid rgba(132, 137, 245, 0.5);
+  font-family: var(--font-title);
+  font-size: var(--step-2);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+}
+
+.card__perspective {
+  font-size: var(--step-0);
+  font-weight: 800;
+  color: var(--glow-violet);
+  letter-spacing: 0.02em;
+  line-height: var(--leading-tight);
+}
+
+/* 사진이 빠진 만큼 과제명을 키운다. 이 카드의 주인공이다. */
+.card-grid--tasks .card__title { font-size: var(--step-2); line-height: 1.35; }
+.card-grid--tasks .card__effects {
+  align-self: stretch;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--line);
+  font-size: var(--step-0);
+}
+
+.card {
+  padding: calc(var(--gap) * 0.7);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  align-items: flex-start;
+}
+
+.card__title { font-size: var(--step-2); font-weight: 700; line-height: 1.3; }
+.card__title--sm { font-size: var(--step-2); }
+
+.card__effects {
+  margin: auto 0 0;
+  padding-left: 1em;
+  font-size: var(--step-00);
+  color: var(--ink-soft);
+  line-height: var(--leading-tight);
+}
+
+/* 4-1 스폰서 — 과제로 나누지 않고 같은 레벨의 네임카드로 나란히.
+   제목에서 한 칸 더 내려 붙인다. 넷이 제목 바로 밑에 붙어 있으면
+   제목의 일부처럼 읽혔다. */
+.namecards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-auto-flow: column;
+  /* 칸 사이를 넉넉히. 명패 넷이 붙어 있으면 한 덩어리로 읽힌다. */
+  gap: calc(var(--gap) * 2);
+  width: 100%;
+  margin-top: calc(var(--gap) * 2.5);
+}
+
+.namecard {
+  /* 정사각형 명패. 폭 상한을 두지 않아 한 변이 화면 폭의 1/4까지 커진다 —
+     1280×720에서 282px로, 예전(130px)의 두 배가 조금 넘는다.
+     이름과 소속 둘뿐이라 세로가 남는데, 그 여백이 명패다움을 만든다. */
+  aspect-ratio: 1;
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  text-align: center;
+}
+
+/* 명패가 커진 만큼 이름도 키운다 — 카드만 크고 글자가 그대로면 빈 판이다. */
+.namecard__name { font-family: var(--font-title); font-size: var(--step-3); font-weight: 700; }
+
+/* 이름 위의 역할. 넷을 훑을 때 과제 이름이 먼저 걸려야 "누가 내 편인가"가
+   잡힌다. 이름보다 작지만 금색이라 눈에는 먼저 들어온다. */
+.namecard__role {
+  font-family: var(--font-title);
+  font-size: var(--step-1);
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* 4-2 운영진 — 사진 한 줄과 그 아래 이름표.
+   한 줄에 전부 세우는 것이 핵심이다. 여러 줄로 접히면 "한 팀"으로 안 보인다.
+   인원이 늘면 auto-fit이 칸을 좁히고, 그래도 모자라면 사진이 작아진다. */
+.expedition {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-auto-flow: column;
+  gap: calc(var(--gap) * 1.4);
+  width: 100%;
+  align-items: start;
+  justify-content: center;
+}
+
+.exp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 1.1);
+  min-width: 0;
+}
+
+/* **원본 사진은 모서리가 각져 있고, 둥근 모서리는 여기서 만든다.**
+   사진 파일에 둥근 모서리를 구워 넣으면 잘려나간 자리가 특정 배경색으로
+   채워져, 배경이 다른 자리에 쓰거나 색을 바꾸면 네 귀퉁이에 얼룩이 남는다.
+   모양은 CSS가 맡고 파일은 사각형 그대로 두는 편이 항상 안전하다.
+
+   흑백도 같은 이유로 CSS에서 건다. 컬러로 가고 싶어지면 filter 한 줄만
+   지우면 되고, 원본을 다시 받을 일이 없다. */
+.exp-card__photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: calc(var(--radius) * 0.9);
+  filter: grayscale(1) contrast(1.04);
+  background: var(--panel);
+}
+
+.exp-card__plate {
+  width: 100%;
+  padding: 0.4em 0.5em;
+  border: 1px solid rgba(238, 240, 255, 0.5);
+  border-radius: calc(var(--radius) * 0.75);
+  background: rgba(8, 6, 42, 0.72);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.exp-card__name { font-family: var(--font-title); font-size: var(--step-1); font-weight: 700; color: var(--ink); }
+.exp-card__nickname { font-size: var(--step-00); color: var(--gold); margin-top: 0.15em; }
+
+/* 5-2~5-4 과제 상세 */
+/* 제목을 위에 붙이는 규칙(.slide:not(.slide--center))이 이 컨테이너
+   안까지 닿지 않는다. 여기서도 같은 원칙을 따로 적어 준다. */
+.task { display: flex; flex-direction: column; gap: calc(var(--gap) * 1.4); width: 100%; height: 100%; justify-content: flex-start; }
+.task > :last-child { margin-bottom: auto; }
+.task__head + * { margin-top: calc(var(--gap) * 1.8); }
+.task__head { display: flex; flex-direction: column; gap: 0.3em; }
+/* **이 세 블록이 슬라이드의 본론이다.**
+   예전에는 왼쪽에 얇은 띠만 두른 글 뭉치라, 아래 크루 명단(칸 아홉 개에
+   색 띠까지 붙은 덩어리)이 시선을 먼저 가져갔다. 정작 청중이 알아야 할
+   것은 "왜 하는가 · 무엇을 만드는가 · 무엇이 남는가"인데도.
+   그래서 셋을 패널로 세우고 번호를 붙여 하나의 흐름으로 만든다. */
+/* 세 줄을 위에서 아래로 쌓는다. 3열로 나눴을 때는 아웃풋처럼 긴 문장이
+   폭 1/3짜리 칸에서 대여섯 줄로 접혀 읽는 눈이 계속 끊겼다.
+   가로로 길게 펴면 같은 글이 두세 줄로 끝난다. */
+.task__blocks { display: flex; flex-direction: column; gap: calc(var(--gap) * 1.5); }
+
+/* 왼쪽 라벨 칸 + 오른쪽 본문. 원본 장표의 구성 그대로다. */
+.task-block {
+  display: grid;
+  grid-template-columns: 11ch 1fr;
+  align-items: stretch;
+  gap: calc(var(--gap) * 0.8);
+}
+
+.task-block__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5em 0.4em;
+  border-radius: 12px;
+  background: rgba(132, 137, 245, 0.22);
+  font-size: var(--step-0);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: var(--leading-tight);
+}
+
+.task-block__body {
+  margin: 0;
+  padding: 0.7em calc(var(--gap) * 1.1);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+  line-height: var(--leading-body);
+}
+
+/* 아웃풋 문장에서 "무엇을 만드는가"에 해당하는 조각만 세운다.
+   나눔스퀘어는 800(ExtraBold)에 실제 자족이 있어 가짜 굵기가 아니다. */
+.task-block__mark { font-weight: 800; color: var(--kw); }
+
+/* 아웃풋이 세 줄 중 본론이다. 테두리를 살려 눈이 먼저 가게 한다. */
+.task-block:last-child .task-block__label { background: rgba(242, 193, 78, 0.22); color: var(--gold); }
+.task-block:last-child .task-block__body { border-color: rgba(242, 193, 78, 0.35); background: rgba(242, 193, 78, 0.06); color: var(--ink); }
+
+/* 크루 명단 — 9명이 한 줄에 들어가도록 가장 작은 스텝을 쓴다.
+   **본론은 위의 세 블록이다.** 명단은 자기 이름을 확인하는 곳이지
+   읽는 곳이 아니라, 위 블록보다 한 단계 낮게 둔다. */
+.crew { opacity: 0.9; }
+
+.crew__kicker {
+  display: flex;
+  margin-bottom: 0.5em;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--step-00);
+}
+
+.crew__kicker-label { color: var(--ink-faint); letter-spacing: 0.06em; margin-right: 0.2em; }
+
+.crew__legend {
+  padding: 0.12em 0.75em;
+  border: 1px solid;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+}
+
+.crew__legend--domain     { color: var(--role-domain);     border-color: var(--role-domain);     background: var(--role-domain-bg); }
+.crew__legend--dev        { color: var(--role-dev);        border-color: var(--role-dev);        background: var(--role-dev-bg); }
+.crew__legend--domain-dev { color: var(--role-domain-dev); border-color: var(--role-domain-dev); background: var(--role-domain-dev-bg); }
+.crew__legend--advisor    { color: var(--role-advisor);    border-color: var(--role-advisor);    background: var(--role-advisor-bg); }
+/* 최소 폭을 9rem에서 7.4rem으로 내렸다. 과제2는 크루가 아홉이라 9rem
+   에서는 여덟만 한 줄에 들어가 아홉째가 홀로 다음 줄로 넘어갔고, 그
+   한 줄이 130px을 먹어 본문 세 줄의 간격을 못 벌렸다. */
+.crew__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.4rem, 1fr)); gap: calc(var(--gap) * 0.42); }
+
+/* 역할은 왼쪽 띠와 옅은 바탕으로 나타낸다. 색은 범례와 같다.
+   소속 칩은 회사라는 다른 축이라 색을 겹쳐 쓰지 않는다. */
+.crew-cell {
+  padding: calc(var(--gap) * 0.5);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  /* 이름·소속·부서를 칸 가운데로 모은다. 왼쪽 정렬이던 때는 부서 길이가
+     제각각이라 아홉 칸의 오른쪽이 들쭉날쭉했다. */
+  align-items: center;
+  text-align: center;
+}
+
+.crew-cell--domain     { border-left-color: var(--role-domain);     background: var(--role-domain-bg); }
+.crew-cell--dev        { border-left-color: var(--role-dev);        background: var(--role-dev-bg); }
+.crew-cell--domain-dev { border-left-color: var(--role-domain-dev); background: var(--role-domain-dev-bg); }
+.crew-cell--advisor    { border-left-color: var(--role-advisor);    background: var(--role-advisor-bg); border-style: dashed; border-left-style: solid; }
+
+.crew-cell__name { font-size: var(--step-0); font-weight: 700; }
+.crew-cell__dept { font-size: var(--step-00); color: var(--ink-faint); line-height: var(--leading-tight); }
+
+/* ── 4-3 우리의 해결사 코치 ────────────────────────────────────────────
+   과제별로 한 칸. 칸 안은 '자문 1인 / 기술 코치 2인' 두 층으로 나뉜다 —
+   오는 빈도가 다른 사람들이라 같은 목록에 섞으면 안 된다. */
+.coach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); width: 100%; }
+
+.coach-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.coach-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--line);
+}
+
+.coach-card__no {
+  font-family: var(--font-title);
+  font-size: var(--step-0);
+  font-weight: 900;
+  color: var(--glow-violet);
+  letter-spacing: 0.06em;
+}
+
+.coach-card__task { font-family: var(--font-title); font-size: var(--step-2); font-weight: 700; color: var(--gold); }
+
+/* 층 이름. 사람 줄보다 작고 옅게 두어 목록의 머리표로만 읽히게 한다. */
+.coach-card__label {
+  margin-top: 0.35em;
+  font-size: var(--step-00);
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+
+.coach-person { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45em; }
+.coach-person__name { font-size: var(--step-1); font-weight: 700; }
+.coach-person__title { font-family: var(--font-body); font-size: 0.62em; font-weight: 400; color: var(--ink-faint); margin-left: 0.35em; }
+.coach-person__when { font-size: var(--step-00); color: var(--kw); margin-left: auto; white-space: nowrap; }
+
+/* 4-4 조직도. 원본 도식대로 다섯 칸 격자에 놓는다 — 좌우 지원 조직이
+   실행팀과 같은 줄에 서고, 화살표가 그 사이 칸을 차지한다. 가로 화살표가
+   별도 줄을 쓰지 않으므로 세로 예산이 늘지 않는다.
+   상자를 세로로만 쌓고 '▼' 글자를 끼우던 예전 방식은 누가 누구에게
+   무엇을 주는지를 못 보여줬다. */
+.org { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.4); width: 100%; }
+
+.org-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 2.2fr auto 1fr;
+  grid-template-areas:
+    '.       .        sponsor   .         .'
+    '.       .        flowtop   .         .'
+    'advisor flowleft core      flowright infra'
+    '.       .        flowbot   .         .'
+    '.       .        user      .         .';
+  align-items: center;
+  justify-items: stretch;
+  column-gap: calc(var(--gap) * 0.5);
+  row-gap: calc(var(--gap) * 0.25);
+}
+
+/* **상자는 불투명한 흰색이다.** 예전에는 우주 배경 위에 반투명 판
+   (--panel, 알파 0.05)을 얹고 옅은 글자를 올렸는데, 뒤로 별과 오로라가
+   지나가면서 판과 글자의 대비가 함께 무너졌다. 도식은 상자가 곧 정보라
+   판이 배경에서 확실히 떨어져 나와야 한다.
+   흰 판 위의 글자는 --on-light 계열을 쓴다(tokens.css). 어두운 배경용
+   --ink 계열을 그대로 얹으면 흰 바탕에 흰 글씨가 된다. */
+.org-tier {
+  padding: calc(var(--gap) * 0.28);
+  border: 1px solid rgba(11, 9, 48, 0.16);
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  text-align: center;
+}
+
+/* 상자 제목. 뒷줄에서 먼저 잡혀야 하는 글자라 한 단계 키우고 800으로
+   세운다 — 나눔스퀘어는 800(ExtraBold)에 실제 자족이 있다. */
+.org-tier__label { font-size: var(--step-1); font-weight: 800; color: var(--on-light); }
+.org-tier__body { font-size: var(--step-00); color: var(--on-light-soft); margin: 0.1em 0 0; line-height: var(--leading-tight); white-space: pre-line; }
+
+/* 상자별 색은 테두리와 제목에만 남긴다 — 바탕은 넷 다 흰색이라
+   "같은 종류의 상자"로 읽히고, 색은 어느 자리인지만 가리킨다. */
+.org-tier--sponsor { border-color: rgba(199, 154, 30, 0.85); }
+.org-tier--sponsor .org-tier__label { color: var(--on-light-gold); }
+.org-tier--user    { border-color: rgba(15, 97, 82, 0.6); }
+.org-tier--user .org-tier__label { color: var(--on-light-green); }
+.org-tier--side    { border-color: rgba(107, 63, 160, 0.55); }
+.org-tier--side .org-tier__label { color: var(--on-light-orchid); }
+
+/* 흐름 화살표. 선과 머리는 SVG로 그린다 — '▼' 글자는 크기를 키우면
+   금세 뭉개지고 방향이 하나뿐이라 주고받는 관계를 못 그린다. */
+.org-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  color: var(--glow-violet);
+}
+
+/* 세로 화살표는 글자를 옆에, 가로 화살표는 글자를 위에 둔다. */
+.org-flow--flowtop,
+.org-flow--flowbot { flex-direction: row; }
+.org-flow--flowleft,
+.org-flow--flowright { flex-direction: column; gap: 0.2em; }
+
+.org-flow__artwrap { display: flex; align-items: center; flex: 0 0 auto; }
+
+.org-flow__label {
+  font-size: var(--step-00);
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.25;
+}
+
+.org-flow__art {
+  flex: 0 0 auto;
+  width: calc(var(--step-1) * 2.4);
+  height: auto;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 위아래 화살표의 키가 곧 임원-실행팀-실사용자 사이의 간격이다.
+   좌우 화살표(flowleft/flowright)는 실행팀과 같은 줄에 있어 세로를
+   쓰지 않으므로 이 값과 무관하다. */
+.org-flow__art--v { width: auto; height: calc(var(--step-1) * 1.55); }
+
+.org-tier--side { display: flex; flex-direction: column; justify-content: center; }
+
+/* 실행팀이 도식의 중심이다. 제목을 한 단계 더 키워 다른 상자와 구분한다. */
+.org-core {
+  padding: calc(var(--gap) * 0.35);
+  border: 2px solid var(--on-light-violet);
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  /* 발광은 판 바깥으로만 남긴다. 흰 판이 배경에서 떠 보이게 하는 장치라,
+     판 안쪽 대비에는 영향을 주지 않는다. */
+  box-shadow: 0 0 34px rgba(132, 137, 245, 0.35);
+  text-align: center;
+}
+
+.org-core .org-tier__label { font-size: var(--step-2); color: var(--on-light-violet); }
+
+/* 실행팀 상자 안쪽 — 마스터 크루 묶음 + 그 밖의 외부 기술 코치.
+   셋을 나란히 늘어놓으면 코치가 크루의 일원처럼 읽힌다. 원본 도식이
+   크루 둘만 회색 판으로 묶어 둔 이유가 그것이다. */
+.org-core__body {
+  display: flex;
+  align-items: stretch;
+  gap: calc(var(--gap) * 0.35);
+  margin-top: 0.12em;
+}
+
+.org-crew {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: calc(var(--gap) * 0.18);
+  border: 1px dashed rgba(11, 9, 48, 0.35);
+  border-radius: 14px;
+  background: #EEF1F7;
+}
+
+.org-crew__label { font-size: var(--step-00); font-weight: 800; color: var(--on-light); margin-bottom: 0.08em; line-height: 1.15; }
+
+.org-crew__roles { display: flex; align-items: stretch; gap: calc(var(--gap) * 0.3); }
+.org-crew__roles .org-role { flex: 1 1 0; min-width: 0; }
+
+/* 코치는 묶음 밖에 선다. 크루 한 칸과 비슷한 폭을 준다. */
+.org-core__body > .org-role { flex: 0 1 26%; min-width: 0; }
+
+/* 역할 칸 — 원본처럼 이름 띠와 설명이 위아래로 나뉜다. */
+.org-role {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(11, 9, 48, 0.14);
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 이름 띠만 색을 채운다. 흰 판이 이어지는 안쪽에서 이 띠가 유일한
+   색 덩어리라, 역할 이름이 먼저 잡힌다. */
+.org-role__name {
+  padding: 0.14em 0.4em;
+  background: var(--on-light-violet);
+  color: #FFFFFF;
+  font-size: var(--step-00);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+
+/* 칸끼리 높이가 다르다 — 외부 기술 코치 칸은 마스터 크루 묶음만큼
+   늘어나서 설명 아래가 통째로 빈다. 남는 자리를 위아래로 나눠 글자를
+   칸 한가운데 세운다. 가로 가운데 정렬은 .org-core에서 물려받는다. */
+.org-role__body {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.16em 0.4em;
+  font-size: var(--step-00);
+  color: var(--on-light-soft);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+/* 역할끼리 주고받는 짧은 양방향 화살표. */
+.org-swap { display: flex; align-items: center; flex: 0 0 auto; color: var(--glow-violet); }
+.org-swap__art {
+  width: calc(var(--step-1) * 1.15);
+  height: auto;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 맨 아래 세 원칙. 단 사이를 벌린 만큼을 여기서 돌려받는다 — 제목을
+   한 단계 낮춰도 위의 조직도가 본론이라 읽는 데 지장이 없다. */
+.org-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); margin-top: 0; }
+.org-principle__title { font-size: var(--step-00); font-weight: 700; color: var(--glow-violet); line-height: 1.25; }
+.org-principle__body { font-size: var(--step-00); color: var(--ink-soft); margin: 0.1em 0 0; line-height: var(--leading-tight); }
+
+/* ── 6-1 완주 특전 (평가 기준과 한 장) ────────────────────────────────
+   세로 예산이 반이라 한 줄 세 칸으로 눕혔다. 마스터 트랙만 싣는다. */
+.perks--row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  width: 100%;
+}
+
+.perk-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gap) * 0.7);
+  padding: calc(var(--gap) * 0.6) var(--gap);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+/* 상장은 제품 그림이 없다. 글자만으로 왼쪽에 세운다. */
+.perk-cell--common { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.15em; }
+.perk-cell--only { border-color: rgba(242, 193, 78, 0.6); background: rgba(242, 193, 78, 0.09); }
+
+.perk-cell__text { min-width: 0; }
+.perk-cell__rank { font-size: var(--step-00); color: var(--ink-faint); }
+.perk-cell__product { font-family: var(--font-title); font-size: var(--step-1); font-weight: 800; color: var(--gold); line-height: 1.2; }
+.perk-cell__kind { font-size: var(--step-00); color: var(--ink-soft); line-height: var(--leading-tight); }
+
+.perk-cell__badge {
+  position: absolute;
+  top: calc(var(--gap) * -0.45);
+  right: calc(var(--gap) * 0.6);
+  padding: 0.1em 0.6em;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #3A2A08;
+  font-size: var(--step-00);
+  font-weight: 800;
+}
+
+/* 제품 사진. 이 슬라이드의 유일한 그림이라 작게 두면 글자 옆의 장식으로
+   내려앉는다. **4:3 가로형으로 키운다** — 원본이 가로로 긴 노트북이라
+   6em×6em 정사각으로 잘랐을 때는 좌우가 잘려 무엇인지 알아보기 어려웠다.
+   높이가 이 칸의 높이를 정하므로 두 칸의 그림 크기는 같아야 한다. */
+.perks--row .perk-art,
+.perks--row .perk-art--photo {
+  flex: 0 0 auto;
+  /* 9em이 이 슬라이드의 상한이다. 그림 높이가 곧 아래 칸의 높이라,
+     11em으로 두면 1280×720에서 아래가 33px 잘렸다. */
+  width: 9em;
+  height: calc(9em * 3 / 4);
+  object-fit: cover;
+}
+
+/* ── 6-2 팀 빌딩 ──────────────────────────────────────────────────────
+   다리 슬라이드다. 할 일 셋만 크게 세운다. */
+.tb-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  width: 100%;
+  margin-top: calc(var(--gap) * 1.2);
+}
+
+.tb-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  padding: var(--gap);
+  border: 1px solid rgba(242, 193, 78, 0.35);
+  border-radius: var(--radius);
+  background: rgba(242, 193, 78, 0.06);
+  text-align: center;
+}
+
+.tb-step__no {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #3A2A08;
+  font-family: var(--font-title);
+  font-size: var(--step-1);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tb-step__name { font-family: var(--font-title); font-size: var(--step-2); font-weight: 700; line-height: 1.2; }
+.tb-step__body { font-size: var(--step-00); color: var(--ink-soft); line-height: var(--leading-tight); }
+
+/* ── 8-3 팀 빌딩 보드 ──────────────────────────────────────────────────
+   원본 양식은 1:1에 가까운 한 장이다. 그대로 16:9에 얹으면 좌우가 남고
+   글자만 작아지므로 **3:4 세로 종이 두 장**으로 나눴다. 세로 종이는
+   슬라이드 높이를 다 쓰므로 같은 내용이 훨씬 크게 들어간다.
+
+   높이가 기준이다 — 종이 폭은 높이에서 3:4로 따라온다. 두 장을 합쳐도
+   1280×720에서 가로를 다 쓰지 않아 좌우로 넉넉히 남는다. 그 여백이
+   "책상에 종이 두 장을 놓은" 인상을 만든다. */
+.board {
+  display: flex;
+  gap: calc(var(--gap) * 1.6);
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.sheet {
+  aspect-ratio: 3 / 4;
+  height: 100%;
+  min-height: 0;
+  padding: calc(var(--gap) * 0.6) calc(var(--gap) * 0.8);
+  border-radius: calc(var(--radius) * 0.7);
+  background: #FFFFFF;
+  /* 종이가 배경에서 떠 보이게 하는 그림자. 4-4 조직도와 같은 이유로
+     판 바깥에만 건다 — 안쪽 대비에는 영향이 없다. */
+  box-shadow: 0 0.6em 2.2em rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  /* 2장은 문장이 길어 세 칸을 합치면 종이보다 30px 높았다. 글자를 줄이는
+     대신 칸 사이와 줄간격에서 그만큼을 걷었다 — 뒷줄 가독성이 먼저다. */
+  gap: calc(var(--gap) * 0.22);
+}
+
+.sheet__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--on-light);
+}
+
+.sheet__name { font-family: var(--font-title); font-size: var(--step-0); font-weight: 700; color: var(--on-light); letter-spacing: 0.01em; }
+.sheet__no   { font-size: var(--step-00); color: var(--on-light-faint); font-variant-numeric: tabular-nums; }
+
+/* 한 줄짜리 항목 — 왼쪽에 라벨, 오른쪽에 채운 칸. */
+.bd-row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gap) * 0.5);
+}
+
+/* 역할 묶음만 남은 높이를 다 쓴다. 라벨은 위로 붙인다. */
+.bd-row--roles { flex: 1 1 auto; align-items: flex-start; min-height: 0; }
+.bd-row--roles .bd-label { padding-top: 0.35em; }
+
+/* 여러 줄짜리 항목 — 라벨이 위, 내용이 아래. 2장은 문장이 길어
+   가로로 라벨을 두면 칸이 좁아진다. */
+.bd-block { display: flex; flex-direction: column; gap: 0.25em; }
+.bd-block--rules { flex: 1 1 auto; min-height: 0; }
+
+.bd-label {
+  flex: 0 0 auto;
+  width: 4.2em;
+  font-size: var(--step-0);
+  font-weight: 800;
+  color: var(--on-light);
+  letter-spacing: 0.18em;
+  line-height: var(--leading-tight);
+}
+.bd-block > .bd-label { width: auto; letter-spacing: 0.12em; }
+.bd-label small { font-size: 0.72em; font-weight: 400; letter-spacing: 0; color: var(--on-light-faint); margin-left: 0.4em; }
+
+/* 채워 넣은 칸. 원본 양식의 주황 막대를 그대로 쓴다 — 이 덱의 색은
+   아니지만 이미 쓰던 양식의 얼굴이라 바꾸지 않는 편이 알아보기 쉽다.
+   글씨는 손글씨체다(개구). 유성매직으로 눌러 쓴 느낌을 내려고 자간을
+   조금 좁히고 굵기를 올렸다. */
+.bd-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.12em 0.6em;
+  border-radius: 6px;
+  background: var(--board-ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+/* 역할 다섯 줄. 라벨 칸을 좁게 잡아 이름 쪽에 폭을 몰아준다. */
+.bd-roles {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 3.4em 1fr;
+  align-items: center;
+  column-gap: calc(var(--gap) * 0.4);
+  row-gap: calc(var(--gap) * 0.34);
+  align-content: start;
+}
+
+.bd-sub { font-size: var(--step-00); font-weight: 700; color: var(--on-light-soft); }
+
+/* 여러 줄 칸. 한 줄씩 따로 막대를 두르면 종이가 얼룩덜룩해져서,
+   묶음 하나를 두르고 안에서 줄을 나눈다. */
+.bd-list {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0.3em 0.6em;
+  list-style: none;
+  border-radius: 6px;
+  background: var(--board-ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: var(--step-0);
+  line-height: 1.38;
+  color: #FFFFFF;
+  word-break: keep-all;
+}
+
+.bd-list li { position: relative; padding-left: 0.75em; }
+.bd-list li + li { margin-top: 0.2em; }
+.bd-list li::before { content: '·'; position: absolute; left: 0; }
+
+/* 규칙 넷은 두 칸으로. 한 줄씩 쌓으면 종이 아래가 비고, 두 칸이면
+   원본처럼 좌우로 읽힌다. */
+.bd-list--two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.9em; align-content: center; }
+.bd-list--two li + li { margin-top: 0; }
+.bd-list--two li:nth-child(n+3) { margin-top: 0.2em; }
+
+/* ── 휴대폰 (세로) ────────────────────────────────────────────────────
+   slides.css에도 같은 미디어 블록이 있지만, 이 파일이 나중에 로드되므로
+   여기 있는 선택자는 반드시 여기서 덮어야 한다. 저쪽에 적으면 조용히
+   무시된다 — 실제로 그렇게 새서 운영진이 28열로 깔렸다. */
+@media (max-width: 820px) and (orientation: portrait) {
+  .card-grid,
+  .coach-grid,
+  .task__blocks,
+  .namecards { grid-template-columns: 1fr; }
+
+  .org-core__roles,
+  .org-principles { grid-template-columns: 1fr; }
+
+  /* 조직도를 한 열로 푼다. 좌우에 있던 지원 조직이 위아래로 들어오므로
+     가로 화살표도 90도 돌려 세로로 세운다. */
+  .org-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'sponsor' 'flowtop' 'advisor' 'flowleft'
+      'core' 'flowright' 'infra' 'flowbot' 'user';
+    row-gap: calc(var(--gap) * 0.5);
+  }
+
+  .org-flow--flowleft,
+  .org-flow--flowright { flex-direction: row; gap: 0.35em; }
+  .org-flow--flowleft .org-flow__art,
+  .org-flow--flowright .org-flow__art {
+    width: calc(var(--step-1) * 1.6);
+    transform: rotate(90deg);
+  }
+
+  .perks--row { grid-template-columns: 1fr; }
+  .tb-steps { grid-template-columns: 1fr; }
+
+  /* 팀 빌딩 보드는 세로형에서 종이를 위아래로 쌓는다. 3:4를 유지한 채
+     나란히 두면 두 장이 1004px이 되어 375px 화면에서 왼쪽 장이 통째로
+     잘린다. 세로에서는 비율을 놓고 **폭에 맞춘 뒤 높이는 내용이 정한다** —
+     종이 모양보다 글자가 다 보이는 것이 먼저다. */
+  .board { flex-direction: column; gap: calc(var(--gap) * 0.8); }
+  .sheet { aspect-ratio: auto; height: auto; width: 100%; }
+  .bd-row--roles, .bd-block--rules { flex: 0 0 auto; }
+  .bd-list--two { grid-template-columns: 1fr; }
+  .bd-list--two li:nth-child(n+3) { margin-top: 0; }
+  .bd-list--two li + li { margin-top: 0.2em; }
+
+  /* 정사각형은 가로형 화면에서만이다. 한 열로 쌓이면 카드 한 장이
+     화면 폭만큼 높아져 셋이 세 화면을 먹는다. */
+  .namecards { grid-auto-flow: row; max-width: none; margin-top: calc(var(--gap) * 1.5); }
+  .namecard { aspect-ratio: auto; padding: calc(var(--gap) * 1.1) var(--gap); }
+
+  /* 운영진은 세 열. 일곱을 한 줄에 세우면 얼굴이 안 보이고, 한 열로 두면
+     일곱 번 스크롤해야 한다.
+     **두 열이 아니라 세 열이다.** 두 열이면 일곱이 네 줄이 되어 375×812에서
+     230px 넘친다(여섯일 때는 세 줄로 겨우 들어갔다). 세 열이면 세 줄로
+     끝나고, 손에 들고 보는 화면이라 얼굴도 충분히 알아본다. */
+  .expedition { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); gap: calc(var(--gap) * 0.9); }
+
+  /* 크루 명단도 두 열. 이름만 있는 짧은 칸이라 들어간다. */
+  .crew__grid { grid-template-columns: repeat(2, 1fr); }
+}
+

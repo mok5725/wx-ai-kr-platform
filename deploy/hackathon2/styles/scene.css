@@ -1,0 +1,1373 @@
+/* 씬 위에 글을 얹는 규칙. 이 덱에만 있는 것들이다.
+
+   마스터 덱은 어두운 배경에 흰 글씨였고 문구가 늘 같은 자리(왼쪽 중앙)에
+   있었다. 이 덱은 밝은 디오라마 위에 네이비 글씨이고, **문구가 씬마다 다른
+   자리에 놓인다** — 씬에서 비어 있는 곳이 씬마다 다르기 때문이다.
+
+   slides.css는 그대로 두고 여기서 덮는다. 두 파일이 섞이면 무엇이 마스터에서
+   온 것이고 무엇이 이 덱의 것인지 나중에 구분할 수 없다. */
+
+/* ── 문구 배치 ─────────────────────────────────────────────────────
+   가로(left·right·center) + 세로(top·center·bottom)의 조합이다. .slide가
+   flex column이라 align-items가 가로, justify-content가 세로를 맡는다.
+   배치값은 slides.js가 가지고 main.js가 data-place로 넣는다. */
+.slide[data-place^="left"] { align-items: flex-start; text-align: left; }
+.slide[data-place^="right"] { align-items: flex-end; text-align: right; }
+.slide[data-place$="top"] { justify-content: flex-start; }
+.slide[data-place$="center"] { justify-content: center; }
+.slide[data-place$="bottom"] { justify-content: flex-end; }
+
+.slide[data-place="center"],
+.slide[data-place="wide"] { align-items: center; justify-content: center; }
+.slide[data-place="center"] { text-align: center; }
+
+/* 마스터는 **모든** 슬라이드에서 제목이 같은 높이에 있도록 마지막 자식에
+   margin-bottom: auto를 걸어 내용을 위로 붙였다. 장마다 제목이 위아래로
+   뛰는 것을 막는 장치였다.
+   이 덱은 배치가 슬라이드마다 다르므로 그 규칙이 top 배치가 아닌 장에서
+   justify-content를 조용히 무력화한다 — 아래에 놓으라고 해도 위에 붙는다.
+   위로 붙이는 것은 top 배치일 때만으로 좁힌다. */
+.slide:not([data-place$="top"]) > :last-child {
+  margin-bottom: 0;
+}
+
+/* 한쪽에 몰린 문구는 폭을 제한한다. 무대를 가로로 다 쓰면 씬이 통째로
+   글에 덮여 세계관이 끊기고, 한 줄이 너무 길어 읽기도 어렵다.
+   wide와 center는 격자·보드·표지처럼 무대를 다 쓰는 자리라 제외한다.
+
+   **.staff-tags는 반드시 예외로 둔다.** 그것은 문구가 아니라 그림 위에 좌표로
+   얹는 겹이고, 폭이 52%로 줄면 일곱 이름표가 화면 왼쪽 절반에 몰려 엉뚱한
+   사람 아래에 붙는다 — 실제로 그렇게 깨졌다. */
+.slide:not([data-place="wide"]):not([data-place="center"]) > *:not(.staff-tags) {
+  max-width: min(52%, 44rem);
+}
+
+/* 오른쪽 배치에서는 글이 오른쪽 끝에서 시작한다. 왼쪽 정렬로 두면
+   블록만 오른쪽에 있고 줄 끝이 들쭉날쭉해 배치가 실수처럼 보인다. */
+.slide[data-place^="right"] .slide__eyebrow,
+.slide[data-place^="right"] .slide__title,
+.slide[data-place^="right"] .slide__lead { text-align: right; }
+
+/* ── 카피 판 — 이 덱의 가독성 장치 ──────────────────────────────────
+   처음에는 넓은 흰 그라데이션 스크림을 깔았는데 **씬을 절반 넘게 덮어
+   배경이 안 보였다** (2026-08-10 피드백). 검정 글자 그림자도 진한 네이비
+   글자와 겹쳐 오히려 탁했다. 둘 다 걷어내고 방법을 바꿨다:
+
+   **글자 덩어리 하나마다, 그 크기만큼의 반투명 흰 판.**
+   flex 자식이라 내용 폭으로 줄어들므로 판이 글자 밖으로 늘어나지 않고,
+   판과 판 사이로 씬이 그대로 보인다. blur가 판 뒤의 디오라마를 살짝
+   뭉개 주어 얇은 판(0.8)으로도 글자가 선다. */
+.slide > .slide__eyebrow,
+.slide > .slide__title,
+.slide > .slide__lead,
+.slide > .slide__foot,
+.slide > .cheer__who {
+  background: rgba(255, 255, 255, .8);
+  padding: 0.18em 0.55em;
+  border-radius: 12px;
+  backdrop-filter: blur(3px);
+}
+
+/* 마스터는 제목 높이를 1.6줄로 예약해 본문 시작 높이를 통일했다. 판이
+   글자 크기대로 잘려야 하는 지금은 그 예약이 **한 줄 제목 아래에 빈 판**을
+   남긴다 — 걷어낸다. 배치가 슬라이드마다 달라 통일의 의미도 사라졌다. */
+.slide > .slide__title { min-height: 0; }
+
+/* 소제목 판과 제목 판이 겹치지 않게 마스터의 음수 여백을 되돌린다. */
+.slide > .slide__eyebrow + .slide__title { margin-top: calc(var(--gap) * 0.3); }
+
+/* 표·격자처럼 낱글자 판으로 감쌀 수 없는 큰 덩어리는 덩어리째 한 판.
+   자기 크기만 차지하므로 "배경을 다 덮는" 스크림과는 다르다. */
+.slide > .stat-row,
+.slide > .timeline {
+  background: rgba(255, 255, 255, .8);
+  border-radius: var(--radius);
+  padding: calc(var(--gap) * 1) calc(var(--gap) * 1.4);
+  backdrop-filter: blur(3px);
+}
+
+/* 완주 선물의 세 칸도 칸마다 제 판을 갖는다 — 칸 사이로 급수대가 보인다. */
+.trio--info .trio__item {
+  background: rgba(255, 255, 255, .85);
+  border-radius: var(--radius);
+  backdrop-filter: blur(3px);
+}
+
+/* 팀 여덟 장의 판. 달리는 인파가 가장 복잡한 배경이라 조금 더 진하다. */
+.slide--card > *:not(.needs-fact) {
+  background: rgba(255, 255, 255, .86);
+  /* 판이 글자마다 따로 생기지 않게 좌우 여백을 넉넉히 준 뒤 위아래를
+     맞붙인다. 블록 사이의 gap만큼 흰 판이 끊기는 것은 의도한 모양이다 —
+     하나의 큰 상자보다 가볍고, 씬이 사이로 보인다. */
+  padding: 0.34em 0.8em;
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+}
+
+/* ── 표지 ──────────────────────────────────────────────────────────
+   브랜드바가 이미 '2026 ∞ 해커톤'을 말한다. 중앙은 이 덱이 무엇인지에만
+   집중한다 — 같은 락업을 한 화면에 두 번 두지 않는다.
+
+   **클래스 이름이 마스터의 표지와 다른 이유**: 그쪽은 붓글씨 레터링 표지라
+   12.6vw짜리 글자와 절대배치 QR이 박혀 있다. 같은 이름을 쓰면 이 표지가
+   그 값을 물려받아 글자가 화면을 넘고 QR이 왼쪽에 떠 버린다. */
+/* 하단 슬로건이 절대배치로 빠져 있어, 가운데 덩어리가 화면 한복판에 놓이면
+   슬로건 쪽으로 처져 보인다. 아래에 슬로건 자리만큼 여백을 두어 덩어리를
+   위로 올린다 — 마스터 표지와 같은 처리다. */
+.slide[data-slide-id="title"] {
+  /* 아래 여백을 늘리면 가운데 정렬 그대로 **덩어리만 위로** 올라간다
+     (2026-08-10 요청). 씬의 아래쪽은 체크인 부스라 덩어리가 그 위로 내려오면
+     글자가 부스에 얹힌다. */
+  padding-bottom: 32vh;
+  gap: calc(var(--gap) * 1.1);
+}
+
+/* 슬로건을 **맨 위 오른쪽**에 둔다(2026-08-10 요청). 아래에 두었을 때는
+   체크인 부스와 인파를 가렸다. 표지에서는 브랜드바의 행사 락업을 감추므로
+   그 자리가 비어 있고, 그 위는 하늘이라 판 없이도 읽힌다 —
+   **판은 없앴다**(요청). 대비는 표지 전체에 걸린 흰 번짐이 맡는다. */
+.slide[data-slide-id="title"] .slogan-lockup {
+  position: absolute;
+  /* **left와 bottom을 auto로 되돌린다.** 마스터의 표지 규칙이 이 선택자에
+     left·right·bottom을 함께 박아 두었어서, right만 주면 left가 그대로 남아
+     상자가 가로로 늘어나고 max-content가 왼쪽에 붙는다 — 실제로 그랬다. */
+  left: auto;
+  bottom: auto;
+  right: var(--pad);
+  top: calc(var(--pad) * 0.45);
+  width: max-content;
+  max-width: calc(100% - var(--pad) * 2);
+  justify-content: flex-end;
+  gap: 0.4em;
+}
+
+/* 크기는 브랜드 로고 높이(--brand-h)를 기준으로 잡는다 — 창이 바뀌어도 왼쪽
+   주최 로고와 같은 비율로 함께 커진다.
+   2026-08-10: 한 단 키웠다(요청). 브랜드바 줄보다 아래로 조금 넘치는데,
+   그 아래가 하늘이라 넘쳐도 가리는 것이 없고 슬로건이 표지의 한 축으로
+   읽힌다. 표지 중앙의 락업(y 120px 근처)과는 부딪히지 않는다. */
+.slide[data-slide-id="title"] .slogan-art {
+  width: calc(var(--brand-h) * 8);
+}
+
+.slide[data-slide-id="title"] .slogan-lockup__pre {
+  font-size: calc(var(--brand-h) * 0.95);
+}
+
+/* 슬로건 조각의 색도 밝은 배경용으로 뒤집는다 — 마스터는 흰색·노란색이라
+   대회장 아침 위에서 그대로 사라진다. */
+.slogan-lockup__pre { color: var(--ink); text-shadow: none; }
+
+.slogan-art__idea,
+.slogan-art__to {
+  background: linear-gradient(180deg, var(--ink) 0%, #3D5B84 100%);
+}
+
+.slogan-art__impact {
+  background: linear-gradient(170deg, var(--gold) 0%, #D98A22 45%, var(--kw) 100%);
+}
+
+/* 표지는 스크림을 끈다 — 대회장 아침이 이 덱의 첫인상이라 하얗게 덮지 않는다.
+   대신 글자마다 **흰 번짐**을 깔아 대비를 만든다. 마스터가 어두운 배경에서
+   흰 글자에 검은 그림자를 깐 것의 뒤집음이다. 스크림처럼 면을 덮지 않으므로
+   지구본의 산과 바다가 글자 사이로 그대로 보인다. */
+.slide[data-slide-id="title"] > * {
+  text-shadow:
+    0 0 0.35em rgba(255, 255, 255, .95),
+    0 0 0.9em rgba(255, 255, 255, .75);
+}
+
+/* ── 표지 제목 — 붓글씨 락업 + '팀밋업' ─────────────────────────────
+   마스터 표지의 구조를 그대로 가져왔다. 붓글씨가 '팀밋업'의 어깨에 걸터앉고
+   **절반이 위로 넘친다** — 그래서 크기를 키운 뒤 자기 높이의 절반만큼
+   끌어올린다. 아래 끝은 제자리에 남고 위로만 자란다.
+
+   끌어올리는 양은 폭에서 계산한다. 높이 = 폭 × 1739/4715 = 폭 × 0.3688이므로
+   그 절반은 폭 / 5.42다. aspect-ratio로 잡은 높이를 CSS에서 직접 참조할 수
+   없어 폭을 원본으로 삼는다. 음수 여백이라 flex 컨테이너의 높이는 그대로다. */
+.cover__title {
+  --art-w: min(40vw, 46vh);
+  --art-lift: calc(var(--art-w) / 6.6);
+  margin: var(--art-lift) 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-family: var(--font-title);
+  line-height: 1;
+}
+
+.cover__art {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--art-w);
+  /* 합친 상자 4715 × 1739 */
+  aspect-ratio: 4715 / 1739;
+  align-self: flex-start;
+  margin-top: calc(var(--art-lift) * -1);
+  margin-right: -0.04em;
+}
+
+.cover__art > span { position: absolute; display: block; }
+
+/* viewBox "392 789 2897 1557" — 합친 상자에서의 자리 */
+.cover__chal {
+  left: 0;
+  top: 0;
+  width: 61.442%;
+  height: 89.534%;
+  -webkit-mask-image: url('../assets/challenger.svg');
+  mask-image: url('../assets/challenger.svg');
+  /* 원본 파일의 보라 그라디언트는 쓰지 않는다 — 밝은 디오라마 위에서는
+     네이비가 읽히고, 이 덱의 팔레트와도 맞는다. */
+  background: linear-gradient(100deg, var(--ink) 0%, #2C4A73 55%, #3D5B84 100%);
+}
+
+/* viewBox "3119 814 1988 1714" — 트랙은 마스터 표지와 같은 조각이다 */
+.cover__track {
+  left: 57.837%;
+  top: 1.438%;
+  width: 42.163%;
+  height: 98.562%;
+  -webkit-mask-image: url('../assets/track.svg');
+  mask-image: url('../assets/track.svg');
+  /* 두 낱말을 색으로 가른다 — '트랙'만 코랄이라 '챌린저 트랙'이 한 덩어리로
+     읽히면서도 어디까지가 무엇인지 보인다. */
+  background: linear-gradient(100deg, var(--kw) 0%, #E8724F 60%, var(--gold) 100%);
+}
+
+.cover__main {
+  font-weight: 900;
+  /* 붓글씨와 나란히 서는 글자다. 표지에서 가장 크다. */
+  font-size: clamp(2.6rem, min(9.4vw, 16.7vh), 10rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.cover__sub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.cover__en {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-style: italic;
+  font-size: var(--step-0);
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+
+.cover__when {
+  margin: 0;
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+}
+
+.cover__when small { font-weight: 400; color: var(--ink-faint); }
+
+/* ── 응원의 시간 ───────────────────────────────────────────────────
+   센터장은 씬 그림 안에 있다 (합성이 아니라 캐리커처를 참조로 장면째 생성
+   — 2026-08-10 지시). 화면에 얹는 것은 이름 한 덩어리뿐이다. */
+.cheer__who {
+  /* 이름을 한 단 키웠다(2026-08-10 요청) — 이 장의 주인공이 센터장이라
+     제목 다음으로 큰 글자여야 한다. */
+  font-size: var(--step-2);
+  line-height: 1.3;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* 이름 석 자만 두 단 위로(step-2 → step-4, 2026-08-11 요청). em이 아니라
+   토큰을 직접 쓰는 이유는 부모가 step-2라 0.66em 같은 상대값으로는 '두 단'이
+   화면 크기마다 달라지기 때문이다 — 토큰끼리는 어느 화면에서나 같은 간격이다.
+   행간은 1로 조인다. 이름이 커진 만큼 아래 소속 줄이 밀려 내려가는 것을 막는다. */
+.cheer__name { font-size: var(--step-4); line-height: 1; }
+
+.cheer__org { font-weight: 400; font-size: 0.66em; color: var(--ink-soft); }
+
+/* ── 정보 세 블록 (완주 선물) ───────────────────────────────────────
+   마스터의 .trio 틀을 빌리되 아이콘 대신 이모지 배지와 목록을 얹는다. */
+.trio--info .trio__badge {
+  font-size: var(--step-3);
+  line-height: 1;
+}
+
+/* 칸 제목을 **제목 글꼴 900으로 바꾸고 한 줄로 편다**(2026-08-11 요청).
+   크기는 step-2에서 step-1로 한 단 내린다 — 한 줄 제약이 먼저다. 가장 긴
+   '1:1 전문 코치 멘토링 지원'(13자)이 세 칸 중 하나(1180px 기준 약 360px)에
+   들어가려면 글자당 27px가 상한이고, step-2(32px)로는 넘친다.
+   내려간 크기는 900 굵기와 제목 글꼴이 되갚는다.
+   페이퍼로지는 700·900만 실어서 그 사이 값을 쓰면 획이 합성된다 — 900이다. */
+.trio--info .trio__title {
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: var(--step-1);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+/* align-self: stretch가 필요하다. 마스터의 .trio__item이 가운데 정렬이라
+   이 목록 상자가 내용 폭으로 줄어들면서 가운데에 놓이고, 그러면 항목마다
+   왼쪽 끝이 달라져 줄이 들쭉날쭉해진다 — 왼쪽 정렬을 준 것이 무의미해진다. */
+.trio--info .trio__list {
+  list-style: none;
+  align-self: stretch;
+  margin-top: calc(var(--gap) * 0.9);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  text-align: left;
+}
+
+/* 글자를 한 단 키우고 색을 진하게 올렸다(2026-08-10 요청) — step-00에
+   --ink-soft는 1280×720에서 14px 연회색이라 뒷줄에서 안 읽혔다. 이 장의
+   내용(선물·강연·코칭)은 참가자가 실제로 확인하는 것이라 읽혀야 한다. */
+.trio--info .trio__list li {
+  position: relative;
+  padding-left: 0.9em;
+  font-size: var(--step-0);
+  /* 줄간격만 조인다(2026-08-11 요청). 항목 사이는 위 ul의 gap(0.35em)이
+     쥐고 있어 그대로 남는다. */
+  line-height: 1.25;
+  color: var(--ink);
+  word-break: keep-all;
+}
+
+.trio--info .trio__list li small {
+  /* 0.82em이면 17px로 기준(18px) 아래로 내려간다 — 1em으로 두고 색으로만
+     한 단 낮춘다. 이 덱에서 18px 아래는 쓰지 않는다(tokens.css). */
+  font-size: 1em;
+  color: var(--ink-soft);
+}
+
+/* 판도 조금 더 진하게 — 급수대 씬이 이 장 배경이라 물빛과 글자가 겹친다. */
+.trio--info .trio__item { background: rgba(255, 255, 255, .9); }
+
+.trio--info .trio__title { font-size: var(--step-1); }
+
+.trio--info .trio__list li::before {
+  content: "·";
+  position: absolute;
+  left: 0.15em;
+  color: var(--ink-faint);
+}
+
+/* 세로 휴대폰(375×812)에서 이 장만 13px 넘쳤다. 참가자가 휴대폰으로 들어와도
+   내용이 잘리지 않아야 하므로, 세 블록의 숨통을 그만큼 조인다. 넓은 화면은
+   건드리지 않는다 — 거기서는 이 여백이 위계를 만든다. */
+@media (max-width: 560px) {
+  .trio--info .trio__list { gap: 0.18em; }
+}
+
+/* 마스터의 경쟁률 상자는 어두운 배경을 전제한다. 판이 거의 투명하고(흰색
+   0.05) 불 켜진 줄은 금색 네온으로 떠 있었다. 밝은 씬 위에서는 판이 아예
+   안 보이고 네온은 번진 얼룩으로 보인다 — 흰 판과 실선으로 바꾼다. */
+.rate { background: rgba(255, 255, 255, .70); }
+
+.rate--lit {
+  background: rgba(255, 255, 255, .90);
+  border-color: var(--gold);
+  box-shadow: none;
+}
+
+.stat-row--tight { gap: calc(var(--gap) * 1.2); }
+
+/* ── 해커톤 소개 (연도별 경쟁률) ────────────────────────────────────
+   2026-08-10 요청으로 배치를 바꿨다: 문구는 **왼쪽 위 빈 하늘**로 올리고,
+   표를 덮고 있던 **큰 흰 박스는 없앤다**. 대신 박스는 연도 칸마다 하나씩만
+   두어 관중석이 칸 사이로 보인다. */
+.slide[data-slide-id="what-is"] {
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* 문구는 무대의 절반 남짓만 쓴다. 씬의 오른쪽(관중석)을 글로 덮지 않는다. */
+.slide[data-slide-id="what-is"] > .slide__eyebrow,
+.slide[data-slide-id="what-is"] > .slide__title,
+.slide[data-slide-id="what-is"] > .slide__lead {
+  max-width: min(64%, 52rem);
+}
+
+/* 큰 박스를 지우고 표를 아래로 붙인다. margin-top: auto가 위의 문구와
+   표 사이를 벌려, 문구는 위에 표는 바닥에 놓인다. */
+.slide[data-slide-id="what-is"] > .stat-row {
+  background: none;
+  padding: 0;
+  backdrop-filter: none;
+  align-self: stretch;
+  margin-top: auto;
+  gap: calc(var(--gap) * 1.2);
+}
+
+/* 박스는 연도 칸마다. 연도와 그 해의 줄들이 한 박스에 들어간다. */
+.slide[data-slide-id="what-is"] .stat {
+  flex: 1;
+  padding: calc(var(--gap) * 0.9) calc(var(--gap) * 1.1);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .82);
+  backdrop-filter: blur(3px);
+}
+
+/* 칸 안의 줄은 이미 흰 판을 갖고 있어 두 겹이 된다 — 안쪽 판을 지운다. */
+.slide[data-slide-id="what-is"] .rate { background: none; }
+
+/* **챌린저 줄을 이 장의 주인공으로 세운다.** 청중이 챌린저 크루이므로
+   금색 테두리로는 부족했다 — 코랄 실선에 옅은 그림자, 숫자도 한 단 키운다. */
+.slide[data-slide-id="what-is"] .rate--lit {
+  background: #fff;
+  border: 3px solid var(--kw);
+  box-shadow: 0 4px 18px rgba(224, 83, 59, 0.3);
+}
+
+.slide[data-slide-id="what-is"] .rate--lit .rate__tag,
+.slide[data-slide-id="what-is"] .rate--lit .rate__num { color: var(--kw); }
+
+.slide[data-slide-id="what-is"] .rate--lit .rate__num { font-size: var(--step-4); }
+
+.slide[data-slide-id="what-is"] .rate--lit .rate__flow { font-weight: 800; }
+
+/* ── 팀 빌딩 게임 ───────────────────────────────────────────────────
+   제목은 판 없이 씬 위에 바로 얹는다(2026-08-10 요청) — 이 장은 글이 두 줄
+   뿐이라 판까지 깔면 몸풀기 장면이 판에 가린다. 판이 남는 것은 'PLAY' 한
+   줄뿐이고, 그 줄이 이 장에서 유일하게 읽어야 하는 내용이다. */
+.slide[data-slide-id="game"] > .slide__title,
+.slide[data-slide-id="teamsparta"] > .slide__title {
+  background: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+/* 제목을 한 줄로 편다(2026-08-10 요청) — left-top 배치의 기본 폭(52%)에서는
+   접혀서 두 줄이 됐다. 이 장은 제목 아래에 한 줄뿐이라 넓혀도 씬을 덜 덮는다. */
+.slide[data-slide-id="game"] > .slide__title { max-width: none; white-space: nowrap; }
+
+/* ── 레이스 안내 (진행 코스) ────────────────────────────────────────
+   제목을 맨 위로 올리고 표를 아래로 붙인다(2026-08-10 요청). */
+.slide[data-slide-id="course"] {
+  justify-content: flex-start;
+}
+
+.slide[data-slide-id="course"] > .timeline {
+  margin-top: auto;
+}
+
+/* '오늘 여기' 칸만 크게 세운다(2026-08-10 요청). 다섯 구간 중 지금이 어디인지가
+   이 장의 전부라, 나머지 넷과 같은 크기면 발표자가 손으로 짚어야 한다. */
+.slide[data-slide-id="course"] .tl-step--current {
+  background: #fff;
+  border-top-color: var(--kw);
+  border-top-width: 4px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 6px 22px rgba(224, 83, 59, 0.28);
+  /* 위아래로 조금 넘치게 세워 다섯 칸 중 하나만 앞으로 나와 보이게 한다. */
+  margin-top: calc(var(--gap) * -0.5);
+  padding-bottom: calc(var(--gap) * 1.6);
+}
+
+.slide[data-slide-id="course"] .tl-step--current .tl-step__when {
+  font-size: var(--step-2);
+  color: var(--kw);
+}
+
+.slide[data-slide-id="course"] .tl-step--current .tl-step__what {
+  font-size: var(--step-1);
+}
+
+.slide[data-slide-id="course"] .tl-step--current .tl-step__note {
+  font-size: var(--step-00);
+}
+
+/* ── 팀 소개 여덟 장 ────────────────────────────────────────────────
+   화면에 있는 것은 팀명 · 아이디어명 · 크루 셋뿐이다. 팀장이 마이크로
+   3분간 직접 소개하므로 그 뒤에서 화면이 떠들면 둘 다 진다.
+   roster.js의 renderTeam이 content.js의 TEAMS에서 찍는다.
+
+   **판은 #deck 밖에 하나만 있다**(2026-08-11 요청, teamcard.js).
+   여덟 장을 지나는 동안 판은 제자리에 서 있고 안의 글자만 갈린다.
+   자리는 왼쪽 아래 — 예전 슬라이드의 data-place="left-bottom"과 같다. */
+.teamcard {
+  position: absolute;
+  left: var(--pad);
+  bottom: var(--pad);
+  z-index: 2;
+  /* 판은 읽는 것이지 누르는 것이 아니다. 무대를 덮고 있으므로 반드시 뚫어
+     둔다 — 안 그러면 이 자리에서 스와이프·클릭이 먹지 않는다. */
+  pointer-events: none;
+
+  /* 여덟 겹을 **같은 칸에** 쌓는다. 격자가 가장 큰 겹에 맞춰지므로 판의
+     크기가 여덟 장 내내 고정된다 — 크기 통일이 여기서 나온다. */
+  display: grid;
+  max-width: min(52%, 44rem);
+
+  padding: 0.7em 1em 0.8em;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .86);
+  backdrop-filter: blur(2px);
+
+  /* 팀 구간에 들어올 때 한 번 뜨고, 나갈 때 한 번 진다. 그 사이에는
+     계속 켜져 있다. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 420ms var(--ease-slide), visibility 0s linear 420ms;
+}
+
+.teamcard.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 420ms var(--ease-slide), visibility 0s;
+}
+
+/* 겹 하나가 팀 하나다. 전부 같은 격자 칸에 놓고 불투명도로만 고른다 —
+   자리를 옮기지 않으므로 글자가 제자리에서 갈리는 것처럼 보인다. */
+.teamcard__layer {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 320ms var(--ease-slide);
+}
+
+.teamcard__layer.is-on { opacity: 1; }
+
+.team {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.6);
+}
+
+.team .slide__eyebrow { color: var(--gold); }
+
+.team__idea {
+  font-size: var(--step-1);
+  line-height: var(--leading-tight);
+  color: var(--ink-soft);
+  word-break: keep-all;
+}
+
+.team__crew {
+  margin-top: calc(var(--gap) * 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.5);
+}
+
+/* 두 회사가 섞인 팀(3·5)은 이 묶음이 둘이다. 소속을 한 줄로 뭉개면 누가
+   어느 회사 사람인지가 사라지는데, 그 사실이 이 대회의 성격이다. */
+.team__org {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  flex-wrap: wrap;
+}
+
+.team__names {
+  font-weight: 800;
+  font-size: var(--step-0);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+/* ── 운영진 이름표 ─────────────────────────────────────────────────
+   인물은 씬 그림에 이미 그려져 있다. --x는 그림 속 인물의 가로 중심이고
+   content.js의 STAFF_TAGS가 가진다. 폭을 고정해 이웃과 겹치지 않게 한다.
+
+   **배역은 글자로 적지 않는다.** 신호탄·스톱워치·메가폰처럼 캐릭터가 든
+   소품이 이미 그 역할을 말하고 있다. */
+/* **이름표의 기준 상자는 무대가 아니라 그림이다.**
+   배경을 가로 맞춤(object-fit: contain)으로 바꾸면서, 16:9보다 세로로 긴
+   창에서는 그림이 무대의 위아래를 다 채우지 않는다. 이름표를 무대 기준으로
+   두면 그림 아래 하늘색 띠에 떠 버린다 — 실제로 그랬다.
+   그래서 이 겹의 높이를 **그림이 실제로 차지하는 높이**(무대 폭 ÷ 씬 비율
+   1.791)로 잡고 무대 가운데에 맞춰 건다. 그림이 그리는 자리와 이 상자가
+   정확히 겹치므로, 안에서 쓰는 퍼센트가 곧 그림 안의 퍼센트가 된다.
+   16:9 창에서는 이 높이가 무대 높이와 같아져 예전과 다르지 않다.
+
+   **transform으로 가운데 맞추면 안 된다.** slides.css의 등장 연출이
+   .slide.is-active > * 에 transform: translateY(0)을 걸어 이 겹의 transform을
+   통째로 덮어쓴다 — 실제로 그렇게 이름표가 그림 아래 띠로 떨어졌다.
+   top을 직접 계산해 자리를 잡는다. */
+.staff-tags {
+  /* 그림이 실제로 차지하는 높이. 1.791은 씬 이미지의 가로/세로 비율이다
+     (2400×1340) — 씬을 다시 뽑으면 이 값도 함께 고쳐야 한다. */
+  --scene-h: min(var(--stage-h), calc(var(--stage-w) / 1.791));
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((var(--stage-h) - var(--scene-h)) / 2);
+  height: var(--scene-h);
+  pointer-events: none;
+  /* .slide의 max-width 제한(한쪽에 몰린 문구용)에 걸리지 않게 되돌린다. */
+  max-width: none;
+}
+
+/* 제목을 맨 위로 올린다(2026-08-10 요청). 이름표는 흐름 밖이라 영향이 없다. */
+.slide[data-slide-id="expedition"] {
+  justify-content: flex-start;
+}
+
+/* 제목은 판 없이 씬 위에 바로 얹는다(2026-08-10 요청) — 하늘 위라 판이
+   필요 없고, 판이 있으면 두 줄 제목이 큰 상자로 보인다. */
+.slide[data-slide-id="expedition"] > .slide__title {
+  background: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+/* **이름표 주위의 흰 그라데이션은 지운 채로 둔다**(2026-08-10 요청) —
+   이름표가 이미 제 판을 갖고 있어 띠까지 깔면 화면이 하얗게 덮인다. */
+body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
+
+/* 이름표가 머리 위로 올라가면서 아래 띠가 비었으므로, 이 장에서만 감췄던
+   진행 힌트와 진행바를 되돌렸다 — 더 이상 겹치지 않는다. */
+
+/* 감췄다 돌아오는 것이 툭 끊기지 않게. */
+.fs-hint,
+.progress {
+  transition: opacity 320ms var(--ease-slide);
+}
+
+/* 이름표도 **흰 판에 얹고 글자를 키웠다** — 도로 위 회색에 작은 글자를
+   얹어 두어 뒷줄에서 안 읽혔다(2026-08-10 요청).
+
+   폭은 내용만큼(max-content) 쓰되 이웃 간격(약 12.8%)보다 좁게 묶는다 —
+   고정 폭으로 두면 짧은 이름의 판이 헐렁하고, 상한을 풀면 긴 별칭이 옆
+   이름표를 밀어낸다.
+
+   세로 위치는 **퍼센트로 잡는다** — 그림 속 인물에 맞춰야 하므로 글자
+   크기(--pad)가 아니라 화면 비율을 따라가야 한다.
+   2026-08-11 요청으로 **그림 아래쪽으로 내렸다.** top이 아니라 bottom으로
+   매다는 이유는, 이름표가 두 줄이라 위에서 재면 화면 높이가 바뀔 때마다
+   아랫변이 오르내리기 때문이다 — 아래에서 재면 바닥에서 뜬 높이가 고정된다.
+   7%면 진행바·진행 힌트(바닥에서 3% 안쪽) 위에 얹힌다. */
+.staff-tag {
+  position: absolute;
+  top: auto;
+  bottom: 7%;
+  left: var(--x);
+  transform: translateX(-50%);
+  width: max-content;
+  /* 이웃 간격보다 좁게. 씬을 교체하면 간격이 바뀌므로 함께 다시 잰다 —
+     세 번째 씬의 간격은 12.7%다. */
+  max-width: 12.2%;
+  /* 여백과 줄간격을 최대한 조인다(2026-08-10 요청) — 판이 두 줄짜리인데
+     넉넉히 두면 세로로 길어져 인물의 발과 도로를 함께 덮는다. */
+  padding: 0.12em 0.4em 0.18em;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(3px);
+  text-align: center;
+}
+
+/* 씬에서 두 사람이 붙어 서 있을 때(소품을 함께 잡는 등) 그 둘만 폭을 줄인다.
+   content.js의 STAFF_TAGS에 tight를 달면 걸린다. 지금 씬은 일곱이 고르게
+   서 있어 쓰이지 않지만, 씬을 다시 뽑으면 다시 필요해질 수 있다. */
+.staff-tag--tight { width: 7.6%; }
+
+/* **margin: 0을 반드시 준다.** 둘 다 <p>라서 브라우저 기본 여백(위아래
+   1em)이 붙어 두 줄짜리 판이 103px까지 늘어났다 — 실측하고 나서야 알았다. */
+.staff-tag__nick {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--step-00);
+  line-height: 1.1;
+  color: var(--kw);
+  white-space: nowrap;
+}
+
+.staff-tag__name {
+  margin: 0;
+  font-weight: 800;
+  font-size: var(--step-1);
+  line-height: 1.1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* 직책은 이름의 부속이지만 18px 아래로 내리지 않는다(tokens.css 기준).
+   좁아진 이름표 폭 안에 들어가야 하므로 0.7em이 하한이다. */
+.staff-tag__name span {
+  font-weight: 400;
+  font-size: 0.7em;
+  color: var(--ink-soft);
+}
+
+/* ── 임시 자료 배지 ────────────────────────────────────────────────
+   마스터에서는 이 배지가 슬라이드 흐름 안에 있었다. 미확정 항목이 한두
+   곳이라 세로 예산에 영향이 없었기 때문이다.
+   이 덱은 **열 곳**이 임시 자료다. 흐름 안에 두면 그 열 장이 모두 한 줄만큼
+   짧아지고, 원래 빠듯한 장(평가·액션플랜 보드)이 1280×720에서 넘친다.
+   흐름 밖으로 빼서 배지가 내용을 밀지 않게 한다.
+
+   자리는 **브랜드바 아래 오른쪽**이다. 왼쪽 위는 left-top 배치의 소제목
+   자리라 겹치고, 아래는 운영진 이름표가 있다. 오른쪽 배치 장들(환영사·
+   게임·Discord)은 모두 세로 가운데라 이 자리와 부딪히지 않는다. */
+.slide .needs-fact {
+  position: absolute;
+  right: var(--pad);
+  top: calc(var(--brandbar-h) * 0.95);
+  z-index: 3;
+  margin: 0;
+  align-self: auto;
+  max-width: none;
+  background: rgba(255, 255, 255, .78);
+}
+
+
+/* ── 표지의 행사 락업 ───────────────────────────────────────────────
+   글자로 적었던 '2026 WX해커톤'을 **브랜드바와 같은 로고 락업**으로 바꿨다
+   (2026-08-10 요청). 크기는 원래 글자 자리에 맞춰 --step-1이고, 마크 높이는
+   글자 크기에 딸린 em이라 화면이 바뀌어도 함께 따라간다.
+   표지에서는 오른쪽 위 브랜드바 락업을 감추므로(styles/slides.css) 같은
+   락업이 한 화면에 두 번 나오지 않는다. */
+.cover__lockup {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18em;
+  font-family: var(--font-title);
+  font-weight: 700;
+  /* 2026-08-10: 한 단 키웠다(요청). 붓글씨 제목 위에 서는 줄이라 너무 작으면
+     제목에 눌린다. 마크 높이는 이 크기에 딸린 em이라 함께 커진다. */
+  font-size: var(--step-2);
+  color: var(--ink);
+}
+
+.cover__lockup-name { line-height: 1; }
+
+.cover__lockup-mark {
+  display: block;
+  height: 0.82em;
+  aspect-ratio: 2672 / 1607;
+  -webkit-mask-image: url('../assets/hackathon_logo.svg');
+  mask-image: url('../assets/hackathon_logo.svg');
+  background: var(--ink);
+}
+
+/* 축하 장은 문구 덩어리를 **위로 올린다**(2026-08-10 요청). 가운데 정렬
+   그대로 두면 배번표를 붙여 주는 크루들과 같은 높이에서 겹쳐 보인다 —
+   아래 여백을 비워 두면 같은 정렬 규칙 안에서 블록만 올라간다. */
+.slide[data-slide-id="congrats"] {
+  padding-bottom: 24vh;
+}
+
+/* ── 선정 축하 — 배번표 카드 ────────────────────────────────────────
+   "크루로 선정되었다 = 배번표를 받았다." 흰 카드에 코랄 테두리, 네 귀퉁이의
+   점이 옷핀 자리다. 숫자는 카운트업(data-countup)으로 올라간다. */
+.bib {
+  position: relative;
+  padding: calc(var(--gap) * 1.8) calc(var(--gap) * 2.6);
+  border: 3px solid var(--kw);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .92);
+}
+
+/* 위쪽 두 귀퉁이의 옷핀 자리. 배번표라는 사실을 말해 주는 가장 싼 장치다 —
+   실제 배번표도 가슴에 달 때 위 두 모서리에 핀이 꽂힌다. */
+.bib::before,
+.bib::after {
+  content: "";
+  position: absolute;
+  top: 0.7em;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  opacity: 0.55;
+}
+
+.bib::before { left: 0.7em; }
+.bib::after { right: 0.7em; }
+
+.bib__stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--gap) * 2);
+}
+
+.bib__foot {
+  margin-top: calc(var(--gap) * 1.2);
+  text-align: center;
+  font-size: var(--step-00);
+  color: var(--ink-faint);
+}
+
+/* ── 평가 75 + 25 ──────────────────────────────────────────────────
+   이 장의 전부가 두 숫자다. 크게 세우고 사이에 +를 둔다. */
+.secret {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: calc(var(--gap) * 1.6);
+  width: 100%;
+}
+
+.secret__part {
+  flex: 0 1 34%;
+  padding: calc(var(--gap) * 1.4) calc(var(--gap) * 1.8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .9);
+  text-align: center;
+}
+
+/* 협업 점수 칸에 불을 켠다 — 75%는 당연하고 25%가 이 장의 소식이다. */
+.secret__part--up {
+  border: 2px solid var(--gold);
+  background: rgba(255, 255, 255, .96);
+}
+
+.secret__num {
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: var(--step-5);
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.secret__part--up .secret__num { color: var(--gold); }
+
+.secret__num small { font-size: 0.4em; font-weight: 700; color: var(--ink-faint); }
+
+.secret__name {
+  margin-top: 0.3em;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+/* 본문 글자를 키우고 색을 진하게 올렸다(2026-08-10 요청) — 평가 기준은
+   참가자가 실제로 따져 보는 내용이라 뒷줄에서도 읽혀야 한다. */
+.secret__desc {
+  margin-top: 0.4em;
+  font-size: var(--step-1);
+  line-height: var(--leading-tight);
+  color: var(--ink);
+}
+
+.secret__note {
+  margin-top: 0.7em;
+  font-size: var(--step-0);
+  line-height: var(--leading-tight);
+  color: var(--ink-soft);
+}
+
+.secret__list {
+  list-style: none;
+  margin-top: 0.6em;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  font-size: var(--step-1);
+  line-height: var(--leading-tight);
+  color: var(--ink);
+}
+
+.secret__plus {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: var(--step-4);
+  color: var(--kw);
+  line-height: 1;
+}
+
+/* **'POINT UP!'을 배지로 세운다**(2026-08-10 요청). 옅은 글자로 두었더니
+   급수대 씬 위에서 사라졌다 — 코랄 판에 흰 글자로 뒤집으면 두 숫자 사이에서
+   가장 먼저 눈에 걸린다. + 기호에도 흰 테를 둘러 씬과 분리한다. */
+.secret__plus {
+  text-shadow: 0 0 0.28em #fff, 0 0 0.5em #fff;
+}
+
+.secret__plus span {
+  font-size: var(--step-00);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: var(--kw);
+  padding: 0.25em 0.6em;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  text-shadow: none;
+  box-shadow: 0 3px 12px rgba(224, 83, 59, 0.4);
+}
+
+/* ── FAQ ───────────────────────────────────────────────────────────
+   다섯 문답을 두 열로. 질문이 먼저 눈에 걸려야 하므로 코랄로 세운다.
+   **제목 크기는 건드리지 않는다**(2026-08-10 요청) — 720px에 맞추는 몫은
+   칸의 여백과 답변 줄바꿈이 맡는다. */
+
+.faq {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gap) * 0.35) calc(var(--gap) * 0.9);
+  width: 100%;
+}
+
+.faq__item {
+  /* 위아래 여백을 최소로 — 다섯 칸이 720px에 들어가야 하고, 줄이는 것은
+     여백이지 글자가 아니다. 2026-08-11에 한 번 더 조였다. */
+  padding: calc(var(--gap) * 0.12) calc(var(--gap) * 0.9) calc(var(--gap) * 0.2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .88);
+}
+
+/* 다섯 번째 문답만 두 열을 가로지른다 — 답이 한 줄로 펴지면서 칸이 낮아진다.
+   폭이 넓어지면 양쪽 맞춤이 글자 사이를 벌려 성겨 보이므로 이 칸만 왼쪽
+   맞춤으로 되돌린다(한 줄짜리에는 양쪽 맞춤이 할 일도 없다). */
+.faq__item--wide { grid-column: 1 / -1; }
+.faq__item--wide .faq__a { text-align: left; }
+
+.faq__q {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--step-1);
+  /* 질문 줄이 제 글자 크기보다 높이 서 있어 칸을 늘렸다. 1.2로 조인다. */
+  line-height: 1.2;
+  color: var(--kw);
+}
+
+.faq__q::before { content: "Q. "; }
+
+.faq__a {
+  margin-top: 0.15em;
+  font-size: var(--step-0);
+  line-height: 1.25;
+  color: var(--ink);
+  word-break: keep-all;
+  /* **양쪽 맞춤.** 줄 끝이 가지런해지면 같은 글자 수가 한 줄 덜 차지한다 —
+     특히 답변이 가장 긴 유료 라이선스 칸에서 한 줄이 줄어든다. */
+  text-align: justify;
+  text-justify: inter-character;
+}
+
+.faq__a strong { color: var(--gold); font-weight: 800; }
+
+/* ── 크루 전체 보기 ─────────────────────────────────────────────────
+   여덟 팀이 4×2 격자에 선다. 팀명·아이디어명·이름 셋만 — 상세는 팀 장에서
+   팀장이 말한다. 이모지는 마라톤 소품을 군데군데 넣으라는 운영 요청이다. */
+.teams-all {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--gap) * 0.8);
+  width: 100%;
+}
+
+.teams-all__team {
+  padding: calc(var(--gap) * 0.8) calc(var(--gap) * 1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .88);
+}
+
+.teams-all__head {
+  display: flex;
+  align-items: baseline;
+  /* 가운데 정렬(2026-08-10 요청). 여덟 칸의 팀명이 같은 축에 서야 격자가
+     표처럼 읽힌다. */
+  justify-content: center;
+  gap: 0.3em;
+  /* **한 줄을 보장한다.** 한 팀만 두 줄이 되면 그 줄 전체가 내려앉는다. */
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.teams-all__emoji { font-size: var(--step-1); line-height: 1; }
+
+.teams-all__name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+
+/* 괄호 안(영문 표기·유래)은 이름의 부속이다. 한 줄에 담기 위해 줄이는 것은
+   여기뿐 — 팀명 자체는 건드리지 않는다. */
+.teams-all__paren {
+  font-size: 0.72em;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.teams-all__idea {
+  margin-top: 0.3em;
+  font-size: var(--step-00);
+  line-height: var(--leading-tight);
+  color: var(--ink-soft);
+  text-align: center;
+  word-break: keep-all;
+  /* 두 줄 자리를 예약해 칸 높이가 팀마다 달라지지 않게 한다. 줄바꿈은
+     roster.js가 붙임표(—) 자리에서 직접 넣으므로 폭에 맡기지 않는다. */
+  min-height: calc(var(--step-00) * var(--leading-tight) * 2);
+}
+
+/* ── 크루 전체 보기의 배치 ──────────────────────────────────────────
+   2026-08-10 요청: 제목은 **맨 위로**, 여덟 박스는 **아래로 많이 내려서**
+   씬 가운데의 스타트라인 인파가 가려지지 않게 한다. 박스에 크루원 이름을
+   빼면서 높이가 줄어, 내려도 아래가 넘치지 않는다. */
+.slide[data-slide-id="crew-all"] {
+  justify-content: flex-start;
+  /* 제목은 출발 아치 안쪽 하늘에 앉는다(씬의 10~38% 구간). */
+  padding-top: calc(var(--brandbar-h) + var(--gap) * 4);
+  /* 씬을 교체하며 **주자들의 발밑이 63%**로 내려왔고 그 아래는 빈 아스팔트다.
+     아래 여백을 줄여 여덟 칸이 그 빈 도로 안에 들어가게 한다 — 사람을 가리지
+     않고 "주자들 앞 도로에 놓인 판"으로 읽힌다. */
+  padding-bottom: calc(var(--pad) * 0.45);
+}
+
+/* 격자를 아래로 밀어 붙인다. 위의 auto 여백이 제목과 격자 사이를 벌린다.
+   칸을 조이는 이유는 **씬 가운데의 스타트라인 인파**다 — 격자가 높으면
+   아래로 밀어도 첫 줄이 사람들의 다리에 걸린다. */
+.slide[data-slide-id="crew-all"] > .teams-all {
+  margin-top: auto;
+  gap: calc(var(--gap) * 0.5);
+}
+
+/* 칸 세로를 한 번 더 줄인다(2026-08-10 요청) — 위아래 여백을 최소로 두고,
+   아이디어명은 두 줄 자리 예약을 없앤다. 붙임표(—)가 없는 팀은 한 줄이라
+   그만큼 칸이 낮아진다. */
+.slide[data-slide-id="crew-all"] .teams-all__team {
+  padding: calc(var(--gap) * 0.3) calc(var(--gap) * 0.7);
+}
+
+.slide[data-slide-id="crew-all"] .teams-all__idea {
+  margin-top: 0.12em;
+  min-height: 0;
+  line-height: 1.3;
+}
+
+/* ── 본선 일정 — 시간 축을 가운데 둔 여정맵 ─────────────────────────
+   **10일은 위, 11일은 아래, 그 사이가 시간 테이블이다**(2026-08-10 요청).
+   같은 시각에 두 날이 무엇을 하는지가 축을 사이에 두고 위아래로 마주 본다.
+
+   처음엔 원본대로 12행 표였는데 720px에 들어가지 않아 잘렸다. 축을 공유하니
+   세로를 반씩 나눠 쓰고, 비교도 훨씬 쉬워졌다.
+
+   축은 **한 시간 눈금 열한 칸**이다(2026-08-11). 칸 폭이 곧 한 시간이므로
+   일정의 가로 길이가 그대로 소요 시간이 된다 — 4hr짜리는 네 칸을 차지하고,
+   같은 시각의 두 날 일정이 세로로 정확히 마주 본다. 마지막 칸(18~08)만
+   14시간을 접어 넣은 예외다.
+
+   초록이 우리(챌린저), 파랑이 마스터, 흰 판이 공통 행사다. */
+.jm {
+  display: grid;
+  width: 100%;
+  /* 날짜 열 + 한 시간짜리 열한 칸. **모두 같은 폭이어야 한다** — 한 칸이라도
+     넓히면 "칸 폭 = 한 시간"이 깨져 축이 거짓말을 한다. */
+  grid-template-columns: 3.9em repeat(11, 1fr);
+  grid-template-rows: 1fr auto 1fr;
+  gap: 0.3em;
+  align-items: stretch;
+}
+
+/* 날짜 칩. 위 줄과 아래 줄의 맨 왼쪽에 선다. */
+.jm__day {
+  display: grid;
+  place-content: center;
+  padding: 0.3em 0.4em;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--step-0);
+  line-height: 1.25;
+  text-align: center;
+}
+
+/* 요일은 날짜의 부속이지만 18px 아래로 내리지 않는다(tokens.css 기준). */
+.jm__day small { display: block; font-size: 0.9em; font-weight: 400; opacity: 0.85; }
+.jm__day--up { grid-area: 1 / 1; }
+.jm__day--down { grid-area: 3 / 1; }
+
+/* 축 — 가운데 줄의 시간 눈금. 예전에는 칸마다 알약이 하나씩 떠 있었는데,
+   눈금이 열한 개로 늘면서 알약 열한 개는 축이 아니라 단추 줄로 보였다.
+   **끊기지 않는 막대 하나**로 바꾸고 그 안에 눈금을 얹는다 — 그래야 시간이
+   왼쪽에서 오른쪽으로 흐르는 하나의 축으로 읽힌다.
+   막대 안의 열한 칸은 위아래 일정 격자와 **같은 repeat(11, 1fr)**이라
+   눈금과 일정의 세로줄이 정확히 맞는다. */
+.jm__axis {
+  grid-row: 2;
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  padding: 0.22em 0;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+}
+
+/* 숫자는 칸의 **시작 시각**이라 칸 가운데가 아니라 왼쪽 경계에 붙어야 한다.
+   경계에 세로 눈금선을 긋고 숫자를 그 오른쪽에 놓는다 — 가운데 정렬로 두면
+   '08:00'이 08~09시의 한가운데를 가리켜 30분씩 어긋나 보인다. */
+.jm__axis span {
+  position: relative;
+  padding-left: 0.45em;
+  font-weight: 800;
+  font-size: var(--step-00);
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.jm__axis span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -0.22em;
+  bottom: -0.22em;
+  width: 1px;
+  background: rgba(255, 255, 255, .35);
+}
+
+/* 첫 눈금(08:00)은 막대의 시작 그 자체라 선을 그으면 모서리에 겹친다. */
+.jm__axis span:first-child::before { display: none; }
+
+/* 마지막 칸(18~08)의 끝 시각을 오른쪽 끝에 덧붙여 봤지만, 한 시간 폭
+   안에서 '18:00'과 부딪혀 '18:0008:00'으로 붙어 버렸다. 밤샘 칸이 이미
+   '밤샘 14hr'이라고 적고 있어 끝 시각은 거기서 읽힌다 — 눈금은 시작만
+   적는 규칙을 끝까지 지킨다. */
+
+/* 일정 칸. 기본은 공통 행사(거의 불투명한 흰 판)다 — 반환점 씬의 인파와
+   트랙이 밝아서 옅게 두면 글자가 배경과 섞인다. */
+.jm__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12em;
+  /* 한 시간 칸이 좁아진 만큼 좌우 여백을 줄인다 — 글자가 쓸 폭이 먼저다. */
+  padding: 0.4em 0.28em;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .95);
+  backdrop-filter: blur(2px);
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* 한 시간 칸의 폭이 1280×720에서 90px 남짓이라, step-0(21px)로는 '개회식 및
+   오리엔테이션'이 넉 줄로 접힌다. 한 단 내려 step-00으로 둔다 —
+   여러 칸을 쓰는 넓은 일정은 아래에서 다시 키운다. */
+.jm__what {
+  font-weight: 700;
+  font-size: var(--step-00);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+/* 네 칸·세 칸을 쓰는 넓은 일정은 자리가 남으므로 제 크기로 되돌린다. */
+.jm__c5 .jm__what,
+.jm__d2 .jm__what,
+.jm__d4 .jm__what { font-size: var(--step-0); }
+
+/* 칸 안에 시각을 덧붙이던 <em>과, 한 칸에 두 일정을 쌓던 --stack은 지웠다
+   (2026-08-11) — 한 시간 눈금 축이 생기면서 시각은 축이 말하고, 두 일정은
+   각자의 칸으로 갈라섰다. */
+
+.jm__hr { font-size: var(--step-00); color: var(--ink-soft); }
+
+/* 우리 트랙이 관여하는 칸은 초록으로 — 청중이 챌린저 크루다. */
+.jm__cell--mine { background: rgba(226, 240, 236, .95); }
+
+/* 밤샘과 폐회식은 이 이틀의 두 고비다. 테두리로 한 번 더 세운다. */
+.jm__cell--night { border: 2px solid var(--on-light-green); }
+.jm__cell--final { border: 2px solid var(--kw); }
+.jm__cell--final .jm__what { color: var(--kw); }
+
+/* 트랙이 갈리는 칸은 안에서 위아래로 쪼갠다. */
+.jm__cell--split { gap: 0.25em; padding: 0.32em; }
+
+.jm__lane {
+  width: 100%;
+  padding: 0.24em 0.45em;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: var(--step-00);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.jm__lane b { display: block; font-family: var(--font-title); }
+
+/* **두 트랙의 무게를 갈라 놓는다**(2026-08-11 요청). 이 장을 보는 사람은
+   챌린저 크루다 — 제 트랙이 먼저 눈에 걸리고, 마스터는 "옆에서 이런 일이
+   동시에 벌어진다"는 배경으로 물러나 있으면 된다.
+   자리도 넉넉히 갈라 준다(flex 1.35 대 1) — 칸 높이는 그대로인데 안에서
+   챌린저 쪽이 더 두툼해진다. */
+.jm__lane--mine {
+  flex: 1.35;
+  background: rgba(15, 97, 82, .22);
+  border: 1px solid rgba(15, 97, 82, .45);
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+
+.jm__lane--mine b { color: var(--on-light-green); font-weight: 900; }
+
+.jm__lane--other {
+  flex: 1;
+  background: rgba(61, 91, 132, .1);
+  color: var(--ink-faint);
+  font-weight: 400;
+  /* 흐리게 물러난다 — 지우는 것이 아니라 뒤로 보내는 것이라 색만 뺀다. */
+  opacity: 0.72;
+}
+
+.jm__lane--other b { color: var(--ink-faint); font-weight: 700; }
+
+/* 시간 → 격자 열. 08시가 2열이고 한 시간마다 한 열씩 간다.
+   08→2  09→3  10→4  11→5  12→6  13→7  14→8  15→9  16→10  17→11  18~08→12 */
+
+/* 1일차(위 줄) */
+.jm__c1 { grid-row: 1; grid-column: 2; }            /* 08~09 참가자 접수 */
+.jm__c2 { grid-row: 1; grid-column: 3; }            /* 09~10 개회식·OT */
+.jm__c3 { grid-row: 1; grid-column: 4 / span 2; }   /* 10~12 전문가 특강 */
+.jm__c4 { grid-row: 1; grid-column: 6; }            /* 12~13 네트워킹 파티 */
+.jm__c5 { grid-row: 1; grid-column: 7 / span 4; }   /* 13~17 과제 수행 4hr */
+.jm__c6 { grid-row: 1; grid-column: 11; }           /* 17~18 1차 코칭 */
+.jm__c7 { grid-row: 1; grid-column: 12; }           /* 18~08 밤샘 14hr */
+
+/* 2일차(아래 줄). 마지막 칸(18~08)은 비어 있다 — 이튿날은 18시에 끝난다. */
+.jm__d1 { grid-row: 3; grid-column: 2; }            /* 08~09 2차 코칭 */
+.jm__d2 { grid-row: 3; grid-column: 3 / span 4; }   /* 09~13 과제 수행 4hr */
+.jm__d3 { grid-row: 3; grid-column: 7; }            /* 13~14 최종 코칭·발표준비 */
+.jm__d4 { grid-row: 3; grid-column: 8 / span 3; }   /* 14~17 결과 발표회 3hr */
+.jm__d5 { grid-row: 3; grid-column: 11; }           /* 17~18 시상·폐회식 */
+
+/* 제목을 위로 붙이고 일정표가 남은 높이를 쓴다. */
+.slide[data-slide-id="finals-schedule"] {
+  justify-content: flex-start;
+  gap: calc(var(--gap) * 1.2);
+}
+
+.slide[data-slide-id="finals-schedule"] > .jm { margin-top: auto; margin-bottom: auto; }
+
+/* ── 마무리 ─────────────────────────────────────────────────────────
+   제목은 위, 날짜 줄은 아래 — 결승선 씬 가운데의 크루들을 가리지 않도록
+   위아래로 갈라 놓는다(2026-08-10 요청). */
+.slide[data-slide-id="closing"] {
+  justify-content: flex-start;
+  /* 제목을 결승선 아치 아래로 내린다(2026-08-10 요청) — 맨 위에 붙이면
+     아치의 코랄과 글자가 겹쳐 읽힌다. */
+  padding-top: 20vh;
+}
+
+.slide[data-slide-id="closing"] > .slide__lead {
+  margin-top: auto;
+}
+
+/* ── 판 없는 진한 본문 ─────────────────────────────────────────────
+   해커톤 소개 장(#2/1)은 제목도 본문도 판을 두르지 않는다(2026-08-11 요청).
+   앞서 이 자리는 흰 판 → 검정 판 순으로 옮겨 다녔는데, 어느 쪽이든 판 두
+   겹이 관중석의 위쪽 절반을 덮었다. 판을 걷고 **글자를 진하게** 세우는
+   쪽으로 바꾼다 — 대비는 굵기와 네이비 색이 맡는다.
+   그림자는 넣지 않는다. 진한 네이비 글자에 검정 그림자를 겹치면 획이
+   뭉개져 오히려 탁해진다(이 파일 위쪽 카피 판 주석 참고). */
+.slide__lead--bold {
+  color: var(--ink);
+  font-weight: 800;
+  /* 두 줄로 접히므로 본문보다 한 단 작게 둔다. */
+  font-size: var(--step-0);
+  line-height: 1.5;
+}
+
+/* 카피 판을 얹는 일반 규칙(.slide > .slide__title / .slide__lead)을 이 장에서만
+   되돌린다. 선택자가 한 단계 더 좁아 일반 규칙을 이긴다. */
+.slide[data-slide-id="what-is"] > .slide__title,
+.slide[data-slide-id="what-is"] > .slide__lead {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  backdrop-filter: none;
+}
+
+/* 제목과 본문 사이를 확실히 벌린다 — 판이 없어진 만큼 둘이 한 덩어리로
+   붙어 보이기 쉽다. */
+.slide[data-slide-id="what-is"] > .slide__lead--bold {
+  margin-top: calc(var(--gap) * 1.1);
+  max-width: min(72%, 58rem);
+}
+
+/* ── 평가 두 칸의 번갈아 강조 ────────────────────────────────────────
+   75%와 25% 두 칸이 **천천히 번갈아** 부푼다(2026-08-10 요청). 발표자가
+   손으로 짚지 않아도 눈이 두 숫자를 차례로 따라간다.
+
+   **크기만 움직이고 투명도는 건드리지 않는다**(2026-08-11 요청). 물러나는
+   칸을 흐리게 하면 그 순간 그 칸의 글자를 읽고 있던 사람이 놓친다 —
+   숫자는 언제나 또렷하고, 앞으로 나오는 것만 크기로 말한다.
+
+   주기는 3.6초(한 칸당 1.8초)다 — 6초는 "움직이는지 모르겠다"는 말을 들어
+   2026-08-11에 앞당겼다. 두 칸의 지연을 반 주기(1.8초) 어긋나게 주어
+   한쪽이 물러날 때 다른 쪽이 나온다.
+
+   **transform만 쓴다.** 레이아웃 값(폭·여백)을 애니메이션하면 매 프레임
+   재배치가 일어나 옆 칸이 함께 흔들린다. */
+@keyframes secret-pulse {
+  0%, 100% { transform: scale(0.965); }
+  50%      { transform: scale(1.03); }
+}
+
+.slide[data-slide-id="evaluation"].is-active .secret__part {
+  animation: secret-pulse 3.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 협업 점수(25%) 칸은 반 주기 뒤에 나온다 — 그래서 둘이 번갈아 보인다. */
+.slide[data-slide-id="evaluation"].is-active .secret__part--up {
+  animation-delay: 1.8s;
+}
+
+/* ── 완주 선물 세 칸의 번갈아 강조 ──────────────────────────────────
+   평가 장(#7/3)과 같은 연출을 세 칸으로 늘린다(2026-08-11 요청).
+   한 칸이 부풀어 있는 구간을 주기의 1/5쯤으로 잡고 나머지는 기본 크기로
+   돌려 둔다 — 눈이 왼쪽에서 오른쪽으로 한 번 훑고 지나간다.
+
+   **크기만 움직인다**(2026-08-11 요청) — 투명도를 빼서 세 칸의 글자는
+   언제나 같은 진하기로 읽힌다. 선물 목록은 참가자가 실제로 확인하는
+   내용이라 어느 순간에도 흐려지면 안 된다.
+
+   지연을 **음수**로 주는 이유는, 양수로 주면 장을 열 때 두 번째·세 번째
+   칸이 각각 1.6초·3.2초 동안 아무 일도 하지 않고 기다리기 때문이다.
+   음수는 이미 그만큼 흘러간 자리에서 시작한다. */
+@keyframes gift-pulse {
+  0%,  100% { transform: scale(0.97); }
+  11%       { transform: scale(1.035); }
+  22%       { transform: scale(0.97); }
+}
+
+.slide[data-slide-id="gifts"].is-active .trio--info .trio__item {
+  animation: gift-pulse 4.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.slide[data-slide-id="gifts"].is-active .trio--info .trio__item:nth-child(2) {
+  animation-delay: -3.2s;
+}
+
+.slide[data-slide-id="gifts"].is-active .trio--info .trio__item:nth-child(3) {
+  animation-delay: -1.6s;
+}
+
+/* 부풀 때 옆 칸을 덮지 않도록 이 장만 칸 사이를 조금 더 벌린다. */
+.slide[data-slide-id="evaluation"] .secret { gap: calc(var(--gap) * 2); }
+
+/* 무대 장비의 OS 설정으로 애니메이션이 꺼지는 것은 이 덱에서 막지 않는다
+   (다른 곳과 같은 결정) — 다만 이 강조는 정보가 아니라 연출이므로, 꺼져도
+   두 칸은 그대로 읽힌다. */
