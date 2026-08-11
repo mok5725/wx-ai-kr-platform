@@ -42,6 +42,19 @@
   max-width: min(52%, 44rem);
 }
 
+/* **한 줄로 펴는 제목**(2026-08-11 요청 — #5/1 · #8/2).
+   위의 52% 제한이 이 두 제목을 두 줄로 접었다. 글자를 줄이지 않고 판만
+   넓힌다 — 크기를 내리면 스물두 장의 제목 크기가 서로 달라진다.
+
+   `white-space: nowrap`이 없으면 max-width만 풀어도 부모 flex의 폭 계산에서
+   다시 접힐 수 있다. 폭·글자 모두 --su 배수라 어느 화면 크기에서든 같은
+   비율이므로, 한 화면에서 한 줄이면 모든 화면에서 한 줄이다.
+   선택자를 위 규칙보다 한 단 길게 잡아 파일 순서에 기대지 않는다. */
+.slide:not([data-place="wide"]):not([data-place="center"]) > .slide__title.slide__title--one {
+  max-width: none;
+  white-space: nowrap;
+}
+
 /* 오른쪽 배치에서는 글이 오른쪽 끝에서 시작한다. 왼쪽 정렬로 두면
    블록만 오른쪽에 있고 줄 끝이 들쭉날쭉해 배치가 실수처럼 보인다. */
 .slide[data-place^="right"] .slide__eyebrow,
@@ -81,12 +94,19 @@
 
 /* 표·격자처럼 낱글자 판으로 감쌀 수 없는 큰 덩어리는 덩어리째 한 판.
    자기 크기만 차지하므로 "배경을 다 덮는" 스크림과는 다르다. */
-.slide > .stat-row,
-.slide > .timeline {
+.slide > .stat-row {
   background: rgba(255, 255, 255, .8);
   border-radius: var(--radius);
   padding: calc(var(--gap) * 1) calc(var(--gap) * 1.4);
   backdrop-filter: blur(3px);
+}
+
+/* **코스 타임라인은 판을 걷어냈다**(2026-08-11 요청). 다섯 칸이 각자 흰
+   카드를 갖고 있어서 판이 두 겹이었고, 바깥 판이 칸 사이로 보여야 할
+   급수대 씬과 점선 코스를 통째로 덮었다. 여백만 남긴다 — 없애면 물결로
+   내려앉은 첫·다섯째 칸(translateY 1.6em)이 가장자리에 닿는다. */
+.slide > .timeline {
+  padding: calc(var(--gap) * 1) calc(var(--gap) * 1.4);
 }
 
 /* 완주 선물의 세 칸도 칸마다 제 판을 갖는다 — 칸 사이로 급수대가 보인다. */
@@ -548,6 +568,33 @@
 
 .slide[data-slide-id="what-is"] .rate--lit .rate__flow { font-weight: 800; }
 
+/* 종목 이름(해커톤·제로톤·챌린저·마스터)을 굵게 세운다(2026-08-11 요청).
+   기본값은 보라 계열 400이라 숫자와 흐름 사이에서 가장 먼저 묻혔는데,
+   이 표에서 연도 다음으로 눈이 짚는 것이 "무슨 종목이냐"다. */
+.slide[data-slide-id="what-is"] .rate__tag {
+  font-weight: 800;
+}
+
+/* **챌린저 칸만 숨을 쉰다**(2026-08-11 요청). 코랄 테두리로 세워 두었지만
+   정지한 판들 사이에서는 결국 같은 무게로 읽힌다 — 다섯 칸 중 하나만
+   움직이면 눈이 거기부터 간다. #7/3의 25% 칸과 같은 연출·같은 주기다.
+
+   **transform만 쓴다.** 폭이나 여백을 움직이면 매 프레임 재배치가 일어나
+   같은 연도 칸의 마스터 줄이 함께 흔들린다. */
+@keyframes rate-pulse {
+  0%, 100% { transform: scale(0.985); }
+  50%      { transform: scale(1.045); }
+}
+
+.slide[data-slide-id="what-is"].is-active .rate--lit {
+  animation: rate-pulse 3.6s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+  /* 부풀 때 옆 칸과 그릇 밖으로 살짝 나가야 커진 것이 보인다. */
+  position: relative;
+  z-index: 1;
+}
+
 /* ── 팀 빌딩 게임 ───────────────────────────────────────────────────
    제목은 판 없이 씬 위에 바로 얹는다(2026-08-10 요청) — 이 장은 글이 두 줄
    뿐이라 판까지 깔면 몸풀기 장면이 판에 가린다. 판이 남는 것은 'PLAY' 한
@@ -569,27 +616,62 @@
   justify-content: flex-start;
 }
 
-/* 타임라인을 위로 올린다(2026-08-11 요청) — margin-top: auto로 바닥에 붙여
-   두었더니 코스 카드가 화면 아래 끝에 몰려 급수대 씬의 아래쪽을 다 덮었다. */
+/* 타임라인은 **위로 붙인다**(2026-08-11 요청 — "본문 타임라인 위로정렬").
+   바닥 붙임(margin-top: auto) → 위쪽 1.2gap → 위아래 auto(가운데)를 거쳐
+   다시 위다. 아래로 남는 자리는 통통 튀는 연출이 쓴다 — 칸이 화면 한가운데
+   있으면 튀어오른 만큼 위쪽 제목에 닿는다. */
 .slide[data-slide-id="course"] > .timeline {
   margin-top: calc(var(--gap) * 1.2);
   margin-bottom: auto;
 }
 
-/* **다섯 칸을 물결처럼 놓는다**(2026-08-11 요청). 마라톤 코스가 곧게 뻗어
-   있지 않듯 칸도 위아래로 번갈아 앉는다. 가운데(오늘)가 가장 높고 양옆이
-   낮아지는 완만한 언덕이라, '지금 여기'가 자리로도 드러난다.
-   흐름은 transform으로만 준다 — 여백으로 밀면 다섯 칸의 높이가 서로 달라져
-   격자가 그만큼 길어진다. */
-.slide[data-slide-id="course"] .tl-step:nth-child(1) { transform: translateY(1.6em); }
-.slide[data-slide-id="course"] .tl-step:nth-child(2) { transform: translateY(0.5em); }
-.slide[data-slide-id="course"] .tl-step:nth-child(3) { transform: translateY(-0.9em); }
-.slide[data-slide-id="course"] .tl-step:nth-child(4) { transform: translateY(0.3em); }
-.slide[data-slide-id="course"] .tl-step:nth-child(5) { transform: translateY(1.4em); }
+/* **다섯 칸을 같은 높이에 세운다**(2026-08-11 요청 — "위로정렬").
+   예전에는 물결처럼 위아래로 번갈아 앉혔는데(translateY 1.6em / 0.5em /
+   -0.9em / 0.3em / 1.4em), 그 자리가 transform이라 **튀어오르는 연출과
+   같은 자리를 다툰다** — 애니메이션이 걸리는 순간 물결 값이 통째로 덮여
+   다섯 칸이 어차피 평평해진다. 그래서 물결을 걷고 바닥선을 맞췄다.
+   오르내림은 이제 칸 뒤로 지나가는 점선 코스가 혼자 맡는다.
+
+   ── 순차적으로 통통 (2026-08-11 요청) ────────────────────────────
+   왼쪽 칸부터 하나씩 튀어오른다. 한 번 크게 뛰고 작게 한 번 더 받아
+   앉는 것이 공이 튀는 결이다 — 한 번만 오르내리면 튀는 것이 아니라
+   그냥 흔들리는 것으로 보인다.
+
+   주기 5초 중 실제로 뛰는 것은 앞 1초뿐이고 나머지 4초는 쉰다. 다섯 칸이
+   1초 간격으로 이어받으므로, 한 칸이 앉는 순간 옆 칸이 뛰기 시작해
+   물결이 왼쪽에서 오른쪽으로 한 번 지나간다.
+
+   지연을 **음수**로 주는 이유는 gift-pulse와 같다 — 양수면 장을 열 때
+   뒤쪽 칸들이 그만큼 아무 일도 하지 않고 기다린다.
+   **칸을 더하거나 빼면 이 사다리 전체를 다시 적는다.** 한 칸만 빠뜨리면
+   그 칸이 1번과 겹쳐 둘이 함께 뛴다(완주 선물에서 실제로 그랬다). */
+@keyframes course-hop {
+  0%, 100% { transform: translateY(0); }
+  6%       { transform: translateY(-0.95em); }
+  12%      { transform: translateY(0); }
+  16%      { transform: translateY(-0.3em); }
+  20%      { transform: translateY(0); }
+}
+
+.slide[data-slide-id="course"].is-active .tl-step {
+  animation: course-hop 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.slide[data-slide-id="course"].is-active .tl-step:nth-child(2) { animation-delay: -4s; }
+.slide[data-slide-id="course"].is-active .tl-step:nth-child(3) { animation-delay: -3s; }
+.slide[data-slide-id="course"].is-active .tl-step:nth-child(4) { animation-delay: -2s; }
+.slide[data-slide-id="course"].is-active .tl-step:nth-child(5) { animation-delay: -1s; }
 
 /* 칸 사이를 잇는 코스. 점선이 언덕을 따라 오르내린다 — 다섯 칸이 각자 떠
    있는 상자가 아니라 하나의 길 위의 지점으로 읽힌다.
-   SVG를 배경으로 깔고 뷰박스를 상자에 맞춰 늘린다(preserveAspectRatio 없음). */
+   SVG를 배경으로 깔고 뷰박스를 상자에 맞춰 늘린다(preserveAspectRatio 없음).
+
+   **칸 뒤(46%)가 아니라 칸 아래로 내렸다**(2026-08-11). 칸을 물결로 앉혔을
+   때는 어긋난 칸 사이로 점선이 드러났는데, 위로 정렬하면서 다섯 칸이 점선을
+   통째로 덮어 10px짜리 칸 틈에만 남았다 — 사실상 사라진 것이다.
+   아래로 내리면 다시 온전히 보이고, 칸이 통통 튀는 연출과도 맞는다:
+   점선이 노면이고 칸이 그 위에서 뛴다. */
 .slide[data-slide-id="course"] .timeline {
   position: relative;
 }
@@ -599,10 +681,17 @@
   position: absolute;
   left: 2%;
   right: 2%;
-  top: 46%;
-  height: 6em;
+  /* 칸의 아랫변(=100%)에서 시작한다. bottom을 음수로 밀면 SVG 안에서 획이
+     위쪽(viewBox 22~92/120)에 그려져 있어 정작 점선은 칸 뒤에 그대로
+     남는다 — 상자 전체를 칸 아래로 내보내야 한다. */
+  top: calc(100% - var(--gap) * 0.5);
+  bottom: auto;
+  height: 5em;
   z-index: 0;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M0 92 C120 92 160 62 250 62 S380 22 500 22 S620 56 750 56 S880 88 1000 88' fill='none' stroke='%23E0533B' stroke-opacity='0.5' stroke-width='7' stroke-linecap='round' stroke-dasharray='2 26'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  /* 흰 획을 한 겹 깔고 그 위에 코랄을 얹는다. 판 없는 씬 위로 내려오면서
+     옅은 코랄 점만으로는 인파와 노면에 묻혀 보이지 않았다 — 흰 테가
+     배경에서 떼어 준다. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M0 92 C120 92 160 62 250 62 S380 22 500 22 S620 56 750 56 S880 88 1000 88' fill='none' stroke='%23ffffff' stroke-opacity='0.85' stroke-width='15' stroke-linecap='round' stroke-dasharray='3 25'/%3E%3Cpath d='M0 92 C120 92 160 62 250 62 S380 22 500 22 S620 56 750 56 S880 88 1000 88' fill='none' stroke='%23E0533B' stroke-opacity='0.95' stroke-width='9' stroke-linecap='round' stroke-dasharray='3 25'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 /* 칸이 코스 위에 앉는다. **판을 씌워야 한다** — .tl-step 자체에는 배경이
@@ -980,8 +1069,10 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 .medal-badge {
   margin: 0;
   /* 트림한 원본이 3257×3231이라 거의 정사각이다.
-     2026-08-11: 13 → 32.5su(2.5배) → 22.75su(그 70%). */
-  width: calc(var(--su) * 22.75);
+     2026-08-11: 13 → 32.5su(2.5배) → 22.75su(그 70%) → 29.575su(그 1.3배).
+     메달이 흐름 안에 있으므로 키우면 제목과 배번표가 그만큼 저절로
+     아래로 내려간다 — 따라 내릴 여백을 따로 두지 않는다. */
+  width: calc(var(--su) * 29.575);
   aspect-ratio: 3257 / 3231;
   background: url('../assets/medal.webp') center / contain no-repeat;
 }
@@ -1153,24 +1244,58 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   line-height: 1;
 }
 
-/* **'POINT UP!'을 배지로 세운다**(2026-08-10 요청). 옅은 글자로 두었더니
-   급수대 씬 위에서 사라졌다 — 코랄 판에 흰 글자로 뒤집으면 두 숫자 사이에서
-   가장 먼저 눈에 걸린다. + 기호에도 흰 테를 둘러 씬과 분리한다. */
+/* + 기호에 흰 테를 둘러 씬과 분리한다. */
 .secret__plus {
   text-shadow: 0 0 0.28em #fff, 0 0 0.5em #fff;
 }
 
-.secret__plus span {
+/* **'POINT UP!'은 25% 칸의 왼쪽 위 모서리에 비스듬히 붙는다**
+   (2026-08-11 요청 — "뾰족한 팝업박스로 비스듬히 기울여서 강조된 듯하게").
+
+   + 아래에 얌전히 놓여 있을 때는 두 칸 사이의 장식으로 읽혔다. 칸에 걸쳐
+   기울여 붙이고 꼬리로 모서리를 가리키면 "이 칸이 그 포인트다"가 된다.
+
+   모서리 밖으로 나가 앉으므로 칸이 자리를 기준으로 삼아야 한다 →
+   .secret__part--up에 position: relative. 칸의 확대 연출(secret-pulse) 안에
+   있으므로 판도 함께 숨을 쉰다 — 따로 애니메이션을 걸지 않는다.
+
+   알약(radius-pill)이 아니라 **모난 판**이다. 꼬리가 붙을 자리가 있어야
+   '팝업박스'로 읽힌다. */
+.secret__part--up { position: relative; }
+
+.secret__pop {
+  position: absolute;
+  z-index: 2;
+  left: calc(var(--gap) * -1.4);
+  top: calc(var(--gap) * -1.6);
+  padding: 0.34em 0.8em;
+  border-radius: 9px;
+  background: var(--kw);
+  color: #fff;
+  font-family: var(--font-title);
   font-size: var(--step-00);
   font-weight: 800;
   letter-spacing: 0.1em;
-  color: #fff;
-  background: var(--kw);
-  padding: 0.25em 0.6em;
-  border-radius: var(--radius-pill);
+  line-height: 1.2;
   white-space: nowrap;
-  text-shadow: none;
-  box-shadow: 0 3px 12px rgba(224, 83, 59, 0.4);
+  /* 왼쪽 아래 꼭짓점을 축으로 돌린다 — 꼬리가 붙은 자리가 움직이지 않아야
+     꼬리 끝이 칸 모서리를 계속 가리킨다. */
+  transform: rotate(-9deg);
+  transform-origin: left bottom;
+  box-shadow: 0 5px 16px rgba(224, 83, 59, .42);
+}
+
+/* 꼬리. 마름모 하나를 판 아래로 반쯤 밀어 넣어 뾰족한 끝을 만든다. */
+.secret__pop::after {
+  content: "";
+  position: absolute;
+  left: 1.15em;
+  bottom: -0.3em;
+  width: 0.72em;
+  height: 0.72em;
+  background: var(--kw);
+  border-radius: 0 0 2px 0;
+  transform: rotate(45deg);
 }
 
 /* ── FAQ ───────────────────────────────────────────────────────────
@@ -1237,6 +1362,17 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 
    위로 여백을 둔 것은 제목을 가리지 않기 위해서다 — 목록이 제목 바로
    아래에서 시작하면 올라오는 칸이 제목 자국과 겹쳐 보인다. */
+/* 잘리는 자리의 신호는 **덮는 것이 아니라 녹이는 것**이다(2026-08-11 요청 —
+   "페이지 하단에 흰 그라데이션이 있는데 이질감이 있네").
+
+   예전에는 옅은 하늘색 판(rgba(220,235,247,.92))을 아래에 얹었다. 그런데
+   이 장의 배경은 반환점 씬이라, 씬 위에 색 있는 안개가 한 겹 끼는 것으로
+   보였다 — 문답 카드가 아니라 **화면 아래쪽 전체**가 뿌예졌다.
+   mask로 바꾸면 잘리는 것은 카드뿐이고, 그 자리로 씬이 그대로 비친다.
+
+   위쪽은 올라간 뒤에만 녹인다. 처음 화면에서 위를 녹이면 첫 문답의 머리가
+   까닭 없이 흐려진다. 아래쪽은 끝에 닿으면 끈다 — 마지막 문답이 맨 위에
+   선 자리라 아래는 어차피 비어 있고, 켜 두면 그 빈자리만 계속 녹인다. */
 .faq-scroll {
   position: relative;
   width: min(62%, 46rem);
@@ -1245,24 +1381,26 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   overflow: hidden;
   flex: 1;
   min-height: 0;
+
+  --faq-fade: 1.8em;
+  --faq-fade-bottom: 2.8em;
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0, #000 var(--faq-fade),
+    #000 calc(100% - var(--faq-fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom,
+    transparent 0, #000 var(--faq-fade),
+    #000 calc(100% - var(--faq-fade-bottom)), transparent 100%);
 }
 
-/* 아래에 더 있다는 신호. 마지막 칸이 잘리는 자리에 옅은 그라디언트를 얹어
-   "여기서 끝이 아니다"를 말한다 — 다 올리면(reveal.js가 end로 표시) 꺼진다. */
-.faq-scroll::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3.2em;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(220, 235, 247, .92), rgba(220, 235, 247, 0));
-  opacity: 0;
-  transition: opacity 320ms var(--ease-slide);
-}
+.faq-scroll[data-reveal-bottom="end"] { --faq-fade-bottom: 0px; }
 
-.faq-scroll[data-reveal-bottom="more"]::after { opacity: 1; }
+/* **위쪽 페이드 자리를 목록의 안여백으로 비워 둔다.** 안여백과 페이드 폭이
+   같으면 문답 카드가 페이드 구간에 절대 걸리지 않는다:
+     · 처음 화면 — 페이드 자리에 여백만 있어 아무것도 흐려지지 않는다
+     · 굴리는 중 — 지나간 카드의 꼬리가 그 자리를 지나며 녹는다
+     · 마지막   — 마지막 문답이 페이드가 끝나는 선에 정확히 서서 온전하다
+   이게 없으면 맨 위에 올라선 마지막 문답의 머리가 흐려진다(실제로 그랬다). */
+.faq--stack { padding-top: 1.8em; }
 
 .faq__q {
   font-size: var(--step-00);
@@ -1397,67 +1535,158 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   line-height: 1.3;
 }
 
-/* ── 본선 일정 — 시간 축이 세로인 표 ──────────────────────────────
-   **한 줄이 한 시간이다**(2026-08-11 요청). 08시부터 18시까지 열 줄, 그 아래
-   밤샘 한 줄. 같은 시각의 두 날이 가운데 축을 사이에 두고 좌우로 마주 본다.
+/* ── 본선 일정 — 시간 축이 세로인 표, 두 날을 위아래로 ─────────────
+   **한 줄이 한 시간이다**(2026-08-11 요청). 08시부터 18시까지 열한 줄.
 
-   가로로 눕혔던 앞 판에서는 한 칸이 화면 폭의 1/11(약 90px)이라 '개회식 및
-   오리엔테이션'이 넉 줄로 접혔다. 세로로 돌리면 한 칸이 쓸 폭이 화면의 40%가
-   되어 대부분 한 줄에 들어간다 — 대신 세로가 빠듯해지므로 줄 높이를
-   1fr로 고르게 나눠 열두 줄이 화면 안에 들어가게 한다.
+   가로로 눕혔던 첫 판에서는 한 칸이 화면 폭의 1/11(약 90px)이라 '개회식 및
+   오리엔테이션'이 넉 줄로 접혔다. 그래서 세로로 돌려 두 날을 가운데 축
+   양옆에 마주 세웠는데, 이번에는 표가 무대 폭을 통째로 먹었고 두 날의 마지막
+   칸이 서로 다른 높이에서 끝나 축이 짝짝이로 보였다(2026-08-11 요청 —
+   "너무 넓다 / 세로길이가 제각각이다").
+
+   **이제 두 날은 위아래로 쌓인다.** 표가 한 열이라 폭이 절반이 되고, 두 날이
+   똑같이 열한 줄을 써서 줄 높이와 축 길이가 정확히 같아진다. 한 날이 창의
+   두 배 높이라 화면에는 반쪽씩 보이고, 넘기면 창 한 판씩 내려간다.
 
    초록이 우리(챌린저), 파랑이 마스터, 흰 판이 공통 행사다. */
-.fs {
-  display: grid;
-  width: 100%;
-  /* 날짜 두 열 + 가운데 시간축. 축은 글자 폭만큼만 쓴다. */
-  grid-template-columns: 1fr auto 1fr;
-  /* 날짜 칩 한 줄 + 시간 열한 줄. 열한 줄을 고르게 나눠야 '한 줄 = 한 시간'이
-     성립한다 — auto로 두면 내용이 많은 줄만 길어져 축이 거짓말을 한다. */
-  grid-template-rows: auto repeat(11, 1fr);
-  gap: 0.2em;
-  flex: 1;
-  min-height: 0;
+
+/* 창. 넘치는 것을 자르기만 한다. 폭을 여기서 줄인다 — 60su는 무대 폭의
+   60%다(--su가 곧 1%). 시간 축이 좁아 한 열로도 글자가 넉넉하다. */
+.fs-window {
+  position: relative;
+  width: calc(60 * var(--su));
+  max-width: 100%;
+  overflow: hidden;
 }
 
-/* 날짜 칩. 두 열의 머리에 선다. */
-.fs__day {
+/* 잘린 자리에 옅은 그늘을 깐다. 열한 줄은 홀수라 창의 절반이 늘 한 줄
+   **가운데**에서 끊긴다 — 그늘이 없으면 그 잘린 칸이 실수처럼 보이고,
+   있으면 "여기서 이어진다"는 신호가 된다. 끝에 닿은 쪽은 꺼진다.
+   FAQ의 .faq-scroll과 같은 장치이고 신호도 같은 이름을 쓴다. */
+.fs-window::before,
+.fs-window::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--gap) * 4);
+  opacity: 0;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fs-window::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .55), transparent);
+}
+
+.fs-window::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, .55), transparent);
+}
+
+.fs-window[data-reveal-top="more"]::before { opacity: 1; }
+.fs-window[data-reveal-bottom="more"]::after { opacity: 1; }
+
+/* 두 날이 위아래로. **높이를 지정하지 않는다** — 내용이 정한다.
+   앞서는 창 높이의 정확히 네 배로 못 박고 한 판씩 넘겼는데, 2일차가 16시
+   줄에서 끝나면서 두 날의 줄 수가 달라졌다(11줄 · 9줄). 높이를 반씩 나누면
+   2일차의 줄만 길어져 '한 줄 = 한 시간'이 깨진다.
+   이제 줄 높이가 고정값이고 판 높이는 줄 수를 따른다. 걸음이 창 높이의
+   2/3라 표 끝이 창 높이의 배수가 아니어도 되고, 마지막 걸음은 reveal이
+   끝에 맞춰 잘라 준다(src/reveal.js의 maxShift). */
+.fs-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 620ms cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+
+/* 하루치 표. 시간 축 한 열 + 일정 한 열, 날짜 칩 한 줄 + 시간 줄들.
+
+   **줄 높이는 못 박는다**(grid-auto-rows). 1fr로 나누면 줄 수가 다른 두 날의
+   줄 높이가 달라져 축이 거짓말을 한다 — 1일차의 한 시간과 2일차의 한 시간이
+   화면에서 다른 길이가 된다. 시각을 놓는 칸(grid-row: N)이 암묵 줄을
+   만들므로, 줄 수가 몇이든 이 한 값이 전부를 정한다. */
+.fs-day {
   display: grid;
-  place-content: center;
-  padding: 0.14em 0.4em;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  grid-auto-rows: calc(10.15 * var(--sv));
+  gap: 0.2em;
+  /* 두 날 사이를 벌리는 자리. */
+  padding-bottom: calc(var(--gap) * 1.4);
+}
+
+/* 표의 머리는 **두 칸으로 갈린다**(2026-08-11 요청):
+   시간 축 위에는 몇 일차인지, 일정 칸 위에는 날짜와 요일.
+   축과 내용이 각자 제 머리를 이고 있는 셈이라, 어느 열이 무엇인지가
+   글자 자리로 드러난다.
+
+   **grid로 두면 안 된다** — 안의 글자 토막(날짜 · <small>요일)이 각자 격자
+   칸이 되어 줄로 쌓인다. 실제로 그렇게 접혔다. */
+.fs__daynum,
+.fs__day {
+  grid-row: 1;
+  display: block;
+  padding: 0.3em 0.4em;
   border-radius: 10px;
   background: var(--ink);
   color: #fff;
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: var(--step-00);
+  font-size: var(--step-0);
   line-height: 1.2;
   text-align: center;
 }
+
+/* 시간 축 위. 축 기둥과 같은 폭이라 글자가 빠듯하다 — 한 단 작게 줄인다. */
+.fs__daynum {
+  grid-column: 1;
+  font-size: var(--step-00);
+  white-space: nowrap;
+}
+
+.fs__day { grid-column: 2; }
 
 .fs__day small { font-size: 0.9em; font-weight: 400; opacity: 0.85; }
 
 /* 시간 눈금. 줄마다 하나씩, 그 줄이 **시작하는 시각**이다. */
 .fs__tick {
+  grid-column: 1;
   display: grid;
   place-items: center;
   padding: 0 0.5em;
   background: var(--ink);
   font-weight: 800;
-  font-size: calc(var(--su) * 1.0);
+  /* 줄이 두 배로 높아진 만큼 글자도 함께 올린다(2026-08-11). 1.0su는
+     1280×720에서 12.8px — 앞 판의 빠듯한 줄에 맞춘 크기라, 넓어진 판에서는
+     축이 혼자 작아 보였다. */
+  font-size: calc(var(--su) * 1.4);
   font-variant-numeric: tabular-nums;
   color: #fff;
   white-space: nowrap;
 }
 
 /* 축을 하나의 기둥으로 보이게 위아래 끝만 둥글린다 — 줄마다 알약이 열한 개
-   떠 있으면 축이 아니라 단추 줄로 보인다. */
-.fs__tick:nth-of-type(1) { border-radius: 10px 10px 0 0; }
-.fs__tick:nth-of-type(11) { border-radius: 0 0 10px 10px; }
+   떠 있으면 축이 아니라 단추 줄로 보인다.
+   눈금만 <time>이라 of-type이 눈금 열한 개만 센다 — 앞 판에서 nth-of-type(11)로
+   세던 때는 칸(div)이 섞여 들어와 셈이 틀리기 쉬웠다.
+
+   줄 간격(0.2em)을 세로로만 메워 눈금이 끊기지 않게 한다. 줄이 두 배로
+   높아지면서 그 틈이 눈에 띄어 축이 알약 열한 개로 보였다. */
+.fs__tick {
+  margin-block: -0.1em;
+}
+
+.fs__tick:first-of-type { border-radius: 10px 10px 0 0; margin-top: 0; }
+.fs__tick:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
 
 /* 일정 칸. 기본은 공통 행사(거의 불투명한 흰 판)다 — 반환점 씬의 인파와
    트랙이 밝아서 옅게 두면 글자가 배경과 섞인다. */
 .fs__cell {
+  grid-column: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1471,17 +1700,21 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   word-break: keep-all;
 }
 
+/* 글자 크기는 **줄 높이를 따라 올린다**(2026-08-11). 두 날을 위아래로 쌓아
+   한 줄이 두 배로 높아지고 폭도 무대의 60%로 넉넉해졌는데, 앞 판의 빠듯한
+   줄에 맞춰 눌러 둔 크기(1.15su ≈ 15px)를 그대로 두니 큰 판에 작은 글자가
+   떠 있었다. */
 .fs__what {
   font-weight: 700;
-  font-size: calc(var(--su) * 1.15);
-  line-height: 1.15;
+  font-size: calc(var(--su) * 1.95);
+  line-height: 1.2;
   color: var(--ink);
 }
 
 /* 소요시간은 이름의 부속이라 한 단 작고 연하게 — 눈이 이름에 먼저 앉는다. */
 .fs__hr {
-  font-size: calc(var(--su) * 0.92);
-  line-height: 1.1;
+  font-size: calc(var(--su) * 1.35);
+  line-height: 1.15;
   color: var(--ink-soft);
 }
 
@@ -1496,16 +1729,26 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 .fs__cell--final { border: 2px solid var(--kw); }
 .fs__cell--final .fs__what { color: var(--kw); }
 
-/* 트랙이 갈리는 칸은 안에서 위아래로 쪼갠다. */
-.fs__cell--split { gap: 0.16em; padding: 0.18em; }
+/* **트랙이 갈리는 칸은 좌우로 쪼갠다**(2026-08-11 요청).
+   위아래로 갈랐을 때는 두 트랙이 시간축과 어긋나 보였다 — 같은 시간대에
+   나란히 진행되는 일인데 위아래로 놓이면 '먼저 이것, 그다음 저것'으로
+   읽히고, 왼쪽 시간 눈금이 어느 줄을 가리키는지도 흐려진다.
+   좌우로 두면 한 시간대 안에서 두 트랙이 **동시에** 달리는 그림이 된다. */
+.fs__cell--split {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.2em;
+  padding: 0.2em;
+}
 
 .fs__lane {
-  width: 100%;
-  padding: 0.14em 0.45em;
+  display: grid;
+  place-content: center;
+  padding: 0.2em 0.45em;
   border-radius: 8px;
   font-weight: 700;
-  font-size: calc(var(--su) * 0.92);
-  line-height: 1.15;
+  font-size: calc(var(--su) * 1.35);
+  line-height: 1.2;
   color: var(--ink);
 }
 
@@ -1515,11 +1758,13 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 /* **두 트랙의 무게를 갈라 놓는다.** 이 장을 보는 사람은 챌린저 크루다 —
    제 트랙이 먼저 눈에 걸리고, 마스터는 "옆에서 이런 일이 동시에 벌어진다"는
    배경으로 물러나 있으면 된다. */
+/* 왼쪽이 챌린저 — 넓게, 진하게, 크게. 좌우로 갈리면서 '더 크다'가 이제
+   **폭**으로도 드러난다(1.55 : 1). 청중이 챌린저 크루다. */
 .fs__lane--mine {
-  flex: 1.3;
+  flex: 1.55;
   background: rgba(15, 97, 82, .22);
   border: 1px solid rgba(15, 97, 82, .45);
-  font-size: calc(var(--su) * 1.08);
+  font-size: calc(var(--su) * 1.75);
 }
 
 .fs__lane--mine b { color: var(--on-light-green); font-weight: 900; }
@@ -1534,12 +1779,21 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 
 .fs__lane--other b { color: var(--ink-faint); font-weight: 700; }
 
-/* 제목을 위로 붙이고 일정표가 남은 높이를 쓴다. */
+/* 제목을 위로 붙이고 일정표가 남은 높이를 쓴다.
+   **auto 여백을 지운다** — slides.css의 `> :last-child`가 걸어 둔
+   margin-bottom: auto가 남으면 flex 규격상 그것이 남는 높이를 먼저 다
+   가져가고 flex-grow가 0으로 취급되어, 창이 안 자라고 표도 안 커진다
+   (완주 선물 창에서 겪은 것과 같은 자리다). */
 .slide[data-slide-id="finals-schedule"] {
   gap: calc(var(--gap) * 1.2);
 }
 
-.slide[data-slide-id="finals-schedule"] > .fs { margin-top: calc(var(--gap) * 0.6); }
+.slide[data-slide-id="finals-schedule"] > .fs-window {
+  margin-top: calc(var(--gap) * 0.6);
+  margin-bottom: 0;
+  flex: 1;
+  min-height: 0;
+}
 
 /* ── 제목 아래 한 줄 (.slide__sub) ──────────────────────────────────
    제목이 문장이 되면서(“이 레이스, 저희가 함께 뜁니다”) 그 문장을 받는 한
@@ -1623,11 +1877,159 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 }
 
 /* 본문은 남은 높이의 가운데를 지킨다. */
-.slide[data-slide-id="gifts"] > .trio,
 .slide[data-slide-id="evaluation"] > .secret,
 .slide[data-slide-id="faq"] > .faq {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+/* ── 완주 선물 — 둘씩 보이고 옆으로 미끄러진다 (2026-08-11 요청) ────
+   네 칸을 한 화면에 늘어놓으니 한 칸이 화면 폭의 1/4이라 제목과 목록을
+   각각 한 단씩 눌러야 했다. 그래서 둘씩 보이게 바꿨는데, 이번에는 칸이
+   창을 통째로 채워 너무 컸다(2026-08-11 요청 — "본문 박스가 너무 크다").
+
+   **칸의 치수는 #7/3 평가 장의 .secret__part에서 그대로 가져온다**
+   (같은 요청). 폭 34% · 높이 화면의 49.6% · 칸 사이 --gap 두 배 ·
+   테두리와 모서리와 안여백까지 같은 값이다. 두 장이 잇달아 나오는데 판
+   크기가 다르면 넘길 때 판이 커졌다 작아졌다 한다.
+
+   그래서 창은 **남는 높이를 다 쓰지 않는다.** 칸 둘과 그 사이 간격만큼만
+   차지하고 남은 높이의 가운데에 앉는다(flex: 0 0 auto + auto 여백).
+
+   창은 넘치는 것을 자르기만 하고, 미끄러지는 것은 안쪽 줄이다.
+
+   ── 한 칸씩 넘기고 옆 칸이 비친다 (2026-08-11 요청) ──────────────
+   둘씩 통째로 갈아 끼우던 것을 **한 칸씩** 미는 것으로 바꿨다. 그리고 창
+   양옆에 칸 하나가 다 들어가지 않는 **엿보기 자리**를 두어, 다음 칸의
+   왼쪽 끝이 그라데이션으로 비친다:
+
+     0걸음   [ 1 ][ 2 ]3⟩     3번이 오른쪽에 어른거린다
+     1걸음  ⟨1[ 2 ][ 3 ]4⟩    1번이 왼쪽으로 넘어가며 흐려진다
+     2걸음  ⟨2[ 3 ][ 4 ]      4번까지 다 나왔다
+
+   세 값이 이 판을 결정한다. 셋 다 여기 한자리에 모아 둔다 — 하나만
+   고쳐도 창 폭과 줄 폭이 함께 따라와야 하기 때문이다. */
+.slide[data-slide-id="gifts"] {
+  /* 칸 폭. 무대 본문 폭(93su)의 34% — #7/3의 .secret__part와 같은 값이다. */
+  --gift-box: calc(31.62 * var(--su));
+  /* 칸 사이. 2gap에서 넓혔다(2026-08-11 요청 — "간격을 더 넓게"). */
+  --gift-gap: calc(var(--gap) * 3.2);
+  /* 엿보기 자리 — 옆 칸이 이만큼 비친다. */
+  --gift-peek: calc(6.5 * var(--su));
+  /* 흐려지는 폭 = **엿보기 자리 그대로**. 이러면 비치는 칸이 제 안쪽 변에서
+     온전한 진하기로 시작해 창 끝에서 0으로 녹는다.
+     간격까지 더해 넓히면(peek+gap) 비치는 칸이 처음부터 66% 진하기로 시작해
+     너무 씻겨 보이고, 반대로 좁히면 옆 칸이 잘린 듯 딱 끊긴다. */
+  --gift-fade: var(--gift-peek);
+}
+
+/* **안여백을 두지 않는다.** 예전에는 부푼 칸(gift-pulse)이 창에 잘리는 것을
+   막으려고 안여백을 주고 음수 바깥여백으로 되돌렸는데, 이제는 양옆 엿보기
+   자리가 그 여유를 대신한다. 안여백이 남아 있으면 clientWidth가 그만큼
+   부풀어 reveal이 재는 남은 거리가 어긋나고, 마지막 걸음이 설계한 자리에
+   서지 못한다. */
+.gift-window {
+  /* **위아래로만 안여백을 준다.** overflow는 안여백 상자의 경계에서 자르므로,
+     이만큼 잘리는 자리가 넓어져 부푼 칸(gift-pulse)의 위아래가 잘리지 않는다
+     (2026-08-11 요청 — "줌인아웃 효과시 위아래가 잘려보이는 오류").
+
+     **좌우에는 주면 안 된다.** 가로 걸음을 재는 reveal이 clientWidth를 쓰는데
+     안여백이 거기 얹히면 남은 거리가 어긋나 마지막 걸음이 설계한 자리에
+     서지 못한다. 좌우의 여유는 양옆 엿보기 자리가 이미 대신하고 있다.
+
+     값은 부푸는 양에서 나온다: 칸 높이 357px × (1.045 − 1) ÷ 2 = 위아래 각
+     8px. 1.6gap(16.4px)이면 8px이 남는다 — 1.2gap으로는 4px밖에 안 남아
+     빠듯했다. */
+  padding-block: calc(var(--gap) * 1.6);
+  overflow: hidden;
+  /* 양옆을 투명으로 녹인다. 흰 그늘을 덮는 것이 아니라 **칸 자체를 지우는**
+     것이라, 흐려진 자리로 급수대 씬이 그대로 비친다. */
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0, #000 var(--gift-fade),
+    #000 calc(100% - var(--gift-fade)), transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0, #000 var(--gift-fade),
+    #000 calc(100% - var(--gift-fade)), transparent 100%);
+}
+
+/* 창 = 한복판 칸 둘 + 그 사이 간격 + 양옆 엿보기(간격 포함).
+   높이에 안여백(위아래 각 1.6gap)을 더해 적는 것은 box-sizing이 border-box라
+   그래야 **내용 높이가 칸 높이 49.6sv 그대로** 남기 때문이다. */
+.slide[data-slide-id="gifts"] > .gift-window {
+  width: calc(var(--gift-box) * 2 + var(--gift-gap) * 3 + var(--gift-peek) * 2);
+  height: calc(49.6 * var(--sv) + var(--gap) * 3.2);
+  margin: auto 0;
+  flex: 0 0 auto;
+}
+
+/* 네 칸이 한 줄로 늘어선다. 격자가 아니라 flex다 — 칸 폭을 **못 박아야**
+   하는데, 격자의 1fr은 남는 자리를 나누는 값이라 창 밖으로 나가는 칸까지
+   셈에 넣지 못한다.
+
+   좌우 안여백이 엿보기 자리를 만든다. 0걸음에서 1번 칸의 왼쪽 변이 흐려짐이
+   끝나는 자리에 정확히 놓이도록 **안여백 = 엿보기 + 간격**이다. 양쪽을 같게
+   두어야 마지막 걸음에서 4번 칸 오른쪽에도 같은 여백이 남는다. */
+.slide[data-slide-id="gifts"] .trio--four {
+  display: flex;
+  gap: var(--gift-gap);
+  padding-inline: calc(var(--gift-peek) + var(--gift-gap));
+  width: calc(var(--gift-box) * 4 + var(--gift-gap) * 3
+              + (var(--gift-peek) + var(--gift-gap)) * 2);
+  height: 100%;
+  transition: transform 620ms cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+
+/* 칸 하나. #7/3의 .secret__part와 같은 판이다 —
+   .trio__item의 왼쪽 보라 선(border-left)을 지우는 것을 잊지 않는다. */
+.slide[data-slide-id="gifts"] .trio__item {
+  flex: 0 0 var(--gift-box);
+  justify-content: flex-start;
+  padding: calc(var(--gap) * 1.4) calc(var(--gap) * 1.8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .9);
+  text-align: center;
+}
+
+/* 머리 — 아이콘 줄과 제목 줄을 따로, 둘 다 가운데(2026-08-11 요청).
+   아래 선이 머리와 본문을 가른다.
+
+   **min-height가 네 칸의 선 높이를 맞춘다.** 아이콘과 제목이 각각 한 줄이라
+   보통은 저절로 같지만, 제목이 길어져 접히는 순간 그 칸만 선이 내려간다. */
+.slide[data-slide-id="gifts"] .trio__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18em;
+  min-height: calc(6.6 * var(--su));
+  padding-bottom: calc(var(--gap) * 0.9);
+  margin-bottom: calc(var(--gap) * 1.1);
+  border-bottom: 1px solid var(--line);
+}
+
+/* 이모지는 이제 제 줄을 갖는다 — 제목 앞에 인라인으로 붙이던 값을 되돌린다. */
+.slide[data-slide-id="gifts"] .trio__badge {
+  display: block;
+  margin-right: 0;
+  font-size: calc(3.2 * var(--su));
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+/* 제목 크기는 #7/3의 .secret__name과 같은 step-1이다. */
+.slide[data-slide-id="gifts"] .trio__title {
+  margin: 0;
+  font-size: var(--step-1);
+  text-align: center;
+}
+
+/* 목록은 왼쪽 그대로 둔다 — 여러 줄짜리 항목까지 가운데로 맞추면 줄 끝이
+   들쭉날쭉해진다. 판의 가운데 정렬(text-align)을 여기서 되돌린다. */
+.slide[data-slide-id="gifts"] .trio__list {
+  margin-top: 0;
+  gap: 0.5em;
+  text-align: left;
 }
 
 /* ── 마무리 ─────────────────────────────────────────────────────────
@@ -1920,45 +2322,82 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   50%      { transform: scale(1.03); }
 }
 
-.slide[data-slide-id="evaluation"].is-active .secret__part {
+/* **협업 점수(25%) 칸 하나만 숨을 쉰다**(2026-08-11 요청).
+   예전에는 두 칸이 반 주기씩 어긋나 번갈아 부풀었는데, 그러면 둘이 같은
+   무게가 되어 강조가 아니라 그냥 배경 움직임이 된다. 75%는 당연한 몫이고
+   이 장의 소식은 25%다 — 움직이는 것이 하나뿐이어야 그리로 눈이 간다. */
+.slide[data-slide-id="evaluation"].is-active .secret__part--up {
   animation: secret-pulse 3.6s ease-in-out infinite;
   will-change: transform;
 }
 
-/* 협업 점수(25%) 칸은 반 주기 뒤에 나온다 — 그래서 둘이 번갈아 보인다. */
-.slide[data-slide-id="evaluation"].is-active .secret__part--up {
-  animation-delay: 1.8s;
-}
-
-/* ── 완주 선물 세 칸의 번갈아 강조 ──────────────────────────────────
-   평가 장(#7/3)과 같은 연출을 세 칸으로 늘린다(2026-08-11 요청).
+/* ── 완주 선물 네 칸의 번갈아 강조 ──────────────────────────────────
+   평가 장(#7/3)과 같은 연출을 네 칸으로 늘린다(2026-08-11 요청).
    한 칸이 부풀어 있는 구간을 주기의 1/5쯤으로 잡고 나머지는 기본 크기로
    돌려 둔다 — 눈이 왼쪽에서 오른쪽으로 한 번 훑고 지나간다.
 
-   **크기만 움직인다**(2026-08-11 요청) — 투명도를 빼서 세 칸의 글자는
+   **크기만 움직인다**(2026-08-11 요청) — 투명도를 빼서 네 칸의 글자는
    언제나 같은 진하기로 읽힌다. 선물 목록은 참가자가 실제로 확인하는
    내용이라 어느 순간에도 흐려지면 안 된다.
 
-   지연을 **음수**로 주는 이유는, 양수로 주면 장을 열 때 두 번째·세 번째
-   칸이 각각 1.6초·3.2초 동안 아무 일도 하지 않고 기다리기 때문이다.
-   음수는 이미 그만큼 흘러간 자리에서 시작한다. */
+   지연을 **음수**로 주는 이유는, 양수로 주면 장을 열 때 뒤쪽 칸들이 그만큼
+   아무 일도 하지 않고 기다리기 때문이다. 음수는 이미 그만큼 흘러간 자리에서
+   시작한다.
+
+   **네 칸이 되었는데 지연을 셋만 적어 두어 1번과 4번이 함께 부풀었다**
+   (2026-08-11에 발견·수정). 급수대 칸이 붙을 때 지연 사다리를 같이 늘리지
+   않은 탓이다. 이제 지연은 칸 수에서 나온다 — 주기 4.8초를 네 칸으로 나눈
+   1.2초 간격으로, 뒤 칸일수록 0에 가깝게 적는다.
+
+     1번   0      (0.53초에 부푼다)
+     2번  -3.6초  (1.73초)
+     3번  -2.4초  (2.93초)
+     4번  -1.2초  (4.13초)
+
+   칸을 더하거나 뺄 때는 **반드시 이 사다리 전체를 다시 적는다.** 한 칸만
+   빠뜨리면 그 칸이 1번과 겹쳐 같은 증상이 다시 난다.
+
+   ── 기준이 0.97이 아니라 1이다 (2026-08-11) ─────────────────────
+   예전에는 쉴 때 0.97로 오므리고 1.035까지 부풀었다. 그런데 한복판 칸만
+   뛰게 하면(아래) **뛰지 않는 칸은 배율이 1**이라, 걸음을 넘길 때마다
+   칸이 0.97 ↔ 1 사이에서 톡 튀어 크기가 달라 보인다.
+   기준을 1에 두고 위로만 부풀면 뛰는 칸과 쉬는 칸의 평상시 크기가 같아
+   애니메이션을 켜고 끄는 것이 눈에 띄지 않는다. */
 @keyframes gift-pulse {
-  0%,  100% { transform: scale(0.97); }
-  11%       { transform: scale(1.035); }
-  22%       { transform: scale(0.97); }
+  0%,  100% { transform: scale(1); }
+  11%       { transform: scale(1.045); }
+  22%       { transform: scale(1); }
 }
 
-.slide[data-slide-id="gifts"].is-active .trio--info .trio__item {
+/* **한복판 두 칸만 뛴다**(2026-08-11 요청 — "줌인아웃 효과는 메인박스만").
+   양옆에 흐릿하게 비치는 칸까지 부풀면 흐려진 자리에서 무언가 꿈틀대는
+   것으로 보여, 정작 읽어야 할 한복판이 아니라 가장자리로 눈이 간다.
+
+   어느 둘이 한복판인지는 걸음이 정한다(reveal.js가 data-reveal-at을 쓴다):
+
+     0걸음 → 1·2번    1걸음 → 2·3번    2걸음 → 3·4번
+
+   지연 사다리는 **칸 번호에 그대로 둔다.** 걸음마다 다시 매기면, 오른쪽
+   한복판이던 칸이 왼쪽 한복판이 될 때 지연이 바뀌면서 애니메이션이 제자리를
+   잃고 튄다. 번호에 묶어 두면 켜지고 꺼질 뿐 위상은 이어진다 — 어느
+   걸음에서도 왼쪽 칸이 먼저, 1.2초 뒤 오른쪽 칸이 뛴다. */
+.slide[data-slide-id="gifts"].is-active [data-reveal-at="0"] .trio__item:nth-child(-n+2),
+.slide[data-slide-id="gifts"].is-active [data-reveal-at="1"] .trio__item:nth-child(n+2):nth-child(-n+3),
+.slide[data-slide-id="gifts"].is-active [data-reveal-at="2"] .trio__item:nth-child(n+3) {
   animation: gift-pulse 4.8s ease-in-out infinite;
   will-change: transform;
 }
 
-.slide[data-slide-id="gifts"].is-active .trio--info .trio__item:nth-child(2) {
-  animation-delay: -3.2s;
+.slide[data-slide-id="gifts"] .trio--info .trio__item:nth-child(2) {
+  animation-delay: -3.6s;
 }
 
-.slide[data-slide-id="gifts"].is-active .trio--info .trio__item:nth-child(3) {
-  animation-delay: -1.6s;
+.slide[data-slide-id="gifts"] .trio--info .trio__item:nth-child(3) {
+  animation-delay: -2.4s;
+}
+
+.slide[data-slide-id="gifts"] .trio--info .trio__item:nth-child(4) {
+  animation-delay: -1.2s;
 }
 
 /* 부풀 때 옆 칸을 덮지 않도록 이 장만 칸 사이를 조금 더 벌린다. */

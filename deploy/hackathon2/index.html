@@ -273,7 +273,7 @@
       <!-- 소제목('ORGANIZING CREW')을 뺐다 — 제목이 같은 말을 하고 있어
            한 줄이 그냥 위를 차지했다(2026-08-10 요청). -->
       <article class="slide" data-slide-id="expedition">
-        <h2 class="slide__title"><span class="hl" data-hl="4-0"><span class="hl__ink">이 레이스, <span class="kw">저희가 함께 뜁니다</span></span></span></h2>
+        <h2 class="slide__title slide__title--one"><span class="hl" data-hl="4-0"><span class="hl__ink">이 레이스, <span class="kw">저희가 함께 뜁니다</span></span></span></h2>
         <p class="slide__sub">완주를 함께 만드는 페이스메이커들</p>
         <div data-roster="staff-tags"></div>
       </article>
@@ -354,19 +354,40 @@
         <!-- 형광을 제목 전체가 아니라 '드리는 선물'에만 건다(2026-08-11 요청).
              전체가 코랄이면 강조가 아니라 그냥 제목 색이 된다. -->
         <h2 class="slide__title slide__title--mid"><span class="hl" data-hl="4-0"><span class="hl__ink">완주에 필요한 건 <span class="kw">다 준비했습니다</span></span></span></h2>
-        <!-- 네 칸이다(2026-08-11 요청 — 급수대 칸이 붙었다). 이모지는
-             제목 위가 아니라 **제목 앞**에 온다 — 위에 두면 이모지 줄이
-             한 줄을 통째로 먹어 네 칸이 세로로 그만큼 길어진다. -->
+        <!-- 네 칸을 **둘씩** 보여주고 넘기면 옆으로 미끄러진다(2026-08-11 요청).
+             축과 걸음수는 data-reveal이 가진다(src/reveal.js).
+
+             칸의 생김새는 **#7/3 평가 장의 .secret__part를 그대로 따른다**
+             (2026-08-11 요청 — "#7/3에 사용된 박스크기와 사이즈를 동일하게").
+             폭 34% · 높이 화면의 49.6% · 칸 사이 --gap 두 배. 두 장이 잇달아
+             나오는데 판 크기가 다르면 넘길 때 판이 커졌다 작아졌다 한다.
+
+             칸 안은 **머리와 본문으로 가른다**(같은 요청). 머리는 아이콘 줄과
+             제목 줄을 따로 두고 둘 다 가운데, 그 아래 선을 긋고 목록이 온다.
+             이모지를 제목 앞에 인라인으로 붙이던 앞 판을 되돌린 것이다 —
+             그때는 네 칸이 한 화면에 있어 세로 한 줄이 아까웠지만, 둘씩
+             보이는 지금은 머리를 두 줄로 세울 자리가 있다.
+
+             **.trio__head의 높이는 네 칸이 같아야 한다**(같은 요청). 아이콘과
+             제목이 각각 한 줄이라 저절로 같아지지만, 제목이 길어져 접히면
+             그 칸만 선이 내려간다 — min-height로 못 박고 제목은 nowrap이다. -->
+        <div class="gift-window" data-reveal="x:1">
         <div class="trio trio--icons trio--info trio--four">
           <div class="trio__item">
-            <h3 class="trio__title"><span class="trio__badge" aria-hidden="true">🎁</span>출발 키트 풀장착</h3>
+            <div class="trio__head">
+              <span class="trio__badge" aria-hidden="true">🎁</span>
+              <h3 class="trio__title">출발 키트 풀장착</h3>
+            </div>
             <ul class="trio__list">
               <li>에어팟 4세대 (노이즈캔슬링)<br><small>*수상팀은 제외</small></li>
               <li>참가자 굿즈<br><small>티셔츠, 보조배터리, 파우치, 커스텀 토이, 메모지/볼펜 등</small></li>
             </ul>
           </div>
           <div class="trio__item">
-            <h3 class="trio__title"><span class="trio__badge" aria-hidden="true">🎓</span>페이스업 러닝존</h3>
+            <div class="trio__head">
+              <span class="trio__badge" aria-hidden="true">🎓</span>
+              <h3 class="trio__title">페이스업 러닝존</h3>
+            </div>
             <ul class="trio__list">
               <li>특별 강연(박종천 개발자)</li>
               <li>스파르타 코딩클럽 온라인 수강권 제공</li>
@@ -374,7 +395,10 @@
             </ul>
           </div>
           <div class="trio__item">
-            <h3 class="trio__title"><span class="trio__badge" aria-hidden="true">🤝</span>1:1 페이스메이커</h3>
+            <div class="trio__head">
+              <span class="trio__badge" aria-hidden="true">🤝</span>
+              <h3 class="trio__title">1:1 페이스메이커</h3>
+            </div>
             <ul class="trio__list">
               <li>과제 계획서 &amp; 액션플랜 수립</li>
               <li>기술 자문 및 코칭</li>
@@ -382,11 +406,15 @@
             </ul>
           </div>
           <div class="trio__item">
-            <h3 class="trio__title"><span class="trio__badge" aria-hidden="true">🥤</span>챌린저 급수대 OPEN!</h3>
+            <div class="trio__head">
+              <span class="trio__badge" aria-hidden="true">🥤</span>
+              <h3 class="trio__title">챌린저 급수대 OPEN!</h3>
+            </div>
             <ul class="trio__list">
               <li>충전이 필요할 때 자유롭게 사용할 수 있는<br>배달의민족 상품권 제공</li>
             </ul>
           </div>
+        </div>
         </div>
       </article>
 
@@ -402,8 +430,13 @@
             <p class="secret__desc">혁신성 · 실현가능성 · 파급력</p>
             <p class="secret__note">평가 기준은 본선 1주 전,<br>입과 안내 메일과 함께 공지 예정</p>
           </div>
-          <div class="secret__plus" aria-hidden="true">+<span>POINT UP!</span></div>
+          <div class="secret__plus" aria-hidden="true">+</div>
+          <!-- 'POINT UP!'은 + 아래가 아니라 **25% 칸의 왼쪽 위 모서리**에
+               비스듬히 붙는다(2026-08-11 요청). + 아래에 있을 때는 두 칸
+               사이의 장식으로 읽혔는데, 모서리에 꼬리를 달아 기울여 붙이면
+               "이 칸이 그 포인트다"라고 칸을 직접 가리킨다. -->
           <div class="secret__part secret__part--up">
+            <span class="secret__pop" aria-hidden="true">POINT UP!</span>
             <div class="secret__num"><span data-countup="25">25</span><small>%</small></div>
             <div class="secret__name">협업 점수</div>
             <ul class="secret__list">
@@ -421,40 +454,79 @@
          slides.js의 placeholder에서 만들어 붙인다. -->
     <section class="chapter" data-chapter="finals">
 
-      <!-- 본선 시간표. 운영이 준 표를 그대로 옮겼다 — 시간 열 + 1일차 + 2일차,
+      <!-- 본선 시간표. 운영이 준 표를 그대로 옮겼다 — 시간 축 + 그날의 일정,
            그리고 트랙이 갈리는 구간만 두 칸으로 쪼갠다.
-           **배치는 grid-template-areas로 적는다**(styles/scene.css). 칸 병합이
-           많아서 grid-row/column 숫자로 적으면 한 칸을 옮길 때 나머지가 조용히
-           밀린다 — 이름으로 적으면 CSS가 표 모양 그대로 읽힌다. -->
+
+           **두 날을 좌우가 아니라 위아래로 쌓는다**(2026-08-11 요청 —
+           "시간표가 너무 넓다 / 타임라인 세로길이가 제각각이다").
+           좌우로 마주 보던 앞 판은 표가 무대 폭을 다 먹었고, 두 날의 마지막
+           칸이 서로 다른 높이에서 끝나 축이 짝짝이로 보였다. 위아래로 쌓으면
+           표는 한 열이라 폭이 절반이 되고, 두 날이 **똑같이 08~18시 열한 줄**을
+           써서 줄 높이도 축 길이도 정확히 같아진다.
+
+           한 날이 창의 두 배 높이라 화면에는 반쪽씩 보인다. 넘기면 **창 높이의
+           2/3씩** 내려간다(data-reveal="y:page:0.667", src/reveal.js) —
+           한 판을 통째로 갈면 앞뒤 화면이 남남이라 표가 끊겨 보였는데,
+           2/3씩 가면 3분의 1이 겹쳐 이어서 굴러 올라가는 것이 보인다
+           (2026-08-11 요청).
+
+           시각은 <time>으로 적는다 — 눈금만 골라 잡는 CSS 규칙
+           (.fs__tick:first-of-type 등)이 칸(div)과 섞이지 않게 하려는 것이다. -->
       <article class="slide" data-slide-id="finals-schedule">
         <h2 class="slide__title slide__title--mid"><span class="hl" data-hl="4-0"><span class="hl__ink">결승선까지 <span class="kw">남은 2일</span></span></span></h2>
         <p class="slide__sub">만들고, 검증하고, 발표하고 완주합니다</p>
-        <div class="fs">
-          <span class="fs__day" style="grid-column: 1; grid-row: 1;">9. 10 <small>목</small></span>
-          <span class="fs__day" style="grid-column: 3; grid-row: 1;">9. 11 <small>금</small></span>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 2;"><span>08:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 3;"><span>09:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 4;"><span>10:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 5;"><span>11:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 6;"><span>12:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 7;"><span>13:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 8;"><span>14:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 9;"><span>15:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 10;"><span>16:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 11;"><span>17:00</span></div>
-          <div class="fs__tick" style="grid-column: 2; grid-row: 12;"><span>18:00</span></div>
-          <div class="fs__cell " style="grid-column: 1; grid-row: 2 / span 1;"><span class="fs__what">참가자 접수</span><span class="fs__hr">1hr</span></div>
-          <div class="fs__cell " style="grid-column: 1; grid-row: 3 / span 1;"><span class="fs__what">개회식 및 오리엔테이션</span><span class="fs__hr">1hr</span></div>
-          <div class="fs__cell " style="grid-column: 1; grid-row: 4 / span 2;"><span class="fs__what">전문가 특강</span><span class="fs__hr">2hr</span></div>
-          <div class="fs__cell " style="grid-column: 1; grid-row: 6 / span 1;"><span class="fs__what">네트워킹 파티</span><span class="fs__hr">1hr · 점심 포함</span></div>
-          <div class="fs__cell fs__cell--split" style="grid-column: 1; grid-row: 7 / span 4;"><span class="fs__lane fs__lane--mine"><b>챌린저</b>과제 수행 <em>4hr</em></span><span class="fs__lane fs__lane--other"><b>마스터</b>실사용 솔루션 구현·현장 시연 준비 <em>4hr</em></span></div>
-          <div class="fs__cell fs__cell--mine" style="grid-column: 1; grid-row: 11 / span 1;"><span class="fs__what">1차 전문가 코칭·피드백</span><span class="fs__hr">1hr</span></div>
-          <div class="fs__cell fs__cell--mine fs__cell--night" style="grid-column: 1; grid-row: 12 / span 1;"><span class="fs__what">과제 수행 <em>(자율)</em></span><span class="fs__hr">14hr</span></div>
-          <div class="fs__cell fs__cell--mine" style="grid-column: 3; grid-row: 2 / span 1;"><span class="fs__what">2차 전문가 코칭·피드백</span><span class="fs__hr">1hr</span></div>
-          <div class="fs__cell fs__cell--split" style="grid-column: 3; grid-row: 3 / span 3;"><span class="fs__lane fs__lane--mine"><b>챌린저</b>과제 수행 <em>3hr</em></span><span class="fs__lane fs__lane--other"><b>마스터</b>전문 평가단 참여·실사용 검증 및 평가 <em>3hr</em></span></div>
-          <div class="fs__cell fs__cell--mine" style="grid-column: 3; grid-row: 6 / span 1;"><span class="fs__what">최종 코칭·발표준비</span><span class="fs__hr">1hr</span></div>
-          <div class="fs__cell " style="grid-column: 3; grid-row: 7 / span 3;"><span class="fs__what">결과 발표회</span><span class="fs__hr">3hr</span></div>
-          <div class="fs__cell fs__cell--final" style="grid-column: 3; grid-row: 10 / span 1;"><span class="fs__what">우수팀 시상 및 폐회식</span><span class="fs__hr">1hr</span></div>
+        <div class="fs-window" data-reveal="y:page:0.667">
+        <div class="fs-track">
+
+          <section class="fs-day">
+            <span class="fs__daynum">1일차</span>
+            <span class="fs__day">9. 10 <small>목</small></span>
+            <time class="fs__tick" datetime="08:00" style="grid-row: 2;"><span>08:00</span></time>
+            <time class="fs__tick" datetime="09:00" style="grid-row: 3;"><span>09:00</span></time>
+            <time class="fs__tick" datetime="10:00" style="grid-row: 4;"><span>10:00</span></time>
+            <time class="fs__tick" datetime="11:00" style="grid-row: 5;"><span>11:00</span></time>
+            <time class="fs__tick" datetime="12:00" style="grid-row: 6;"><span>12:00</span></time>
+            <time class="fs__tick" datetime="13:00" style="grid-row: 7;"><span>13:00</span></time>
+            <time class="fs__tick" datetime="14:00" style="grid-row: 8;"><span>14:00</span></time>
+            <time class="fs__tick" datetime="15:00" style="grid-row: 9;"><span>15:00</span></time>
+            <time class="fs__tick" datetime="16:00" style="grid-row: 10;"><span>16:00</span></time>
+            <time class="fs__tick" datetime="17:00" style="grid-row: 11;"><span>17:00</span></time>
+            <time class="fs__tick" datetime="18:00" style="grid-row: 12;"><span>18:00</span></time>
+            <div class="fs__cell" style="grid-row: 2 / span 1;"><span class="fs__what">참가자 접수</span></div>
+            <div class="fs__cell" style="grid-row: 3 / span 1;"><span class="fs__what">개회식 및 오리엔테이션</span></div>
+            <div class="fs__cell" style="grid-row: 4 / span 2;"><span class="fs__what">전문가 특강</span></div>
+            <div class="fs__cell" style="grid-row: 6 / span 1;"><span class="fs__what">네트워킹 파티</span><span class="fs__hr">점심 포함</span></div>
+            <div class="fs__cell fs__cell--split" style="grid-row: 7 / span 4;"><span class="fs__lane fs__lane--mine"><b>챌린저</b>과제 수행</span><span class="fs__lane fs__lane--other"><b>마스터</b>실사용 솔루션 구현·현장 시연 준비</span></div>
+            <div class="fs__cell fs__cell--mine" style="grid-row: 11 / span 1;"><span class="fs__what">1차 전문가 코칭·피드백</span></div>
+            <div class="fs__cell fs__cell--mine fs__cell--night" style="grid-row: 12 / span 1;"><span class="fs__what">과제 수행 <em>(자율)</em></span></div>
+          </section>
+
+          <section class="fs-day">
+            <span class="fs__daynum">2일차</span>
+            <span class="fs__day">9. 11 <small>금</small></span>
+            <time class="fs__tick" datetime="08:00" style="grid-row: 2;"><span>08:00</span></time>
+            <time class="fs__tick" datetime="09:00" style="grid-row: 3;"><span>09:00</span></time>
+            <time class="fs__tick" datetime="10:00" style="grid-row: 4;"><span>10:00</span></time>
+            <time class="fs__tick" datetime="11:00" style="grid-row: 5;"><span>11:00</span></time>
+            <time class="fs__tick" datetime="12:00" style="grid-row: 6;"><span>12:00</span></time>
+            <time class="fs__tick" datetime="13:00" style="grid-row: 7;"><span>13:00</span></time>
+            <time class="fs__tick" datetime="14:00" style="grid-row: 8;"><span>14:00</span></time>
+            <time class="fs__tick" datetime="15:00" style="grid-row: 9;"><span>15:00</span></time>
+            <time class="fs__tick" datetime="16:00" style="grid-row: 10;"><span>16:00</span></time>
+            <div class="fs__cell fs__cell--mine" style="grid-row: 2 / span 1;"><span class="fs__what">2차 전문가 코칭·피드백</span></div>
+            <div class="fs__cell fs__cell--split" style="grid-row: 3 / span 3;"><span class="fs__lane fs__lane--mine"><b>챌린저</b>과제 수행</span><span class="fs__lane fs__lane--other"><b>마스터</b>전문 평가단 참여·실사용 검증 및 평가</span></div>
+            <div class="fs__cell fs__cell--mine" style="grid-row: 6 / span 1;"><span class="fs__what">최종 코칭·발표준비</span></div>
+            <div class="fs__cell" style="grid-row: 7 / span 3;"><span class="fs__what">결과 발표회</span></div>
+            <div class="fs__cell fs__cell--final" style="grid-row: 10 / span 1;"><span class="fs__what">우수팀 시상 및 폐회식</span></div>
+            <!-- **2일차는 16시 줄(폐회식)에서 끝난다**(2026-08-11 요청 —
+                 "17:00 이후는 삭제"). 앞서는 두 날의 축 길이를 맞추려고 빈
+                 17·18시 줄을 남겨 두었는데, 빈 줄 둘이 표 끝에 매달려 있어
+                 일정이 있는 것처럼 보였다.
+                 줄 **높이**는 여전히 두 날이 같다 — 이제 그 몫은 .fs-day의
+                 grid-auto-rows가 쥔다(styles/scene.css). -->
+          </section>
+
+        </div>
         </div>
       </article>
 
@@ -463,7 +535,7 @@
            설명 한 줄('사전학습 이러닝과 1:1 코칭을 함께하는 파트너입니다')은
            뺐다(2026-08-11 요청) — 진행자가 말로 소개하는 자리다. -->
       <article class="slide" data-slide-id="teamsparta">
-        <h2 class="slide__title"><span class="hl" data-hl="4-0"><span class="hl__ink">혼자 뛰지 마세요, <span class="kw">코치가 함께 갑니다</span></span></span></h2>
+        <h2 class="slide__title slide__title--one"><span class="hl" data-hl="4-0"><span class="hl__ink">혼자 뛰지 마세요, <span class="kw">코치가 함께 갑니다</span></span></span></h2>
         <p class="slide__sub">한 달간 함께할 팀별 전담 코치(팀스파르타)</p>
       </article>
 
@@ -475,8 +547,13 @@
              위에서 아래로 훑는 것이 자연스럽다. -->
         <!-- data-reveal: 한 장 안에서 여러 번 넘기는 자리다(src/reveal.js).
              Enter/→ 를 누르면 목록이 한 칸씩 위로 올라오고, 다 올리면 그다음
-             부터 다음 장으로 넘어간다. -->
-        <div class="faq-scroll" data-reveal>
+             부터 다음 장으로 넘어간다.
+
+             `:top` — **마지막 문답이 화면 맨 위에 설 때까지** 올린다
+             (2026-08-11 요청). 기본값은 마지막 칸의 *아랫변*이 창의 아랫변에
+             닿으면 멈추는데, 그러면 '궁금한 점은 어디에 문의하나요?'가 화면
+             아래에 걸린 채로 장이 끝났다. -->
+        <div class="faq-scroll" data-reveal="y:1:top">
         <div class="faq faq--stack">
           <div class="faq__item">
             <p class="faq__q">팀밋업 설문은?</p>

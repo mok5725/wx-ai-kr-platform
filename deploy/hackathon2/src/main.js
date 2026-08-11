@@ -5,7 +5,7 @@ import { flatSlides, placeholders } from './slides.js';
 import { bindKeys } from './keys.js';
 import { bindSwipe } from './pointer.js';
 import {
-  DEFAULT_MODE, SNAP_DELAY_MS, GLIDE_MS,
+  DEFAULT_MODE, SNAP_DELAY_MS, GLIDE_MS, PX_PER_REVEAL_STEP,
   advance, snapTarget, indexFor, glide,
 } from './scrub.js';
 import { createBackground } from './background.js';
@@ -335,14 +335,102 @@ const act = (intent) => INTENTS[intent]?.();
 
 bindKeys(window, act);
 
+// ── 휠 ───────────────────────────────────────────────────────────────
+//
 // 휠은 **한 장 넘기기가 아니라 스크럽**이다. 마스터는 한 제스처에 한 장이었고
 // (pointer.js의 wheelStep), 이 덱은 굴린 양이 그대로 카메라의 이동이다.
 // **클릭은 넘기지 않는다** — 창을 앞으로 가져오려고 무심코 누른 클릭에 한
 // 장이 넘어가 무대에서 사고가 된다.
+//
+// **다만 장 안에서 넘길 것이 남아 있으면 휠이 그것을 먼저 먹는다**
+// (2026-08-11 요청 — 본선 일정에서 "스크롤을 내리면 시간표가 위로 굴려져야
+// 하는데 그냥 다음 페이지로 넘어가 버린다"). 키보드는 INTENTS.next가
+// reveal을 먼저 보는데 휠은 scrub()으로 곧장 가서 reveal을 아예 거치지
+// 않았다 — 그래서 이틀치 표의 첫 화면만 보고 장이 넘어갔다.
+//
+// 규칙은 키보드와 같다. **갈 데가 남아 있을 때만** 가로챈다:
+//
+//   ① 지금 장에 reveal이 있고 그 방향으로 갈 데가 있다
+//        → 굴린 양을 모은다. 문턱을 넘으면 한 걸음. 카메라는 그대로.
+//   ② 갈 데가 없다(표 끝에 닿았다)
+//        → 빗장(아래)을 확인하고, 풀려 있으면 평소처럼 스크럽한다.
+//
+// ── 끝에서 한 번 걸린다 (2026-08-11 요청) ──────────────────────────
+//
+// "스크롤을 많이 내렸을 때 시간표의 끝으로 가는 것이 아니라 다음 페이지로
+// 넘어가 버린다. 무조건 시간표의 마지막에 걸리고 다시 넘겨야 다음으로
+// 넘어가도록."
+//
+// 휠은 한 번 굴려도 관성으로 이벤트가 수십 개 쏟아진다. 표의 마지막 걸음이
+// 그 이벤트 다발의 중간에서 끝나 버리면, **같은 손짓의 나머지가 그대로
+// 카메라로 흘러들어** 표의 끝을 볼 새도 없이 다음 장으로 미끄러졌다.
+//
+// 그래서 끝에 닿는 순간 빗장을 건다. 빗장이 걸린 동안은 휠을 먹어 치우고
+// 아무 일도 하지 않는다. 이벤트가 끊기면(= 손을 뗐다) 빗장이 풀리고,
+// **다음 손짓**이 비로소 다음 장으로 간다.
+//
+// 끊김의 기준은 GESTURE_GAP_MS다. 트랙패드 관성은 보통 이벤트 간격이
+// 수십 ms이므로 그보다 넉넉히 잡되, 사람이 다시 굴리려고 멈추는 시간보다는
+// 짧아야 한다 — 260ms가 그 사이다.
+const GESTURE_GAP_MS = 260;
+
+let revealWheel = 0;
+let revealWheelAt = -1;   // 어느 장에서 모으고 있는지. 장이 바뀌면 버린다.
+let lastWheelAt = 0;
+let endLatched = false;
+
+function wheelIntoReveal(deltaY) {
+  const now = performance.now();
+  const sameGesture = now - lastWheelAt < GESTURE_GAP_MS;
+  lastWheelAt = now;
+
+  const here = revealHere();
+  if (!here?.has()) {
+    endLatched = false;
+    return false;
+  }
+
+  // 장이 바뀌면 모으던 것도 빗장도 버린다.
+  if (revealWheelAt !== index) {
+    revealWheel = 0;
+    endLatched = false;
+    revealWheelAt = index;
+  }
+
+  const forward = deltaY > 0;
+  if (forward ? !here.canNext() : !here.canPrev()) {
+    revealWheel = 0;
+    // 끝에 닿은 그 손짓이 아직 이어지는 중이면 먹어 치운다.
+    if (endLatched && sameGesture) return true;
+    endLatched = false;
+    return false;
+  }
+
+  // 방향이 뒤집혔으면 모으던 것을 버리고 처음부터 모은다.
+  if (Math.sign(revealWheel) !== Math.sign(deltaY)) revealWheel = 0;
+
+  revealWheel += deltaY;
+  while (revealWheel >= PX_PER_REVEAL_STEP && here.next()) {
+    revealWheel -= PX_PER_REVEAL_STEP;
+  }
+  while (revealWheel <= -PX_PER_REVEAL_STEP && here.prev()) {
+    revealWheel += PX_PER_REVEAL_STEP;
+  }
+
+  // 이번 걸음으로 끝에 닿았으면 빗장을 건다. 모아 둔 나머지도 버린다 —
+  // 남겨 두면 빗장이 풀린 뒤 첫 이벤트에서 그만큼 더 밀린다.
+  if (forward ? !here.canNext() : !here.canPrev()) {
+    endLatched = true;
+    revealWheel = 0;
+  }
+  return true;
+}
+
 window.addEventListener('wheel', (event) => {
   // body가 overflow: hidden이라 스크롤될 것은 없지만, 브라우저의
   // 오버스크롤 제스처(뒤로가기 등)까지 막으려면 필요하다.
   event.preventDefault();
+  if (wheelIntoReveal(event.deltaY)) return;
   scrub(event.deltaY);
 }, { passive: false });
 
