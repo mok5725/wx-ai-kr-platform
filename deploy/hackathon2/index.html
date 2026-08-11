@@ -13,6 +13,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WX 팀밋업">
 <title>26 WX해커톤 챌린저 트랙 온라인 팀밋업</title>
+<!-- 링크 미리보기(카카오톡·팀즈·슬랙 공통). 카카오톡은 자바스크립트를
+     실행하지 않고 HTML의 이 태그만 긁어 가므로, 덱이 그려 내는 화면이
+     아니라 **표지를 미리 찍어 둔 그림 한 장**을 여기에 건다.
+
+     og:image는 반드시 **절대 주소**여야 한다. 상대 경로로 두면 카카오톡이
+     그림을 찾지 못하고 제목만 있는 밋밋한 카드가 뜬다.
+
+     그림은 assets/og-cover.jpg — 표지(#1/1)를 1920×1080으로 찍어 위쪽
+     기준으로 잘라 1200×630(1.91:1)으로 맞춘 것이다. 아래를 잘라낸 이유는
+     오른쪽 아래 단축키 안내(.fs-hint)가 비쳐 들어오기 때문이다.
+     다시 만들려면 tools/og.md를 본다.
+
+     **?v= 를 붙여 둔다.** 카카오톡은 한 번 긁은 미리보기를 오래 물고 있어서,
+     그림을 갈아 끼워도 주소가 같으면 옛 그림이 계속 뜬다. 그림을 바꿀 때는
+     이 숫자를 함께 올리고, 그래도 안 바뀌면 카카오 개발자 사이트의
+     캐시 초기화 도구(developers.kakao.com/tool/clear/og)로 주소를 지운다. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="2026 WX해커톤">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://hackathon2.wx.ai.kr/">
+<meta property="og:title" content="26 WX해커톤 챌린저 트랙 온라인 팀밋업">
+<meta property="og:description" content="End-to-End: Idea to Impact · 2026. 8. 12 (수) 14:00 · 팀즈 영상회의">
+<meta property="og:image" content="https://hackathon2.wx.ai.kr/assets/og-cover.jpg?v=20260812">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="출발선에 모인 크루들 — 챌린저 트랙 팀밋업 표지">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="End-to-End: Idea to Impact · 2026. 8. 12 (수) 14:00 · 팀즈 영상회의">
 <!-- 표지에 바로 쓰이는 두 굵기만 미리 받는다. 나머지는 @font-face가
      필요할 때 받아온다. 전부 preload하면 첫 화면이 오히려 늦어진다. -->
 <link rel="preload" href="assets/fonts/Paperlogy-9Black.woff2" as="font" type="font/woff2" crossorigin>
