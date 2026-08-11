@@ -24,10 +24,68 @@ const PAN_SPAN = 3.5;      // % — t가 1 늘 때 왼쪽으로 미는 양
 export const T_MIN = -0.5;
 export const T_MAX = 1.5;
 
-// 팀 여덟 장이 한 씬 안에서 옆으로 옮겨 가는 양과, 그만큼을 프레임 밖에
-// 숨겨 두기 위한 배율. 부등식에 26을 넣으면 1.625 이상이 나온다.
-export const TEAM_PAN_SPAN = 26;
-export const TEAM_ZOOM = 1.66;
+// ── 팀 여덟 장 (2026-08-12 개편) ────────────────────────────────────
+//
+// 세 번째 구조다. 처음엔 달리기 씬 한 장 위를 카메라가 훑고 팀 소개는 그
+// 위에 뜬 흰 카드가 맡았다(카드가 배경을 가렸다). 다음엔 씬 넷에 전광판을
+// 그려 넣고 팀 소개를 그 판 안에 HTML로 앉혔다(그림 넷을 여덟 팀이 나눠
+// 썼다). 지금은 **팀마다 제 그림 한 장**이고, 팀명·아이디어명·크루 넷의
+// 회사와 이름이 전부 **그림에 구워져** 있다.
+//
+// 그래서 이 배열에 panel이 없다. 얹을 글자가 없으니 잴 자리도 없다 —
+// .scene__board도, roster.js의 crewFigure도 함께 사라졌다.
+//
+// 여덟 장은 마라톤 여덟 단계다(팀 번호 = 단계 번호). 이름은 **그림의
+// 내용**으로 짓는다. 한때 a·b·c로 뒀다가 "3, 1, 2 순"이라는 지시를 파일
+// 이름의 숫자로 잘못 읽어 순서가 뒤바뀌었다.
+//
+// 만드는 법은 docs/characters.md에 있다 — 참조로 넣는 캐릭터 32장, 단계별
+// 운영진 둘, 글자가 깨지는 자리까지 거기에 적혀 있다.
+export const TEAM_SCENES = [
+  { id: 'team-1', teams: [1], src: 'assets/scenes/team-1-start.webp' },
+  { id: 'team-2', teams: [2], src: 'assets/scenes/team-2-gun.webp' },
+  { id: 'team-3', teams: [3], src: 'assets/scenes/team-3-pack.webp' },
+  { id: 'team-4', teams: [4], src: 'assets/scenes/team-4-pace.webp' },
+  { id: 'team-5', teams: [5], src: 'assets/scenes/team-5-water.webp' },
+  { id: 'team-6', teams: [6], src: 'assets/scenes/team-6-turn.webp' },
+  { id: 'team-7', teams: [7], src: 'assets/scenes/team-7-hill.webp' },
+  { id: 'team-8', teams: [8], src: 'assets/scenes/team-8-finish.webp' },
+];
+
+// 팀 번호 → 그 팀이 쓰는 씬 id.
+export const SCENE_OF_TEAM = new Map(
+  TEAM_SCENES.flatMap((s) => s.teams.map((t) => [t, s.id])),
+);
+
+// 팀 씬의 카메라. **여기서는 카메라를 거의 쓰지 않는다.**
+//
+// 글자가 그림에 구워지면서 제약이 뒤집혔다. 판이 HTML이던 때는 판만 프레임
+// 안에 남기면 됐고 배율 1.26까지 밀 수 있었다. 지금은 **전광판이 그림의
+// 일부**여서, 가운데 기준으로 확대하면 위아래가 (1 - 1/배율)/2씩 잘리고
+// 그 첫 희생자가 판의 윗줄이다.
+//
+// 여덟 장에서 판의 위 여백을 실측하면 **5.1~8.1%**다(가장 빠듯한 것은
+// team-1과 team-3의 5.1%). 위가 5.1%보다 더 잘리면 안 되므로
+//   (1 - 1/배율)/2 < 0.051  →  배율 < 1.114.
+//
+// 그래서 1.05에서 시작해 제 장이 끝날 무렵 1.10까지만 민다. 페이드가 끝나는
+// t=1에서 배율이 1.10이고 위가 4.55% 잘린다 — 5.1% 안이다.
+// 확대 여유 부등식(|이동| ≤ (배율-1)/2 × 100)도 t=-0.5에서 지켜진다:
+//   배율 1.025 → 여유 1.25% / 이동 |−0.5 × 1.5| = 0.75%   ✓
+//
+// **장면이 바뀌는 느낌은 이제 카메라가 아니라 그림이 만든다.** 여덟 팀이
+// 저마다 다른 그림(출발선 → 총성 → … → 결승선)이라 넘길 때마다 교차
+// 페이드로 장면 자체가 갈린다. 예전에 카메라를 크게 쓴 것은 한 그림을 두
+// 팀이 나눠 쓰던 시절, 같은 그림을 다르게 보이게 하려던 일이었다.
+//
+// 판이 프레임 안에 남는지는 tests/scenes.test.js가 실제로 검사한다 —
+// 값을 키우면 그 테스트가 먼저 걸린다.
+export const TEAM_ZOOM = 1.05;
+export const TEAM_ZOOM_SPAN = 0.05;
+export const TEAM_PAN_DRIFT = 1.5;
+
+// 여덟 장에서 실측한 전광판 위 여백 중 가장 작은 값(%). 테스트가 쓴다.
+export const BOARD_TOP_MIN = 5.1;
 
 // 챕터마다 배경 씬 하나. 슬라이드가 자기 scene을 따로 선언하면 그것이 이긴다
 // (챕터 4는 개요 한 장과 팀 여덟 장이, 챕터 7은 코스와 선물·평가가 다른
@@ -53,10 +111,14 @@ export const SCENES = [
   // 이 씬의 이동은 t가 -0.5~1.5이므로 최대 5.25%이고, 1.2배가 숨겨 두는
   // 여유는 10%다.
   { id: 'startline', src: 'assets/scenes/ch4a-startline.webp', zoom: 1.2 },
-  // 팀 여덟 장이 함께 쓰는 씬. 카메라가 여덟 그룹 사이를 ±26%까지 옮겨
-  // 다니므로 그만큼을 프레임 밖에 숨겨 둘 배율이 필요하다. 그래서 이 씬만
-  // 4k로 뽑았다 — 2k에서 1.66배로 확대하면 프로젝터에서 뭉개진다.
-  { id: 'running',   src: 'assets/scenes/ch4b-running-4k.webp', zoom: TEAM_ZOOM },
+  // 팀 여덟 장. 위의 TEAM_SCENES 주석 참고 — 마라톤 여덟 단계다
+  // (출발선 · 총성 · 초반 주행 · 자기 페이스 · 급수대 · 반환점 · 언덕 · 결승선).
+  ...TEAM_SCENES.map((s) => ({
+    ...s,
+    zoom: TEAM_ZOOM,
+    zoomSpan: TEAM_ZOOM_SPAN,
+    panSpan: TEAM_PAN_DRIFT,
+  })),
   // 운영진 씬은 **카메라를 세운다.** 그림 속 일곱 명 아래에 이름표를 가로
   // 퍼센트로 세우기 때문에, 이미지가 확대·이동하면 이름표가 사람에게서
   // 떨어져 나간다. 이 한 장만 정지시키고 이웃 씬이 계속 움직이므로 전환의
@@ -130,11 +192,18 @@ export function cameraT(p, range) {
 
 // still이면 변환을 걸지 않는다. 이미지 위에 좌표로 얹는 것(운영진 이름표)이
 // 있는 씬은 움직이면 어긋난다 — SCENES의 still 주석 참고.
-export function cameraTransform(t, { still = false, zoom = ZOOM_BASE } = {}) {
+//
+// zoomSpan·panSpan을 씬이 따로 줄 수 있다. 전광판 씬은 한 그림을 두 팀이
+// 나눠 쓰므로, 두 팀이 **눈에 띄게 다른 자리**에서 보이도록 기본값보다
+// 훨씬 크게 판다(scenes의 TEAM_ZOOM_SPAN·TEAM_PAN_DRIFT).
+export function cameraTransform(t, {
+  still = false, zoom = ZOOM_BASE,
+  zoomSpan = ZOOM_SPAN, panSpan = PAN_SPAN,
+} = {}) {
   if (still) return { scale: 1, x: 0 };
   return {
-    scale: zoom + t * ZOOM_SPAN,
-    x: t * -PAN_SPAN,
+    scale: zoom + t * zoomSpan,
+    x: t * -panSpan,
   };
 }
 
@@ -143,17 +212,8 @@ export function overhang(scale) {
   return (scale - 1) / 2 * 100;
 }
 
-// 챕터 4의 팀 여덟 장은 **한 씬 안에서 카메라가 옆으로 옮겨 간다.**
-// 여덟 그룹이 가로로 벌어진 4k 이미지 위를, 팀이 바뀔 때마다 다음 그룹으로
-// 이동한다. 확대보다 좌우 이동을 크게 잡는 이유는 4k라도 8분할로 확대하면
-// 뭉개지기 때문이다.
-//
-// **방향은 2026-08-11에 뒤집었다.** 예전에는 1팀이 -26%에서 시작해 8팀에서
-// +26%로 갔다 — 이미지가 오른쪽으로 밀리므로 화면에 보이는 배경은 오른쪽에서
-// 왼쪽으로 흘렀다. 요청대로 반대로 돌린다. 이동량의 크기는 그대로라 확대로
-// 숨겨 둔 여유(부등식)도 그대로 만족한다.
-export function teamPan(teamIndex, teamCount) {
-  if (teamCount <= 1) return 0;
-  const k = teamIndex / (teamCount - 1);      // 0..1
-  return (0.5 - k) * 2 * TEAM_PAN_SPAN;       // % , +26 ~ -26
+// 가운데 기준으로 배율만큼 확대했을 때 **위(또는 아래)가 잘려 나가는 양**(%).
+// 전광판이 그림 안에 있으므로 이 값이 판의 위 여백을 넘으면 팀명이 잘린다.
+export function verticalCrop(scale) {
+  return (1 - 1 / scale) / 2 * 100;
 }

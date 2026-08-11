@@ -70,24 +70,28 @@ export const CHAPTERS = [
     slides: [
       // 여덟 팀 전체가 한 장에. 팀 순서는 팀명 가나다순(한글 먼저, 영문 나중) —
       // 운영 지시. content.js의 TEAMS가 이미 그 순서로 정렬돼 있다.
-      { id: 'crew-all', title: '챌린저 트랙 크루 소개', place: 'wide',
+      { id: 'crew-all', title: 'Ready, Set, Hack!', place: 'wide',
         note: '여덟 팀 훑어보기. 다음 여덟 장에서 팀장이 직접 3분씩 소개한다는 것을 여기서 안내한다. 팀 순서는 팀명 가나다순이다.' },
-      // 팀 여덟 장. 화면에는 팀명·아이디어명·크루 셋만 띄운다 — 팀장이
-      // 마이크로 말하는 동안 화면이 떠들면 둘 다 진다.
+      // 팀 여덟 장. **화면에 얹는 것이 하나도 없다**(2026-08-12).
       //
-      // **여덟 장이 같은 씬 하나를 쓴다.** 카메라만 자기 그룹으로 옮겨 간다
-      // (scenes.js의 teamPan). 문구는 왼쪽 아래에 흰 판으로 고정한다.
+      // 팀명·아이디어명·크루 넷의 회사와 이름이 전부 배경 그림에 구워져
+      // 있어서, index.html의 <article>이 비어 있고 배경만 보인다. 그래서
+      // 팀장이 마이크로 말하는 동안 화면이 떠들지 않는다 — 예전에는 흰
+      // 카드가, 그다음에는 씬 속 전광판 안의 HTML이 하던 일이다.
       //
-      // 여기 title은 진행자 노트와 진행바가 읽는다. 화면에 뜨는 팀명은
-      // content.js의 TEAMS에서 나온다 — 두 곳이 어긋나지 않는지 테스트가 본다.
-      { id: 'team-1', title: '배꼽 (배 + Copilot)', scene: 'running', team: 1, place: 'left-bottom', card: true, note: '포스코 3명 + 포스코플로우 1명. 팀장 소개 3분.' },
-      { id: 'team-2', title: '설루션', scene: 'running', team: 2, place: 'left-bottom', card: true, note: '포스코. 팀명은 설비자재구매실 & 설비기술부 + 솔루션에서 왔다.' },
-      { id: 'team-3', title: '설비실종수사대', scene: 'running', team: 3, place: 'left-bottom', card: true, note: '포스코 2명 + 포스코DX 2명.' },
-      { id: 'team-4', title: '웰커넥트 (WellConnect)', scene: 'running', team: 4, place: 'left-bottom', card: true, note: '포스코인터내셔널.' },
-      { id: 'team-5', title: '터널 밖 개구리', scene: 'running', team: 5, place: 'left-bottom', card: true, note: '포스코이앤씨.' },
-      { id: 'team-6', title: '텐엑스 (10x)', scene: 'running', team: 6, place: 'left-bottom', card: true, note: '포스코DX.' },
-      { id: 'team-7', title: '포브레인 (4Brain)', scene: 'running', team: 7, place: 'left-bottom', card: true, note: '포스코.' },
-      { id: 'team-8', title: 'HR AX 연구소', scene: 'running', team: 8, place: 'left-bottom', card: true, note: '포스코. 영문 팀명이라 가나다순의 맨 뒤다.' },
+      // 팀마다 제 그림 한 장이고 씬 id도 팀 id와 같다(scenes.js).
+      //
+      // 여기 title은 **진행자 노트와 진행바만** 읽는다. 무대에 뜨는 팀명은
+      // 그림 안에 있으므로, 이 값을 고쳐도 화면은 바뀌지 않는다 — 그림을
+      // 다시 뽑아야 한다. 두 곳이 어긋나지 않는지 테스트가 본다.
+      { id: 'team-1', title: '배꼽 (배 + Copilot)', scene: 'team-1', team: 1, place: 'left-bottom', note: '포스코 3명 + 포스코플로우 1명. 팀장 소개 3분.' },
+      { id: 'team-2', title: '설루션', scene: 'team-2', team: 2, place: 'left-bottom', note: '포스코. 팀명은 설비자재구매실 & 설비기술부 + 솔루션에서 왔다.' },
+      { id: 'team-3', title: '설비실종수사대', scene: 'team-3', team: 3, place: 'left-bottom', note: '포스코 2명 + 포스코DX 2명.' },
+      { id: 'team-4', title: '웰커넥트 (WellConnect)', scene: 'team-4', team: 4, place: 'left-bottom', note: '포스코인터내셔널.' },
+      { id: 'team-5', title: '터널 밖 개구리', scene: 'team-5', team: 5, place: 'left-bottom', note: '포스코이앤씨.' },
+      { id: 'team-6', title: '텐엑스 (10x)', scene: 'team-6', team: 6, place: 'left-bottom', note: '포스코DX.' },
+      { id: 'team-7', title: '포브레인 (4Brain)', scene: 'team-7', team: 7, place: 'left-bottom', note: '포스코.' },
+      { id: 'team-8', title: 'HR AX 연구소', scene: 'team-8', team: 8, place: 'left-bottom', note: '포스코. 영문 팀명이라 가나다순의 맨 뒤다.' },
     ],
   },
   {

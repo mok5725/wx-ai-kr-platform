@@ -473,40 +473,18 @@ function renderTeamsAll(root) {
 
 // ── 챌린저 팀 소개 (챕터 4의 여덟 장) ───────────────────────────────
 //
-// **여덟 장이 하나의 템플릿을 데이터로 반복한다.** index.html에 여덟 번
-// 베껴 쓰면 형식을 한 번 고칠 때 여덟 곳을 고쳐야 하고, 그러다 한 곳을
-// 빠뜨리면 그 팀만 다르게 생긴 장이 무대에 뜬다.
+// **여기에 있던 것이 2026-08-12에 전부 사라졌다.**
 //
-// 화면에 나오는 것은 **팀명 · 아이디어명 · 크루** 셋뿐이다. 팀장이 마이크로
-// 3분간 직접 소개하므로 그 뒤에서 화면이 떠들면 둘 다 진다.
+// 팀 여덟 장의 팀명·아이디어명·크루 넷을 찍던 renderTeam과, 크루를 어깨동무
+// 실루엣 + 빈 번호판으로 그리던 crewFigure가 있던 자리다. 지금은 그 내용이
+// 전부 **배경 그림에 구워져** 있다 — 팀명과 아이디어명은 씬 속 전광판에,
+// 회사명과 이름은 크루 넷의 가슴 카드에.
 //
-// 2026-08-11: 여덟 장에 하나씩 박히던 것이 **무대에 붙박인 카드 하나**로
-// 바뀌었다(teamcard.js). 이 함수는 그대로 남는다 — 여덟 팀의 내용을 찍는
-// 일은 달라지지 않았고, 어디에 찍느냐만 달라졌다.
-export function renderTeam(root, no) {
-  const team = TEAMS.find((t) => t.no === Number(no));
-  if (!team) return;
-
-  root.className = 'team';
-  root.append(
-    el('p', 'slide__eyebrow', `TEAM ${team.no}`),
-    el('h2', 'slide__title slide__title--mid', team.name),
-    el('p', 'team__idea', team.idea),
-  );
-
-  const crew = el('div', 'team__crew');
-  // 두 회사가 섞인 팀(3·5)은 묶음이 둘이다. 소속을 한 줄로 뭉개면 누가
-  // 어느 회사 사람인지가 사라진다 — 그 사실이 이 대회의 성격이다.
-  for (const group of team.crew) {
-    const box = el('div', 'team__org');
-    box.append(
-      chip(group.company),
-      el('p', 'team__names', group.members.join(' · ')),
-    );
-    crew.appendChild(box);
-  }
-  root.appendChild(crew);
-}
+// 실루엣을 SVG로 그렸던 이유는 회사·이름 서른두 개를 이미지 모델에 맡기면
+// 한글이 깨져서였다. 그 문제는 프롬프트로 풀었다 — 틀리는 글자 자리를 하나씩
+// 짚어 주면 붙는다(docs/characters.md의 함정 9·10).
+//
+// 여덟 팀을 한 장에 훑는 renderTeamsAll은 그대로 남는다(#4/1).
 
 // ── 운영진 이름표 (챕터 5) ──────────────────────────────────────────
 //
@@ -550,10 +528,6 @@ export function mountRoster(roots) {
     const key = root.dataset.roster;
     if (key.startsWith('task:')) {
       renderTaskDetail(root, key.slice('task:'.length));
-      continue;
-    }
-    if (key.startsWith('team:')) {
-      renderTeam(root, key.slice('team:'.length));
       continue;
     }
     const render = RENDERERS[key];

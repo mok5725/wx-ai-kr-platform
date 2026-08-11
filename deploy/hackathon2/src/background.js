@@ -9,21 +9,11 @@
 // 일이 없으므로 rAF 루프도, 성능 강등도 필요 없다 — 진행도가 바뀔 때만
 // 스타일을 쓴다.
 
-import { SCENES, sceneOfSlide, sceneRanges, sceneOpacity, cameraT, cameraTransform, teamPan } from './scenes.js';
-import { flatSlides } from './slides.js';
-
-// 팀 슬라이드는 한 씬 안에서 카메라가 옆으로 옮겨 간다. 어느 장이 몇 번째
-// 팀인지 미리 뽑아 둔다.
-function teamPanOfSlide() {
-  const slides = flatSlides();
-  const teams = slides.filter((s) => s.team).length;
-  return slides.map((s) => (s.team ? teamPan(s.team - 1, teams) : 0));
-}
+import { SCENES, sceneOfSlide, sceneRanges, sceneOpacity, cameraT, cameraTransform } from './scenes.js';
 
 export function createBackground({ root }) {
   const map = sceneOfSlide();
   const ranges = sceneRanges(map);
-  const pans = teamPanOfSlide();
   const last = map.length - 1;
 
   // 씬 하나당 레이어 하나. 실제로 쓰이는 씬만 만든다.
@@ -33,6 +23,16 @@ export function createBackground({ root }) {
     const el = document.createElement('div');
     el.className = 'scene';
     el.dataset.scene = scene.id;
+
+    // **카메라 상자.** 변환은 <img>가 아니라 이 상자가 받는다.
+    //
+    // 원래는 전광판 글자를 그림과 같은 변환에 태우려고 만든 상자였다
+    // (2026-08-12에 글자가 그림 안으로 들어가면서 그 이유는 사라졌다).
+    // 그래도 남긴다 — 씬에 뭔가를 겹칠 일이 다시 생기면 여기에 넣으면 되고,
+    // <img>에 직접 거는 것보다 합성 레이어가 안정적이다.
+    const cam = document.createElement('div');
+    cam.className = 'scene__cam';
+
     const img = document.createElement('img');
     img.src = scene.src;
     img.alt = '';
@@ -40,12 +40,19 @@ export function createBackground({ root }) {
     // 표지가 뜨기 전에 2.5MB를 기다린다.
     img.loading = scene.id === map[0] ? 'eager' : 'lazy';
     img.decoding = 'async';
-    el.appendChild(img);
+    cam.appendChild(img);
+
+    el.appendChild(cam);
     root.appendChild(el);
     layers.set(scene.id, {
-      el, img,
+      el, cam,
       range: ranges.get(scene.id),
-      cam: { still: Boolean(scene.still), zoom: scene.zoom },
+      camOpts: {
+        still: Boolean(scene.still),
+        zoom: scene.zoom,
+        zoomSpan: scene.zoomSpan,
+        panSpan: scene.panSpan,
+      },
     });
   }
 
@@ -57,12 +64,6 @@ export function createBackground({ root }) {
     if (clamped === lastP) return;
     lastP = clamped;
 
-    // 팀 구간의 가로 이동. 두 팀 사이에서는 선형으로 섞어 카메라가 끊기지
-    // 않게 한다.
-    const i = Math.floor(clamped);
-    const frac = clamped - i;
-    const pan = pans[i] * (1 - frac) + (pans[Math.min(i + 1, last)] ?? 0) * frac;
-
     for (const [, layer] of layers) {
       const a = sceneOpacity(clamped, layer.range);
       layer.el.style.opacity = a;
@@ -70,19 +71,19 @@ export function createBackground({ root }) {
       layer.el.style.visibility = a <= 0.001 ? 'hidden' : 'visible';
       if (a <= 0.001) continue;
 
-      if (layer.cam.still) {
-        layer.img.style.transform = 'none';
+      if (layer.camOpts.still) {
+        layer.cam.style.transform = 'none';
         continue;
       }
 
       const t = cameraT(clamped, layer.range);
-      const cam = cameraTransform(t, layer.cam);
+      const view = cameraTransform(t, layer.camOpts);
       // **translateX가 scale보다 앞에 온다.** 변환은 오른쪽부터 적용되므로
       // 이 순서면 이동량이 확대되지 않은 폭의 퍼센트로 계산된다. 순서를
       // 뒤집으면 이동이 배율만큼 함께 커져, 프레임 밖에 숨겨 둔 여유를
       // 넘어서면서 이미지 끝이 화면에 들어온다.
-      layer.img.style.transform =
-        `translateX(${(cam.x + pan).toFixed(3)}%) scale(${cam.scale.toFixed(4)})`;
+      layer.cam.style.transform =
+        `translateX(${view.x.toFixed(3)}%) scale(${view.scale.toFixed(4)})`;
     }
   }
 

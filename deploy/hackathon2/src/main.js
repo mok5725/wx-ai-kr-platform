@@ -12,7 +12,6 @@ import { createBackground } from './background.js';
 import { createProgress } from './progress.js';
 import { createTimetable } from './timetable.js';
 import { mountRoster } from './roster.js';
-import { createTeamCard } from './teamcard.js';
 import { createReveal } from './reveal.js';
 import { createNotesHost } from './notes.js';
 import { runCountUp } from './countup.js';
@@ -70,8 +69,6 @@ timetable.start();
 
 mountRoster([...document.querySelectorAll('[data-roster]')]);
 
-// 팀 소개 카드는 덱 밖에 붙박이로 선다 — 사유는 teamcard.js 첫머리 참고.
-const teamCard = createTeamCard(document.getElementById('teamcard'));
 
 // 한 장 안에서 여러 번 넘기는 자리. 지금은 FAQ 한 장뿐이다.
 // **id로 찾지 않고 클래스로 찾는다** — 다른 장에 같은 장치를 붙일 때
@@ -158,9 +155,6 @@ function render(isResize = false) {
   const slide = SLIDES[index];
   document.body.dataset.place = slide?.place ?? 'left-center';
   document.body.dataset.scrim = slide?.scrim ?? 'on';
-
-  // 붙박이 팀 카드의 내용. 팀 장이 아니면 판째 꺼진다.
-  teamCard.update(slide);
 
   // 장을 떠나면 목록을 처음으로 되돌린다 — 되짚어 왔을 때 중간에 걸린 채로
   // 떠 있으면 진행자가 어디까지 보여줬는지 알 수 없다.

@@ -747,93 +747,9 @@
   color: var(--gold);
 }
 
-/* ── 팀 소개 여덟 장 ────────────────────────────────────────────────
-   화면에 있는 것은 팀명 · 아이디어명 · 크루 셋뿐이다. 팀장이 마이크로
-   3분간 직접 소개하므로 그 뒤에서 화면이 떠들면 둘 다 진다.
-   roster.js의 renderTeam이 content.js의 TEAMS에서 찍는다.
-
-   **판은 #deck 밖에 하나만 있다**(2026-08-11 요청, teamcard.js).
-   여덟 장을 지나는 동안 판은 제자리에 서 있고 안의 글자만 갈린다.
-   자리는 왼쪽 아래 — 예전 슬라이드의 data-place="left-bottom"과 같다. */
-.teamcard {
-  position: absolute;
-  left: var(--pad);
-  bottom: var(--pad);
-  z-index: 2;
-  /* 판은 읽는 것이지 누르는 것이 아니다. 무대를 덮고 있으므로 반드시 뚫어
-     둔다 — 안 그러면 이 자리에서 스와이프·클릭이 먹지 않는다. */
-  pointer-events: none;
-
-  /* 여덟 겹을 **같은 칸에** 쌓는다. 격자가 가장 큰 겹에 맞춰지므로 판의
-     크기가 여덟 장 내내 고정된다 — 크기 통일이 여기서 나온다. */
-  display: grid;
-  max-width: min(52%, 44rem);
-
-  padding: 0.7em 1em 0.8em;
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, .86);
-  backdrop-filter: blur(2px);
-
-  /* 팀 구간에 들어올 때 한 번 뜨고, 나갈 때 한 번 진다. 그 사이에는
-     계속 켜져 있다. */
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 420ms var(--ease-slide), visibility 0s linear 420ms;
-}
-
-.teamcard.is-on {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 420ms var(--ease-slide), visibility 0s;
-}
-
-/* 겹 하나가 팀 하나다. 전부 같은 격자 칸에 놓고 불투명도로만 고른다 —
-   자리를 옮기지 않으므로 글자가 제자리에서 갈리는 것처럼 보인다. */
-.teamcard__layer {
-  grid-area: 1 / 1;
-  opacity: 0;
-  transition: opacity 320ms var(--ease-slide);
-}
-
-.teamcard__layer.is-on { opacity: 1; }
-
-.team {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--gap) * 0.6);
-}
-
-.team .slide__eyebrow { color: var(--gold); }
-
-.team__idea {
-  font-size: var(--step-1);
-  line-height: var(--leading-tight);
-  color: var(--ink-soft);
-  word-break: keep-all;
-}
-
-.team__crew {
-  margin-top: calc(var(--gap) * 0.8);
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--gap) * 0.5);
-}
-
-/* 두 회사가 섞인 팀(3·5)은 이 묶음이 둘이다. 소속을 한 줄로 뭉개면 누가
-   어느 회사 사람인지가 사라지는데, 그 사실이 이 대회의 성격이다. */
-.team__org {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  flex-wrap: wrap;
-}
-
-.team__names {
-  font-weight: 800;
-  font-size: var(--step-0);
-  letter-spacing: 0.01em;
-  color: var(--ink);
-}
+/* 팀 소개 여덟 장에는 얹는 글자가 없다(2026-08-12). 팀명·아이디어명·크루의
+   회사와 이름이 전부 배경 그림 안에 있다 — 여기 있던 .teamcard와 .team__*
+   규칙은 그래서 지웠다. 만드는 법은 docs/characters.md. */
 
 /* ── 운영진 이름표 ─────────────────────────────────────────────────
    인물은 씬 그림에 이미 그려져 있다. --x는 그림 속 인물의 가로 중심이고
