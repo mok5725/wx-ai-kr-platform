@@ -193,7 +193,7 @@ export const TASKS = [
 // 갈리는 것이 이 대회의 성격이라 이름을 한 줄로 뭉개지 않는다.
 export const TEAMS = [
   { no: 1, name: '배꼽 (배 + Copilot)',
-    idea: '원료 부두 선박 스케줄 최적화 AI 플랫폼',
+    idea: '원료 부두 선박 스케줄\n최적화 AI 플랫폼',
     crew: [
       { company: '포스코', members: ['권도훈', '이경돈', '임사현'] },
       { company: '포스코플로우', members: ['조용근'] },
@@ -204,7 +204,7 @@ export const TEAMS = [
     idea: 'AI 자재 재고 최적화 솔루션',
     crew: [{ company: '포스코', members: ['이예나', '김혜정', '서동민', '이예열'] }] },
   { no: 3, name: '설비실종수사대',
-    idea: '설비 중심의 설비·환경 통합 Agent 구축',
+    idea: '설비 중심의\n설비·환경 통합 Agent 구축',
     crew: [
       { company: '포스코', members: ['최현규', '송영남'] },
       { company: '포스코DX', members: ['박정인', '백성문'] },
@@ -222,7 +222,7 @@ export const TEAMS = [
     idea: '마케팅 브레인 — 언제든, 뭐든 물어볼 수 있는 AI 선배',
     crew: [{ company: '포스코', members: ['한소희', '주하림', '한지석', '김민우'] }] },
   { no: 8, name: 'HR AX 연구소',
-    idea: '나를 먼저 챙겨주는 나만의 HR AI Agent',
+    idea: '나를 먼저 챙겨주는\n나만의 HR AI Agent',
     crew: [{ company: '포스코', members: ['이진희', '김수미', '최주호', '하석현'] }] },
 ];
 

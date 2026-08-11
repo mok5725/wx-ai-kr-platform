@@ -774,64 +774,8 @@
 .bd-list--two li + li { margin-top: 0; }
 .bd-list--two li:nth-child(n+3) { margin-top: 0.2em; }
 
-/* ── 휴대폰 (세로) ────────────────────────────────────────────────────
-   slides.css에도 같은 미디어 블록이 있지만, 이 파일이 나중에 로드되므로
-   여기 있는 선택자는 반드시 여기서 덮어야 한다. 저쪽에 적으면 조용히
-   무시된다 — 실제로 그렇게 새서 운영진이 28열로 깔렸다. */
-@media (max-width: 820px) and (orientation: portrait) {
-  .card-grid,
-  .coach-grid,
-  .task__blocks,
-  .namecards { grid-template-columns: 1fr; }
-
-  .org-core__roles,
-  .org-principles { grid-template-columns: 1fr; }
-
-  /* 조직도를 한 열로 푼다. 좌우에 있던 지원 조직이 위아래로 들어오므로
-     가로 화살표도 90도 돌려 세로로 세운다. */
-  .org-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'sponsor' 'flowtop' 'advisor' 'flowleft'
-      'core' 'flowright' 'infra' 'flowbot' 'user';
-    row-gap: calc(var(--gap) * 0.5);
-  }
-
-  .org-flow--flowleft,
-  .org-flow--flowright { flex-direction: row; gap: 0.35em; }
-  .org-flow--flowleft .org-flow__art,
-  .org-flow--flowright .org-flow__art {
-    width: calc(var(--step-1) * 1.6);
-    transform: rotate(90deg);
-  }
-
-  .perks--row { grid-template-columns: 1fr; }
-  .tb-steps { grid-template-columns: 1fr; }
-
-  /* 팀 빌딩 보드는 세로형에서 종이를 위아래로 쌓는다. 3:4를 유지한 채
-     나란히 두면 두 장이 1004px이 되어 375px 화면에서 왼쪽 장이 통째로
-     잘린다. 세로에서는 비율을 놓고 **폭에 맞춘 뒤 높이는 내용이 정한다** —
-     종이 모양보다 글자가 다 보이는 것이 먼저다. */
-  .board { flex-direction: column; gap: calc(var(--gap) * 0.8); }
-  .sheet { aspect-ratio: auto; height: auto; width: 100%; }
-  .bd-row--roles, .bd-block--rules { flex: 0 0 auto; }
-  .bd-list--two { grid-template-columns: 1fr; }
-  .bd-list--two li:nth-child(n+3) { margin-top: 0; }
-  .bd-list--two li + li { margin-top: 0.2em; }
-
-  /* 정사각형은 가로형 화면에서만이다. 한 열로 쌓이면 카드 한 장이
-     화면 폭만큼 높아져 셋이 세 화면을 먹는다. */
-  .namecards { grid-auto-flow: row; max-width: none; margin-top: calc(var(--gap) * 1.5); }
-  .namecard { aspect-ratio: auto; padding: calc(var(--gap) * 1.1) var(--gap); }
-
-  /* 운영진은 세 열. 일곱을 한 줄에 세우면 얼굴이 안 보이고, 한 열로 두면
-     일곱 번 스크롤해야 한다.
-     **두 열이 아니라 세 열이다.** 두 열이면 일곱이 네 줄이 되어 375×812에서
-     230px 넘친다(여섯일 때는 세 줄로 겨우 들어갔다). 세 열이면 세 줄로
-     끝나고, 손에 들고 보는 화면이라 얼굴도 충분히 알아본다. */
-  .expedition { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); gap: calc(var(--gap) * 0.9); }
-
-  /* 크루 명단도 두 열. 이름만 있는 짧은 칸이라 들어간다. */
-  .crew__grid { grid-template-columns: repeat(2, 1fr); }
-}
+/* 여기 있던 휴대폰 세로 블록(@media max-width: 820px and portrait)은
+   2026-08-11에 지웠다. 여러 열을 한 열로 접던 규칙인데, 무대가 언제나
+   16:9가 되면서 접을 일이 없어졌다 — 화면이 좁으면 무대째 작아질 뿐
+   격자 모양은 그대로다. 사유는 slides.css 끝의 같은 주석에 적어 두었다. */
 

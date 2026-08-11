@@ -13,6 +13,7 @@ import { createProgress } from './progress.js';
 import { createTimetable } from './timetable.js';
 import { mountRoster } from './roster.js';
 import { createTeamCard } from './teamcard.js';
+import { createReveal } from './reveal.js';
 import { createNotesHost } from './notes.js';
 import { runCountUp } from './countup.js';
 import { initMobileFullscreen } from './mobile.js';
@@ -47,9 +48,17 @@ slideEls.forEach((el, i) => {
 // #deck을 미는 양은 px이어야 해서, tokens.css의 --stage-w/--stage-h와 같은
 // 식을 여기서 한 번 더 계산한다. 두 곳이 어긋나면 장이 반쯤 걸쳐 선다 —
 // 식을 고칠 일이 생기면 반드시 함께 고친다.
+//
+// **무대는 화면 안에 들어가는 가장 큰 16:9 사각형이다**(2026-08-11).
+// 예전에는 높이가 그냥 화면 높이(100vh)여서, 세로로 긴 화면에서 무대가 16:9가
+// 아니었고 배경 밖으로 글자가 새어 나갔다.
 function stageSize() {
-  const height = window.innerHeight;
-  return { w: Math.min(window.innerWidth, height * (16 / 9)), h: height };
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  return {
+    w: Math.min(vw, vh * (16 / 9)),
+    h: Math.min(vh, vw * (9 / 16)),
+  };
 }
 
 const background = createBackground({ root: document.getElementById('bg') });
@@ -63,6 +72,20 @@ mountRoster([...document.querySelectorAll('[data-roster]')]);
 
 // 팀 소개 카드는 덱 밖에 붙박이로 선다 — 사유는 teamcard.js 첫머리 참고.
 const teamCard = createTeamCard(document.getElementById('teamcard'));
+
+// 한 장 안에서 여러 번 넘기는 자리. 지금은 FAQ 한 장뿐이다.
+// **id로 찾지 않고 클래스로 찾는다** — 다른 장에 같은 장치를 붙일 때
+// main.js를 고치지 않아도 되게.
+const reveals = new Map(
+  [...document.querySelectorAll('[data-reveal]')].map((el) => [
+    el.closest('.slide')?.dataset.slideId,
+    createReveal(el),
+  ]),
+);
+
+function revealHere() {
+  return reveals.get(SLIDES[index]?.id);
+}
 
 // ── 임시로 채운 자리의 세 겹 방어 (콘텐츠 문서 §4.9) ─────────────────
 //
@@ -138,6 +161,12 @@ function render(isResize = false) {
 
   // 붙박이 팀 카드의 내용. 팀 장이 아니면 판째 꺼진다.
   teamCard.update(slide);
+
+  // 장을 떠나면 목록을 처음으로 되돌린다 — 되짚어 왔을 때 중간에 걸린 채로
+  // 떠 있으면 진행자가 어디까지 보여줬는지 알 수 없다.
+  for (const [id, r] of reveals) {
+    if (id !== slide?.id) r.reset();
+  }
 
   progress.update(index);
   notes.publish(index);
@@ -288,8 +317,16 @@ const notes = createNotesHost({
 });
 
 const INTENTS = {
-  next: () => goTo(index + 1),
-  prev: () => goTo(index - 1),
+  // **먼저 이 장 안에서 올릴 것이 있는지 본다.** 있으면 목록만 한 칸 올리고
+  // 장은 그대로 둔다(reveal.js). 다 올렸으면 그다음 next가 다음 장이다.
+  next: () => {
+    if (revealHere()?.next()) return;
+    goTo(index + 1);
+  },
+  prev: () => {
+    if (revealHere()?.prev()) return;
+    goTo(index - 1);
+  },
   fullscreen: toggleFullscreen,
   notes: () => notes.open(),
 };

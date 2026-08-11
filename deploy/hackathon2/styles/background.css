@@ -10,11 +10,10 @@
    무대 밖 좌우 여백은 base.css의 body 바탕색이 이어 받는다. */
 #bg {
   position: fixed;
-  top: 0;
-  left: 50%;
+  top: var(--stage-y);
+  left: var(--stage-x);
   width: var(--stage-w);
   height: var(--stage-h);
-  margin-left: calc(var(--stage-w) / -2);
   z-index: 0;
   overflow: hidden;
   /* 첫 씬이 뜨기 전의 바탕. 하늘색으로 두면 로딩 순간이 어색하지 않다. */

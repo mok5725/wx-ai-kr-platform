@@ -419,7 +419,8 @@ function renderPerks(root) {
 //
 // 이모지는 "마라톤 관련 이미지를 군데군데" 넣으라는 운영 요청이다. 팀마다
 // 다른 마라톤 소품을 하나씩 달아 여덟 칸이 같은 틀의 반복으로 안 보이게 한다.
-const TEAM_EMOJI = ['🏃', '🎽', '👟', '⏱️', '🥇', '🚩', '🥤', '🏁'];
+// 팀명 옆의 이모지는 2026-08-11에 뺐다(요청) — 달리기 소품 여덟 개가 팀과
+// 아무 관계가 없어서, 여덟 칸에 무늬만 하나씩 붙은 꼴이었다.
 
 // **크루원 이름은 넣지 않는다** (2026-08-10 요청). 이 장은 여덟 팀을 훑는
 // 자리이고 이름은 이어지는 팀 여덟 장에서 팀장이 직접 부른다 — 여기까지
@@ -435,23 +436,28 @@ function splitTeamName(name) {
 }
 
 // 아이디어명은 **말의 단위로 끊는다.** 긴 줄을 폭에 맡기면 '— PASS AI'처럼
-// 어중간한 자리에서 접힌다. 붙임표(—)는 '무엇을 — 어떻게'를 가르는 자리라
-// 거기서 줄을 바꾸면 두 줄이 각각 온전한 말이 된다.
+// 어중간한 자리에서 접힌다. 끊는 자리는 두 가지다:
+//
+//   ' — '   줄표로 이어 붙인 문장은 줄표에서 갈라진다(줄표는 버린다).
+//           '무엇을 — 어떻게'를 가르는 자리라 두 줄이 각각 온전한 말이 된다.
+//   '\n'    content.js에 손으로 넣은 줄바꿈. 줄표가 없는데도 한 줄이 너무
+//           길어 칸을 넘는 팀에서 쓴다(2026-08-11 요청 — 배꼽·설비실종수사대·
+//           HR AX 연구소 셋).
+//
+// **여기서만 갈라진다.** 자동 줄바꿈에 맡기면 창 크기에 따라 끊기는 자리가
+// 달라져 여덟 칸의 줄 수가 들쭉날쭉해진다.
 function ideaLines(idea) {
-  return idea.split(' — ');
+  return idea.split(/ — |\n/);
 }
 
 function renderTeamsAll(root) {
   root.className = 'teams-all';
-  TEAMS.forEach((team, i) => {
+  TEAMS.forEach((team) => {
     const cell = el('div', 'teams-all__team');
 
     const head = el('div', 'teams-all__head');
     const { base, paren } = splitTeamName(team.name);
-    head.append(
-      el('span', 'teams-all__emoji', TEAM_EMOJI[i % TEAM_EMOJI.length]),
-      el('span', 'teams-all__name', base),
-    );
+    head.append(el('span', 'teams-all__name', base));
     if (paren) head.appendChild(el('span', 'teams-all__paren', paren));
 
     const idea = el('p', 'teams-all__idea');

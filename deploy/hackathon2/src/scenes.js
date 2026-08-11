@@ -43,7 +43,16 @@ export const SCENES = [
   { id: 'bibs',      src: 'assets/scenes/ch1b-bibs.webp' },
   { id: 'crowd',     src: 'assets/scenes/ch2-crowd.webp' },
   { id: 'sendoff',   src: 'assets/scenes/ch3-sendoff.webp' },
-  { id: 'startline', src: 'assets/scenes/ch4a-startline.webp' },
+  // 출발선 씬은 **원본 크기로 쓰지 않는다**(2026-08-11 요청). 그림의 아래
+  // 절반이 빈 아스팔트라, 원본대로 얹으면 화면의 절반을 회색이 차지하고
+  // 출발선에 선 크루는 위쪽에 작게 몰린다. 조금 당겨 크루를 화면 안으로
+  // 끌어온다 — 잘려 나가는 것은 아치의 꼭대기와 빈 노면뿐이다.
+  // 1.5배로 뒀다가 1.2배로 낮췄다(요청) — 아치가 더 남고 크루가 조금 물러난다.
+  //
+  // 확대 여유 부등식(|이동| ≤ (배율-1)/2 × 100)은 여유롭게 만족한다:
+  // 이 씬의 이동은 t가 -0.5~1.5이므로 최대 5.25%이고, 1.2배가 숨겨 두는
+  // 여유는 10%다.
+  { id: 'startline', src: 'assets/scenes/ch4a-startline.webp', zoom: 1.2 },
   // 팀 여덟 장이 함께 쓰는 씬. 카메라가 여덟 그룹 사이를 ±26%까지 옮겨
   // 다니므로 그만큼을 프레임 밖에 숨겨 둘 배율이 필요하다. 그래서 이 씬만
   // 4k로 뽑았다 — 2k에서 1.66배로 확대하면 프로젝터에서 뭉개진다.
@@ -54,7 +63,10 @@ export const SCENES = [
   // 움직임은 그대로 남는다.
   { id: 'hq',        src: 'assets/scenes/ch5-staff.webp', still: true },
   { id: 'warmup',    src: 'assets/scenes/ch6-warmup.webp' },
-  { id: 'coursemap', src: 'assets/scenes/ch7-coursemap.webp' },
+  // 코스 지도 씬(ch7-coursemap.webp)은 2026-08-11에 지웠다 — 진행 흐름
+  // 장(#7/1)이 선물 장과 같은 급수대 씬을 쓰게 되면서 아무도 부르지 않게 됐다.
+  // 파일도 함께 지운다. tests/assets.test.js가 "선언하지 않은 씬 파일이
+  // assets/scenes에 남아 있으면 실패"를 지키므로, 둘 중 하나만 지우면 걸린다.
   { id: 'water',     src: 'assets/scenes/ch7b-water.webp' },
   { id: 'turnpoint', src: 'assets/scenes/ch8-turnpoint.webp' },
   { id: 'finish',    src: 'assets/scenes/ch9-finish.webp' },

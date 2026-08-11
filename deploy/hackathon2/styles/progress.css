@@ -1,8 +1,10 @@
 .progress {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--pad) * 0.6);
+  /* 화면이 아니라 **무대** 기준이다. 무대가 언제나 16:9라 화면에는 여백이
+     생기는데, 화면 바닥에 붙이면 진행바만 그 여백에 홀로 떠 버린다. */
+  left: var(--stage-x);
+  right: var(--stage-x);
+  bottom: calc(var(--stage-y) + var(--pad) * 0.6);
   z-index: 2;
   display: flex;
   justify-content: center;

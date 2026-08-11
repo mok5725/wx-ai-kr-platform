@@ -49,7 +49,7 @@ export const CHAPTERS = [
     scene: 'crowd',
     slides: [
       // 마스터와 똑같은 연도별 구성에 2026 챌린저만 불을 켠다 (운영 지시).
-      { id: 'what-is', title: 'WX해커톤은 어떤 대회인가요', place: 'wide',
+      { id: 'what-is', title: 'WX해커톤은 어떤 대회인가요?', place: 'wide',
         note: '연도별 흐름을 훑고 2026 챌린저 숫자(219명 → 32명)에서 멈춘다. "여러분이 저 6.9:1을 뚫고 오셨습니다."' },
     ],
   },
@@ -70,7 +70,7 @@ export const CHAPTERS = [
     slides: [
       // 여덟 팀 전체가 한 장에. 팀 순서는 팀명 가나다순(한글 먼저, 영문 나중) —
       // 운영 지시. content.js의 TEAMS가 이미 그 순서로 정렬돼 있다.
-      { id: 'crew-all', title: '우리 크루를 소개합니다', place: 'wide',
+      { id: 'crew-all', title: '챌린저 트랙 크루 소개', place: 'wide',
         note: '여덟 팀 훑어보기. 다음 여덟 장에서 팀장이 직접 3분씩 소개한다는 것을 여기서 안내한다. 팀 순서는 팀명 가나다순이다.' },
       // 팀 여덟 장. 화면에는 팀명·아이디어명·크루 셋만 띄운다 — 팀장이
       // 마이크로 말하는 동안 화면이 떠들면 둘 다 진다.
@@ -96,7 +96,7 @@ export const CHAPTERS = [
     scene: 'hq',
     slides: [
       // 씬 안에 일곱 명이 이미 그려져 있고 이름표만 그 아래에 세운다.
-      { id: 'expedition', title: '운영진을 소개합니다', place: 'left-top',
+      { id: 'expedition', title: '이 레이스, 저희가 함께 뜁니다', place: 'left-top',
         note: '센터장을 뺀 일곱 명. 각자 든 소품이 곧 역할이다 — 신호탄·페이서 깃발·결승선 테이프·급수컵·스톱워치·드론·메가폰.' },
     ],
   },
@@ -112,14 +112,18 @@ export const CHAPTERS = [
   },
   {
     id: 'race',
+    // 세 장이 급수대 씬 하나를 함께 쓴다. 코스 지도 씬(coursemap)은
+    // 2026-08-11에 걷어냈다 — 진행 흐름 장(#7/1)의 배경을 선물 장(#7/2)과
+    // 같게 해 달라는 요청이었고, 그러면서 쓰는 곳이 없어져 파일까지 지웠다.
+    // 씬이 하나라 카메라가 세 장에 걸쳐 끊기지 않고 이어서 파고든다.
     title: '레이스 안내',
-    scene: 'coursemap',
+    scene: 'water',
     slides: [
-      { id: 'course', title: '해커톤은 어떻게 진행되나요', place: 'wide',
+      { id: 'course', title: '출발부터 완주까지, 챌린저 레이스 코스', place: 'wide',
         note: '다섯 구간: 지원(7.20~26) → 선발(7.27~31) → 오늘 팀밋업(8.12) → 사전학습(8.13~9.9) → 본선(9.10~11 무박 2일). "오늘 여기"를 짚는다.' },
-      { id: 'gifts', title: '완주자들에게 주는 선물', scene: 'water', place: 'wide',
+      { id: 'gifts', title: '완주에 필요한 건 다 준비했습니다', place: 'wide',
         note: '참가자 100% 선물(에어팟 4 ANC — 수상팀 제외, 굿즈), 교육 콘텐츠 무제한(박종천 특강·스파르타 수강권·AI Tool 유료 플랜), 1:1 전문 코치 멘토링.' },
-      { id: 'evaluation', title: '우수팀이 되기 위한 비결은?', scene: 'water', place: 'wide',
+      { id: 'evaluation', title: '잘 달리는 팀보다, 함께 달리는 팀이 우승합니다', place: 'wide',
         note: '심사위원 평가 75%(혁신성·실현가능성·파급력, 기준은 본선 1주 전 공지) + 협업 점수 25%(팀미팅 횟수·디스코드 소통 지수·사전학습 참여도).' },
     ],
   },
@@ -130,13 +134,13 @@ export const CHAPTERS = [
     slides: [
       // 2026-08-10 운영이 본선 시간표를 주어 ⚠︎ 를 떼었다. 표는 index.html에
       // grid-template-areas로 짜여 있다(styles/scene.css의 .fs).
-      { id: 'finals-schedule', title: '본선 일정', place: 'wide',
+      { id: 'finals-schedule', title: '결승선까지 남은 2일', place: 'wide',
         note: '무박 2일. 1일차는 접수·개회식·특강 뒤 오후부터 과제 수행, 18시부터 밤샘 14시간. 2일차는 코칭 → 과제 수행 → 결과 발표회(3hr) → 시상. 초록이 챌린저, 파랑이 마스터다. ⚠︎ 2일차 오전 블록은 원본이 09~12시(3칸)인데 4hr로 적혀 있다 — 운영 확인 필요.' },
       // ⚠︎ 배지를 뗐다(2026-08-10 요청). 소개 자료는 아직 없지만 화면에
       // 경고를 띄우지 않는다 — 이 장은 진행자가 말로 소개하는 자리다.
-      { id: 'teamsparta', title: '팀스파르타를 소개합니다', place: 'left-top',
+      { id: 'teamsparta', title: '혼자 뛰지 마세요, 코치가 함께 갑니다', place: 'left-top',
         note: '사전학습 이러닝과 1:1 코칭을 맡는 파트너다. 소개 자료가 오면 이 장에 넣는다.' },
-      { id: 'faq', title: '자주 묻는 질문', place: 'wide',
+      { id: 'faq', title: '출발 전, 이것만은 체크!', place: 'wide',
         note: '설문(8.12 17시~8.13 17시, 러닝플랫폼) · 입과 안내(9.3 개별 메일) · 발표 13분(발표 8 + 질의 5, 순서는 당일) · 유료 라이선스(팀별 메인 개발자 Claude Code Premium, 나머지는 선택) · 문의는 디스코드.' },
     ],
   },
