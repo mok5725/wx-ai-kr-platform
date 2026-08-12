@@ -1,6 +1,6 @@
 // 조립. 모듈들을 아는 유일한 곳이다.
 
-import { positionOf, clampIndex, toHash, fromHash, absoluteCol, chapterLeft, offsetAt } from './deck.js';
+import { positionOf, clampIndex, toHash, fromHash, startIndex, absoluteCol, chapterLeft, offsetAt } from './deck.js';
 import { flatSlides, placeholders } from './slides.js';
 import { bindKeys } from './keys.js';
 import { bindSwipe } from './pointer.js';
@@ -15,7 +15,7 @@ import { mountRoster } from './roster.js';
 import { createReveal } from './reveal.js';
 import { createNotesHost } from './notes.js';
 import { runCountUp } from './countup.js';
-import { initMobileFullscreen } from './mobile.js';
+import { initMobileFullscreen, lockLandscape, unlockOrientation } from './mobile.js';
 
 const deckEl = document.getElementById('deck');
 const slideEls = [...document.querySelectorAll('.slide')];
@@ -115,7 +115,9 @@ if (WAITING.length) {
 // 뜨는 문구가 아니라 제작 중 확인용이었고, 콘솔 경고와 테스트 목록이
 // 같은 일을 이미 한다.
 
-let index = fromHash(window.location.hash);
+// **여는 자리는 언제나 표지다.** 주소에 남아 있는 해시를 읽지 않는다 —
+// 사유와 예외(?at=7/2)는 deck.js의 startIndex 주석에 있다.
+let index = startIndex(window.location.search);
 
 // 연타 처리: 전환을 큐에 쌓지 않는다. 인덱스는 즉시 갱신하고
 // transform은 항상 최신 인덱스의 좌표를 쓴다. Enter를 세 번 빠르게
@@ -433,8 +435,24 @@ window.addEventListener('wheel', (event) => {
 // 손가락 관성까지 진행도에 실으면 어느 장에 있는지 알기 어려워진다.
 bindSwipe(window, act);
 
+// **전체화면은 무조건 가로다** (2026-08-12 요청).
+//
+// 방향 잠금을 여기에 두는 이유는 **전체화면에 들어오는 길이 여럿**이기
+// 때문이다: 진행자의 F 키(toggleFullscreen), 휴대폰의 왼쪽 아래 버튼,
+// 참가자가 화면을 처음 만졌을 때의 자동 진입(mobile.js), 브라우저 자체
+// 메뉴. 진입 지점마다 잠금을 부르면 하나를 빠뜨리게 된다 — 결과를 알리는
+// 이 이벤트 한 곳에서 걸면 어느 길로 들어와도 같다.
+//
+// 나갈 때는 풀어 준다. 잠근 채로 두면 전체화면을 닫은 뒤에도 휴대폰이
+// 가로로 굳어, 참가자가 세로로 들고 다른 일을 못 한다.
+//
+// 데스크톱에는 방향 잠금 API가 없고 아이폰 사파리도 마찬가지다. 두 함수
+// 모두 없으면 조용히 물러나므로 여기서 갈라 두지 않는다.
 document.addEventListener('fullscreenchange', () => {
-  document.body.classList.toggle('is-fullscreen', Boolean(document.fullscreenElement));
+  const on = Boolean(document.fullscreenElement);
+  document.body.classList.toggle('is-fullscreen', on);
+  if (on) lockLandscape(window);
+  else unlockOrientation(window);
 });
 
 // 휴대폰으로 들어온 사람에게만 왼쪽 아래 전체화면 버튼을 띄운다.

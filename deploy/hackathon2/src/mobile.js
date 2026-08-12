@@ -58,7 +58,7 @@ export async function lockLandscape(win = window) {
   return false;
 }
 
-function unlockOrientation(win) {
+export function unlockOrientation(win = window) {
   try {
     win.screen?.orientation?.unlock?.();
   } catch {
@@ -113,15 +113,12 @@ export function initMobileFullscreen({ win = window, doc = document } = {}) {
     if (!isActive()) enter();
   }, { once: true, passive: true });
 
-  // 전체화면에 들어갈 때마다 방향을 다시 잠근다. enter()에서 한 번
-  // 부르지만, 그 호출은 requestFullscreen이 풀리는 순간이라 브라우저에 따라
-  // "아직 전체화면이 아니다"로 거부된다. 실제로 전체화면이 된 것을 알리는
-  // 이 이벤트에서 한 번 더 부르면 그 틈이 메워진다. 이미 잠겨 있으면
-  // 두 번째 호출은 아무 일도 하지 않는다.
-  doc.addEventListener('fullscreenchange', () => {
-    sync();
-    if (isActive()) lockLandscape(win);
-  });
+  // **방향 잠금은 여기서 걸지 않는다.** 전체화면에 들어오는 길이 여럿이라
+  // main.js가 fullscreenchange 한 곳에서 잠그고 푼다 — 그쪽 주석을 본다.
+  // 여기서 한 번 더 걸면 같은 이벤트에 두 번 요청이 겹친다.
+  // (enter()의 호출은 남겨 둔다. 버튼을 누른 그 자리에서 바로 도는 편이
+  //  이벤트를 기다리는 것보다 한 박자 빠르다.)
+  doc.addEventListener('fullscreenchange', sync);
 
   return { enter, leave, toggle, sync };
 }

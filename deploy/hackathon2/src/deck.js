@@ -120,6 +120,35 @@ export function fromHash(hash) {
   return index === -1 ? 0 : index;
 }
 
+// **덱을 열면 언제나 표지에서 시작한다** (2026-08-12 요청 — "접속하면 무조건
+// 첫 랜딩페이지에서").
+//
+// 예전에는 주소의 해시(#7/2)를 읽어 그 장에서 시작했다. 그런데 render()가
+// 장을 넘길 때마다 replaceState로 **해시를 주소에 써 넣는다.** 그래서 한 번
+// 훑어본 사람의 주소창에는 마지막으로 본 장이 남고, 휴대폰 브라우저가 탭을
+// 되살리거나 새로고침하면 그 장에서 열린다 — QR을 찍고 들어온 참가자가
+// 한복판 장표를 첫 화면으로 보게 된 것이 이 때문이다.
+//
+// 그래서 **시작 자리는 해시에서 읽지 않는다.** 해시는 여전히 주소에 쓰이고
+// (발표자가 지금 어디인지 볼 수 있다) 열린 뒤에 바꾸면 따라가지만
+// (hashchange), 여는 순간의 자리를 정하지는 못한다.
+//
+// 그래도 특정 장으로 바로 여는 길은 남긴다 — **질의 문자열 ?at=7/2**.
+// 덱이 스스로 쓰는 값이 아니므로 세션 복원으로 저절로 생길 수 없다.
+// 사람이 일부러 적었을 때만 존재하는 값이라, "무조건 표지"와 "가끔 지목해
+// 열기"가 서로 부딪히지 않는다.
+export function fromQuery(search) {
+  const match = /(?:^|[?&])at=(\d+)\/(\d+)/.exec(String(search ?? ''));
+  if (!match) return null;
+  const index = indexOf(Number(match[1]) - 1, Number(match[2]) - 1);
+  return index === -1 ? null : index;
+}
+
+export function startIndex(search) {
+  const at = fromQuery(search);
+  return at === null ? 0 : at;
+}
+
 export function slideCount() {
   return totalSlides();
 }
