@@ -672,6 +672,32 @@
   text-align: left;
 }
 
+/* ── #2/2 투 트랙 ─────────────────────────────────────────────────────
+   제목은 왼쪽 위(같은 챕터의 #2/1과 같은 자리), 두 트랙 카드는 그 아래
+   남는 높이를 통째로 쓴다. 카드 안이 flex라 높이를 주어야 진행 막대가
+   바닥에 앉는다 — 높이를 주지 않으면 카드가 내용 높이로 줄어든다. */
+.slide[data-slide-id="two-track"] {
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  padding-top: calc(var(--brandbar-h) * 0.9);
+  gap: calc(var(--gap) * 1.2);
+}
+
+.slide[data-slide-id="two-track"] > .slide__title {
+  align-self: flex-start;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+/* 카드 덩어리가 남는 높이를 다 쓴다. .slide의 마지막 자식에 걸리는
+   margin-bottom: auto를 여기서 되돌린다 — 그것이 남으면 auto 여백이 높이를
+   먼저 가져가 카드가 내용 높이로 멈춘다(#7/2에서 똑같이 겪었다). */
+.slide[data-slide-id="two-track"] > .tracks {
+  margin-bottom: 0;
+  align-self: stretch;
+}
+
 /* 문구는 무대의 절반 남짓만 쓴다. 씬의 오른쪽(관중석)을 글로 덮지 않는다. */
 .slide[data-slide-id="what-is"] > .slide__eyebrow,
 .slide[data-slide-id="what-is"] > .slide__title,
