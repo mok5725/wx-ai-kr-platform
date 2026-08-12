@@ -34,15 +34,28 @@ export function shouldOfferFullscreen(win = window, doc = document) {
   return isCoarsePointer(win) && supportsFullscreen(doc);
 }
 
-// 가로로 눕힌다. 덱은 16:9로 짜여 있어 세로로 보면 글자가 잘게 접힌다.
-// lock은 전체화면 안에서만 허용되고, 지원하지 않는 브라우저에서는 거부된다.
-// 어느 쪽이든 발표는 계속되어야 하므로 조용히 넘긴다.
-async function lockLandscape(win) {
-  try {
-    await win.screen?.orientation?.lock?.('landscape');
-  } catch {
-    /* 지원하지 않거나 거부됨 — 세로 그대로 본다. */
+// 잠글 방향의 후보. 'landscape'를 모르는 브라우저가 'landscape-primary'는
+// 받는 경우가 있어 둘을 차례로 시도한다. 앞의 것이 되면 뒤는 부르지 않는다.
+export const LANDSCAPE_TRIES = ['landscape', 'landscape-primary'];
+
+// 가로로 눕힌다. 덱은 16:9로 짜여 있어 세로로 보면 무대가 화면 가운데
+// 좁은 띠로 쪼그라든다.
+//
+// **전체화면 안에서만 허용된다.** 그래서 부르는 쪽은 반드시 전체화면 진입을
+// 기다린 뒤에 부른다(enter). 아이폰 사파리에는 lock 자체가 없다 —
+// 되는지 물어보고 없으면 조용히 물러난다. 어느 쪽이든 발표는 계속된다.
+export async function lockLandscape(win = window) {
+  const orientation = win.screen?.orientation;
+  if (typeof orientation?.lock !== 'function') return false;
+  for (const value of LANDSCAPE_TRIES) {
+    try {
+      await orientation.lock(value);
+      return true;
+    } catch {
+      /* 이 값은 거부됐다 — 다음 후보로 넘어간다. */
+    }
   }
+  return false;
 }
 
 function unlockOrientation(win) {
@@ -100,7 +113,15 @@ export function initMobileFullscreen({ win = window, doc = document } = {}) {
     if (!isActive()) enter();
   }, { once: true, passive: true });
 
-  doc.addEventListener('fullscreenchange', sync);
+  // 전체화면에 들어갈 때마다 방향을 다시 잠근다. enter()에서 한 번
+  // 부르지만, 그 호출은 requestFullscreen이 풀리는 순간이라 브라우저에 따라
+  // "아직 전체화면이 아니다"로 거부된다. 실제로 전체화면이 된 것을 알리는
+  // 이 이벤트에서 한 번 더 부르면 그 틈이 메워진다. 이미 잠겨 있으면
+  // 두 번째 호출은 아무 일도 하지 않는다.
+  doc.addEventListener('fullscreenchange', () => {
+    sync();
+    if (isActive()) lockLandscape(win);
+  });
 
   return { enter, leave, toggle, sync };
 }

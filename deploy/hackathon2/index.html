@@ -35,7 +35,7 @@
 <meta property="og:url" content="https://hackathon2.wx.ai.kr/">
 <meta property="og:title" content="26 WX해커톤 챌린저 트랙 온라인 팀밋업">
 <meta property="og:description" content="End-to-End: Idea to Impact · 2026. 8. 12 (수) 14:00 · 팀즈 영상회의">
-<meta property="og:image" content="https://hackathon2.wx.ai.kr/assets/og-cover.jpg?v=20260812">
+<meta property="og:image" content="https://hackathon2.wx.ai.kr/assets/og-cover.jpg?v=20260812-2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="출발선에 모인 크루들 — 챌린저 트랙 팀밋업 표지">
@@ -148,6 +148,21 @@
           </div>
           <p class="cover__when">2026. 8. 12 (수) 14:00 · 팀즈 영상회의</p>
         </div>
+        <!-- 휴대폰으로 들어오는 문(2026-08-12 요청). 그림 한 장이고 링크가
+             아니다 — <a>로 두면 탭 순서에 끼어들어, 발표 중에 Enter를 눌렀을
+             때 다음 장으로 가는 대신 브라우저가 주소로 떠나 버린다.
+
+             QR은 tools/qr.py가 구워 둔 assets/qr-site.svg다. 주소를 바꾸거나
+             모양을 손보려면 그 파일을 고치고 다시 돌린다 — 인식이 깨지는
+             경계값(점 크기·눈 모서리)이 거기 주석에 실측으로 적혀 있다. -->
+        <div class="cover__qr">
+          <img class="cover__qr-code" src="assets/qr-site.svg" width="410" height="410"
+               alt="hackathon2.wx.ai.kr 큐알 코드">
+          <!-- 주소 줄(hackathon2.wx.ai.kr)은 2026-08-12에 뺐다(요청).
+               QR을 찍는 사람은 주소를 읽지 않고, 손으로 칠 사람에게는
+               한 줄이 더 필요한 것이 아니라 다른 안내가 필요하다. -->
+          <p class="cover__qr-text">모바일로 <b>바로 보기</b></p>
+        </div>
       </article>
 
       <!-- 선정 축하. 마라톤 배번표(빕) 모양의 카드에 숫자를 싣는다 —
@@ -206,7 +221,7 @@
                      줄바꿈에 맡기면 '(10팀)'이나 '선발'만 다음 줄로 떨어져
                      지원과 선발의 경계가 줄과 어긋난다 — 화살표를 둘째 줄
                      머리에 두면 두 줄이 곧 '지원 → 선발'이 된다. -->
-                <div class="rate__flow">지원 345명<br>→ 선발 50명 (10팀)</div>
+                <div class="rate__flow">지원 345명 → 선발 50명 (10팀)</div>
                 <div class="rate__num">6.9<small>:1</small></div>
               </div>
             </div>
@@ -216,28 +231,61 @@
             <div class="rates">
               <div class="rate">
                 <div class="rate__tag">해커톤</div>
-                <div class="rate__flow">지원 112명<br>→ 선발 60명 (15팀)</div>
+                <div class="rate__flow">지원 112명 → 선발 60명 (15팀)</div>
                 <div class="rate__num">1.9<small>:1</small></div>
               </div>
               <div class="rate">
                 <div class="rate__tag">제로톤</div>
-                <div class="rate__flow">지원 145팀<br>→ 선발 20팀 (60명)</div>
+                <!-- 제로톤도 팀 단위 신청이라 팀이 앞이다. 지원 쪽에도
+                     사람 수를 괄호로 붙인다(2026-08-12 요청).
+                     **435는 센 숫자가 아니라 곱한 숫자다** — 선발 쪽이
+                     20팀 60명이므로 한 팀이 셋이고, 145팀 × 3 = 435명이다.
+                     실제 지원 인원이 따로 집계돼 있다면 그 값으로 바꾼다.
+                     경쟁률은 그대로다: 145/20 = 7.25, 435/60 = 7.25. -->
+                <div class="rate__flow">지원 145팀 (435명) → 선발 20팀 (60명)</div>
                 <div class="rate__num">7.3<small>:1</small></div>
               </div>
             </div>
           </div>
           <div class="stat">
             <div class="stat__value">2026</div>
+            <!-- **2026은 다른 해와 구조가 다르다**(2026-08-12 지적).
+                 2025의 해커톤·제로톤은 서로 **다른 대회** 둘이라 나란히
+                 놓는 것이 맞지만, 2026의 챌린저·마스터는 **하나의 해커톤
+                 안의 두 트랙**이다. 같은 모양으로 늘어놓으면 올해도 대회가
+                 둘인 것처럼 읽힌다.
+                 그래서 이 해만 머리에 '해커톤'을 세우고 두 줄을 그 아래로
+                 들여 묶는다 — 들여쓰기와 왼쪽 세로줄이 '안에 든 것'을
+                 말한다. -->
             <div class="rates">
+              <p class="rates__group">해커톤 <small>2개 트랙</small></p>
+              <div class="rates__tracks">
               <div class="rate rate--lit">
                 <div class="rate__tag">챌린저</div>
-                <div class="rate__flow">지원 219명 (55팀)<br>→ 선발 8팀 (32명)</div>
+                <!-- **화살표 좌우의 주된 단위를 맞춘다**(2026-08-12 요청).
+                     '지원 219명 → 선발 8팀'은 명에서 팀으로 단위가 바뀌어
+                     경쟁률이 무엇의 비율인지 읽히지 않았다.
+
+                     **챌린저는 팀 단위로 신청하는 트랙이라 팀을 앞세운다**
+                     (같은 날 후속 요청). 위 2024·2025 해커톤 줄이 명을
+                     앞세우는 것은 그쪽이 개인 신청이기 때문이고, 2025
+                     제로톤은 이미 팀을 앞세우고 있다 — 줄마다 다른 것이
+                     아니라 **신청 단위가 무엇인지**를 따르는 것이 규칙이다.
+
+                     경쟁률은 어느 쪽으로 세도 같다: 55/8 = 6.88,
+                     219/32 = 6.84, 둘 다 6.9:1이다. -->
+                <div class="rate__flow">지원 55팀 (219명) → 선발 8팀 (32명)</div>
                 <div class="rate__num">6.9<small>:1</small></div>
               </div>
               <div class="rate">
                 <div class="rate__tag">마스터</div>
-                <div class="rate__flow">지원 116명<br>→ 선발 3팀/22명</div>
+                <!-- 챌린저 줄과 같은 어긋남이 여기에도 있었다(2026-08-12).
+                     '116명 → 3팀/22명'은 단위가 바뀌는 데다 표기도 이 줄만
+                     빗금이었다. 다섯 줄이 한 표에 나란히 서는 자리라
+                     같은 꼴로 맞춘다. 5.3:1은 116/22 = 5.27 그대로다. -->
+                <div class="rate__flow">지원 116명 → 선발 22명 (3팀)</div>
                 <div class="rate__num">5.3<small>:1</small></div>
+              </div>
               </div>
             </div>
           </div>
@@ -270,8 +318,12 @@
       <!-- 소제목('크루 소개')을 뺐다 — 챕터 이름이 제목과 같은 말을 하고
            있어서 한 줄이 그냥 위를 차지했다(2026-08-10 요청). -->
       <article class="slide" data-slide-id="crew-all">
-        <h2 class="slide__title slide__title--mid"><span class="hl" data-hl="4-0"><span class="hl__ink">Ready, Set, <span class="kw">Hack!</span></span></span></h2>
+        <!-- 한 줄 소개가 **제목 위**로 올라간다(2026-08-12 요청). 구호가 된
+             제목("Ready, Set, Hack!")이 이 장의 얼굴이고, 무엇을 하는
+             자리인지는 그 위에서 먼저 한 줄로 말한다. 판(흰 상자)도 걷었다 —
+             크기를 한 단 올리면서 판까지 두면 제목만큼 무거워진다. -->
         <p class="slide__sub">완주를 향한 8팀, 출발선에 섰습니다</p>
+        <h2 class="slide__title slide__title--mid"><span class="hl" data-hl="4-0"><span class="hl__ink">Ready, Set, <span class="kw">Hack!</span></span></span></h2>
         <!-- '팀장이 직접 소개합니다' 안내 문장은 뺐다 — 진행자가 말로
              전하는 내용이고, 씬 가운데 인파를 가리는 한 줄이었다.
              제목이 구호가 되면서(2026-08-12 요청) 무엇을 하는 장인지는
@@ -319,7 +371,12 @@
            읽어야 할 것이 그 줄이다. -->
       <article class="slide" data-slide-id="game">
         <h2 class="slide__title"><span class="hl" data-hl="4-0"><span class="hl__ink">본격적인 레이스를 <span class="kw">시작</span>해볼까요</span></span></h2>
-        <p class="slide__lead">해커톤 팀빌딩 게임 <strong>PLAY</strong></p>
+        <!-- 2026-08-12 요청 — "다른 페이지에 있는 이 위치 글자처럼 사이즈를
+             줄여". .slide__lead(step-2)에서 .slide__sub(step-0)로 바꿨다.
+             클래스만 갈아 끼우면 크기·굵기·흰 판·왼쪽 정렬이 다른 장의
+             둘째 줄과 한 번에 같아진다 — 이 장에만 크기를 따로 적어 두면
+             나중에 사다리가 바뀔 때 여기만 어긋난다. -->
+        <p class="slide__sub">WX해커톤 말랑말랑 득탬퀴즈 <strong>PLAY</strong></p>
       </article>
     </section>
 
@@ -372,7 +429,7 @@
             <p class="tl-step__what">본선대회</p>
             <ul class="tl-step__note">
               <li>무박 2일 끝장 개발 대회</li>
-              <li>솔루션 개발,<br>결과 발표</li>
+              <li>솔루션 개발, 결과 발표</li>
               <li>우수팀 시상</li>
             </ul>
           </div>
@@ -434,7 +491,7 @@
             <ul class="trio__list">
               <li>과제 계획서 &amp; 액션플랜 수립</li>
               <li>기술 자문 및 코칭</li>
-              <li>과제 수행 밀착 관리(디스코드 활용 수시 피드백)</li>
+              <li>과제 수행 밀착 관리<br>(디스코드 활용 수시 피드백)</li>
             </ul>
           </div>
           <div class="trio__item">
@@ -601,13 +658,13 @@
           </div>
           <div class="faq__item">
             <p class="faq__q">유료 라이선스 지원은?</p>
-            <p class="faq__a">팀별 메인 개발자 1명에게 <strong>Claude Code Premium Seat</strong>, 나머지 팀원 3명에게는 Claude Code Standard Seat 또는 ChatGPT Business 계정을 제공합니다.</p>
+            <p class="faq__a">팀별 메인 개발자 1명에게 <strong>Claude Code Premium Seat</strong>,<br>팀원 3명에게는 Claude Code Standard Seat 또는 ChatGPT Business 계정을 제공합니다.</p>
           </div>
           <!-- 근태·숙박 문항(2026-08-11 추가). 참가자가 소속 회사에 먼저
                물어야 하는 것과, 운영이 제공하는 것을 한 칸에서 가른다. -->
           <div class="faq__item">
             <p class="faq__q">근태 관련 문의는?</p>
-            <p class="faq__a">각 사 교육 및 근태 담당자에게 문의해 주세요. 숙박은 <strong>본선(9. 10) 1박 필수 제공</strong>이며, <small>입과 전날은 타 지역 이동자에 한해 수요조사 후 제공합니다.</small></p>
+            <p class="faq__a">각 사 교육 및 근태 담당자에게 문의해 주세요. 숙박은 <strong>본선(9. 10) 1박 필수 제공</strong>합니다.<br><small>※ 입과 전날은 타 지역 이동자에 한해 수요조사 후 제공합니다.</small></p>
           </div>
           <div class="faq__item">
             <p class="faq__q">궁금한 점은 어디에 문의하나요?</p>
@@ -636,7 +693,10 @@
         <span class="hl closing-mark" data-hl="1-0">
           <span class="closing-art mask-art" role="img" aria-label="본선에서 다시 만나겠습니다"></span>
         </span>
-        <p class="slide__lead">2026. 9. 10 ~ 11 · 무박 2일 끝장 개발 대회</p>
+        <!-- 아래 날짜 줄('2026. 9. 10 ~ 11 · 무박 2일 끝장 개발 대회')은
+             2026-08-12에 뺐다(요청). 바로 위 두 줄이 이미 '우리는 9월 10일,
+             본선에서 다시 만나겠습니다'라고 같은 날짜를 말하고 있었다.
+             줄이 빠지면서 결승선 씬의 크루들이 아래까지 다 보인다. -->
       </article>
     </section>
 
