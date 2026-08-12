@@ -41,6 +41,14 @@ hackathon2.wx.ai.kr {
 	import secure_headers
 	encode gzip
 	root * /srv/hackathon2
+	# 이 덱은 **발표 직전까지 고쳐 배포한다.** Cache-Control이 없으면 브라우저가
+	# 나름의 어림짐작(휴리스틱 캐싱)으로 파일을 몇 분에서 몇 시간씩 물고 있어,
+	# 배포한 것이 참가자 화면에 반영되지 않는다. 실제로 2026-08-12에
+	# src/main.js가 옛 파일로 남아 "접속하면 표지에서 시작" 고침이 먹지 않았다.
+	#
+	# no-cache는 "받아 두되 쓸 때마다 물어보라"는 뜻이다(저장 금지가 아니다).
+	# ETag가 함께 나가므로 바뀐 것이 없으면 304 한 줄로 끝나 느려지지 않는다.
+	header Cache-Control "no-cache"
 	file_server
 }
 
