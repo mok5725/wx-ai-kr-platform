@@ -320,9 +320,11 @@ html.is-booting #deck {
 .trio__title { font-size: var(--step-2); font-weight: 700; margin: 0.3em 0 0.2em; }
 .trio__body  { font-size: var(--step-0); color: var(--ink-soft); line-height: var(--leading-body); margin: 0; }
 
-/* 오전(#3/2)은 세션이 넷이라 네 칸으로 나눈다. 오후와 같은 형태를
-   유지하면서 칸 수만 바뀐다. */
-.trio--four { grid-template-columns: repeat(4, 1fr); }
+/* 여기 있던 `.trio--four`(네 칸 격자)는 2026-08-12에 지웠다. 마스터 덱에서
+   따라온 규칙인데 이 덱에서 그 이름을 쓰던 곳은 완주 선물(#7/2) 한 곳뿐이고,
+   거기는 격자가 아니라 옆으로 미끄러지는 flex 줄이라 이 값을 덮어쓰고 있었다.
+   칸이 다섯이 되면서 이름도 `.trio--strip`으로 바꿨다 — 'four'라는 이름이
+   다섯 칸짜리 줄에 붙어 있으면 다음 사람이 칸 수를 그 이름에서 읽는다. */
 
 .trio__body ul { margin: 0.4em 0 0; padding-left: 1em; }
 .trio__body li { margin-bottom: 0.25em; }

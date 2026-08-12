@@ -559,8 +559,8 @@
 /* 네 칸이 되면서 한 칸의 폭이 3/4로 줄었다. 제목을 한 줄에 담으려면
    글자도 그만큼 내려야 한다 — 가장 긴 '챌린저 급수대 OPEN!'(이모지 포함)이
    기준이다. */
-.trio--four .trio__title { font-size: var(--step-0); }
-.trio--four .trio__list li { font-size: var(--step-00); }
+.trio--strip .trio__title { font-size: var(--step-0); }
+.trio--strip .trio__list li { font-size: var(--step-00); }
 
 /* 칸 제목을 **제목 글꼴 900으로 바꾸고 한 줄로 편다**(2026-08-11 요청).
    크기는 step-2에서 step-1로 한 단 내린다 — 한 줄 제약이 먼저다. 가장 긴
@@ -2185,11 +2185,14 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
    좌우 안여백이 엿보기 자리를 만든다. 0걸음에서 1번 칸의 왼쪽 변이 흐려짐이
    끝나는 자리에 정확히 놓이도록 **안여백 = 엿보기 + 간격**이다. 양쪽을 같게
    두어야 마지막 걸음에서 4번 칸 오른쪽에도 같은 여백이 남는다. */
-.slide[data-slide-id="gifts"] .trio--four {
+.slide[data-slide-id="gifts"] .trio--strip {
   display: flex;
   gap: var(--gift-gap);
   padding-inline: calc(var(--gift-peek) + var(--gift-gap));
-  width: calc(var(--gift-box) * 4 + var(--gift-gap) * 3
+  /* 2026-08-12: 칸이 넷에서 **다섯**이 됐다(수상 특전이 맨 앞에 붙었다).
+     칸 수를 여기서만 세는 것이 아니라 아래 gift-pulse의 걸음별 선택자도
+     함께 센다 — 칸을 더하거나 뺄 때 두 곳을 같이 고친다. */
+  width: calc(var(--gift-box) * 5 + var(--gift-gap) * 4
               + (var(--gift-peek) + var(--gift-gap)) * 2);
   height: 100%;
   transition: transform 620ms cubic-bezier(.22, .61, .36, 1);
@@ -2259,6 +2262,182 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
    달라 보인다. */
 .slide[data-slide-id="gifts"] .trio__list li {
   font-size: calc(var(--step-0) * 0.95);
+}
+
+/* ── 수상 특전 칸 (2026-08-12 요청) ────────────────────────────────
+   상·최우수상·우수상 세 줄과 노트북 사진 둘. */
+
+/* 대괄호 표지([상장]·[최우수상]·[우수상])를 코랄로 세운다. 세 줄이 모두
+   비슷한 길이라, 표지가 본문과 같은 색이면 어디서 한 줄이 시작하는지
+   눈으로 잡히지 않는다. */
+.slide[data-slide-id="gifts"] .trio__list li b {
+  font-weight: 800;
+  color: var(--kw);
+}
+
+/* **이 칸만 머리와 글을 조인다.** 칸 높이는 49.6sv로 못 박혀 있고(#7/3의
+   판과 짝이라 못 늘린다), 이 칸은 다른 칸에 없는 사진 둘을 더 담아야 한다.
+   조이지 않으면 사진이 칸 아래로 넘쳐 창(overflow: hidden)에 잘린다 —
+   실제로 처음에 120px이 잘려 사진이 반쯤만 보였다.
+
+   **머리(트로피 + '수상 특전')는 건드리지 않는다**(2026-08-12 요청 —
+   "다른 박스에 있는 제목과 맞춰야지"). 한때 이모지를 2.1su로 줄이고
+   min-height를 걷어 40px을 벌었는데, 그러면 다섯 칸이 나란히 설 때 이 칸의
+   제목만 작고 선이 위로 올라가 한 줄이 어긋나 보인다. 칸의 얼굴은 맞추고,
+   줄어들 몫은 아래 사진이 진다.
+
+   깎는 것은 글 쪽이다: 줄간격과 글자 크기(0.95 → 0.88). */
+
+/* **flex-shrink를 잠근다.** 이 칸은 세로 flex고, 내용이 칸보다 크면
+   브라우저가 아이템을 제 높이보다 작게 줄인다. 글 블록은 줄어들 여지가
+   없어 그대로 겹치는데, 실제로 여기서 트로피와 '수상 특전'이 첫 줄 위에
+   포개졌다(handoff §6에 적힌 그 함정이다).
+   줄어들 몫은 사진이 진다 — 아래에서 사진 높이를 무대 높이에 걸어 둔다. */
+.slide[data-slide-id="gifts"] .trio__item--award .trio__head,
+.slide[data-slide-id="gifts"] .trio__item--award .trio__list {
+  flex-shrink: 0;
+}
+
+.slide[data-slide-id="gifts"] .trio__item--award .trio__list {
+  gap: 0.32em;
+}
+
+/* 상장 줄은 **가운데로 모은다**(2026-08-12 요청). 다른 칸의 목록은 왼쪽
+   정렬이지만 이 칸에는 항목이 하나뿐이라, 왼쪽에 붙여 두면 아래 사진 둘의
+   가운데 축과 어긋나 칸이 기울어 보인다. 항목 하나짜리 목록에는 글머리
+   기호도 필요 없다 — 무엇의 목록인지 셀 것이 없다. */
+.slide[data-slide-id="gifts"] .trio__item--award .trio__list li {
+  /* 한 줄로 서야 한다(요청). 0.88(18.5px)에서는 366px 칸에 21px 모자라
+     '수여'가 접혔다 — 이 줄만 0.8로 내린다. */
+  font-size: calc(var(--step-0) * 0.8);
+  line-height: 1.2;
+  padding-left: 0;
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* 머리와 상장 줄 사이를 조인다. 머리 자체(이모지·제목·구분선)는 다른 칸과
+   같아야 하지만, 그 **아래 여백**은 이 칸만의 것이라 사진에 내어 준다. */
+.slide[data-slide-id="gifts"] .trio__item--award .trio__head {
+  margin-bottom: calc(var(--gap) * 0.5);
+}
+
+/* **목록 아래의 26px은 브라우저 기본값이었다.** <ul>의 margin-block 1em이
+   그대로 남아 있었는데, 다른 칸은 목록이 마지막 자식이라 눈에 띄지 않았다.
+   이 칸에만 목록 뒤에 사진이 와서 그 26px이 통째로 드러났고, 사진을 키울
+   자리를 그것이 먹고 있었다. 여기서만 걷는다 — 다른 칸에서는 지금도 보이지
+   않는 값이라 건드릴 이유가 없다. */
+.slide[data-slide-id="gifts"] .trio__item--award .trio__list {
+  margin-bottom: 0;
+}
+
+/* **이 칸만 아래 여백을 줄인다**(2026-08-12 요청 — "아래 여백이 너무 많다").
+   다른 칸은 목록이 끝나고 남는 자리가 넉넉해 1.4gap이 여백으로 읽히지만,
+   이 칸은 사진이 바닥까지 내려와 있어 같은 값이 '덜 채운 자리'로 보인다.
+   좌우는 그대로 둔다 — 글의 좌우 자리는 다섯 칸이 같아야 한다. */
+.slide[data-slide-id="gifts"] .trio__item--award {
+  padding-bottom: calc(var(--gap) * 0.6);
+}
+
+.slide[data-slide-id="gifts"] .trio__item--award .trio__list li::before {
+  content: none;
+}
+
+/* **사진 덩어리는 칸 바닥에 붙는다**(margin-top: auto). 남는 높이를 위쪽이
+   가져가므로 상장 줄과 상 이름 사이가 벌어지고, 사진의 아랫변은 언제나
+   같은 자리에 선다.
+
+   한 번 걷었다가 되돌렸다. 걷었을 때는(2026-08-12 "위로 올리고 이미지
+   키워줘") 사진이 커진 대신 칸 아래에 빈 자리가 남았고, 곧 "아래 여백이
+   너무 많다"는 말이 돌아왔다. 사진 크기는 이미 세로 상한에 닿아 있어서,
+   남는 자리를 없애는 길은 **덩어리를 아래로 붙이고 칸의 아래 여백 자체를
+   줄이는 것**뿐이다(바로 아래 규칙).
+
+   그래서 지금 이 칸의 세로는 이렇게 나뉜다: 머리 87 · 상장 줄 40 ·
+   사진 덩어리 178 · 위쪽 auto 16 · 아래 여백 5. */
+.award-shots {
+  display: flex;
+  gap: calc(var(--gap) * 0.8);
+  margin-top: auto;
+  padding-top: calc(var(--gap) * 0.35);
+  /* 사진이 칸 폭을 다 쓰면 글보다 무거워 보인다. 양옆을 조금 비워
+     글의 왼쪽 정렬과 사진의 가운데 정렬이 서로 다투지 않게 한다. */
+  padding-inline: calc(var(--gap) * 0.6);
+}
+
+.award-shot {
+  /* flex: 1 1 0 + min-width: 0 — 둘이 칸 폭을 정확히 반씩 나눈다.
+     min-width를 풀지 않으면 그림의 본디 폭(560px)이 바닥이 되어
+     둘이 칸을 넘어간다. */
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+}
+
+/* **크기를 폭이 아니라 높이로 잡는다.** 폭을 100%로 두면 높이가 비율에서
+   나오는데(560×389), 그 높이가 칸에 남은 자리보다 커도 줄어들지 않아 사진이
+   칸 밖으로 넘친다. 높이를 무대 높이(--sv)에 걸어 두면 어떤 화면에서도
+   같은 비율로 앉고, 폭은 비율이 알아서 따라온다.
+/* **사진은 제 칸을 가득 채운다**(2026-08-12 요청 — "최대한 키우고").
+   높이를 --sv로 잡아 두던 것을 폭 100%로 되돌렸다. 이제 크기를 정하는 것은
+   세로가 아니라 **가로**다 — 칸 폭의 절반(약 175px)이 상한이고 높이는
+   비율(560×389)이 따라와 121px이 된다.
+
+   **그래도 상한은 세로다.** 폭 100%(173px)로 두면 높이가 120px이 되는데,
+   머리 87px과 글 둘을 빼고 남는 자리가 모자라 칸 밖으로 나갔다. 그래서
+   크기는 여전히 높이로 잡되, 세로에서 짜낼 수 있는 만큼 키웠다 —
+   8.5 → 13 → **15sv**(108px, 폭 155px)로 두 번 올렸다. 마지막 것은 두
+   군데서 번 자리다 — 사진 덩어리의 바닥 붙임(margin-top: auto)을 걷어
+   13px, 목록 아래 브라우저 기본 여백을 걷어 26px.
+
+   **더 키우려면 세로를 어디서 벌지부터 정한다.** 후보는 셋뿐이다 —
+   기기 이름 줄(맥북 에어/네오)을 상 이름 줄에 합치기, 상장 줄 지우기,
+   칸 높이 49.6sv 늘리기(그러면 #7/3의 판도 함께 늘려야 한다).
+
+   테두리는 요청이면서 필요이기도 하다 — 두 그림 모두 옅은 배경(하늘색·
+   회색)이 구워져 있어 흰 칸 위에서 어디까지가 그림인지 경계가 흐리다. */
+.award-shot img {
+  display: block;
+  height: calc(15 * var(--sv));
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 560 / 389;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+/* 사진 위의 상 이름과 설명. 상 이름은 제 줄을 갖는다 — 설명과 한 줄에
+   흐르면 좁은 칸에서 '[최우수상] 프리미엄'까지만 첫 줄에 오고 나머지가
+   접혀, 상 이름이 설명의 일부처럼 읽힌다. */
+.award-shot__rank {
+  margin: 0;
+  font-size: calc(var(--step-00) * 0.86);
+  line-height: 1.25;
+  color: var(--ink);
+  text-align: center;
+  /* 낱말 안에서 끊지 않는다 — '프리미엄 코딩용 노트북'이 '프리미엄 코딩/용
+     노트북'으로 갈리면 읽는 속도가 눈에 띄게 떨어진다. */
+  word-break: keep-all;
+}
+
+.award-shot__rank b {
+  display: block;
+  font-weight: 800;
+  color: var(--kw);
+}
+
+/* 사진 아래 기기 이름. 상 이름(코랄)과 무게를 나누려고 한 단 옅게 둔다. */
+.award-shot__name {
+  margin: 0;
+  font-size: calc(var(--step-00) * 0.86);
+  font-weight: 800;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 /* ── 마무리 ─────────────────────────────────────────────────────────
@@ -2637,17 +2816,25 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
    양옆에 흐릿하게 비치는 칸까지 부풀면 흐려진 자리에서 무언가 꿈틀대는
    것으로 보여, 정작 읽어야 할 한복판이 아니라 가장자리로 눈이 간다.
 
-   어느 둘이 한복판인지는 걸음이 정한다(reveal.js가 data-reveal-at을 쓴다):
+   어느 둘이 한복판인지는 걸음이 정한다(reveal.js가 data-reveal-at을 쓴다).
+   2026-08-12에 칸이 다섯이 되면서 걸음도 하나 늘었다:
 
-     0걸음 → 1·2번    1걸음 → 2·3번    2걸음 → 3·4번
+     0걸음 → 1·2번   1걸음 → 2·3번   2걸음 → 3·4번   3걸음 → 4·5번
+
+   **걸음마다 위아래 경계를 둘 다 적는다.** 마지막 걸음만 `n+4`처럼 한쪽만
+   적어도 되지만, 칸을 하나 더 붙이는 순간 그 줄이 셋을 잡아 세 칸이 함께
+   뛴다 — 실제로 넷이던 시절의 `n+3`이 다섯 번째 칸이 생기자마자 그렇게 됐다.
 
    지연 사다리는 **칸 번호에 그대로 둔다.** 걸음마다 다시 매기면, 오른쪽
    한복판이던 칸이 왼쪽 한복판이 될 때 지연이 바뀌면서 애니메이션이 제자리를
    잃고 튄다. 번호에 묶어 두면 켜지고 꺼질 뿐 위상은 이어진다 — 어느
-   걸음에서도 왼쪽 칸이 먼저, 1.2초 뒤 오른쪽 칸이 뛴다. */
+   걸음에서도 왼쪽 칸이 먼저, 1.2초 뒤 오른쪽 칸이 뛴다.
+   주기가 4.8초라 사다리는 1.2초씩 네 칸에서 한 바퀴 돈다. 그래서 5번은
+   1번과 같은 0이다 — 둘은 같은 걸음에 함께 뛰는 일이 없어 겹쳐도 된다. */
 .slide[data-slide-id="gifts"].is-active [data-reveal-at="0"] .trio__item:nth-child(-n+2),
 .slide[data-slide-id="gifts"].is-active [data-reveal-at="1"] .trio__item:nth-child(n+2):nth-child(-n+3),
-.slide[data-slide-id="gifts"].is-active [data-reveal-at="2"] .trio__item:nth-child(n+3) {
+.slide[data-slide-id="gifts"].is-active [data-reveal-at="2"] .trio__item:nth-child(n+3):nth-child(-n+4),
+.slide[data-slide-id="gifts"].is-active [data-reveal-at="3"] .trio__item:nth-child(n+4):nth-child(-n+5) {
   animation: gift-pulse 4.8s ease-in-out infinite;
   will-change: transform;
 }
@@ -2662,6 +2849,12 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
 
 .slide[data-slide-id="gifts"] .trio--info .trio__item:nth-child(4) {
   animation-delay: -1.2s;
+}
+
+/* 5번은 한 바퀴 돌아 1번과 같은 0이다. 기본값과 같아 없어도 되지만,
+   위 사다리를 읽는 사람이 "다섯 번째는 왜 없지?"에서 멈추지 않도록 적어 둔다. */
+.slide[data-slide-id="gifts"] .trio--info .trio__item:nth-child(5) {
+  animation-delay: 0s;
 }
 
 /* 부풀 때 옆 칸을 덮지 않도록 이 장만 칸 사이를 조금 더 벌린다. */
