@@ -162,6 +162,11 @@
                QR을 찍는 사람은 주소를 읽지 않고, 손으로 칠 사람에게는
                한 줄이 더 필요한 것이 아니라 다른 안내가 필요하다. -->
           <p class="cover__qr-text">모바일로 <b>바로 보기</b></p>
+          <!-- 진행자용 한 줄. 무대 모서리에 따로 떠 있던 것을 여기로 들였다
+               (2026-08-12 요청 — "F가 전체화면이라는 내용만 QR 아래에").
+               넘기는 법(Enter·휠·→)은 뺐다 — 눌러 보면 알 수 있는 것이고,
+               모르고 놓치면 곤란한 것은 전체화면 하나뿐이다. -->
+          <p class="fs-hint" id="fs-hint"><b>F</b> 전체화면</p>
         </div>
       </article>
 
@@ -742,7 +747,10 @@
   </div>
 
   <div class="progress" id="progress" aria-hidden="true"></div>
-  <p class="fs-hint" id="fs-hint">Enter · 휠 · → 다음 · F 전체화면 · P 진행자 노트</p>
+  <!-- 조작 안내(.fs-hint)는 여기 무대 모서리에 떠 있었다. 2026-08-12에
+       **표지의 QR 아래로 옮겼다** — 마크업도 그쪽(.cover__qr 안)으로 갔다.
+       자리를 좌표로 맞추지 않고 그 덩어리의 마지막 줄로 넣으면, QR 크기가
+       바뀌어도 안내가 알아서 따라 내려온다. -->
   <!-- 휴대폰에서만 뜬다. src/mobile.js가 손가락 장치인지 확인한 뒤 hidden을 푼다. -->
   <button class="fs-btn" id="fs-btn" type="button" hidden>⤢&nbsp;&nbsp;전체화면</button>
 </div>

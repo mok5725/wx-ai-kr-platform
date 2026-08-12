@@ -1533,30 +1533,53 @@ ul.tl-step__note li::before {
 
 /* 전체화면 안내. 전체화면에 들어가면 사라진다. */
 /* 진행바·조작 안내도 무대 모서리 기준이다 — .brandbar 주석 참고. */
+/* **표지의 QR 아래에 붙는다**(2026-08-12 요청).
+   무대 오른쪽 아래 → 맨 위 가운데 → 여기, 두 번 옮겼다. 오른쪽 아래는
+   체크인 부스와 인파가 가장 촘촘한 자리라 글자가 무늬에 묻혔고, 맨 위
+   가운데는 표지 한복판에 진행자용 줄이 서는 꼴이었다.
+
+   **자리를 좌표로 잡지 않는다.** 마크업에서 .cover__qr의 마지막 줄로
+   들어가 있어, QR 크기나 자리가 바뀌어도 알아서 따라간다. 그래서 여기에는
+   position도 top/right도 없다 — 흐름에 맡긴다.
+
+   덱 안으로 들어왔으므로 표지에서만 보인다(다른 장에는 이 요소가 아예
+   없다). 예전의 `body:not([data-slide="title"])` 규칙은 그래서 함께
+   지웠다. */
 .fs-hint {
-  position: absolute;
-  right: calc(var(--stage-x) + var(--pad));
-  bottom: calc(var(--stage-y) + var(--pad) * 0.55);
-  z-index: 2;
-  margin: 0;
-  color: var(--ink-faint);
+  margin: calc(var(--gap) * 0.5) 0 0;
+  color: var(--ink-soft);
+  text-align: center;
+  text-shadow:
+    0 0 0.3em rgba(255, 255, 255, .98),
+    0 0 0.7em rgba(255, 255, 255, .85);
   /* 조작 안내는 진행자만 보면 되는 보조 정보라 본문보다 작게 두되,
      절반까지 줄였더니 노트북 화면에서 읽히지 않았다. 0.8배가 적당하다. */
   font-size: calc(var(--step-00) * 0.8);
   letter-spacing: 0.05em;
+  white-space: nowrap;
   pointer-events: none;
   transition: opacity 400ms ease;
 }
 
+/* 키 이름만 세운다 — 'F'가 눈에 먼저 들어와야 안내가 한 번에 읽힌다. */
+.fs-hint b {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* **링크 미리보기 그림을 찍을 때는 감춘다.** 그림은 표지를 위에서부터
+   잘라 만드는데(tools/og.md), 이 줄이 아래에 있던 동안은 잘려 나가서
+   신경 쓸 일이 없었다. 위로 올라온 지금은 그림 한복판에 들어온다 —
+   카카오톡 카드에 단축키 안내가 뜰 이유가 없다.
+   main.js가 주소의 og=1을 보고 이 클래스를 붙인다. */
+body.is-og .fs-hint { display: none; }
+
 body.is-fullscreen .fs-hint { opacity: 0; }
 
-/* **조작 안내는 표지에서만 보인다**(2026-08-11 요청).
-   진행자가 조작법을 알아야 하는 순간은 시작할 때 한 번뿐이다. 스물두 장
-   내내 오른쪽 아래에 같은 줄이 떠 있으면, 발표 화면에 남는 군더더기이자
-   그 자리의 씬을 계속 덮는 겹이 된다.
-   main.js가 body[data-slide]에 지금 장의 id를 넣어 두므로 그 값으로 가른다 —
-   슬라이드 인덱스가 아니라 id라서, 장이 앞뒤로 추가돼도 따라온다. */
-body:not([data-slide="title"]) .fs-hint { opacity: 0; }
+/* 여기 있던 `body:not([data-slide="title"]) .fs-hint { opacity: 0 }`는
+   2026-08-12에 지웠다. "조작 안내는 표지에서만 보인다"(2026-08-11 요청)는
+   규칙은 그대로지만, 안내가 표지의 QR 덩어리 안으로 들어가면서 **다른
+   장에는 그 요소가 아예 없어** 감출 것이 없어졌다. */
 
 /* prefers-reduced-motion 블록을 뺐다 (2026-08-03 결정).
    사유는 styles/background.css 파일 끝 주석을 본다. 배경만 살리고

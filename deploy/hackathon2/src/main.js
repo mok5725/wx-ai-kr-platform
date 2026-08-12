@@ -119,6 +119,14 @@ if (WAITING.length) {
 // 사유와 예외(?at=7/2)는 deck.js의 startIndex 주석에 있다.
 let index = startIndex(window.location.search);
 
+// **?og=1 — 링크 미리보기 그림을 찍는 모드.** 화면에 얹힌 조작 안내를
+// 감춘다(styles/slides.css의 body.is-og). 그림은 표지를 헤드리스 크롬으로
+// 찍어 만드는데, 그 한 줄이 카카오톡 카드에 들어갈 이유가 없다.
+// 만드는 절차는 tools/og.md에 있다.
+if (/(?:^|[?&])og=1(?:&|$)/.test(window.location.search)) {
+  document.body.classList.add('is-og');
+}
+
 // 연타 처리: 전환을 큐에 쌓지 않는다. 인덱스는 즉시 갱신하고
 // transform은 항상 최신 인덱스의 좌표를 쓴다. Enter를 세 번 빠르게
 // 누르면 세 번 미끄러지지 않고 최종 위치로 한 번에 간다.
