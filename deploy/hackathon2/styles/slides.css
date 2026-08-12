@@ -1134,19 +1134,24 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
 .track--master .track__name,
 .track--master .track__lead { text-align: left; }
 
-/* 트랙 이름 **앞**의 영문 표기(2026-08-12 요청 — 한글·영문 자리 바꾸기).
-   한글보다 작고 옅게 두어 이름 한 줄이 두 덩어리로 갈라져 보이지 않게 한다.
-   앞으로 오면서 여백도 오른쪽으로 옮겼다 — 왼쪽에 남겨 두면 영문과 한글이
-   붙어 한 낱말처럼 보인다. */
+/* 트랙 이름 옆의 영문 표기. 한글보다 작고 옅게 두어 이름 한 줄이 두
+   덩어리로 갈라져 보이지 않게 한다.
+
+   **자리는 두 카드가 다르다.** 챌린저만 영문을 앞으로 옮겨 달라는
+   요청이었고(2026-08-12), 마스터는 원래대로 한글이 앞이다. 그래서 여백을
+   한쪽으로 못 박지 않고 카드마다 반대쪽에 준다 — 한 줄에서 영문과 한글이
+   붙어 한 낱말처럼 보이는 것만 막으면 된다. */
 .track__name small {
   font-family: var(--font-body);
   font-size: 0.45em;
   font-weight: 700;
   color: var(--ink-faint);
   letter-spacing: 0.04em;
-  margin-right: 0.45em;
   white-space: nowrap;
 }
+
+.track--challenger .track__name small { margin-right: 0.45em; }
+.track--master     .track__name small { margin-left: 0.45em; }
 
 /* ── 숫자 타일 ────────────────────────────────────────────────────────
    "8팀 (4명/팀)"처럼 괄호에 묻히던 수치를 밖으로 꺼낸다. 규모는 문장으로
