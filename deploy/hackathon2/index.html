@@ -311,7 +311,7 @@
       <article class="slide" data-slide-id="two-track">
         <h2 class="slide__title slide__title--mid"><span class="hl" data-hl="4-0"><span class="hl__ink">창의성과 전략성을 결합한 <span class="kw">Two-Track</span></span></span></h2>
         <div class="tracks">
-          <div class="tracks__rail">경영진 · 그룹 전략</div>
+          <div class="tracks__rail"><span>경영진 · 그룹 전략</span></div>
           <!-- **두 트랙이 가운데 화살표를 사이에 두고 마주 본다**(2026-08-12
                요청). 옆으로 넘기는 장치를 붙였다가 걷었다 — 넘기면 두 트랙을
                같은 눈에 담을 수 없고, 이 장의 일은 둘을 **견주는** 것이다.
@@ -325,9 +325,9 @@
                무대 폭의 절반에 들어가게 했다(styles/slides.css). -->
           <div class="tracks__body">
               <div class="track track--challenger">
-                <div class="track__kicker">Bottom-up · 창의성</div>
-                <div class="track__name">챌린저 트랙 <small>Challenger Track</small></div>
-                <p class="track__lead">자발적 팀 주도의 현업 과제 발굴 · AI 에이전트(바이브코딩) 기반 워크플로우 재설계</p>
+                <div class="track__kicker">창의성 · Bottom-up</div>
+                <div class="track__name"><small>Challenger Track</small> 챌린저 트랙</div>
+                <p class="track__lead">자발적 팀 주도의 현업 과제 발굴<br>AI 에이전트(바이브코딩) 기반 워크플로우 재설계</p>
                 <div class="track__stats">
                   <div class="tstat"><div class="tstat__value">8</div><div class="tstat__label">팀</div></div>
                   <div class="tstat"><div class="tstat__value">32</div><div class="tstat__label">명 · 팀당 4명</div></div>
@@ -336,36 +336,35 @@
                     <div class="tstat__label">현업에서 찾은 과제 · 현업이 쓰는 도구</div>
                   </div>
                 </div>
-                <div class="track__steps">
-                  <div class="tstep">
-                    <div class="tstep__when">7월 20일~31일</div>
-                    <div class="tstep__what">지원과 선발</div>
-                    <div class="tstep__note">55팀 219명 → 8팀 32명</div>
-                  </div>
-                  <div class="tstep">
-                    <div class="tstep__when">8월 12일~9월 본선 전</div>
-                    <div class="tstep__what">팀 빌딩 · 사전학습</div>
-                    <div class="tstep__note">액션플랜 수립 · 코치 밀착 지원</div>
-                  </div>
-                  <div class="tstep tstep--last">
-                    <div class="tstep__when">9월 10일~11일 본선</div>
-                    <div class="tstep__what">무박 2일 끝장 개발</div>
-                    <div class="tstep__note">솔루션 개발 · 결과 발표</div>
-                  </div>
+                <!-- 방식. **두 트랙 모두 세 걸음**이라 같은 흐름 막대로 적는다
+                     (2026-08-12 요청 — 본선 전/본선으로 가르지 말 것).
+                     걸음의 이름만 다르고 모양은 같아서, 두 트랙이 무엇을
+                     다르게 하는지가 나란히 견줘진다. -->
+                <div class="tway">
+                  <ol class="tway__flow">
+                    <li>아이디어 예선</li>
+                    <li>4주 역량 강화</li>
+                    <li>24hr 끝장개발</li>
+                  </ol>
+                  <p class="tway__note">멘토링 · 학습 · 환경 세팅을 거쳐 본선에서 솔루션 개발</p>
                 </div>
               </div>
               <!-- 가운데 축. 화살표 둘이 서로 반대 방향으로 선다 —
                    왼쪽(챌린저)은 위로, 오른쪽(마스터)은 아래로. -->
               <div class="track-axis" aria-hidden="true">
-                <span class="track-axis__arrow track-axis__arrow--up"></span>
-                <span class="track-axis__arrow track-axis__arrow--down"></span>
+                <svg class="track-axis__arrow track-axis__arrow--up" viewBox="0 0 60 200" preserveAspectRatio="xMidYMid meet">
+                  <path d="M30 10 L52 46 H39 V190 H21 V46 H8 Z" stroke-width="12" stroke-linejoin="round"/>
+                </svg>
+                <svg class="track-axis__arrow track-axis__arrow--down" viewBox="0 0 60 200" preserveAspectRatio="xMidYMid meet">
+                  <path d="M30 190 L52 154 H39 V10 H21 V154 H8 Z" stroke-width="12" stroke-linejoin="round"/>
+                </svg>
               </div>
               <!-- 마스터 트랙은 **마스터 덱의 내용 그대로**다(2026-08-12 요청 —
                    "줄이지 말고 그대로"). 숫자 셋과 단계 셋, 문구까지 같다. -->
               <div class="track track--master">
-                <div class="track__kicker">Top-down · 전략성</div>
-                <div class="track__name">마스터 트랙 <small>Master Track</small></div>
-                <p class="track__lead">그룹 공통 비즈니스 과제에 전문가 팀을 구성해 실질적 비즈니스 임팩트 창출</p>
+                <div class="track__kicker">전략성 · Top-down</div>
+                <div class="track__name"><small>Master Track</small> 마스터 트랙</div>
+                <p class="track__lead">그룹 공통 비즈니스 과제에 전문가 팀을 구성해<br>실질적 비즈니스 임팩트 창출</p>
                 <div class="track__stats">
                   <div class="tstat"><div class="tstat__value">3</div><div class="tstat__label">과제 팀</div></div>
                   <div class="tstat"><div class="tstat__value">7~8</div><div class="tstat__label">명 / 팀</div></div>
@@ -374,25 +373,17 @@
                     <div class="tstat__label">즉각 PoC · 정규 프로젝트 전환</div>
                   </div>
                 </div>
-                <div class="track__steps">
-                  <div class="tstep">
-                    <div class="tstep__when">5월~7월</div>
-                    <div class="tstep__what">마스터 과제 발굴</div>
-                    <div class="tstep__note">각 사업회사 임원진 인터뷰</div>
-                  </div>
-                  <div class="tstep">
-                    <div class="tstep__when">8월 5일~9월 본선 전</div>
-                    <div class="tstep__what">마스터 크루 실행팀 과제 수행</div>
-                  </div>
-                  <div class="tstep tstep--last">
-                    <div class="tstep__when">9월 10일~11일 본선</div>
-                    <div class="tstep__what">검증 · 고도화</div>
-                    <div class="tstep__note">전문 평가단 집중 평가</div>
-                  </div>
+                <div class="tway">
+                  <ol class="tway__flow">
+                    <li>과제 발굴</li>
+                    <li>조기 과제 수행</li>
+                    <li>집중 검증 · 고도화</li>
+                  </ol>
+                  <p class="tway__note">경영진 인터뷰로 과제를 찾고 본선에서 전문가가 집중 평가</p>
                 </div>
               </div>
           </div>
-          <div class="tracks__rail">현업 · 팀</div>
+          <div class="tracks__rail"><span>현업 · 팀</span></div>
         </div>
       </article>
     </section>

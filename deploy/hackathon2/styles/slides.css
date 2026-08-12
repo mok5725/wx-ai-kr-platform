@@ -999,7 +999,11 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
 .tracks {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 0.6);
+  /* 진행 막대를 걷어내면서 카드가 짧아졌다. 남는 높이를 카드가 늘여 쓰면
+     아래가 텅 비므로, **덩어리 전체를 세로 가운데**에 놓고 카드는 제
+     내용만큼만 차지하게 한다. */
+  justify-content: center;
+  gap: calc(var(--gap) * 1.4);
   width: 100%;
   flex: 1 1 auto;
   min-height: 0;
@@ -1009,68 +1013,80 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
 .tracks__body {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: calc(var(--gap) * 0.8);
+  gap: calc(var(--gap) * 0.9);
+  /* stretch를 남겨 두 카드의 높이가 서로 같게 만든다 — 데칼코마니처럼
+     맞물리려면 좌우 카드의 위아래 변이 같은 자리여야 한다. */
   align-items: stretch;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
 }
 
-/* 조직의 위아래 끝. 가운데 라벨을 두고 좌우로 선이 뻗는다. */
+/* 조직의 위아래 끝. 가운데 라벨을 두고 좌우로 선이 뻗는다.
+
+   **라벨을 칩으로 세웠다**(2026-08-12 요청 — "전혀 눈에 띄지 않아 있으나
+   마나 한 내용이 되었다"). 옅은 회색 글자를 얇은 선 위에 얹어 두었더니
+   클레이 디오라마 배경에 그대로 묻혔다. 화살표가 어디에서 어디로 가는지는
+   이 두 라벨이 정하므로, 묻히면 장 전체가 뜻을 잃는다.
+   흰 알약에 네이비 굵은 글자 — 배경이 무엇이든 읽힌다. */
 .tracks__rail {
   display: flex;
   align-items: center;
   gap: 0.9em;
-  font-size: var(--step-00);
-  line-height: 1.3;
-  color: var(--ink-soft);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  white-space: nowrap;
   flex-shrink: 0;
+}
+
+.tracks__rail span {
+  padding: 0.28em 1.1em;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(3px);
+  font-size: var(--step-00);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--ink);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .tracks__rail::before,
 .tracks__rail::after {
   content: '';
   flex: 1;
-  height: 1px;
+  height: 2px;
+  border-radius: 1px;
   background: var(--line);
 }
 
 /* ── 가운데 축 ────────────────────────────────────────────────────────
-   화살표 둘을 나란히 세우고 서로 반대쪽을 가리키게 한다. 글자나 아이콘
-   글꼴이 아니라 **clip-path로 오려 낸 도형**이다 — 어떤 크기에서도 획
-   두께와 촉의 비율이 같고, 글꼴이 없는 환경에서도 모양이 변하지 않는다. */
+   화살표 둘이 나란히 서서 서로 반대쪽을 가리킨다.
+
+   **clip-path로 오려 낸 도형에서 SVG로 바꿨다**(2026-08-12 요청 — "너무
+   아마추어같다"). 이유가 둘이다. 하나, clip-path의 퍼센트는 상자 크기에
+   따라 늘어나므로 카드 높이가 바뀌면 촉의 각도가 함께 뭉개진다. 둘,
+   오려 낸 모서리는 언제나 칼같이 각져서 이 덱의 둥글둥글한 클레이 세계와
+   따로 논다.
+   SVG 경로에 같은 색 stroke를 두르고 stroke-linejoin: round를 주면
+   **모서리가 전부 둥글어진다.** viewBox가 비율을 쥐고 있어 어느 크기에서도
+   촉과 기둥의 비가 같다. */
 .track-axis {
   display: flex;
   align-items: stretch;
-  gap: calc(var(--gap) * 0.5);
-  padding-block: calc(var(--gap) * 0.4);
+  gap: calc(var(--gap) * 0.6);
+  padding-block: calc(var(--gap) * 0.2);
 }
 
 .track-axis__arrow {
   display: block;
-  width: calc(3.6 * var(--su));
-  /* 촉이 전체 높이의 22%, 기둥이 폭의 44%. 위아래로 길게 서는 화살표라
-     촉을 이보다 키우면 방향보다 삼각형이 먼저 보인다. */
-  --head: 22%;
-  --shaft: 28%;
+  height: 100%;
+  width: calc(5.4 * var(--su));
+  /* 경로는 fill과 stroke를 같은 색으로 쓴다 — stroke가 모서리를 둥글리는
+     장치라 색이 다르면 테두리로 보인다. */
+  filter: drop-shadow(0 3px 6px rgba(18, 46, 82, 0.18));
 }
 
-.track-axis__arrow--up {
-  clip-path: polygon(50% 0, 100% var(--head), calc(50% + var(--shaft)) var(--head),
-                     calc(50% + var(--shaft)) 100%, calc(50% - var(--shaft)) 100%,
-                     calc(50% - var(--shaft)) var(--head), 0 var(--head));
-  /* 목적지 쪽(위)이 진하다 — 어디로 가는지가 색으로도 한 번 더 읽힌다. */
-  background: linear-gradient(to top, rgba(15, 97, 82, 0.15), var(--track-challenger));
-}
-
-.track-axis__arrow--down {
-  clip-path: polygon(50% 100%, 100% calc(100% - var(--head)), calc(50% + var(--shaft)) calc(100% - var(--head)),
-                     calc(50% + var(--shaft)) 0, calc(50% - var(--shaft)) 0,
-                     calc(50% - var(--shaft)) calc(100% - var(--head)), 0 calc(100% - var(--head)));
-  background: linear-gradient(to bottom, rgba(184, 118, 26, 0.15), var(--gold));
-}
+.track-axis__arrow path { fill: currentColor; stroke: currentColor; }
+.track-axis__arrow--up { color: var(--track-challenger); }
+.track-axis__arrow--down { color: var(--gold); }
 
 /* ── 카드 ─────────────────────────────────────────────────────────────
    **한쪽을 흐리게 하지 않는다**(요청 — "동등하게"). 마스터 덱은 자기
@@ -1087,7 +1103,10 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: calc(var(--gap) * 1.1);
+  /* 좌우를 위아래보다 넓게 준다(2026-08-12 요청 — "박스 안쪽 좌우여백 좀
+     넓혀"). 카드 안이 가운데 정렬이라, 좌우가 빠듯하면 칩과 타일이 테두리에
+     닿아 답답해 보인다. */
+  padding: calc(var(--gap) * 1.1) calc(var(--gap) * 2.2);
   border: 3px solid var(--track-accent);
   border-radius: var(--radius);
   /* 씬 위에 뜨는 판이다. #2/1의 연도 칸과 같은 불투명도라 두 장이 같은
@@ -1099,29 +1118,62 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
 .track--challenger { --track-accent: var(--track-challenger); box-shadow: 0 4px 22px rgba(15, 97, 82, 0.18); }
 .track--master     { --track-accent: var(--gold);             box-shadow: 0 4px 22px rgba(184, 118, 26, 0.18); }
 
+/* **머리 세 줄은 가운데 축을 보고 선다**(2026-08-12 요청 — 챌린저 쪽
+   오른쪽 정렬). 왼쪽 카드는 오른쪽 정렬, 오른쪽 카드는 왼쪽 정렬 —
+   두 덩어리가 가운데 화살표를 사이에 두고 서로를 향한다. 데칼코마니는
+   같은 것을 두 번 두는 것이 아니라 **거울처럼 마주 놓는 것**이다. */
 .track__kicker { font-size: var(--step-00); font-weight: 800; color: var(--track-accent); letter-spacing: 0.1em; }
 .track__name   { font-family: var(--font-title); font-size: var(--step-2); font-weight: 900; margin: 0.1em 0 0.3em; color: var(--ink); }
-.track__lead   { font-size: var(--step-00); color: var(--ink-soft); line-height: 1.35; margin: 0 0 0.7em; word-break: keep-all; }
+.track__lead   { font-size: var(--step-00); color: var(--ink-soft); line-height: 1.35; margin: 0 0 0.9em; word-break: keep-all; }
 
-/* 트랙 이름 뒤의 영문 표기. 한글보다 작고 옅게 두어 이름 한 줄이
-   두 덩어리로 갈라져 보이지 않게 한다. */
+.track--challenger .track__kicker,
+.track--challenger .track__name,
+.track--challenger .track__lead { text-align: right; }
+
+.track--master .track__kicker,
+.track--master .track__name,
+.track--master .track__lead { text-align: left; }
+
+/* 트랙 이름 **앞**의 영문 표기(2026-08-12 요청 — 한글·영문 자리 바꾸기).
+   한글보다 작고 옅게 두어 이름 한 줄이 두 덩어리로 갈라져 보이지 않게 한다.
+   앞으로 오면서 여백도 오른쪽으로 옮겼다 — 왼쪽에 남겨 두면 영문과 한글이
+   붙어 한 낱말처럼 보인다. */
 .track__name small {
   font-family: var(--font-body);
   font-size: 0.45em;
   font-weight: 700;
   color: var(--ink-faint);
   letter-spacing: 0.04em;
-  margin-left: 0.4em;
+  margin-right: 0.45em;
   white-space: nowrap;
 }
 
 /* ── 숫자 타일 ────────────────────────────────────────────────────────
    "8팀 (4명/팀)"처럼 괄호에 묻히던 수치를 밖으로 꺼낸다. 규모는 문장으로
-   읽는 정보가 아니라 눈으로 세는 정보다. */
-.track__stats { display: flex; flex-wrap: wrap; gap: calc(var(--gap) * 0.5); margin: 0.15em 0 0; }
+   읽는 정보가 아니라 눈으로 세는 정보다.
 
+   **격자로 못 박는다**(2026-08-12 요청 — "3개의 박스의 디자인 및 배열
+   맞추고 가운데 정렬"). flex + wrap으로 두었더니 카드마다 글자 길이가 달라
+   타일 폭이 제각각이었다. 위 두 칸을 반씩 나누고 목표 칸이 아래 한 줄을
+   통째로 쓰면, 두 카드의 타일 여섯이 정확히 같은 자리에 선다. */
+.track__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gap) * 0.6);
+  margin: auto 0 0;
+}
+
+/* **숫자와 단위를 한 줄에 둔다**(2026-08-12 요청 — "8 팀, 32 명 · 팀당 4명
+   이런식으로"). 위아래로 쌓으면 타일이 높아지고 '8'과 '팀'이 두 정보처럼
+   읽힌다. 한 줄에 놓고 밑선을 맞추면 '8팀'이 한 덩어리로 읽힌다.
+   목표 타일만 문장이라 아래에서 다시 세로로 돌린다. */
 .tstat {
-  padding: 0.25em 0.8em;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.3em 0.8em;
   border-radius: 14px;
   /* 어두운 배경에서 '흰빛을 아주 옅게'였던 값은 밝은 판 위에서 아무것도
      아닌 투명이 된다. 강조색을 아주 옅게 깔아야 타일이 보인다. */
@@ -1138,56 +1190,111 @@ body[data-slide="title"] .brandbar__event { opacity: 0; }
   color: var(--track-accent);
 }
 
-.tstat__label { font-size: calc(var(--step-00) * 0.88); color: var(--ink-faint); margin-top: 0.1em; }
+.tstat__label { font-size: calc(var(--step-00) * 0.88); color: var(--ink-faint); }
 
-/* 목표 타일만 문장이라 왼쪽 정렬로 두고 남는 폭을 다 가져간다. */
-.tstat--goal { flex: 1 1 auto; min-width: 0; text-align: left; }
+/* 목표 타일은 아래 한 줄을 통째로 쓴다. 숫자 타일 옆에 끼우면 카드마다
+   글자 길이가 달라 한쪽만 접히고, 그 순간 좌우 대칭이 깨진다.
+   문장 + 부연이라 여기서만 세로로 쌓는다. */
+.tstat--goal {
+  grid-column: 1 / -1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+}
 
-/* 값의 글씨를 한 단 낮추면 줄 상자도 같이 낮아져 **옆 타일의 라벨과 줄이
-   어긋난다.** 줄 높이를 옆 타일과 같은 절대값으로 못 박아, 글씨 크기는
-   달라도 줄 상자는 같게 만든다. */
+/* **목표 타일의 두 줄을 키운다**(2026-08-12 요청). 이 칸이 그 트랙이
+   무엇을 하려는지 말하는 자리인데, 위 숫자 타일보다 작아 각주처럼 읽혔다.
+   숫자(step-1)와 같은 단으로 올려 두 줄이 카드의 결론으로 서게 한다. */
 .tstat--goal .tstat__value {
+  font-size: var(--step-1);
+  line-height: 1.25;
+}
+
+.tstat--goal .tstat__label {
   font-size: var(--step-00);
-  line-height: calc(var(--step-1) * 1.1);
+  color: var(--ink-soft);
 }
 
-/* ── 진행 막대 ────────────────────────────────────────────────────────
-   시간 순서다. 화살표를 글자로 찍어 한 문단에 밀어 넣으면 세 단계가 한
-   덩어리로 읽힌다. #7/1의 코스와 같은 문법(윗선 + 점)을 써서 두 장이 같은
-   이야기로 이어지게 한다. */
-.track__steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: calc(var(--gap) * 0.8);
-  /* 남는 높이를 다 쓰고 카드 바닥에 앉는다 — 두 카드의 막대가 같은 높이에
-     서야 좌우가 데칼코마니처럼 맞물린다. */
-  margin-top: auto;
-  padding-top: 0.7em;
-}
+/* ── 방식 세 걸음 (2026-08-12 추가) ──────────────────────────────────
+   '방식'이라는 머리글자는 뺐다(요청). 칩 셋과 화살표가 이미 "이렇게 한다"고
+   말하고 있어서, 그 위에 이름을 한 줄 더 얹으면 카드마다 줄만 늘어난다.
 
-.tstep {
-  position: relative;
+   운영이 준 문장을 그대로 얹으면 카드마다 길이가 달라 대칭이 깨진다.
+   두 트랙을 나란히 읽어 보면 **둘 다 세 걸음**이다 —
+
+     챌린저   아이디어 예선 → 4주 역량 강화 → 24hr 끝장개발
+     마스터   과제 발굴    → 조기 과제 수행 → 집중 검증 · 고도화
+
+   그래서 걸음 셋을 칩으로 세우고 화살표로 잇는다. 모양이 같으니 두 트랙이
+   **무엇을 다르게 하는지**만 눈에 남는다.
+
+   한때 '본선 전 / 본선' 두 줄로 갈랐다가 걷었다(요청) — 그 이름표는 시간을
+   말할 뿐이고, 이 장이 견주려는 것은 시간이 아니라 방식이다. */
+.tway {
+  margin-top: calc(var(--gap) * 0.9);
   padding-top: calc(var(--gap) * 0.9);
-  border-top: 2px solid color-mix(in srgb, var(--track-accent) 35%, transparent);
+  border-top: 1px solid var(--line);
 }
 
-.tstep::before {
-  content: '';
+
+/* 걸음 셋을 한 줄에. 칩 폭을 1fr로 못 박아 **두 카드의 칩 여섯이 같은
+   자리에 선다** — 내용 길이에 맡기면 좌우가 어긋난다.
+   칩 사이의 틈(1.2em)은 화살표가 앉을 자리다. */
+.tway__flow {
+  display: flex;
+  align-items: stretch;
+  gap: 1.2em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tway__flow li {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35em 0.4em;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--track-accent) 10%, #FFFFFF);
+  border: 1px solid color-mix(in srgb, var(--track-accent) 32%, transparent);
+  font-size: calc(var(--step-00) * 0.86);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink);
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* 화살표는 칩 사이의 틈 한가운데에 앉는다 — 마크업에 글자로 적지 않는다.
+   적어 두면 낭독기가 "화살표"를 읽고, 걸음 수를 바꿀 때 같이 고쳐야 한다.
+   칩 바깥(왼쪽 틈)으로 빼야 하므로 절대배치다. */
+.tway__flow li + li::before {
+  content: '→';
   position: absolute;
-  top: calc(-1px - var(--step-00) * 0.35);
-  left: 0;
-  width: calc(var(--step-00) * 0.7);
-  height: calc(var(--step-00) * 0.7);
-  border-radius: 50%;
-  background: var(--track-accent);
+  left: -0.6em;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--track-accent);
+  font-size: 1.05em;
+  font-weight: 800;
+  line-height: 1;
 }
 
-/* 마지막 단계가 도착점이다. 앞의 둘은 옅은 선, 마지막만 꽉 찬 선이다. */
-.tstep--last { border-top-color: var(--track-accent); }
+.tway__note {
+  margin: 0.5em 0 0;
+  font-size: calc(var(--step-00) * 0.86);
+  line-height: 1.3;
+  color: var(--ink-soft);
+  text-align: center;
+  word-break: keep-all;
+}
 
-.tstep__when { font-family: var(--font-title); font-size: calc(var(--step-00) * 0.9); font-weight: 800; color: var(--track-accent); line-height: 1.15; }
-.tstep__what { font-size: var(--step-00); font-weight: 800; color: var(--ink); line-height: 1.25; margin-top: 0.12em; word-break: keep-all; }
-.tstep__note { font-size: calc(var(--step-00) * 0.86); color: var(--ink-soft); line-height: 1.25; margin-top: 0.12em; word-break: keep-all; }
+/* 여기 있던 진행 막대(.track__steps · .tstep)는 2026-08-12에 지웠다.
+   두 카드에서 세 단계씩 빼 달라는 요청이라 마크업과 함께 사라졌다 —
+   같은 일정은 #7/1 코스 장이 다섯 칸으로 이미 말하고 있다. */
 
 /* 2-3 프로세스 5단계 타임라인.
    **지난 달을 흐리게 지우지 않는다.** 5~6월에 과제가 어떻게 정해졌고
