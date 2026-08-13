@@ -430,6 +430,12 @@ function renderPerks(root) {
 // 읽히는데, 한 팀만 두 줄이 되면 그 줄 전체가 내려앉는다. 괄호 안(영문·유래)은
 // 이름의 부속이므로 작게 줄여 한 줄에 담는다 — 줄이는 것은 괄호뿐이고
 // 팀명 자체는 손대지 않는다.
+//
+// 괄호가 이름 옆에 붙기엔 너무 긴 팀은 content.js가 nameNote로 따로 들고
+// 있다(설루션 하나 — 스물세 자다). 그 줄은 이름 옆이 아니라 **이름 아래**에
+// 앉힌다: 칸 안폭이 296px인데 옆에 붙이면 420px가 들어가야 해서 글자를 절반
+// 아래로 줄여야 하고, 그러면 읽히지 않는다. 다른 팀의 짧은 괄호는 지금처럼
+// 이름 옆이다.
 function splitTeamName(name) {
   const m = /^(.+?)\s*(\(.+\))$/.exec(name);
   return m ? { base: m[1], paren: m[2] } : { base: name, paren: '' };
@@ -466,7 +472,9 @@ function renderTeamsAll(root) {
       idea.appendChild(document.createTextNode(line));
     });
 
-    cell.append(head, idea);
+    cell.append(head);
+    if (team.nameNote) cell.appendChild(el('p', 'teams-all__note', team.nameNote));
+    cell.appendChild(idea);
     root.appendChild(cell);
   });
 }

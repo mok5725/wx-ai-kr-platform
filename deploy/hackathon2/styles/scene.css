@@ -1678,6 +1678,21 @@ body[data-slide="expedition"] .scrim-bottom { opacity: 0; }
   color: var(--ink-soft);
 }
 
+/* 이름 옆에 못 붙일 만큼 긴 괄호(설루션)는 이름 아래 한 줄로 앉는다.
+   0.86배까지 줄이면 스물세 자가 칸 안폭 296px 안에 들어간다(273px) —
+   아이디어명(19px)보다 조금 작을 뿐이라 뒷줄에서도 읽힌다. */
+.teams-all__note {
+  margin-top: 0.15em;
+  /* p의 기본 아래 여백(1em)을 지운다. 남겨 두면 이 칸만 한 줄만큼 높아져
+     윗줄 넷이 통째로 내려앉는다 — 글자가 아니라 여백이 범인이다. */
+  margin-bottom: 0;
+  font-size: calc(var(--step-00) * 0.86);
+  line-height: var(--leading-tight);
+  color: var(--ink-soft);
+  text-align: center;
+  white-space: nowrap;
+}
+
 .teams-all__idea {
   margin-top: 0.3em;
   font-size: var(--step-00);
