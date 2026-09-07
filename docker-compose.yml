@@ -14,6 +14,7 @@ services:
       - ./deploy/claude:/srv/claude:ro
       - ./deploy/hackathon:/srv/hackathon:ro
       - ./deploy/hackathon2:/srv/hackathon2:ro
+      - ./deploy/hackathon3:/srv/hackathon3:ro
       - ./data/caddy/data:/data
       - ./data/caddy/config:/config
     depends_on:
