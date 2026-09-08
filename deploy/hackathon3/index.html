@@ -323,11 +323,13 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 
 /* 표지 — 가운데 정렬. 상단 바의 이벤트 락업 대신 화면 가운데 큰 락업 */
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--brandbar-h) var(--pad) 200px;gap:18px}
-.cover .lockup{display:flex;align-items:center;gap:15px;font-family:var(--head);font-weight:800;font-size:var(--s3);color:var(--st-ink)}
+/* 표지는 홀 전체가 보는 화면이다 — 대회명과 큰 글씨를 따로 키운다(--s3/--s5 를 쓰면
+   숫자 지표 같은 다른 자리까지 같이 커진다). 손글씨 폭은 음절수 × 1em 이라 이 값이 곧 폭이다. */
+.cover .lockup{display:flex;align-items:center;gap:19px;font-family:var(--head);font-weight:800;font-size:84px;color:var(--st-ink)}
 .cover .lockup .ci-mark{height:.82em;opacity:1}
-.cover .big{font-family:var(--head);font-weight:900;font-size:var(--s5);line-height:1.1;letter-spacing:-.02em;color:var(--st-ink)}
+.cover .big{font-family:var(--head);font-weight:900;font-size:260px;line-height:1.08;letter-spacing:-.02em;color:var(--st-ink)}
 .cover .big em{font-style:normal;color:var(--kw)}
-.cover .big.huge{font-size:220px}
+.cover .big.huge{font-size:300px}
 .cover .en{font-family:var(--head);font-weight:800;font-size:var(--s2);color:var(--gold);letter-spacing:.04em}
 .cover .when{font-size:var(--s0);color:var(--st-soft);letter-spacing:.02em}
 .cover .lines{align-items:center;margin-top:8px}
@@ -369,6 +371,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .stagefs .frame .fsbtn{display:none}
 /* 키 안내는 개발용이다 — 무대에서는 감춘다. 단계 표시(.stepnav)와 같은 구석을 쓴다. */
 body.stageonly .stagefs .frame .hint-z{display:none}
+/* 대신 무대에 들어온 직후 4초만 조작 안내를 띄운다 — 오퍼레이터용이고, 관객이 보기 전에 사라진다. */
+.stagefs .stagehint{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);z-index:7;
+  font-size:20px;color:#EEF0FF;background:rgba(8,6,42,.62);border:1px solid rgba(238,240,255,.18);
+  border-radius:999px;padding:10px 22px;pointer-events:none;
+  animation:stagehint-out 4s ease forwards}
+@keyframes stagehint-out{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}
 /* ── 무대 배경 층 — 슬롯 두 장으로 컷 없이 넘어간다 ─────────────────────
    같은 그림이 이어지면(구성안의 팬·줌 구간) 슬롯을 갈지 않고 위치·크기만
    트랜지션 → 카메라가 흐른다. 그림이 바뀌면 두 슬롯이 같은 시간에 교차
@@ -475,6 +483,7 @@ body.stageonly .stagefs .host .fw{width:min(100vw,calc(100vh * 16 / 9))}
   <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgcanvas"><div class="bgslot"></div><div class="bgslot"></div></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
   <div class="stagebar" id="stageBar" aria-hidden="true"></div>
+  <div class="stagehint" id="stageHint">F 전체화면 · 스크롤 또는 ← → 로 넘기기</div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
 
@@ -691,7 +700,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     frame.appendChild(body);
     if(p.obj) frame.appendChild(z('obj-z'+(p.objImgs?' has-img':''), p.objImgs ? `<div class="oi">${p.objImgs.map(([s,l])=>`<figure><img src="${s}" alt="${l}"><figcaption>${l}</figcaption></figure>`).join('')}</div>` : p.obj, '이미지 자리 (1280,273) 576×743'));
     frame.appendChild(z('progress', partPages.map((_,i)=>`<i class="${i<pageIdxInPart?'past':i===pageIdxInPart?'cur':''}"></i>`).join(''), ''));
-    frame.appendChild(el('div','hint-z','스크롤 · ← → 단계 · ↑ ↓ 페이지 · G 그리드 · Esc'));
+    frame.appendChild(el('div','hint-z','F 전체화면 · 스크롤 · ← → 단계 · ↑ ↓ 페이지 · G 그리드 · Esc'));
   }
   if(p.foot) frame.appendChild(z('foot-z ln', p.foot, '각주 21px (64,976)'));
   return frame;
@@ -875,11 +884,18 @@ document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) r
   if(e.key==='ArrowLeft'){ e.preventDefault(); if(!stepCur(-1)) openStage(cur-1,-1); }
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); openStage(cur+1,1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); openStage(cur-1,-1); }
+  if(e.key==='f'||e.key==='F'){ e.preventDefault(); toggleFull(); }
   if(e.key==='Escape'&&!STAGE_ONLY) closeStage(); if(e.key==='g'||e.key==='G') toggleGrid(); });
 /* 마우스 휠 — 내리면 다음, 올리면 뒤로 (이종은 지시 9/8). 클릭은 넘기지 않는다:
    발표 순서 카드·시상 팀명 공개처럼 눌러야 하는 것들이 무대 위에 있다.
    휠은 한 번 튕겨도 이벤트가 수십 개 쏟아지므로(특히 트랙패드 관성) 문턱값 + 잠금으로
    한 번의 손짓이 한 장만 넘기게 한다. 잠금 동안 들어온 관성은 쌓지 않고 버린다. */
+/* 전체화면 — F. 무대만 띄우는 ?stage 에서는 문서 전체를, 문서 안에서 연 무대는 무대만.
+   requestFullscreen 은 사용자 조작에서만 되므로 키 핸들러 안에서 부른다. */
+function toggleFull(){
+  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); return; }
+  (STAGE_ONLY?document.documentElement:stage).requestFullscreen().catch(()=>{});
+}
 let wheelLock=0, wheelAcc=0;
 stage.addEventListener('wheel',(e)=>{
   if(!stage.classList.contains('on')) return;
