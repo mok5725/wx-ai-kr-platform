@@ -117,6 +117,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .hosts .x{color:#FFF;opacity:.75;font-size:19px;line-height:1}
 .event .name{font-family:var(--head);font-weight:800;font-size:29px;color:#FFF;letter-spacing:.01em;line-height:1}
 .frame.k-cover.deck .event{opacity:0}
+/* ── 무대에서는 로고 바를 프레임 밖에 **하나만** 고정으로 둔다 ──────────────
+   프레임 안에 있으면 장을 넘길 때마다 로고가 글자와 함께 떴다 사라진다(arrive 전환).
+   이종은 지시 9/8: 페이지마다 나오게 하지 말고 무조건 고정. 표지에서 오른쪽 락업을
+   지우던 규칙도 무대에서는 끈다 — 고정이라는 말은 늘 같은 자리에 있다는 뜻이다. */
+.stagefs .host .frame .brandbar{display:none}
+.stagefs .stagebar{position:absolute;left:0;top:0;width:1920px;height:var(--brandbar-h);transform-origin:0 0;z-index:6;pointer-events:none}
+.stagefs .stagebar .brandbar{position:absolute;left:0;right:0;top:0}
+.stagefs .stagebar .event{opacity:1}
 
 /* 슬라이드 본체 — 소제목(eyebrow) → 제목 → 본문. 제목은 페이지마다 같은 자리 */
 .title-z{position:absolute;left:var(--pad);top:119px;width:1792px;font-family:var(--head);font-weight:900;font-size:var(--s4);line-height:1.14;letter-spacing:-.02em;min-height:138px;color:var(--st-ink)}
@@ -276,16 +284,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ph.grid6 span.pic img{position:absolute;left:8%;top:7%;width:84%;height:69%;object-fit:contain;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5))}
 .ph.grid6 span.pic i{position:relative;z-index:1;width:100%;text-align:center;font-style:normal;font-weight:700;color:#fff;padding:16px 10px 15px;text-shadow:0 2px 10px rgba(8,6,42,.75);background:linear-gradient(transparent,rgba(8,6,42,.5))}
 
-/* ── A-03 티셔츠 — 앞뒤 두 장을 세워 천천히 360° 돌린다 ────────────────────
-   진짜 3D 메시가 아니라 앞면·뒷면 두 평면을 preserve-3d 로 마주 세운 턴테이블이다.
-   평면은 90°에서 옆날이 되어 사라지므로, 키프레임을 고르지 않게 두어 **앞뒤를 보여줄
-   때는 느리게, 옆날을 지날 때는 빠르게** 돌린다. 사라지는 순간이 눈에 덜 걸린다.
-   16초 한 바퀴 — 이종은 지시 "천천히". */
-.tee3d{height:100%;display:flex;align-items:center;justify-content:center;perspective:1900px}
-.tee3d__spin{position:relative;width:min(660px,100%);height:100%;transform-style:preserve-3d;animation:tee-spin 16s linear infinite}
-.tee3d__spin img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-backface-visibility:hidden;backface-visibility:hidden;filter:drop-shadow(0 28px 44px rgba(0,0,0,.5))}
-.tee3d__spin img.back{transform:rotateY(180deg)}
-@keyframes tee-spin{0%{transform:rotateY(0deg)}18%{transform:rotateY(20deg)}32%{transform:rotateY(90deg)}46%{transform:rotateY(160deg)}64%{transform:rotateY(200deg)}78%{transform:rotateY(270deg)}92%{transform:rotateY(340deg)}100%{transform:rotateY(360deg)}}
+
 .ph.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding:14px}
 .split{display:grid;grid-template-columns:1fr 672px;gap:48px;height:100%}
 .split .ph{height:100%}
@@ -442,6 +441,7 @@ body.stageonly .stagefs .host{cursor:pointer}
 <div class="stagefs" id="stagefs" role="dialog" aria-modal="true">
   <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgcanvas"><div class="bgslot"></div><div class="bgslot"></div></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
+  <div class="stagebar" id="stageBar" aria-hidden="true"></div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
 
@@ -506,9 +506,9 @@ const PARTS = [
   P({ no:'1', id:'A-01', title:'웰컴 (시작 전)', when:'08:00~08:50', bg:'bg/hf_20260907_082042_bce623cc-048d-4c07-8fd0-b217b7d0f120.jpg', eyebrow:'2026 포스코그룹 WX해커톤 본선대회', h:'WX해커톤에 함께해 주신 크루 여러분!<br>진심으로 <em>환영</em>합니다.', two:true, body:{type:'lines', lines:['가장 먼저 등록 데스크에서 명찰을 챙기신 후, 우리 팀 자리로 이동해 주세요.','준비된 웰컴 굿즈 속 기념 티셔츠로 갈아입으시고, 8시 40분까지 편하게 앉아주세요.','시작하기 전, 주변 크루들과 가볍게 인사 나누며, 해커톤의 즐거운 분위기를 함께 만들어가면 어떨까요?','행사장 곳곳에 마련된 포토존에서 우리 팀만의 멋진 기념사진 남기는 것도 잊지 마세요!']}, foot:'강의장 사외망 와이파이 : SD-ET-EXTR / songdo@1', viz:'없음 — 안내문이 주인공', how:'원문 4줄 그대로, 와이파이는 각주로. 제목만 2줄(지정 줄바꿈 — 검증 필요)', memo:'착석 08:40(포스터). 이 장에서만 오른쪽 위 "2026 ∞ 해커톤" 락업이 보이고, 다음 표지에서 숨긴다' }),
   P({ no:'2', id:'A-02', title:'메인 타이틀 (표지)', when:'08:50~', kind:'cover', deck:true, bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center 0px', lockup:'2026 WX해커톤', big:hand('본선대회'), when2:'2026. 9. 10(목) - 9. 11(금) · 포스코인재창조원 송도캠퍼스 컨벤션센터', slogan:true, viz:'키비주얼 ∞ — 사이트 표지와 같은 구성: 가운데 락업 → 손글씨 → 날짜 · 장소 → 하단 슬로건', how:'"본선대회"는 손글씨 SVG 자리(사이트의 "마스터 트랙" 레터링과 같은 역할). 로고 바 오른쪽 락업은 표지에서 숨김' }),
   P({ no:'3', id:'A-03', title:'스페셜 장착템 (티셔츠)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -160px', eyebrow:'웰컴 굿즈', h:'해커톤 크루를 위한 <em>스페셜 장착템</em>!', sub:'아이디어가 임팩트가 되는 모든 순간, 크루 여러분의 열정과 함께할 공식 티셔츠입니다.', steps:[
-      {label:'티셔츠', body:{type:'tee3d', front:'img/goods/tshirt-front.webp', back:'img/goods/tshirt-back.webp'}},
+      {label:'티셔츠', body:{type:'photo', src:'img/goods/tshirt-wide.webp'}},
       {label:'로고 · 슬로건', body:{type:'trio', n:2, items:[['해커톤 로고','포스코그룹 일하는 방식의 변화(WX)<br>+ 디지털 기술의 무한한 가능성',''],['슬로건',`<span class="slogan inline"><span class="stack"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span></span>`,'시작부터 끝까지 워크 플로우를 새롭게,<br>아이디어를 가치로 전환하는 끝장 개발대회!']]}},
-    ], viz:'1단계 티셔츠 앞뒤 360° 회전(16초 한 바퀴) · 2단계 두 칸(로고 설명 · 슬로건 설명)', how:'설명문은 두 칸으로 나누고 칸 안에서 지정 줄바꿈(검증 필요). 슬로건은 폰트 + SVG 조합' }),
+    ], viz:'1단계 티셔츠 사진 전폭(투명 배경 원본) · 2단계 두 칸(로고 설명 · 슬로건 설명)', how:'설명문은 두 칸으로 나누고 칸 안에서 지정 줄바꿈(검증 필요). 슬로건은 폰트 + SVG 조합' }),
   P({ no:'4', id:'A-04', title:'전환', kind:'cover', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -320px', big:hand('이제 시작합니다'), viz:'없음 — 한 문장. 손글씨 후보', how:'—' }),
   P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -480px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 1박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], stats:[['11','크루','참가 팀'],['54','명','참가 크루'],['8','팀 · 32명','챌린저 트랙 — 우수 아이디어 제안 (팀당 4명)'],['3','팀 · 22명','마스터 트랙 — Top-down 과제 선발 (팀당 7~8명)']]}, viz:'숫자 4개 (사이트 stat 방식: 큰 수 + 단위 + 라벨)', how:'라벨 + 값 4줄, 아래 숫자 줄. 원문 6줄을 라벨 4 + 숫자 4로' }),
   P({ no:'6', id:'A-06', title:'마스터 트랙 소개', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -640px', eyebrow:'해커톤 크루 소개', h:'<em>마스터</em> 트랙', sub:'주요 사업회사 임원 FGI를 통해 선정된 과제에 대한 전문가 팀 구성 (도메인 + AX/DX 전문가로 선발)', body:{type:'trio', n:3, items:MASTERS.map(m=>[m.dom, m.team, m.topic])}, viz:'세 칸 — 분야(소제목) · 팀명(칸 제목) · 과제명(칸 본문)', how:'선정 방식은 부제 한 줄. 과제 설명은 D-04 로' }),
@@ -627,7 +627,6 @@ B.award=(b,p,stepKey)=>{ const [t,prize]=awardOf(b.kind); const key=p.id+':'+b.k
 B.order=(b)=>{ const w=el('div'); w.innerHTML=`<div class="slots">${[0,1,2,3,4,5,6,7].map(i=>{const t=slotTeam(i); return `<div class="slot ${t?'filled':''}"><span class="n">${i+1}</span><span class="part">${PART_OF(i+1)}</span>${t?`<span class="tcard" style="filter:none">${esc(t.team)}</span>`:''}</div>`;}).join('')}</div><div class="lines" style="margin-top:22px"><p class="ln">마스터 — 1부 PSM 해결단 (안전) · 2부 포브스 (물류) · 3부 MyPiN (마켓센싱) · 성과 공유 약 5분</p></div>`; return w; };
 B.part=(b)=>el('div','part',`<div class="no">${b.num}</div><div class="list">${b.list.map((l,i)=>`<p class="ln ${i===0?'m':''}">${l}</p>`).join('')}</div>`);
 B.photo=(b)=>{ if(b.src){ const w=el('div','ph pic'); w.innerHTML=`<img src="${b.src}" alt="">`; return w; } if(b.grid6) return el('div','ph grid6', b.grid6.map(g=>Array.isArray(g)?`<span class="pic"><img src="${g[1]}" alt=""><i>${g[0]}</i></span>`:`<span>${g}</span>`).join('')); if(b.grid5) return el('div','ph grid5',[1,2,3,4,5].map(n=>`<span>캡처 ${n}</span>`).join('')); if(b.qr){ const w=el('div','center-col'); w.innerHTML='<div class="ph" style="width:480px;height:480px">QR 480×480</div>'; return w; } const w=el('div','ph',b.ph); w.style.height=b.wide?'560px':'100%'; return w; };
-B.tee3d=(b)=>el('div','tee3d',`<div class="tee3d__spin"><img class="front" src="${b.front}" alt="티셔츠 앞면"><img class="back" src="${b.back}" alt="티셔츠 뒷면"></div>`);
 B.split=(b)=>el('div','split',`<div class="lines">${b.lines.map(l=>lnP(l)).join('')}</div><div class="ph">${b.ph}</div>`);
 
 function buildBody(bdef,p){ const b=val(bdef); return B[b.type](b,p); }
@@ -786,13 +785,26 @@ WIDGETS.awards=()=>{
 
 /* ───────── 무대 보기: 페이지 이동 = 상하, 단계 = 좌우 ───────── */
 const stage=$('#stagefs'), host=$('#stageHost'); let cur=-1, ph=null, moved=null, arriveT=0;
+/* 고정 로고 바 — 프레임 밖에 하나만 두고 프레임과 같은 배율·자리로 맞춘다.
+   프레임(.frame)은 1920×1080 을 fw 폭에 맞춰 scale 하므로 같은 배율을 그대로 쓴다. */
+const stageBar=$('#stageBar');
+stageBar.innerHTML=BRANDBAR();
+/* fw 를 재면 안 된다 — 장을 넘기는 동안 fw 는 arrive 전환으로 48px 떠 있어서, 그 순간의
+   좌표를 물면 바가 그만큼 어긋난 자리에 붙박인다(9/8 실측). host 는 움직이지 않으므로
+   host 안에서 16:9 를 가운데 맞추는 **기하**로 직접 구한다. */
+function fitBar(){ const hr=host.getBoundingClientRect();
+  if(!hr.width||!host.querySelector('.fw')){ stageBar.style.opacity='0'; return; }
+  const w=Math.min(hr.width, hr.height*16/9), h=w*9/16;
+  stageBar.style.opacity='1';
+  stageBar.style.transform=`translate(${hr.left+(hr.width-w)/2}px, ${hr.top+(hr.height-h)/2}px) scale(${w/1920})`; }
+addEventListener('resize',fitBar);
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
 const STAGE_ONLY=new URLSearchParams(location.search).has('stage');
 /* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
    새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
 const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')]; let active=0, src=null;
-  const canvas=$('#stageBg .bgcanvas'); const fit=()=>{ const sc=Math.max(innerWidth/1920, innerHeight/1080); const dx=(innerWidth-1920*sc)/2, dy=(innerHeight-1080*sc)/2; canvas.style.transform=`translate(${dx}px, ${dy}px) scale(${sc})`; };
+  const canvas=$('#stageBg .bgcanvas'); const fit=()=>{ const sc=Math.max(innerWidth/1920, innerHeight/1080); const dx=(innerWidth-1920*sc)/2, dy=(innerHeight-1080*sc)/2; canvas.style.transform=`translate(${dx}px, ${dy}px) scale(${sc})`; fitBar(); };
   const apply=(e,p)=>{ e.style.backgroundImage=`url("${p.bg}")`; e.style.backgroundSize=p.bgSize||'cover'; e.style.backgroundPosition=p.bgPos||'center'; };
   /* 디졸브는 Web Animations API — openStage 가 무대를 껐다 켜고 프레임을 옮기는 사이에 CSS 트랜지션이
      시작을 놓치는 일이 실측됐다(직접 호출은 되고 openStage 경유만 툭 바뀜). animate() 는 그와 무관하게 돈다. */
@@ -817,7 +829,7 @@ function openStage(i, dir){
   if(dir){ clearTimeout(arriveT); const fw=rec.fw; arriveT=setTimeout(()=>fw.classList.remove('arrive-down','arrive-up'), bgMoved?TEXT_DELAY:20); }
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
   if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
-  requestAnimationFrame(stageBg.fit);
+  requestAnimationFrame(()=>{stageBg.fit(); fitBar();});
   if(STAGE_ONLY) history.replaceState(null,'','#'+FLAT[cur].id);
 }
 function closeStage(exit=true){ if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
@@ -838,6 +850,8 @@ $('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdStart
 $('#btnResetAll').addEventListener('click',()=>{ if(confirm('카운트다운 시각 · 발표 순서 · 시상 선택을 전부 지웁니다. 계속할까요?')){ localStorage.removeItem(LS); location.reload(); } });
 
 renderAll(); document.querySelectorAll('.fw').forEach(fw=>ro.observe(fw)); rerender();
+
+
 /* 직행 무대 모드는 페이지가 다 그려진 뒤에 연다 */
 if(STAGE_ONLY){ document.body.classList.add('stageonly'); const want=decodeURIComponent(location.hash.slice(1)); const at=Math.max(0,FLAT.findIndex(p=>p.id===want)); openStage(at,0);
   host.addEventListener('click',(e)=>{ if(e.target.closest('button,a,input,select,textarea,.team,.card,[contenteditable]')) return; if(!stepCur(1)) openStage(cur+1,1); });
