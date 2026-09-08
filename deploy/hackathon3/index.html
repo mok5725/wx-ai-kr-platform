@@ -348,7 +348,11 @@ body.stageonly>.wrap{display:none}
 body.stageonly .stagefs .bar{display:none}
 body.stageonly .stagefs .host .fw{width:min(100vw,calc(100vh * 16 / 9))}
 body.stageonly .stagefs .host{cursor:pointer}
-@media (prefers-reduced-motion:reduce){.tcard,.view,.stagefs .host .fw{transition:none}}
+/* 무대(.stagefs .host .fw)는 이 예외에서 뺐다 — 배경은 움직이는데 글자만 뚝 나타나
+   앞뒤가 안 맞았다(9/8 실측: 동작 줄이기가 켜진 PC 에서 글자 전환이 0s). 무대의 움직임은
+   UI 장식이 아니라 내용이고, 발표용 PC 의 접근성 설정이 관객이 보는 것을 바꾸면 안 된다.
+   문서 쪽 카드·단계(.tcard,.view)는 그대로 존중한다. */
+@media (prefers-reduced-motion:reduce){.tcard,.view{transition:none}}
 </style>
 </head>
 <body>
