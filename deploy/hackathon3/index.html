@@ -314,6 +314,24 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .stagefs .bar .btn{background:transparent;color:#9AA4C0;border-color:#333}
 .stagefs .bar .cur{margin-left:auto}
 .stagefs .frame .fsbtn{display:none}
+/* ── 무대 배경 층 — 슬롯 두 장으로 컷 없이 넘어간다 ─────────────────────
+   같은 그림이 이어지면(구성안의 팬·줌 구간) 슬롯을 갈지 않고 위치·크기만
+   트랜지션 → 카메라가 흐른다. 그림이 바뀌면 두 슬롯이 같은 시간에 교차
+   (디졸브) → 경계선이 생길 틈이 없다. 그림 없는 장으로 가면 슬롯만 꺼진다. */
+.stagefs{background:var(--void)}
+.stagefs .stagebg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.stagefs .stagebg .bgslot{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;background-repeat:no-repeat;opacity:0;
+  transition:opacity 1200ms ease-in-out,background-position 900ms ease-in-out,background-size 900ms ease-in-out;will-change:opacity,background-position,background-size}
+.stagefs .stagebg .bgveil{position:absolute;inset:0;background:linear-gradient(rgba(8,6,42,.30),rgba(8,6,42,.55))}
+.stagefs .host{position:relative;z-index:1}
+.stagefs .host .fw{background:transparent}
+.stagefs .frame{background:transparent!important}
+/* ── 직행 무대 모드(?stage) — 검토 문서·조작 바 없이 무대만 ──────────── */
+body.stageonly>.wrap{display:none}
+body.stageonly .stagefs .bar{display:none}
+body.stageonly .stagefs .host .fw{width:min(100vw,calc(100vh * 16 / 9))}
+body.stageonly .stagefs .host{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.stagefs .stagebg .bgslot{transition:none}}
 @media (prefers-reduced-motion:reduce){.tcard,.view,.stagefs .host .fw{transition:none}}
 </style>
 </head>
@@ -385,6 +403,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 </div>
 
 <div class="stagefs" id="stagefs" role="dialog" aria-modal="true">
+  <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgslot"></div><div class="bgslot"></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
@@ -729,13 +748,27 @@ WIDGETS.awards=()=>{
 
 /* ───────── 무대 보기: 페이지 이동 = 상하, 단계 = 좌우 ───────── */
 const stage=$('#stagefs'), host=$('#stageHost'); let cur=-1, ph=null, moved=null;
+const STAGE_ONLY=new URLSearchParams(location.search).has('stage');
+/* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
+   새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
+const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')]; let active=0, src=null;
+  const fit=()=>{ const r=host.getBoundingClientRect(); const fw=host.querySelector('.fw'); const w=fw?fw.getBoundingClientRect().width:r.width; const sc=w/1920; slots.forEach(e=>{ e.style.transform=`translate(-50%,-50%) scale(${sc})`; }); };
+  const apply=(e,p)=>{ e.style.backgroundImage=`url("${p.bg}")`; e.style.backgroundSize=p.bgSize||'cover'; e.style.backgroundPosition=p.bgPos||'center'; };
+  const show=(p)=>{ fit(); if(!p||!p.bg){ if(src===null) return; slots[active].style.opacity='0'; src=null; return; }
+    if(p.bg===src){ apply(slots[active],p); slots[active].style.opacity='1'; return; }
+    const n=1-active, e=slots[n]; e.style.transition='none'; apply(e,p); void e.offsetWidth; e.style.transition=''; e.style.opacity='1'; slots[active].style.opacity='0'; active=n; src=p.bg; };
+  window.addEventListener('resize',fit); return {show, fit}; })();
+/* 무대 배경 8장은 미리 받아 둔다 — 디졸브 도중에 그림이 뒤늦게 뜨지 않게 */
+[...new Set(FLAT.map(p=>p.bg).filter(Boolean))].forEach(u=>{ const im=new Image(); im.src=u; });
 function openStage(i, dir){
-  const prev=cur; closeStage(false); cur=(i+FLAT.length)%FLAT.length; const rec=pageEls.get(FLAT[cur].id);
+  const prev=cur; closeStage(false); cur=(i+FLAT.length)%FLAT.length; const rec=pageEls.get(FLAT[cur].id); stageBg.show(FLAT[cur]);
   ph=document.createComment('fw'); rec.fw.parentNode.insertBefore(ph, rec.fw); host.appendChild(rec.fw); moved=rec.fw;
   if(dir){ rec.fw.classList.add(dir>0?'arrive-down':'arrive-up'); requestAnimationFrame(()=>requestAnimationFrame(()=>rec.fw.classList.remove('arrive-down','arrive-up'))); }
   stage.classList.add('on'); document.body.style.overflow='hidden';
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
-  if(document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
+  if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
+  requestAnimationFrame(stageBg.fit);
+  if(STAGE_ONLY) history.replaceState(null,'','#'+FLAT[cur].id);
 }
 function closeStage(exit=true){ if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
 const stepCur=(d)=>{ const p=FLAT[cur]; return stepTo(p,(pageEls.get(p.id).step||0)+d); };
@@ -747,14 +780,18 @@ document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) r
   if(e.key==='ArrowLeft'){ e.preventDefault(); if(!stepCur(-1)) openStage(cur-1,-1); }
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); openStage(cur+1,1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); openStage(cur-1,-1); }
-  if(e.key==='Escape') closeStage(); if(e.key==='g'||e.key==='G') toggleGrid(); });
-document.addEventListener('fullscreenchange',()=>{ if(!document.fullscreenElement&&stage.classList.contains('on')) closeStage(false); });
+  if(e.key==='Escape'&&!STAGE_ONLY) closeStage(); if(e.key==='g'||e.key==='G') toggleGrid(); });
+document.addEventListener('fullscreenchange',()=>{ if(!STAGE_ONLY&&!document.fullscreenElement&&stage.classList.contains('on')) closeStage(false); });
 function toggleGrid(){ const on=document.body.classList.toggle('showgrid'); $('#btnGrid').textContent=on?'그리드 보기 끄기':'그리드 보기 켜기'; $('#btnGrid').classList.toggle('on',on); }
 $('#btnGrid').addEventListener('click',toggleGrid); $('#btnStage0').addEventListener('click',()=>openStage(0,0));
 $('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdStart:S.cdStart, order:S.order.map(i=>i==null?null:CH[i].team), awards:S.awards},null,2); (navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>alert('복사했습니다:\n'+txt)):Promise.reject()).catch(()=>prompt('복사해서 옮기세요',txt)); });
 $('#btnResetAll').addEventListener('click',()=>{ if(confirm('카운트다운 시각 · 발표 순서 · 시상 선택을 전부 지웁니다. 계속할까요?')){ localStorage.removeItem(LS); location.reload(); } });
 
 renderAll(); document.querySelectorAll('.fw').forEach(fw=>ro.observe(fw)); rerender();
+/* 직행 무대 모드는 페이지가 다 그려진 뒤에 연다 */
+if(STAGE_ONLY){ document.body.classList.add('stageonly'); const want=decodeURIComponent(location.hash.slice(1)); const at=Math.max(0,FLAT.findIndex(p=>p.id===want)); openStage(at,0);
+  host.addEventListener('click',(e)=>{ if(e.target.closest('button,a,input,select,textarea,.team,.card,[contenteditable]')) return; if(!stepCur(1)) openStage(cur+1,1); });
+  window.addEventListener('hashchange',()=>{ const id=decodeURIComponent(location.hash.slice(1)); const i=FLAT.findIndex(p=>p.id===id); if(i>=0&&i!==cur) openStage(i,i>cur?1:-1); }); }
 document.fonts.ready.then(()=>{ const ok1=document.fonts.check('900 86px Paperlogy'), ok2=document.fonts.check('400 32px NanumSquare'); $('#fontchk').innerHTML=`글꼴 — Paperlogy <b>${ok1?'로딩됨':'없음'}</b> · NanumSquare <b>${ok2?'로딩됨':'없음'}</b> (파일에 내장)`; measure(); });
 </script>
 </body>
