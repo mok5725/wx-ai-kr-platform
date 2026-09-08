@@ -28,11 +28,22 @@ claude.wx.ai.kr {
 	file_server
 }
 
-# hackathon.wx.ai.kr — 마스터 트랙 팀밋업 발표 덱(정적)
+# ── 2026-09-09: hackathon 과 hackathon3 의 내용을 맞바꿨다(이종은 지시) ────────
+#   hackathon.wx.ai.kr  = 26년 본선 무대 슬라이드   (파일은 deploy/hackathon3)
+#   hackathon3.wx.ai.kr = 마스터 트랙 팀밋업 발표 덱 (파일은 deploy/hackathon)
+#
+# **디렉터리 이름은 일부러 바꾸지 않았다.** 두 덱은 서로 다른 프로젝트가 만들고
+# 각자의 배포 스크립트가 자기 디렉터리(deploy/hackathon, deploy/hackathon3)에 쓴다.
+# 디렉터리를 맞바꾸면 손대지 않은 쪽 스크립트가 다음 배포 때 남의 사이트를 덮어쓴다.
+# 그래서 root 만 서로 바꿨다 — 이름과 도메인이 어긋나 보이면 이 주석을 볼 것.
+
+# hackathon.wx.ai.kr — 26년 본선 무대 슬라이드 (+ /master 는 마스터 트랙 OT 덱)
 hackathon.wx.ai.kr {
 	import secure_headers
 	encode gzip
-	root * /srv/hackathon
+	root * /srv/hackathon3
+	# 발표 직전까지 고쳐 배포한다 — hackathon2 와 같은 이유로 no-cache.
+	header Cache-Control "no-cache"
 	file_server
 }
 
@@ -52,12 +63,11 @@ hackathon2.wx.ai.kr {
 	file_server
 }
 
-# hackathon3.wx.ai.kr — 26년 본선 무대 슬라이드 구성안(정적, 단일 파일)
+# hackathon3.wx.ai.kr — 마스터 트랙 팀밋업 발표 덱(정적). 위 맞교환 주석 참고.
 hackathon3.wx.ai.kr {
 	import secure_headers
 	encode gzip
-	root * /srv/hackathon3
-	# hackathon2 와 같은 이유로 no-cache. 발표 직전까지 고쳐 배포한다.
+	root * /srv/hackathon
 	header Cache-Control "no-cache"
 	file_server
 }
