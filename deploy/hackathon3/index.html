@@ -320,8 +320,16 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    (디졸브) → 경계선이 생길 틈이 없다. 그림 없는 장으로 가면 슬롯만 꺼진다. */
 .stagefs{background:var(--void)}
 .stagefs .stagebg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.stagefs .stagebg .bgslot{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;background-repeat:no-repeat;opacity:0;
-  transition:opacity 1200ms ease-in-out,background-position 900ms ease-in-out,background-size 900ms ease-in-out;will-change:opacity,background-position,background-size}
+/* 배경 캔버스는 1920×1080 으로 그리되(구성안의 픽셀 오프셋이 이 기준) 브라우저 창을
+   **가득 덮도록**(cover) 키운다 — 프레임은 16:9 상자 안에, 배경은 창 끝까지. */
+.stagefs .stagebg .bgcanvas{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+.stagefs .stagebg .bgslot{position:absolute;inset:0;background-repeat:no-repeat;opacity:0;
+  transition:opacity 1400ms ease-in-out,background-position 1600ms cubic-bezier(.45,.05,.2,1),background-size 1600ms cubic-bezier(.45,.05,.2,1);
+  will-change:opacity,background-position,background-size;
+  /* 장이 떠 있는 동안에도 아주 천천히 밀려 들어간다 — 배경이 멈춰 있지 않다 */
+  animation:bgdrift 26s ease-in-out infinite alternate}
+.stagefs .stagebg .bgslot:nth-child(2){animation-delay:-13s}
+@keyframes bgdrift{from{transform:scale(1)}to{transform:scale(1.06)}}
 .stagefs .stagebg .bgveil{position:absolute;inset:0;background:linear-gradient(rgba(8,6,42,.30),rgba(8,6,42,.55))}
 .stagefs .host{position:relative;z-index:1}
 .stagefs .host .fw{background:transparent}
@@ -331,7 +339,6 @@ body.stageonly>.wrap{display:none}
 body.stageonly .stagefs .bar{display:none}
 body.stageonly .stagefs .host .fw{width:min(100vw,calc(100vh * 16 / 9))}
 body.stageonly .stagefs .host{cursor:pointer}
-@media (prefers-reduced-motion:reduce){.stagefs .stagebg .bgslot{transition:none}}
 @media (prefers-reduced-motion:reduce){.tcard,.view,.stagefs .host .fw{transition:none}}
 </style>
 </head>
@@ -403,7 +410,7 @@ body.stageonly .stagefs .host{cursor:pointer}
 </div>
 
 <div class="stagefs" id="stagefs" role="dialog" aria-modal="true">
-  <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgslot"></div><div class="bgslot"></div><div class="bgveil"></div></div>
+  <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgcanvas"><div class="bgslot"></div><div class="bgslot"></div></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
@@ -752,19 +759,26 @@ const STAGE_ONLY=new URLSearchParams(location.search).has('stage');
 /* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
    새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
 const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')]; let active=0, src=null;
-  const fit=()=>{ const r=host.getBoundingClientRect(); const fw=host.querySelector('.fw'); const w=fw?fw.getBoundingClientRect().width:r.width; const sc=w/1920; slots.forEach(e=>{ e.style.transform=`translate(-50%,-50%) scale(${sc})`; }); };
+  const canvas=$('#stageBg .bgcanvas'); const fit=()=>{ const sc=Math.max(innerWidth/1920, innerHeight/1080); canvas.style.transform=`translate(-50%,-50%) scale(${sc})`; };
   const apply=(e,p)=>{ e.style.backgroundImage=`url("${p.bg}")`; e.style.backgroundSize=p.bgSize||'cover'; e.style.backgroundPosition=p.bgPos||'center'; };
-  const show=(p)=>{ fit(); if(!p||!p.bg){ if(src===null) return; slots[active].style.opacity='0'; src=null; return; }
-    if(p.bg===src){ apply(slots[active],p); slots[active].style.opacity='1'; return; }
-    const n=1-active, e=slots[n]; e.style.transition='none'; apply(e,p); void e.offsetWidth; e.style.transition=''; e.style.opacity='1'; slots[active].style.opacity='0'; active=n; src=p.bg; };
+  /* 디졸브는 Web Animations API — openStage 가 무대를 껐다 켜고 프레임을 옮기는 사이에 CSS 트랜지션이
+     시작을 놓치는 일이 실측됐다(직접 호출은 되고 openStage 경유만 툭 바뀜). animate() 는 그와 무관하게 돈다. */
+  const FADE=1400;
+  const fade=(e,to)=>{ const from=parseFloat(getComputedStyle(e).opacity); e.getAnimations().filter(a=>a.id==='fade').forEach(a=>a.cancel()); e.style.opacity=String(to); if(from===to) return; const a=e.animate([{opacity:from},{opacity:to}],{duration:FADE,easing:'ease-in-out'}); a.id='fade'; };
+  const show=(p)=>{ fit(); if(!p||!p.bg){ if(src===null) return; fade(slots[active],0); src=null; return; }
+    if(p.bg===src){ apply(slots[active],p); fade(slots[active],1); return; }
+    const n=1-active, e=slots[n]; e.style.transition='none'; apply(e,p); void e.offsetWidth; e.style.transition=''; fade(e,1); fade(slots[active],0); active=n; src=p.bg; };
   window.addEventListener('resize',fit); return {show, fit}; })();
 /* 무대 배경 8장은 미리 받아 둔다 — 디졸브 도중에 그림이 뒤늦게 뜨지 않게 */
 [...new Set(FLAT.map(p=>p.bg).filter(Boolean))].forEach(u=>{ const im=new Image(); im.src=u; });
 function openStage(i, dir){
-  const prev=cur; closeStage(false); cur=(i+FLAT.length)%FLAT.length; const rec=pageEls.get(FLAT[cur].id); stageBg.show(FLAT[cur]);
+  const prev=cur; closeStage(false); cur=(i+FLAT.length)%FLAT.length; const rec=pageEls.get(FLAT[cur].id);
   ph=document.createComment('fw'); rec.fw.parentNode.insertBefore(ph, rec.fw); host.appendChild(rec.fw); moved=rec.fw;
   if(dir){ rec.fw.classList.add(dir>0?'arrive-down':'arrive-up'); requestAnimationFrame(()=>requestAnimationFrame(()=>rec.fw.classList.remove('arrive-down','arrive-up'))); }
   stage.classList.add('on'); document.body.style.overflow='hidden';
+  /* 무대가 켜진 뒤 바로 바꾼다. 디졸브는 CSS 트랜지션이 아니라 animate()(시간 기반)라 같은 틱의 display 토글과
+     무관하게 돈다. rAF 로 미루면 탭이 가려졌을 때 수 초 늦어진다(실측) — 미루지 않는다. */
+  stageBg.show(FLAT[cur]);
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
   if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
   requestAnimationFrame(stageBg.fit);
