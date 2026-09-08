@@ -23,7 +23,9 @@
   /* ── 무대(1920×1080) 토큰. 두 팀밋업 사이트의 tokens.css 값을 1920 기준 px로 환산 ── */
   --void:#08062A; --st-ink:#EEF0FF; --st-soft:#C3C6EE; --st-faint:#A3A7D8; --violet:#8489F5; --kw:#8AF0C6; --gold:#F2C14E; --st-line:rgba(238,240,255,.14); --panel:rgba(238,240,255,.05);
   --pad:64px; --gap:15px; --brand-h:46px; --brandbar-h:104px;
-  --s00:21px; --s0:24px; --s1:32px; --s2:39px; --s3:56px; --s4:86px; --s5:144px;
+  /* 대형 이벤트홀 뒷줄에서 읽히도록 올린 값(이종은 지시 9/8). 1920 기준 24px 이하는
+     맨 뒤에서 안 읽힌다 — 본문 최소를 30px 로 끌어올렸다. 원래 값은 21/24/32/39/56/86/144. */
+  --s00:26px; --s0:30px; --s1:38px; --s2:46px; --s3:62px; --s4:92px; --s5:150px;
   --head:'Paperlogy','NanumSquare','Pretendard','Malgun Gothic',sans-serif;
   --body:'NanumSquare','Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
   --hand:'Gaegu','Nanum Pen Script','Nanum Brush Script',cursive;
@@ -137,12 +139,36 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .frame.hassub .body-z{top:348px;height:668px}
 .frame.two.hassub .body-z{top:406px;height:610px}
 .body-z.narrow{width:1120px}
-.obj-z.has-img{border-color:transparent;color:inherit}
+/* ── 시상품 자리 — 오른쪽에 몰지 않고 가운데로 ────────────────────────────
+   원래 .obj-z 는 오른쪽 576px 기둥이라 상품이 한쪽으로 쏠렸다(이종은 지적 9/8).
+   사진이 든 경우에는 본문 아래 전폭 띠로 내려 **가운데 정렬**하고, 굿즈(A-12)와
+   같은 반투명 크리스탈 박스에 넣는다. 상품 원본은 배경을 지운 투명 WebP 다
+   (wx26-screens/scripts/build-prizes.mjs). */
+.obj-z.has-img{border-color:transparent;color:inherit;left:var(--pad);top:520px;width:1792px;height:496px}
+.obj-z.has-img .oi{flex-direction:row;justify-content:center;align-items:stretch;gap:40px;width:auto;height:100%}
+/* flex-basis 를 0 으로 두면 안 된다 — 그림은 absolute 라 폭을 만들지 않아 상자가
+   캡션 글자 폭(113px)으로 쪼그라든다(9/8 실측). 기준 폭을 주고 늘어나게 한다. */
+.obj-z.has-img figure{position:relative;flex:1 1 480px;max-width:760px;min-width:420px;justify-content:flex-end;gap:0;padding:0;overflow:hidden;
+  border:1px solid rgba(255,255,255,.24);border-radius:20px;
+  background:linear-gradient(155deg,rgba(255,255,255,.17),rgba(255,255,255,.05) 45%,rgba(150,175,255,.12));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -24px 48px rgba(130,155,255,.10),0 20px 46px rgba(0,0,0,.34);
+  -webkit-backdrop-filter:blur(13px) saturate(1.18);backdrop-filter:blur(13px) saturate(1.18)}
+.obj-z.has-img figure::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(118deg,transparent 28%,rgba(255,255,255,.17) 46%,transparent 62%)}
+.obj-z.has-img img{position:absolute;left:8%;top:7%;width:84%;height:64%;max-width:none;max-height:none;
+  object-fit:contain;border-radius:0;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5))}
+.obj-z.has-img figcaption{position:relative;z-index:1;width:100%;text-align:center;font-weight:700;color:#fff;
+  font-size:var(--s1);padding:16px 14px 18px;text-shadow:0 2px 10px rgba(8,6,42,.75);
+  background:linear-gradient(transparent,rgba(8,6,42,.5))}
 .obj-z .oi{display:flex;flex-direction:column;gap:28px;align-items:center;width:100%}
 .obj-z figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px}
 .obj-z img{max-width:100%;max-height:300px;object-fit:contain;border-radius:12px}
 .obj-z figcaption{font-size:var(--s0);color:var(--st-soft)}
-.award .pimg{height:170px;object-fit:contain;border-radius:10px}
+.award .pimg{height:170px;width:auto;object-fit:contain;border-radius:16px;padding:12px 26px;box-sizing:border-box;
+  border:1px solid rgba(255,255,255,.22);
+  background:linear-gradient(155deg,rgba(255,255,255,.15),rgba(255,255,255,.05));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 14px 30px rgba(0,0,0,.3);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .cover .cimg{height:240px;object-fit:contain;margin-bottom:6px}
 .obj-z{position:absolute;left:1280px;top:273px;width:576px;height:743px;border:2px dashed transparent;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:transparent;font-size:var(--s00);padding:24px}
 .foot-z{position:absolute;left:var(--pad);bottom:40px;width:1500px;font-size:var(--s00);color:var(--st-faint);line-height:1.5}
@@ -157,9 +183,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .view{position:absolute;inset:0;transition:opacity .46s cubic-bezier(.22,.61,.36,1),transform .46s cubic-bezier(.22,.61,.36,1)}
 .view.off-r{opacity:0;transform:translateX(64px);pointer-events:none}
 .view.off-l{opacity:0;transform:translateX(-64px);pointer-events:none}
-.stepnav{position:absolute;right:var(--pad);bottom:64px;display:flex;gap:8px;align-items:center;z-index:6;font-size:22px;color:var(--st-faint)}
-.stepnav button{font:inherit;font-size:22px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:4px 14px}
-.stepnav .lab{font-size:20px}
+.stepnav{position:absolute;right:var(--pad);bottom:18px;display:flex;gap:8px;align-items:center;z-index:6;font-size:26px;color:var(--st-faint)}
+.stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:4px 14px}
+.stepnav .lab{font-size:28px}
 
 /* 본문 부품 */
 .lines{display:flex;flex-direction:column;gap:6px;color:var(--st-soft)}
@@ -197,12 +223,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .team .names{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 16px;align-content:start}
 .team .names span{font-family:var(--head);font-weight:800;font-size:44px;color:var(--st-ink);line-height:1.3}
 .team .etc{font-size:var(--s0);color:var(--st-faint);margin-top:28px;line-height:1.7}
-.tbl table{border-collapse:collapse;width:100%;font-size:26px;line-height:1.4}
+.tbl table{border-collapse:collapse;width:100%;font-size:30px;line-height:1.4}
 .tbl th,.tbl td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--st-line)}
 .tbl th{font-size:var(--s00);letter-spacing:.08em;color:var(--st-faint);font-weight:400}
-.tbl td.t{font-family:var(--mono);white-space:nowrap;color:var(--st-ink);font-size:24px;padding-top:12px}
+.tbl td.t{font-family:var(--mono);white-space:nowrap;color:var(--st-ink);font-size:28px;padding-top:12px}
 .tbl td.c{color:#CCE8FE}.tbl td.m{color:#F7DFA5}
-.tbl.sched table{font-size:24px;line-height:1.35}
+.tbl.sched table{font-size:28px;line-height:1.35}
 .tbl.sched th,.tbl.sched td{padding:8px 14px}
 .tl{display:grid;gap:110px;padding-top:40px}
 .tl .row{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
@@ -230,27 +256,33 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ctl .btn,.ctl input,.ctl select{font:inherit;font-size:var(--s0);background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:8px 18px}
 .ctl select{max-width:900px;color:var(--st-ink)} .ctl option{color:#000}
 .frame.done .digits{color:var(--gold)} .frame.over .digits{color:#F28B82}
-.slots{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:20px;height:470px}
+/* 글자를 키운 뒤 아래 조작 줄이 각주와 겹쳤다(9/8) — 카드판과 풀을 줄여 자리를 낸다. */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;height:436px}
 .slot{position:relative;border:3px dashed var(--st-line);border-radius:16px;padding:22px;display:flex;align-items:flex-end;cursor:pointer;background:var(--panel)}
 .slot:hover{border-color:var(--st-faint)} .slot.ready{border-style:solid;border-color:var(--gold)} .slot.filled{border-style:solid;border-color:var(--violet);cursor:default}
-.slot .n{position:absolute;left:22px;top:16px;font-family:var(--head);font-weight:900;font-size:var(--s2);color:var(--violet)}
-.slot .part{position:absolute;right:22px;top:22px;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
-.pool{margin-top:20px;height:150px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;border:1px solid var(--st-line);border-radius:12px}
+.slot .n{position:absolute;left:22px;top:16px;width:max-content;font-family:var(--head);font-weight:900;font-size:var(--s2);color:var(--violet)}
+/* width 를 안 주면 shrink-to-fit 이 784px 까지 퍼져 왼쪽 슬롯 번호(.n)를 덮는다(9/8 실측). */
+/* .part 는 부 구분 컴포넌트(display:grid, 720px 열)와 이름이 겹친다 — grid 를 물려받으면
+   max-content 가 720+64 = 784px 이 되어 슬롯 번호를 덮는다(9/8 실측). block 으로 되돌린다. */
+.slot .part{position:absolute;right:22px;top:22px;display:block;width:max-content;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
+.pool{margin-top:16px;height:126px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;border:1px solid var(--st-line);border-radius:12px}
 .pool .lab{width:100%;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
-.tcard{border:2px solid var(--st-line);background:var(--panel);color:var(--st-soft);border-radius:10px;padding:8px 20px;font-family:var(--head);font-weight:800;font-size:30px;line-height:1.2;filter:blur(.6px);transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
+.tcard{border:2px solid var(--st-line);background:var(--panel);color:var(--st-soft);border-radius:10px;padding:8px 20px;font-family:var(--head);font-weight:800;font-size:34px;line-height:1.2;filter:blur(.6px);transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
 .tcard.sel{outline:4px solid var(--gold);color:var(--st-ink);filter:none}
 .slot .tcard{filter:none;width:100%;background:rgba(132,137,245,.14);border-color:var(--violet);color:var(--st-ink);font-size:44px;text-align:center;padding:14px}
 .tcard.moving{transition:none}
-.ctl.left{justify-content:flex-start;margin-top:14px;font-size:20px}
-.ctl.left .btn{font-size:20px;padding:4px 12px}
+.ctl.left{justify-content:flex-start;margin-top:14px;font-size:24px}
+.ctl.left .btn{font-size:24px;padding:6px 16px}
 .cere{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,6,42,.92);z-index:7;text-align:center}
 .cere.on{display:flex}
 .cere .in{font-family:var(--head);font-weight:900;font-size:140px;line-height:1.15;color:var(--st-ink)}
 .cere .in small{display:block;font-family:var(--body);font-weight:700;font-size:44px;color:var(--gold);letter-spacing:.06em;margin-bottom:16px}
-.award{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:26px;text-align:center}
+/* 내용이 본문 자리(743px)보다 커지면 가운데 정렬 때문에 위로도 삐져나와 제목(92px)과
+   겹친다(9/8 실측 D-16·D-17). 간격과 상품 그림을 줄여 안에 들어가게 한다. */
+.award{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;text-align:center}
 .award .team{font-family:var(--head);font-weight:900;font-size:176px;line-height:1.1;letter-spacing:-.02em;color:var(--st-ink)}
 .award .team.veil{color:rgba(238,240,255,.18);filter:blur(16px);cursor:pointer}
-.award .topic{font-size:var(--s2);color:var(--st-soft);max-width:1600px}
+.award .topic{font-size:var(--s1);color:var(--st-soft);max-width:1600px}
 .award .prize{font-family:var(--head);font-weight:800;font-size:48px;color:var(--gold)}
 .award .cert{font-size:var(--s0);color:var(--st-faint)}
 .aw{display:grid;gap:22px}
@@ -305,7 +337,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .slogan .pre{font-family:var(--head);font-weight:800;font-size:34px;line-height:1;letter-spacing:0;color:var(--st-ink);padding-left:6px}
 .slogan .impact{display:block;height:96px;aspect-ratio:4710/1294;background:var(--st-ink);-webkit-mask-image:var(--ci-impact);mask-image:var(--ci-impact);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
 .slogan.inline{position:static;justify-content:flex-start;margin-top:8px}
-.slogan.inline .pre{font-size:22px} .slogan.inline .impact{height:60px}
+.slogan.inline .pre{font-size:28px} .slogan.inline .impact{height:76px}
 
 /* 손글씨 — 낱말별 붓글씨 SVG(docs/hand/wNN.svg, 나노바나나 생성 → potrace). 글자색을 그대로 물려받는다 */
 .hand{position:relative;display:inline-flex;align-items:flex-end;gap:.32em;padding:0;vertical-align:baseline}
@@ -335,6 +367,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .stagefs .bar .btn{background:transparent;color:#9AA4C0;border-color:#333}
 .stagefs .bar .cur{margin-left:auto}
 .stagefs .frame .fsbtn{display:none}
+/* 키 안내는 개발용이다 — 무대에서는 감춘다. 단계 표시(.stepnav)와 같은 구석을 쓴다. */
+body.stageonly .stagefs .frame .hint-z{display:none}
 /* ── 무대 배경 층 — 슬롯 두 장으로 컷 없이 넘어간다 ─────────────────────
    같은 그림이 이어지면(구성안의 팬·줌 구간) 슬롯을 갈지 않고 위치·크기만
    트랜지션 → 카메라가 흐른다. 그림이 바뀌면 두 슬롯이 같은 시간에 교차
@@ -525,7 +559,7 @@ const PARTS = [
     ], viz:'세 단계 — 번호 · 소제목 · 항목. 원문 15줄을 그대로, 배치로 푼다', how:'"무박 2일" → "1박 2일"' }),
   P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'<em>1일차</em> · 2일차 일정', steps:[{label:'1일차', body:{type:'table', sched:1}},{label:'2일차', body:{type:'table', sched:2}}], dynTitle:['<em>1일차</em> 9/10(목) 일정','<em>2일차</em> 9/11(금) 일정'], viz:'표 — 포스터 일정표 그대로. 하루씩 한 단계', how:'셀 안 줄바꿈은 표라서 허용', foot:'★ 과제 수행 및 베네핏 게임(9.11(금) 0시)은 자율 참여이며, 야식은 9.10(목) 22시에 제공됩니다.' }),
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권이 제공됩니다','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바랍니다','9/11(금) 0시 · 자율 참여', MUST, '발표자는 크루원 누구나 (단체 발표도 가능)']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
-  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', body:{type:'lines', lines:['에어팟','포스코인재창조원장 명의 수료증 수여']}, obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.jpg','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
+  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', body:{type:'lines', lines:['에어팟','포스코인재창조원장 명의 수료증 수여']}, obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', body:{type:'lines', lines:['최우수상 — '+PRIZE.top,'우수상 — '+PRIZE.good]}, obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'교육장소 이용 안내 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'오시는 길 · <em>숙소</em> 이용 규정', steps:[
       {label:'오시는 길', body:{type:'split', lines:['컨벤션센터(주 건물) — 1층 이벤트홀(메인홀)','2층 201 · 202 · 203호 — 마스터 크루 · B1 식당','레지던스홀 · R&D센터 · 러닝센터','연세대 방향 · 트리플 스트리트 방향 · SUNY 뉴욕주립대','보행 중 휴대전화 사용 금지 · 보행 중 주머니에 손 넣기 금지'], ph:'캠퍼스 조감도 672×711 ❓'}},
@@ -556,7 +590,7 @@ const PARTS = [
   P({ no:'3', id:'D-04', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1770px', title:'마스터 최종 선발 프로젝트', eyebrow:'최종 선발 프로젝트 · 마스터 트랙', h:'마스터 트랙 <em>과제</em> 셋', body:{type:'trio', n:3, items:MASTERS.map(m=>[`【${m.dom}】`, m.topic, m.desc])}, viz:'세 칸 — 분야 · 과제명 · 설명 원문', how:'원문 그대로. 칸 본문은 24px' }),
   P({ no:'3', id:'D-05', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1652px', title:'챌린저 최종 선발 프로젝트 (2단계)', eyebrow:'최종 선발 프로젝트 · 챌린저 트랙', h:'챌린저 트랙 <em>과제</em> 여덟', dyn:true, steps:[0,1].map(h=>({label:`발표 ${h*4+1}~${h*4+4}번`, body:()=>({type:'trio', n:2, items:[0,1,2,3].map(j=>{ const i=h*4+j; const t=slotTeam(i); return [`발표 ${i+1}번 · ${t?t.team:'—'}`, t?t.title:'(발표 순서 결정 후)', t?t.desc:'']; })})})), viz:'2×2 칸 — 팀 · 과제명 · 설명 원문. 4과제씩 두 단계', how:'설명은 원문 그대로, 칸 안에서 24px 여러 줄(표처럼 허용)' }),
   P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', body:{type:'lines', lines:['최우수상 — '+PRIZE.top,'우수상 — '+PRIZE.good]}, obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
-  P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가자 <em>전원</em>에게 드리는 선물', body:{type:'lines', lines:['인재창조원장님 명의 수료증 + 에어팟']}, obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.jpg','에어팟']], viz:'A-16 과 같음', how:'한 줄' }),
+  P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가자 <em>전원</em>에게 드리는 선물', body:{type:'lines', lines:['인재창조원장님 명의 수료증 + 에어팟']}, obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'A-16 과 같음', how:'한 줄' }),
   P({ no:'6', id:'D-06', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1298px', title:'심사기준 (2단계)', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', steps:[
       {label:'챌린저 트랙', body:{type:'criteria', h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']}},
       {label:'마스터 트랙', body:{type:'criteria', h:'[마스터 트랙]', bar:[['Verification 60%',60],['Validation 40%',40]], txt:['<b>Verification : 비즈니스 임팩트 평가 60%</b> (포스코홀딩스에서 개발한 AIReX 산식 기반, 솔루션이 실제 경영성과와 비즈니스 가치로 연결될 수 있는지 평가)','<b>Validation : 기술·솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','평가 — 9/11(금) 09:00~12:00 2층 호실']}},
@@ -611,7 +645,7 @@ B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':''), b.lines.map(l=>lnP
 B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
 B.stats=(b)=>el('div','stats'+(b.big?' big':''), b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join(''));
 B.trio=(b)=>{ const w=el('div'); w.innerHTML=(b.lead?`<div class="lines" style="margin-bottom:26px"><p class="ln">${b.lead}</p></div>`:'')+`<div class="trio c${b.n}${b.hero?' hero':''}">${b.items.map(([k,t,body])=>`<div class="it">${/^\d+$/.test(k)?`<div class="no">${k}</div>`:k?`<div class="kk ln">${k}</div>`:'<div class="no">&nbsp;</div>'}<div class="tt ln">${t}</div><div class="bb">${String(body).split('<br>').map(x=>x?`<p class="ln">${x}</p>`:'').join('')}</div></div>`).join('')}</div>`; return w; };
-B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:24px;letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
+B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
 B.table=(b)=>{ if(b.sched) return sched(b.sched); const rows=b.rows; return el('div','tbl',`<table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'t':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`); };
 function sched(day){
   const r1=[['08:00~09:00','참가자 접수 및 굿즈 수령 (컨벤션센터 이벤트홀)'],['09:00~10:00','개회식 및 오리엔테이션 (1hr) **08:40까지 크루별 착석'],['10:00~11:30','전문가 특강 (1.5hr) 박종천 개발자 "실전 개발 노하우"'],['11:30~12:00','현업 AX우수사례 공유 (0.5hr) P-DX 「AX Village」'],['12:00~13:00','네트워킹 파티 (1hr) 불고기 도시락과 함께 신나는 런치 타임'],['13:00~17:00','','과제 수행 (4hr) 24시간 끝장 개발 시작','실사용 솔루션 구현 및 현장 시연 준비 (4hr) 2층 안전 201호 · 물류 202호 · 마켓센싱 203호'],['17:00~18:00','','1차 전문가 코칭 및 피드백 (1hr) *석식 포함','자율 활동 — 과제 보완, 발표 준비 등 팀별 자율 운영 *석식 포함'],['18:00~08:00','','과제 수행 (14hr) ★베네핏 게임 0시','—']];
@@ -644,7 +678,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
 
     frame.appendChild(z('title-z ttl'+(p.center?' center':''), p.h, '제목 86px (64,119) · 한 낱말 강조 · 위에는 로고만'));
     if(p.sub) frame.appendChild(z('sub-z ln', p.sub, '부제 39px (64,273)'));
-    const body=z('body-z'+(p.obj?' narrow':''),'', p.obj?'본문 (64,273) 1120×743':'본문 (64,273) 1792×743');
+    const body=z('body-z'+(p.obj&&!p.objImgs?' narrow':''),'', (p.obj&&!p.objImgs)?'본문 (64,273) 1120×743':'본문 (64,273) 1792×743');
     if(p.steps){
       const views=el('div','views');
       p.steps.forEach((st,i)=>{ const v=el('div','view'+(i?' off-r':'')); v.dataset.step=i; v.appendChild(buildBody(st.body,p)); views.appendChild(v); });
