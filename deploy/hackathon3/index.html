@@ -159,14 +159,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   -webkit-backdrop-filter:blur(13px) saturate(1.18);backdrop-filter:blur(13px) saturate(1.18)}
 .obj-z.has-img figure::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(118deg,transparent 28%,rgba(255,255,255,.17) 46%,transparent 62%)}
-.obj-z.has-img img{position:absolute;left:5%;top:6%;width:90%;height:74%;max-width:none;max-height:none;
+.obj-z.has-img img{position:absolute;left:5%;top:10%;width:90%;height:71%;max-width:none;max-height:none;
   object-fit:contain;border-radius:0;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5))}
 .obj-z.has-img figcaption{position:relative;z-index:1;width:100%;text-align:center;font-weight:700;color:#fff;
   font-size:38px;padding:18px 14px 20px;text-shadow:0 2px 10px rgba(8,6,42,.75);white-space:nowrap;
   background:linear-gradient(transparent,rgba(8,6,42,.55));border-radius:0 0 20px 20px}
 /* 등급은 박스 윗변에 걸치는 띠로 올린다(이종은 9/9). figure 의 overflow 를
    visible 로 열어야 띠가 잘리지 않는다. */
-.obj-z.has-img .rank{position:absolute;left:50%;top:-28px;transform:translateX(-50%);z-index:3;
+.obj-z.has-img .rank{position:absolute;left:50%;top:-46px;transform:translateX(-50%);z-index:3;
   font-family:var(--head);font-weight:900;font-size:42px;letter-spacing:.02em;white-space:nowrap;
   padding:12px 40px;border-radius:999px;
   color:#3A2A00;background:linear-gradient(180deg,#FFEFA6,#F3C41F);
@@ -293,16 +293,18 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   box-shadow:0 26px 64px rgba(4,3,24,.52), inset 0 1px 0 rgba(255,255,255,.85)}
 .tools .ncols{display:grid;grid-template-columns:repeat(3,1fr);gap:44px}
 .tools .nc{display:flex;flex-direction:column;min-width:0}
-.tools .nh{display:flex;align-items:center;gap:18px;min-width:0}
+/* 배지를 숫자 위에 올리고 두 줄을 가운데로 맞춘다(이종은 9/10). */
+.tools .nh{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+.tools .nn{display:flex;align-items:baseline;gap:12px}
 /* 로고 그림이 아직 없다 — 스파르타 로고처럼 브랜드 색 알약에 이름을 적는다.
    `img/logo/<key>.webp` 를 넣으면 그 그림으로 바뀐다(못 읽으면 알약이 남는다). */
 .tools .mk{position:relative;display:inline-flex;align-items:center;justify-content:center;
-  height:68px;padding:0 18px;border-radius:15px;background:var(--c);color:#fff;white-space:nowrap;
-  font-family:var(--head);font-weight:900;font-size:24px;letter-spacing:.01em;
+  height:64px;padding:0 22px;border-radius:15px;background:var(--c);color:#fff;white-space:nowrap;
+  font-family:var(--head);font-weight:900;font-size:26px;letter-spacing:.01em;
   box-shadow:0 8px 18px rgba(0,0,0,.22)}
 .tools .mk img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
-.tools .nh .n{font-family:var(--head);font-weight:900;font-size:72px;line-height:1;color:#0E9C68;white-space:nowrap}
-.tools .nh .u{font-family:var(--head);font-weight:900;font-size:36px;line-height:1;color:#0E9C68}
+.tools .nh .n{font-family:var(--head);font-weight:900;font-size:84px;line-height:1;color:#0E9C68;white-space:nowrap}
+.tools .nh .u{font-family:var(--head);font-weight:900;font-size:42px;line-height:1;color:#0E9C68}
 .tools .nl{margin:36px 0 0;padding:0;list-style:none}
 .tools .nl li{position:relative;padding-left:28px;font-size:27px;line-height:1.5;
   color:#242A31;margin-bottom:20px}
@@ -351,6 +353,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules .grp .row{display:flex;gap:20px;flex:1;min-height:0;min-width:0}
 .rules .grp .row .rc{flex:1 1 0;min-width:0}
 .rules .cards{display:grid;gap:20px;flex:1;min-height:0}
+/* 칸을 세로로 늘리지 않는다 — 글 아래가 뻥 비었다(이종은 9/10).
+   격자의 기본 align-content:stretch 가 한 줄짜리 auto 행을 통째로 늘린다. */
+.frame[data-id="A-19b"] .rules .cards{flex:0 0 auto;align-content:start}
 .rules .cards.c2{grid-template-columns:repeat(2,1fr)}
 .rules .cards.c3{grid-template-columns:repeat(3,1fr)}
 .rules .rc{background:rgba(8,6,42,.86);border:1px solid rgba(238,240,255,.28);border-radius:16px;
@@ -526,9 +531,15 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    옛 6장(크루명·과제명)과 7~9장(크루원)을 한 장에 합쳤다(이종은 9/9).
    한 칸이 한 크루 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치. */
 .mcrew{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%}
-.mcrew .it{border-left:2px solid var(--violet);padding:6px 14px 6px 18px;display:flex;flex-direction:column;min-height:0}
-.mcrew .kk{font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
-.mcrew .tt{font-family:var(--head);font-weight:900;font-size:var(--s3);line-height:1.1;letter-spacing:.01em;margin:8px 0 10px;color:var(--st-ink)}
+/* 팀마다 판을 깔아 어디까지가 한 팀인지 한눈에 보이게 한다(이종은 9/10).
+   분야(안전 · 물류 · 마켓센싱)는 팀의 머리표라 크게 키워 맨 위에 세운다. */
+.mcrew .it{background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
+  padding:26px 30px 28px;display:flex;flex-direction:column;min-height:0;
+  box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
+  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+.mcrew .kk{font-family:var(--head);font-weight:900;font-size:40px;line-height:1.1;
+  letter-spacing:.02em;color:var(--kw)}
+.mcrew .tt{font-family:var(--head);font-weight:900;font-size:var(--s3);line-height:1.1;letter-spacing:.01em;margin:12px 0 10px;color:var(--st-ink)}
 .mcrew .tp{font-size:28px;line-height:1.5;color:var(--st-soft)}
 /* 과제명 아래 한 줄 설명(있는 크루만). */
 .mcrew .tg{font-size:24px;line-height:1.45;color:var(--st-faint);margin-top:10px}
@@ -1089,7 +1100,7 @@ const hand = (t) => HAND[t] ? `<span class="hand"><span class="hw" data-w="${t}"
    본문 부품: lines / kv / stats / trio / team / table / timeline / criteria / award / part / photo / split / widget */
 const P = (o) => o;
 const PARTS = [
-{ id:'p1', name:'1부 · 1일차 오전', full:'1부 · 1일차 오전 — 개회식 · 오리엔테이션 · 특강', when:'9/10(목) 08:00 ~ 13:00 · 컨벤션센터 1층 이벤트홀 · 원본 1일차 1~23 + 2일차 1~3',
+{ id:'p1', tag:'1부', name:'1부 · 1일차 오전', full:'1부 · 1일차 오전 — 개회식 · 오리엔테이션 · 특강', when:'9/10(목) 08:00 ~ 13:00 · 컨벤션센터 1층 이벤트홀 · 원본 1일차 1~23 + 2일차 1~3',
   note:'참가자가 처음 보는 화면들. 08:00 접수부터 12:00 네트워킹 파티까지. 원본 한 페이지 = 한 주제 = 한 페이지이고, 이름이 많은 크루 소개만 페이지 안에서 단계로 넘깁니다.',
   pages:[
   P({ no:'1', id:'A-01', title:'웰컴 (시작 전)', when:'08:00~08:50', bg:'bg/hf_20260907_082042_bce623cc-048d-4c07-8fd0-b217b7d0f120.jpg', bgVideo:'bg/a01-yacht-loop.mp4', eyebrow:'2026 포스코그룹 WX해커톤 본선대회', h:'WX해커톤에 함께해 주신 크루 여러분!<br>진심으로 <em>환영</em>합니다.', two:true, topSlogan:true, body:{type:'cube', lines:['등록 데스크에서 <b>명찰 수령</b> 후, 우리 크루 자리로 이동','웰컴 굿즈의 <b>기념 티셔츠로 환복</b> 후, <b>8시 40분까지 착석</b>','주변 크루와 인사 나누며 분위기 만들기','포토존에서 우리 크루들과 즐거운 기념사진 촬영']}, foot:'강의장 사외망 와이파이: SD-ET-EXTR / songdo@1<br>원활한 행사 진행 및 과제 수행을 위해 개인 단말기의 와이파이 접속은 지양 바랍니다.', viz:'맨 위 슬로건 → 가운데 제목 → 안내 4줄(한 줄씩 순차 노출)', how:'안내는 명사형으로 줄였다(9/9). 와이파이는 각주 두 줄', memo:'착석 08:40(포스터). 이 장에서만 오른쪽 위 "2026 ∞ 해커톤" 락업이 보이고, 다음 표지에서 숨긴다' }),
@@ -1164,15 +1175,21 @@ const PARTS = [
   P({ no:'23', id:'A-23', title:'현업 AX 우수사례 (표지 스타일)', when:'11:30~12:00', kind:'cover', label:'현업 AX우수사례 공유', big:hand('AX Village'), link:{href:'ax-village.html', label:'특강 자료 열기'}, linesUp:true, lines:['비개발자가 바이브코딩을 통해 프로토타입 제작부터, 디자인/설계,<br>전사 오픈까지의 경험담 및 시사점 공유'], en:'포스코DX 손영규 부장', when2:'경영기획실 AI Workforce TF팀 · 경영혁신 담당 그룹장', viz:'표지 구성 — 제목 손글씨', how:'발표 내용은 한 줄(길이 검토)' }),
   P({ no:'2일차 3', id:'B-01', title:'네트워킹 파티 (표지 스타일)', when:'12:00~13:00', kind:'cover', big:hand('네트워킹 파티'), en:'12:00 ~ 13:00', lines:['도시락 파티가 끝나면, 챌린저 트랙은 12:55까지 자리에 앉아주세요!','마스터 트랙은 2층 컨퍼런스룸으로 이동해 주시기 바랍니다.<br>(안전 201호 · 물류 202호 · 마켓센싱 203호)'], viz:'표지 구성 — 손글씨', how:'한 줄' }),
 ]},
-{ id:'p2', name:'2부 · 과제 수행 (24시간)', full:'2부 · 과제 수행 — 이벤트홀 메인 화면 (24시간)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 원본 2일차 4 + 신규 2장',
-  note:'카운트다운 한 장이 상주하고, 22:00 야식과 0시 베네핏 게임 때만 타이틀 슬라이드로 잠깐 바꿉니다. 베네핏 게임이 끝나면 3부의 "발표 순서 결정" 화면을 엽니다.',
+/* 카운트다운 한 장은 어느 부에도 넣지 않는다(이종은 9/10). 과제 수행 24시간 동안
+   이벤트홀에 상주하는 화면이라 1부에도 2부에도 속하지 않고 단독으로 센다. */
+{ id:'pc', tag:'카운트다운', name:'카운트다운 · 24시간 끝장 개발', full:'24시간 카운트다운 — 단독 (어느 부에도 속하지 않음)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 이벤트홀 메인 화면 · 원본 2일차 4',
+  note:'과제 수행 24시간 동안 이벤트홀에 상주하는 화면 한 장입니다. 1부와 2부 어느 쪽에도 귀속시키지 않고 단독으로 셉니다.',
   pages:[
   P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'현재 시각 기준 실시간. 24시간이 넘으면 "N일 HH:MM:SS". 시작 시각은 아래에서(리허설용)', memo:'PC 절전 해제' }),
+]},
+{ id:'p2', tag:'2부', name:'2부 · 과제 수행 (24시간)', full:'2부 · 과제 수행 — 야식 · 베네핏 게임 · 발표 순서', when:'9/10(목) 22:00 ~ 9/11(금) 00:30 · 원본 신규 3장',
+  note:'22:00 야식과 0시 베네핏 게임 때만 타이틀 슬라이드로 잠깐 바꿉니다. 베네핏 게임이 끝나면 "발표 순서 결정" 화면을 엽니다.',
+  pages:[
   P({ no:'—', id:'B-03', title:'야식 타임', new:true, when:'22:00', kind:'cover', big:hand('야식 타임'), en:'같이 먹고 힘내요', when2:'9/10(목) 22:00 · 24시간 부스트업존', viz:'없음 — 타이틀 한 장. 손글씨 후보', how:'원문 13페이지 · 포스터 각주' }),
   P({ no:'—', id:'B-04', title:'베네핏 게임', new:true, when:'0:00', kind:'cover', big:hand('베네핏 게임'), en:'0시의 데이트', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권이 제공됩니다','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바랍니다'], viz:'없음. 손글씨 후보', how:'A-15 와 같은 문구' }),
   P({ no:'—', id:'B-05', title:'발표 순서 결정 (카드)', new:true, when:'0시 베네핏 게임 직후', h:'<em>발표 순서</em>를 정합니다', sub:'베네핏 게임 등수대로 — 팀 카드를 고른 뒤 자리 번호를 누르면 카드가 그 자리로 갑니다', widget:'cards', foot:'1부 1·2·3번 · 2부 4·5·6번 · 3부 7·8번 · 마스터는 안전 → 물류 → 마켓센싱으로 확정', viz:'자리 2×4 + 카드 대기줄. 앉으면 "N번째 발표 · 팀명" 전면 세리모니', how:'운영 조작 화면. 결과는 저장돼 3부 발표 순서 · 크루 · 과제 화면에 그대로 쓰인다', memo:'브라우저에 저장. PC 가 다르면 "현재 상태 내보내기"' }),
 ]},
-{ id:'p3', name:'3부 · 결과발표회', full:'3부 · 최종 결과발표회', when:'9/11(금) 13:00 ~ 16:00 · 이벤트홀 · 원본 2일차 결과발표회 1~13',
+{ id:'p3', tag:'3부', name:'3부 · 결과발표회', full:'3부 · 최종 결과발표회', when:'9/11(금) 13:00 ~ 16:00 · 이벤트홀 · 원본 2일차 결과발표회 1~13',
   note:'챌린저 8팀 발표 · 심사(13분), 마스터 3팀은 1 · 2 · 3부 사이에 성과 공유 약 5분(심사 없음). 챌린저 순서는 베네핏 게임에서 정한 순서. "발표 순서 결정"에서 카드를 앉히면 크루 · 과제 · 부 시작 화면이 그 순서로 채워집니다.',
   pages:[
   P({ no:'머리', id:'D-01', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -2360px', title:'결과발표회 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('결과발표회'), when2:'9월 11일(금) 13:00', slogan:true, viz:'키비주얼', how:'A-02 와 같은 구성' }),
@@ -1196,7 +1213,7 @@ const PARTS = [
   P({ no:'12', id:'D-13', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -118px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계, 화면 가득', how:'제목 고정, 사진만 좌우로 넘어간다' }),
   P({ no:'13', id:'D-14', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -0px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true}, foot:'❓ 설문 링크', viz:'QR 480×480 가운데', how:'QR + 제목', wait:'설문 링크' }),
 ]},
-{ id:'p4', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
+{ id:'p4', tag:'4부', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
   note:'"시상 선택기"에서 마스터 최우수 1팀(나머지 2팀 자동 우수), 챌린저 최우수 · 우수를 클릭하면 시상 두 페이지(마스터 3단계 · 챌린저 2단계)가 바로 채워집니다. 팀명은 가려진 채 시작하고 무대에서 클릭하면 드러납니다. 호명: 마스터 최우수 → 우수 → 우수, 챌린저 우수 → 최우수.',
   pages:[
   P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
@@ -1252,7 +1269,7 @@ B.tools=(b)=>el('div','tools',
   `<div class="nc">
      <div class="nh">
        <span class="mk" style="--c:${t.color}"><img src="img/logo/${t.key}.webp" alt="" onerror="this.remove()">${t.name}</span>
-       <span class="n">${t.big}</span><span class="u">${t.unit||''}</span>
+       <span class="nn"><span class="n">${t.big}</span><span class="u">${t.unit||''}</span></span>
      </div>
      <ul class="nl">${t.lines.map(x=>`<li class="ln">${x}</li>`).join('')}</ul>
    </div>`).join('')+`</div></div>`);
@@ -1738,7 +1755,7 @@ function showPageNo(){
   if(!PAGENO){ el.style.display='none'; return; }
   let at=0; partStart.forEach((s,i)=>{ if(cur>=s) at=i; });
   const pad=n=>String(n).padStart(2,'0');
-  el.textContent=`${at+1}부 ${pad(cur+1)}/${pad(FLAT.length)}`+(FLAT[cur].del?' · 삭제 예정':'');
+  el.textContent=`${PARTS[at].tag} ${pad(cur+1)}/${pad(FLAT.length)}`+(FLAT[cur].del?' · 삭제 예정':'');
 }
 function openStage(i, dir){
   /* 되감지 않는다. 범위를 벗어나면 화면을 그대로 두고 안내만 띄운다. */
