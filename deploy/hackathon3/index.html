@@ -251,7 +251,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .view.off-r{opacity:0;transform:translateX(64px);pointer-events:none}
 .view.off-l{opacity:0;transform:translateX(-64px);pointer-events:none}
 .stepnav{position:absolute;right:var(--pad);bottom:78px;display:flex;gap:8px;align-items:center;z-index:6;font-size:26px;color:var(--st-faint)}
-.stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:4px 14px}
+/* 단추 모양은 덱 전체가 하나다 — 알약(이종은 9/10). */
+.stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:999px;padding:4px 18px}
 .stepnav .lab{font-size:28px}
 
 /* 본문 부품 */
@@ -773,7 +774,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense .row.t-ma{--rowbg:rgba(104,156,255,.15);--rowln:rgba(152,192,255,.36);--dot:#8FBAFF}
 .tl.dense .row.t-ch{--rowbg:rgba(255,204,88,.13);--rowln:rgba(255,214,110,.36);--dot:#FFD466}
 .tl.dense .row .st::before{background:var(--dot)}
-.tl.dense .row .st.last::before{background:#fff;box-shadow:0 0 0 7px var(--dot)}
+/* 마디 점은 모두 같은 모양이다(이종은 9/10) — 「본선 참여」를 버튼으로 따로 뺐으니
+   마지막 마디만 다르게 그릴 까닭이 없어졌다. */
+.tl.dense.join .row .st.last::before{background:var(--dot);box-shadow:none}
+.tl.dense.join .row .st.last{color:var(--st-soft)}
 .tl.dense .row .steps::before{background:color-mix(in srgb, var(--dot) 46%, transparent)}
 /* ── 두 트랙이 만나는 끝 (A-09) ──────────────────────────────────────────
    시작도 길도 달랐지만 본선만큼은 하나다(이종은 9/10). 두 판의 오른쪽에서 **판과
@@ -798,11 +802,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense.join .uframe .uw{fill:none;stroke-width:3}
 .tl.dense.join .uframe .uw.ma{stroke:rgba(152,192,255,.40)}
 .tl.dense.join .uframe .uw.ch{stroke:rgba(255,214,110,.40)}
-.tl.dense.join .uframe .ul{fill:none;stroke-width:3}
+.tl.dense.join .uframe .ul{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .tl.dense.join .uframe .ul.ma{stroke:#8FBAFF}
 .tl.dense.join .uframe .ul.ch{stroke:#FFD466}
 /* 버튼은 세로칸 한가운데 — 두 마디 줄이 모여드는 자리다. */
-.tl.dense.join .fin{position:absolute;left:1386px;top:256px;width:360px;height:231px;
+.tl.dense.join .fin{position:absolute;left:1432px;top:256px;width:344px;height:231px;
   z-index:2;box-sizing:border-box;padding:0 20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   border-radius:32px;text-align:center;
@@ -851,7 +855,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .slot .tcard{filter:none;width:100%;background:rgba(132,137,245,.14);border-color:var(--violet);color:var(--st-ink);font-size:44px;text-align:center;padding:14px}
 .tcard.moving{transition:none}
 .ctl.left{justify-content:flex-start;margin-top:14px;font-size:24px}
-.ctl.left .btn{font-size:24px;padding:6px 16px}
+.ctl.left .btn{font-size:24px;padding:6px 20px;border-radius:999px}
 .cere{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,6,42,.92);z-index:7;text-align:center}
 .cere.on{display:flex}
 .cere .in{font-family:var(--head);font-weight:900;font-size:140px;line-height:1.15;color:var(--st-ink)}
@@ -1354,7 +1358,7 @@ const PARTS = [
     viz:'그림표 세 칸 — 큰 기호 + 제목 한 줄 + 항목', how:'운영이 준 안전행동수칙 자료 그대로(9/9)' }),
   P({ no:'20', id:'A-20', title:'개회사 (표지 스타일)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'140% auto', bgPos:'center 30%', kind:'cover', huge:true, big:'개회사', en:'포스코홀딩스 김기수 미래기술연구원장', coverReveal:true, steps:[{label:'배경'},{label:'개회사'}], viz:'표지 구성 — 위 "개회사", 가운데 이름 손글씨(강렬하게, 144px 이상), 아래 직책. 사진 없음', how:'이름만 손글씨 SVG. 로고 바 오른쪽 락업은 유지' }),
   P({ no:'21', id:'A-21', title:'전환 (본선 시작)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'150% auto', bgPos:'center 10%', kind:'cover', lockup:'2026 WX해커톤 본선대회', big:hand('이제 본격적으로 시작합니다'), viz:'없음. 손글씨 후보', how:'—' }),
-  P({ no:'22', id:'A-22', title:'전문가 특강 (표지 스타일)', when:'10:00~11:30', kind:'cover', label:'전문가 특강', big:'Age of AI_<br>The Future of Work', link:{href:'age-of-ai.pdf', label:'특강 자료 열기'}, en:'JC Park (박종천 개발자)', when2:'지란지교소프트 CAIO · 『챗GPT 시대 살아남기』 저자', viz:'표지 구성 — 특강 제목이 손글씨', how:'제목은 포스터. 강사 · 소개는 아래 두 줄' }),
+  P({ no:'22', id:'A-22', title:'전문가 특강 (표지 스타일)', when:'10:00~11:30', kind:'cover', label:'전문가 특강', big:'Age of AI_<br>The Future of Work', link:{href:'age-of-ai.html', label:'특강 자료 열기'}, en:'JC Park (박종천 개발자)', when2:'지란지교소프트 CAIO · 『챗GPT 시대 살아남기』 저자', viz:'표지 구성 — 특강 제목이 손글씨', how:'제목은 포스터. 강사 · 소개는 아래 두 줄. 교안은 내려받지 않고 사이트에서 한 장씩 넘겨 본다(이종은 9/10)' }),
   P({ no:'23', id:'A-23', title:'현업 AX 우수사례 (표지 스타일)', when:'11:30~12:00', kind:'cover', label:'현업 AX우수사례 공유', big:hand('AX Village'), link:{href:'ax-village.html', label:'특강 자료 열기'}, linesUp:true, lines:['비개발자가 바이브코딩을 통해 프로토타입 제작부터, 디자인/설계,<br>전사 오픈까지의 경험담 및 시사점 공유'], en:'포스코DX 손영규 부장', when2:'경영기획실 AI Workforce TF팀 · 경영혁신 담당 그룹장', viz:'표지 구성 — 제목 손글씨', how:'발표 내용은 한 줄(길이 검토)' }),
   P({ no:'2일차 3', id:'B-01', title:'네트워킹 파티 (표지 스타일)', when:'12:00~13:00', kind:'cover', big:hand('네트워킹 파티'), en:'12:00 ~ 13:00', lines:['도시락 파티가 끝나면, 챌린저 트랙은 12:55까지 자리에 앉아주세요!','마스터 트랙은 2층 컨퍼런스룸으로 이동해 주시기 바랍니다.<br>(안전 201호 · 물류 202호 · 마켓센싱 203호)'], viz:'표지 구성 — 손글씨', how:'한 줄' }),
 ]},
@@ -1613,14 +1617,16 @@ B.sched=()=>el('div','schroll',
    본문 칸이 1792×743 로 못 박혀 있고 무대에선 통째로 배율만 바뀌므로 픽셀 좌표로
    그려도 어긋나지 않는다. 줄 높이 348.5 · 사이 46 → 오목한 자리는 y 349~394.5,
    세로칸은 x 1340~1792. 위·아래 절반을 트랙 색으로 나누고 y=371.5 에서 만난다.
-   마디 줄 끝(1236, 96 / 1236, 492)에서 곡선이 나와 버튼 왼쪽 한 점으로 모인다. */
+   마디 줄 끝(1238, 96 / 1238, 492)에서 나온 선은 **판과 같은 결**로 잇는다(이종은
+   9/10) — 곧게 가다 둥근 모서리로 꺾이고 다시 곧게. 세로 줄기는 x=1372, 모서리
+   반지름 34, 버튼 왼쪽 모서리(1432, 371.5)에서 만난다. */
 const JOINPIPE=`<svg class="uframe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path class="ub ma" d="M26,0 H1766 Q1792,0 1792,26 V371.5 H1340 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 Z"/>
   <path class="ub ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5 Z"/>
   <path class="uw ma" d="M1340,371.5 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 H1766 Q1792,0 1792,26 V371.5"/>
   <path class="uw ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5"/>
-  <path class="ul ma" d="M1236,96 C1300,96 1310,371.5 1386,371.5"/>
-  <path class="ul ch" d="M1236,492 C1300,492 1310,371.5 1386,371.5"/>
+  <path class="ul ma" d="M1238,96 H1338 Q1372,96 1372,130 V337.5 Q1372,371.5 1406,371.5 H1432"/>
+  <path class="ul ch" d="M1238,492 H1338 Q1372,492 1372,458 V405.5 Q1372,371.5 1406,371.5 H1432"/>
 </svg>`;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
@@ -2005,7 +2011,7 @@ function runSeq(fw, delay){
   });
 }
 /* 임시 쪽번호 — "N부 03/55". 부는 partStart 로 가른다(부 이동 바와 같은 셈법). */
-const PAGENO=true;
+const PAGENO=false;
 function showPageNo(){
   const el=$('#pageNo'); if(!el) return;
   if(!PAGENO){ el.style.display='none'; return; }

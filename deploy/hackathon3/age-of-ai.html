@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Age of AI_ The Future of Work · 전문가 특강 교안</title>
+<!--
+  전문가 특강 교안(박종천 개발자)을 **내려받지 않고** 한 장씩 넘겨 보는 화면.
+  운영이 준 PDF 를 그대로 두고 pdf.js 가 그때그때 한 장씩 그린다 — 미리 그림으로
+  구워 두지 않아 글씨가 어느 크기에서도 또렷하고, 파일도 한 벌만 있으면 된다.
+  pdf.js 는 vendor/pdfjs 에 넣어 두었다(행사장 인터넷이 끊겨도 돌아간다).
+-->
+<style>
+  :root{ --void:#08062A; --ink:#EEF0FF; --soft:#C3C6EE; --faint:#A3A7D8; --kw:#8AF0C6; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--void);color:var(--ink);overflow:hidden;
+    font-family:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,
+      'Segoe UI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+    -webkit-font-smoothing:antialiased}
+
+  /* 종이 한 장. 창에 맞춰 가운데. */
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    padding:14px;cursor:pointer;user-select:none}
+  #sheet{position:relative;border-radius:10px;overflow:hidden;background:#fff;
+    box-shadow:0 30px 90px rgba(0,0,0,.62)}
+  #sheet canvas{display:block}
+
+  /* 넘기는 자리 — 왼쪽 1/3 은 뒤로, 나머지는 앞으로. */
+  .zone{position:fixed;top:0;bottom:0;z-index:3}
+  .zone.prev{left:0;width:32%;cursor:w-resize}
+  .zone.next{left:32%;right:0;cursor:e-resize}
+
+  /* 위·아래 안내는 가만히 있으면 스르르 사라진다. */
+  .chrome{position:fixed;z-index:5;transition:opacity .5s ease}
+  body.idle .chrome{opacity:0;pointer-events:none}
+  #top{left:0;right:0;top:0;display:flex;align-items:center;gap:16px;
+    padding:14px 22px;background:linear-gradient(180deg,rgba(8,6,42,.92),transparent)}
+  #top .ttl{font-weight:800;font-size:17px;letter-spacing:.01em}
+  #top .who{font-size:14px;color:var(--faint)}
+  #top .sp{flex:1}
+  #top a.back{color:var(--kw);text-decoration:none;font-weight:700;font-size:14px;
+    border:1px solid rgba(138,240,198,.5);border-radius:999px;padding:6px 16px}
+  #bot{left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:18px;
+    padding:16px 22px 18px;background:linear-gradient(0deg,rgba(8,6,42,.92),transparent)}
+  #bot button{font:inherit;font-weight:800;font-size:15px;color:var(--soft);cursor:pointer;
+    background:transparent;border:2px solid rgba(238,240,255,.22);border-radius:999px;padding:6px 18px}
+  #bot button:hover{color:var(--ink);border-color:rgba(238,240,255,.44)}
+  #no{font-weight:800;font-size:16px;letter-spacing:.03em;min-width:96px;text-align:center}
+  #no b{color:var(--kw)}
+  #hint{font-size:13px;color:var(--faint)}
+
+  /* 넘긴 자리를 알려 주는 가는 막대 */
+  #bar{position:fixed;left:0;right:0;bottom:0;height:3px;background:rgba(238,240,255,.12);z-index:6}
+  #bar i{display:block;height:100%;width:0;background:var(--kw);transition:width .25s ease}
+
+  #msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:14px;z-index:9;background:var(--void);font-size:16px;color:var(--soft)}
+  #msg.done{display:none}
+  #msg .sp{width:34px;height:34px;border-radius:50%;border:3px solid rgba(238,240,255,.2);
+    border-top-color:var(--kw);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){ #msg .sp{animation:none} }
+</style>
+</head>
+<body>
+
+<div id="stage"><div id="sheet"><canvas id="cv"></canvas></div></div>
+<div class="zone prev" id="zPrev" title="이전 장"></div>
+<div class="zone next" id="zNext" title="다음 장"></div>
+
+<div id="top" class="chrome">
+  <span class="ttl">Age of AI_ The Future of Work</span>
+  <span class="who">전문가 특강 · 박종천 개발자</span>
+  <span class="sp"></span>
+  <a class="back" href="index.html" id="back">본선 화면으로</a>
+</div>
+
+<div id="bot" class="chrome">
+  <button id="bPrev" type="button">← 이전</button>
+  <span id="no"><b>–</b> / –</span>
+  <button id="bNext" type="button">다음 →</button>
+  <span id="hint">클릭 · ← → · 스페이스 · 휠 · F 전체화면</span>
+</div>
+<div id="bar"><i id="barIn"></i></div>
+
+<div id="msg"><div class="sp"></div><div>교안을 여는 중입니다…</div></div>
+
+<script type="module">
+import * as pdfjsLib from './vendor/pdfjs/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdfjs/pdf.worker.min.mjs';
+
+const $ = (s) => document.querySelector(s);
+const cv = $('#cv'), sheet = $('#sheet'), msg = $('#msg');
+let doc = null, cur = 1, total = 0, busy = false, want = 1;
+
+/* 창에 맞는 배율. 화면 픽셀 밀도까지 곱해 그려야 글씨가 또렷하다.
+   값이 이상하면(0 · NaN) 1 로 물러선다 — 캔버스 크기가 NaN 이 되면 그림이
+   300×150 기본 크기로 쪼그라든다. */
+function fit(vp1){
+  const box = $('#stage').getBoundingClientRect();
+  const w = Math.max(240, (box.width || innerWidth) - 28);
+  const h = Math.max(160, (box.height || innerHeight) - 28);
+  const s = Math.min(w / vp1.width, h / vp1.height);
+  return Number.isFinite(s) && s > 0 ? s : 1;
+}
+
+async function draw(n){
+  if(!doc || busy) { want = n; return; }
+  busy = true;
+  try{
+    const page = await doc.getPage(n);
+    const vp1 = page.getViewport({ scale: 1 });
+    const css = fit(vp1);
+    const dpr = Math.min(devicePixelRatio || 1, 2.5);
+    const vp = page.getViewport({ scale: css * dpr });
+    const pw = Math.max(1, Math.round(vp.width)), ph = Math.max(1, Math.round(vp.height));
+    cv.width = pw; cv.height = ph;
+    cv.style.width = Math.round(vp1.width * css) + 'px';
+    cv.style.height = Math.round(vp1.height * css) + 'px';
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    cur = n;
+    $('#no').innerHTML = `<b>${n}</b> / ${total}`;
+    $('#barIn').style.width = (n / total * 100) + '%';
+    location.hash = 'p' + n;
+  } finally {
+    busy = false;
+    if(want !== cur) { const w2 = want; want = cur; draw(w2); }
+  }
+}
+
+const go = (d) => { const n = Math.min(total, Math.max(1, (want !== cur ? want : cur) + d)); if(n !== cur || want !== cur) draw(n); };
+
+/* 가만히 있으면 안내를 감춘다 — 무대에서는 교안만 보이는 게 낫다. */
+let idleT;
+function wake(){ document.body.classList.remove('idle'); clearTimeout(idleT);
+  idleT = setTimeout(() => document.body.classList.add('idle'), 2600); }
+addEventListener('mousemove', wake); addEventListener('keydown', wake); wake();
+
+$('#zNext').addEventListener('click', () => go(1));
+$('#zPrev').addEventListener('click', () => go(-1));
+$('#bNext').addEventListener('click', (e) => { e.stopPropagation(); go(1); });
+$('#bPrev').addEventListener('click', (e) => { e.stopPropagation(); go(-1); });
+
+addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); go(1); }
+  else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); go(-1); }
+  else if(e.key === 'Home'){ e.preventDefault(); draw(1); }
+  else if(e.key === 'End'){ e.preventDefault(); draw(total); }
+  else if(e.key === 'f' || e.key === 'F'){ e.preventDefault();
+    if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.(); }
+});
+
+/* 휠은 한 번 굴릴 때 한 장만 — 트랙패드에서 우수수 넘어가지 않게 막는다. */
+let wheelLock = 0;
+addEventListener('wheel', (e) => {
+  const now = Date.now(); if(now - wheelLock < 320) return; if(Math.abs(e.deltaY) < 8) return;
+  wheelLock = now; go(e.deltaY > 0 ? 1 : -1);
+}, { passive: true });
+
+/* 창 크기는 늦게 정해지기도 한다(미리보기 판·전체화면 전환) — resize 이벤트만
+   믿지 말고 자리 자체를 지켜본다. 처음 한 번도 여기서 다시 그린다. */
+let rzT, lastW = 0, lastH = 0;
+const redraw = () => { clearTimeout(rzT); rzT = setTimeout(() => { if(doc) draw(cur); }, 140); };
+new ResizeObserver((es) => {
+  const r = es[0].contentRect;
+  if(Math.abs(r.width - lastW) < 2 && Math.abs(r.height - lastH) < 2) return;
+  lastW = r.width; lastH = r.height; redraw();
+}).observe($('#stage'));
+addEventListener('resize', redraw);
+
+try{
+  doc = await pdfjsLib.getDocument({ url: 'age-of-ai.pdf' }).promise;
+  total = doc.numPages;
+  const at = parseInt((location.hash.match(/^#p(\d+)$/) || [])[1] || '1', 10);
+  await draw(Math.min(total, Math.max(1, at)));
+  msg.classList.add('done');
+}catch(err){
+  msg.innerHTML = '<div>교안을 열지 못했습니다.</div>'
+    + '<div style="font-size:13px;opacity:.7">' + String(err && err.message || err) + '</div>';
+}
+</script>
+</body>
+</html>
