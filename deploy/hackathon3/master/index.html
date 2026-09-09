@@ -338,6 +338,23 @@ body.stageonly .stagefs .frame .hint-z{display:none}
   border:1px solid rgba(238,240,255,.26);border-radius:999px;padding:12px 30px;
   pointer-events:none;opacity:0;transition:opacity 200ms ease}
 .stagefs .stageend.on{opacity:1}
+/* ── 오른쪽 끝 숨은 부 이동 바 ─────────────────────────────────────────────
+   행사 중에는 "3부로 건너뛰자"가 즉시 생긴다. 화면 ID 를 외우거나 수십 번 넘기지
+   않도록 마우스를 오른쪽 가장자리로 가져가면 부 목록이 나온다(이종은 지시 9/9).
+   평소에는 화면 밖으로 밀어 두어 관객에게 보이지 않는다. */
+.stagefs .partbar{position:absolute;right:0;top:50%;transform:translate(100%,-50%);z-index:9;
+  display:flex;flex-direction:column;gap:8px;padding:14px;
+  background:rgba(8,6,42,.88);border:1px solid rgba(238,240,255,.22);border-right:0;
+  border-radius:16px 0 0 16px;opacity:0;
+  transition:transform 260ms cubic-bezier(.22,.61,.36,1),opacity 260ms ease}
+.stagefs .partbar.on{transform:translate(0,-50%);opacity:1}
+.stagefs .partbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  min-width:200px;padding:12px 18px;border-radius:10px;cursor:pointer;font:inherit;text-align:left;
+  background:transparent;border:1px solid rgba(238,240,255,.16);color:#C3C6EE}
+.stagefs .partbar button:hover{background:rgba(238,240,255,.10);color:#EEF0FF}
+.stagefs .partbar button.now{border-color:#8489F5;background:rgba(132,137,245,.20);color:#EEF0FF}
+.stagefs .partbar b{font-family:var(--head);font-weight:800;font-size:26px;line-height:1.1}
+.stagefs .partbar i{font-style:normal;font-size:18px;opacity:.78}
 /* ── 무대에서는 로고 바를 프레임 밖에 **하나만** 고정으로 둔다 ──────────────
    프레임 안에 있으면 장을 넘길 때마다 로고가 글자와 함께 떴다 사라진다(arrive 전환).
    표지에서 오른쪽 락업을 지우던 규칙도 무대에서는 끈다 — 고정이라는 말은 늘 같은 자리다. */
@@ -611,8 +628,9 @@ body.stageonly:has(.frame.k-cover) .bgslot::after{
   <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgcanvas"><div class="bgslot"></div><div class="bgslot"></div></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
   <div class="stagebar" id="stageBar" aria-hidden="true"></div>
-  <div class="stagehint" id="stageHint">F 전체화면 · 스크롤 또는 ← → 로 넘기기</div>
+  <div class="stagehint" id="stageHint">F 전체화면 · 스크롤 또는 ← → 로 넘기기 · 오른쪽 끝에 부 이동</div>
   <div class="stageend" id="stageEnd" aria-live="polite"></div>
+  <div class="partbar" id="partBar" aria-label="부 이동"></div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
 
@@ -1219,6 +1237,29 @@ function flashEnd(msg){
   stageEnd.classList.remove('on'); void stageEnd.offsetWidth; stageEnd.classList.add('on');
   clearTimeout(endT); endT=setTimeout(()=>stageEnd.classList.remove('on'), 1600);
 }
+
+/* 오른쪽 끝 숨은 부 이동 바 — PARTS 에서 그대로 만든다(부가 몇 개든 따라온다).
+   마우스가 오른쪽 가장자리 90px 안으로 들어오면 나오고, 벗어나면 0.6초 뒤 들어간다. */
+const partBar=$('#partBar');
+const partStart=PARTS.map((_,i)=>PARTS.slice(0,i).reduce((n,q)=>n+q.pages.length,0));
+partBar.innerHTML=PARTS.map((p,i)=>{
+  const bits=p.name.split('·');
+  return `<button type="button" data-part="${i}"><b>${bits[0].trim()}</b><i>${bits.slice(1).join('·').trim()}</i></button>`;
+}).join('');
+partBar.addEventListener('click',(e)=>{ const b=e.target.closest('button'); if(!b) return;
+  openStage(partStart[+b.dataset.part], 1); });
+let partT=0;
+function showPartBar(on){
+  partBar.classList.toggle('on',on);
+  if(!on) return;
+  let at=0; partStart.forEach((s,i)=>{ if(cur>=s) at=i; });
+  [...partBar.children].forEach((b,i)=>b.classList.toggle('now',i===at));
+}
+stage.addEventListener('mousemove',(e)=>{
+  const near = e.clientX > innerWidth-90 || partBar.contains(e.target);
+  clearTimeout(partT);
+  if(near) showPartBar(true); else partT=setTimeout(()=>showPartBar(false), 600);
+});
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
 const STAGE_ONLY=true; /* 무대 전용본 */
