@@ -846,6 +846,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .state{font-size:var(--s2);color:var(--st-soft)}
 .who{font-family:var(--head);font-weight:900;font-size:var(--s3);color:var(--st-ink);line-height:1.2}
 .phase{font-size:var(--s1);color:var(--st-soft);letter-spacing:.06em}
+/* 조작 줄 가운데 .ops-only 는 운영 모드(body.ops)에서만 보인다.
+   .ctl 이 뒤에서 display:flex 를 다시 깔기 때문에 같은 무게로는 지지 않게
+   .ctl.ops-only 까지 함께 적는다. */
+.ops-only,.ctl.ops-only{display:none}
+body.ops .ops-only,body.ops .ctl.ops-only{display:flex}
+body.ops .stagefs::after{content:'운영 모드';position:fixed;right:12px;top:10px;z-index:60;
+  font-size:14px;font-weight:800;letter-spacing:.06em;color:#08062A;background:var(--kw);
+  border-radius:999px;padding:4px 12px;opacity:.85;pointer-events:none}
 .ctl{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;font-size:var(--s0);color:var(--st-faint)}
 .ctl .btn,.ctl input,.ctl select{font:inherit;font-size:var(--s0);background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:8px 18px}
 .ctl select{max-width:900px;color:var(--st-ink)} .ctl option{color:#000}
@@ -1281,7 +1289,15 @@ const PART_IDX = [[0,1,2],[3,4,5],[6,7]];
 
 /* ───────── 상태 ───────── */
 const LS = 'wx26.slides.v3';
-const S = Object.assign({ cdStart:'2026-09-10T13:00', order:[null,null,null,null,null,null,null,null], pool:null, awards:{mTop:null,cTop:null,cGood:null}, reveal:{} }, load());
+/* 카운트다운은 **끝나는 시각**을 붙잡는다(이종은 9/10). 시작 버튼을 언제 누르든
+   9/11 13:00 에 0 이 되도록, 남은 시간은 늘 "끝나는 시각 − 지금" 으로 센다.
+   예전에는 시작 시각 + 24시간이라 늦게 누르면 그만큼 늦게 끝났다.
+   옛 저장값(cdStart)만 있는 PC 는 시작 + 24시간을 끝 시각으로 옮겨 준다. */
+const CD_END_DEFAULT='2026-09-11T13:00';
+const S = Object.assign({ cdEnd:CD_END_DEFAULT, order:[null,null,null,null,null,null,null,null], pool:null, awards:{mTop:null,cTop:null,cGood:null}, reveal:{} }, load());
+if(!S.cdEnd){ const p2=(n)=>String(n).padStart(2,'0'), d=S.cdStart?new Date(new Date(S.cdStart).getTime()+86400000):null;
+  S.cdEnd = d ? `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}` : CD_END_DEFAULT; }
+delete S.cdStart;
 function load(){ try{ return JSON.parse(localStorage.getItem(LS)||'{}'); }catch(e){ return {}; } }
 function save(){ try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
 if(!S.pool){ S.pool=[0,1,2,3,4,5,6,7].sort(()=>Math.random()-.5); save(); }
@@ -1378,7 +1394,7 @@ const PARTS = [
 { id:'pc', tag:'카운트다운', name:'카운트다운 · 24시간 끝장 개발', full:'24시간 카운트다운 — 단독 (어느 부에도 속하지 않음)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 이벤트홀 메인 화면 · 원본 2일차 4',
   note:'과제 수행 24시간 동안 이벤트홀에 상주하는 화면 한 장입니다. 1부와 2부 어느 쪽에도 귀속시키지 않고 단독으로 셉니다.',
   pages:[
-  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'현재 시각 기준 실시간. 24시간이 넘으면 "N일 HH:MM:SS". 시작 시각은 아래에서(리허설용)', memo:'PC 절전 해제' }),
+  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'끝나는 시각(9/11 13:00)까지 남은 시간을 실시간으로 센다 — 언제 켜도 그 시각에 0 이 된다(이종은 9/10)', memo:'PC 절전 해제. 조작 단추는 운영 모드에서만 — 주소 뒤에 ?ops (끄기 ?ops=off)' }),
 ]},
 { id:'p2', tag:'2부', name:'2부 · 과제 수행 (24시간)', full:'2부 · 과제 수행 — 야식 · 베네핏 게임 · 발표 순서', when:'9/10(목) 22:00 ~ 9/11(금) 00:30 · 원본 신규 3장',
   note:'22:00 야식과 0시 베네핏 게임 때만 타이틀 슬라이드로 잠깐 바꿉니다. 베네핏 게임이 끝나면 "발표 순서 결정" 화면을 엽니다.',
@@ -1827,12 +1843,37 @@ const fmtMS=(s)=>`${pad(Math.floor(s/60))}:${pad(s%60)}`;
 const fmtKo=(d)=>`${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const toLocalInput=(d)=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const WIDGETS={};
+/* 남은 시간 = 끝나는 시각 − 지금. 그래서 언제 눌러도 9/11 13:00 에 0 이 된다.
+   「지금 맞추기」는 이미 그렇게 세고 있음을 눈으로 확인시키는 단추이고,
+   「지금부터 24시간」은 일정이 통째로 밀렸을 때 끝 시각을 지금+24시간으로 옮긴다.
+   조작 줄은 운영 모드에서만 보인다(body.ops). */
 WIDGETS.countdown=(frame)=>{
-  const w=el('div','center-col'); w.innerHTML=`<div class="digits" id="cdD">24:00:00</div><div class="state" id="cdS"></div><div class="ctl"><label>시작 시각 <input type="datetime-local" id="cdStart" step="60"></label><button class="btn" id="cdNow">지금부터 24시간</button><button class="btn" id="cdDef">9/10 13:00</button><span id="cdClock"></span></div>`;
-  const inp=w.querySelector('#cdStart'); inp.value=S.cdStart; inp.addEventListener('change',()=>{ if(inp.value){ S.cdStart=inp.value; save(); tick(); } });
-  w.querySelector('#cdNow').addEventListener('click',()=>{ const d=new Date(); d.setSeconds(0,0); inp.value=toLocalInput(d); S.cdStart=inp.value; save(); tick(); });
-  w.querySelector('#cdDef').addEventListener('click',()=>{ inp.value='2026-09-10T13:00'; S.cdStart=inp.value; save(); tick(); });
-  function tick(){ const start=new Date(S.cdStart).getTime(), end=start+86400000, now=Date.now(); let rem,s; if(now<start){ rem=86400; s=`${fmtKo(new Date(start))} 시작 · 시작까지 ${fmtHMS(Math.ceil((start-now)/1000))}`; frame.classList.remove('done'); } else if(now>=end){ rem=0; s='과제 수행이 끝났습니다'; frame.classList.add('done'); } else { rem=Math.ceil((end-now)/1000); s=`과제 수행 중 · ${fmtKo(new Date(end))} 종료`; frame.classList.remove('done'); } w.querySelector('#cdD').textContent=fmtHMS(rem); w.querySelector('#cdD').classList.toggle('days',rem>86400); w.querySelector('#cdS').textContent=s; w.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false}); }
+  const w=el('div','center-col');
+  w.innerHTML=`<div class="digits" id="cdD">24:00:00</div><div class="state" id="cdS"></div>`
+    +`<div class="ctl ops-only"><label>종료 시각 <input type="datetime-local" id="cdEnd" step="60"></label>`
+    +`<button class="btn" id="cdSync">지금 맞추기</button>`
+    +`<button class="btn" id="cdNow">지금부터 24시간</button>`
+    +`<button class="btn" id="cdDef">9/11 13:00 종료</button><span id="cdClock"></span></div>`;
+  const inp=w.querySelector('#cdEnd');
+  const setEnd=(v)=>{ inp.value=v; S.cdEnd=v; save(); tick(); };
+  inp.value=S.cdEnd;
+  inp.addEventListener('change',()=>{ if(inp.value) setEnd(inp.value); });
+  w.querySelector('#cdSync').addEventListener('click',()=>tick());
+  w.querySelector('#cdNow').addEventListener('click',()=>{ const d=new Date(Date.now()+86400000); d.setSeconds(0,0); setEnd(toLocalInput(d)); });
+  w.querySelector('#cdDef').addEventListener('click',()=>setEnd(CD_END_DEFAULT));
+  function tick(){
+    /* 아직 24시간이 더 남았으면(리허설·시작 전) 24:00:00 에서 멈춰 세워 둔다 —
+       "24시간 끝장 개발" 화면에 33시간이 떠 있으면 이상하다. */
+    const end=new Date(S.cdEnd).getTime(), now=Date.now(), left=end-now; let rem,s;
+    if(left<=0){ rem=0; s='과제 수행이 끝났습니다'; frame.classList.add('done'); }
+    else { rem=Math.ceil(Math.min(left,86400000)/1000); frame.classList.remove('done');
+      s = left>86400000 ? `${fmtKo(new Date(end))} 종료 · 아직 시작 전`
+                        : `과제 수행 중 · ${fmtKo(new Date(end))} 종료`; }
+    w.querySelector('#cdD').textContent=fmtHMS(rem);
+    w.querySelector('#cdD').classList.toggle('days',rem>86400);
+    w.querySelector('#cdS').textContent=s;
+    w.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false});
+  }
   tick(); setInterval(tick,1000); return w;
 };
 WIDGETS.cards=(frame)=>{
@@ -1952,6 +1993,34 @@ const GATE=true, GATE_HASH='abe6c5838bf22b825feb81d89e93c837871fcef0dbc4cd106fe1
   i.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); tryOpen(); } });
   setTimeout(()=>i.focus(),50);
 })();
+/* ── 운영 모드 ─────────────────────────────────────────────────────────────
+   조작 단추(카운트다운 맞추기 등)는 **운영진 PC 에서만** 보이게 한다.
+
+   이 사이트는 주소만 알면 누구나 들어오고, 파일만 올려 두는 정적 사이트라
+   서버에서 사람을 가릴 방법이 없다 — 소스를 뜯어보면 아래 암호 검사도 보인다.
+   그래도 이 정도로 충분한 까닭이 있다: 카운트다운·발표 순서 같은 상태는
+   **그 브라우저에만** 저장된다(localStorage). 참가자가 제 폰에서 무엇을 누르든
+   무대에 걸린 화면은 꿈쩍도 하지 않는다. 실제로 막아야 할 것은 "무대 PC 를
+   남이 만지는 것"과 "참가자 화면에 조작 단추가 보여 헷갈리는 것"뿐이고,
+   그건 감추기 + 암호로 충분하다.
+
+     켜기   주소 뒤에 ?ops   → 암호를 묻고, 맞으면 그 PC 는 계속 기억한다
+     끄기   주소 뒤에 ?ops=off
+   암호를 바꾸려면 아래 OPS_HASH 를 새 암호의 SHA-256 으로 갈아 끼우면 된다. */
+const OPS_HASH='8c545c282a69e3d832dd27ac4994af2d8d2e0332414326fca1a7def908b7cf53';
+const sha256=async(t)=>{ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); };
+let OPS=false; try{ OPS = localStorage.getItem('wx26ops')==='1'; }catch(e){}
+(function(){
+  const q=new URLSearchParams(location.search); if(!q.has('ops')) return;
+  const back=()=>location.replace(location.pathname+(q.has('doc')?'?doc':'')+location.hash);
+  if(q.get('ops')==='off'){ try{ localStorage.removeItem('wx26ops'); }catch(e){} back(); return; }
+  if(OPS){ back(); return; }
+  (async()=>{ const pw=prompt('운영 비밀번호'); if(pw==null) return;
+    if(await sha256(pw)===OPS_HASH){ try{ localStorage.setItem('wx26ops','1'); }catch(e){} back(); }
+    else alert('비밀번호가 맞지 않습니다'); })();
+})();
+document.body.classList.toggle('ops', OPS);
 const STAGE_ONLY=!new URLSearchParams(location.search).has('doc');
 /* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
    새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
@@ -2107,7 +2176,7 @@ stage.addEventListener('wheel',(e)=>{
 document.addEventListener('fullscreenchange',()=>{ if(!STAGE_ONLY&&!document.fullscreenElement&&stage.classList.contains('on')) closeStage(false); });
 function toggleGrid(){ const on=document.body.classList.toggle('showgrid'); $('#btnGrid').textContent=on?'그리드 보기 끄기':'그리드 보기 켜기'; $('#btnGrid').classList.toggle('on',on); }
 $('#btnGrid').addEventListener('click',toggleGrid); $('#btnStage0').addEventListener('click',()=>openStage(0,0));
-$('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdStart:S.cdStart, order:S.order.map(i=>i==null?null:CH[i].team), awards:S.awards},null,2); (navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>alert('복사했습니다:\n'+txt)):Promise.reject()).catch(()=>prompt('복사해서 옮기세요',txt)); });
+$('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdEnd:S.cdEnd, order:S.order.map(i=>i==null?null:CH[i].team), awards:S.awards},null,2); (navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>alert('복사했습니다:\n'+txt)):Promise.reject()).catch(()=>prompt('복사해서 옮기세요',txt)); });
 $('#btnResetAll').addEventListener('click',()=>{ if(confirm('카운트다운 시각 · 발표 순서 · 시상 선택을 전부 지웁니다. 계속할까요?')){ localStorage.removeItem(LS); location.reload(); } });
 
 renderAll(); document.querySelectorAll('.fw').forEach(fw=>ro.observe(fw)); rerender();
