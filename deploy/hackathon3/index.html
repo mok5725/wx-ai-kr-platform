@@ -492,6 +492,37 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .stats.big .stat{text-align:center;flex:1}
 .stats.big .stat .n{font-size:var(--s5)}
 .stats.big .stat .l{font-size:var(--s1);margin-top:18px}
+/* 캡틴은 "(캡틴)" 글자 대신 이름 옆 **동그란 스티커**로(이종은 9/10).
+   마스터·챌린저 두 트랙 모두 같은 표시를 쓴다. */
+.cap{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;margin-left:9px;border-radius:50%;flex:0 0 auto;
+  background:var(--gold);color:#3A2A00;font-style:normal;font-weight:900;
+  font-size:20px;line-height:1;letter-spacing:0;vertical-align:2px;
+  box-shadow:0 3px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.55)}
+
+/* ── 챌린저 크루 (A-07) ───────────────────────────────────────────────────
+   네 팀을 가로로 늘어놓으면 칸이 좁아 이름이 세로로 줄줄이 섰다. 사각형을 넷으로
+   나누듯 위 두 팀 · 아래 두 팀으로 놓으면 칸이 두 배 넓어져 이름 넷이 한 줄에 선다.
+   소속은 팀명 **아래**에 둔다(이종은 9/10). 줄은 마스터와 같이 subgrid 로 맞춘다. */
+.ccrew{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2, auto 1fr auto);
+  gap:var(--gap);height:100%}
+.ccrew .it{grid-row:span 3;display:grid;grid-template-rows:subgrid;min-height:0;
+  background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
+  padding:26px 32px 28px;
+  box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
+  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+.ccrew .tt{font-family:var(--head);font-weight:900;font-size:52px;line-height:1.1;
+  letter-spacing:.01em;color:var(--st-ink)}
+.ccrew .kk{margin-top:8px;font-size:26px;line-height:1.4;color:var(--st-faint)}
+.ccrew .nm{display:flex;flex-wrap:wrap;align-content:center;gap:14px}
+.ccrew .nm span{display:inline-flex;align-items:center;
+  font-family:var(--head);font-weight:800;font-size:34px;line-height:1;color:var(--st-ink);
+  background:rgba(238,240,255,.08);border:1px solid rgba(238,240,255,.22);
+  border-radius:999px;padding:11px 20px}
+.ccrew .co{font-size:26px;line-height:1.4;color:var(--st-faint)}
+/* 단계 표시(← 1/2 →)가 오른쪽 아래 칸 위에 겹친다 — 판을 그만큼 위에서 끊는다. */
+.frame[data-id="A-07"] .body-z{height:608px}
+
 .trio{display:grid;gap:var(--gap)}
 .trio.c3{grid-template-columns:repeat(3,1fr)}
 .trio.c4{grid-template-columns:repeat(4,1fr)}
@@ -530,20 +561,28 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* ── 마스터 크루 세 칸 (A-06) ─────────────────────────────────────────────
    옛 6장(크루명·과제명)과 7~9장(크루원)을 한 장에 합쳤다(이종은 9/9).
    한 칸이 한 크루 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치. */
-.mcrew{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%}
+/* 세 칸의 줄이 서로 어긋나 있었다(이종은 9/10) — 칸마다 글 길이가 달라 팀명·과제
+   설명·크루원·자문이 제각각 높이에서 시작했다. 바깥 격자에 줄을 다섯으로 못 박고
+   칸이 subgrid 로 그 줄을 그대로 물려받게 해 **가로로 한 줄씩 맞춘다**. */
+.mcrew{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%;
+  grid-template-rows:auto auto auto 1fr auto}
 /* 팀마다 판을 깔아 어디까지가 한 팀인지 한눈에 보이게 한다(이종은 9/10).
    분야(안전 · 물류 · 마켓센싱)는 팀의 머리표라 크게 키워 맨 위에 세운다. */
 .mcrew .it{background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
-  padding:26px 30px 28px;display:flex;flex-direction:column;min-height:0;
+  padding:26px 30px 28px;grid-row:span 5;display:grid;grid-template-rows:subgrid;min-height:0;
   box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
   -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
 .mcrew .kk{font-family:var(--head);font-weight:900;font-size:40px;line-height:1.1;
   letter-spacing:.02em;color:var(--kw)}
 .mcrew .tt{font-family:var(--head);font-weight:900;font-size:var(--s3);line-height:1.1;letter-spacing:.01em;margin:12px 0 10px;color:var(--st-ink)}
+/* 과제 설명은 이름과 딸림 설명이 한 덩이다 — 글자 크기를 28px 로 맞춘다(이종은 9/10). */
+.mcrew .desc{min-height:0}
+.mcrew .desc p{margin:0}
 .mcrew .tp{font-size:28px;line-height:1.5;color:var(--st-soft)}
 /* 과제명 아래 한 줄 설명(있는 크루만). */
-.mcrew .tg{font-size:24px;line-height:1.45;color:var(--st-faint);margin-top:10px}
-.mcrew .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:20px}
+.mcrew .tg{font-size:28px;line-height:1.5;color:var(--st-faint);margin-top:8px}
+.mcrew .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:20px;
+  align-content:start}
 .mcrew .nm span{font-family:var(--head);font-weight:800;font-size:36px;line-height:1.25;color:var(--st-ink)}
 /* margin-top:auto 면 칸 맨 아래로 밀려 제목과 멀어진다 — 크루원 바로 아래에 붙인다. */
 .mcrew .etc{margin-top:24px;padding-top:0;font-size:26px;line-height:1.6;color:var(--st-faint)}
@@ -1076,6 +1115,10 @@ const CH = [
   { team:'포브레인', orgs:'포스코', members:['한소희 (캡틴)','김민우','주하림','한지석'], coach:'김희태', title:'마케팅 브레인(Marketing Brain) : 언제든, 뭐든 물어볼 수 있는 AI 선배', desc:'용어, 프로세스, 과거 사례, 실무 노하우를 AI가 통합해 바로 답해주는 지식형 에이전트로, 암묵지를 조직 자산으로 전환해 업무 생산성 향상' },
   { team:'HR AX연구소', orgs:'포스코', members:['이진희 (캡틴)','김수미','최주호','하석현'], coach:'구고운', title:'나를 먼저 챙겨주는 나만의 HR AI Agent', desc:'입사, 이동, 승진, 교육 등 생애주기 전반에 대한 안내와 행정처리를 선제적으로 지원하는 HR 에이전트를 개발하여, 반복 업무를 자동화' },
 ];
+/* 이름 뒤의 "(캡틴)" 을 떼고 스티커로 바꾼다. 명단은 원본 그대로 두고 표시만 바꾼다. */
+const capName = (n) => /\(캡틴\)/.test(n)
+  ? n.replace(/\s*\(캡틴\)\s*$/, '') + '<i class="cap" title="캡틴">캡</i>'
+  : n;
 MASTERS.forEach(m => { m.members = byName(m.members); });
 CH.forEach(c => { c.members = byName(c.members); });
 
@@ -1111,7 +1154,7 @@ const PARTS = [
     viz:'상세페이지식 — 가운데 티셔츠 둘, 로고와 슬로건을 화살표로 집어 바깥 박스 설명과 연결', how:'"앞면/뒷면" 딱지와 "해커톤 로고 · 슬로건" 되풀이를 뺐다(이종은 9/9)' }),
   P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -388px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], stats:[['11','크루',''],['54','명',''],['3','크루 · 22명','마스터 트랙 — Top-down 과제 선발 (크루당 7~8명)'],['8','크루 · 32명','챌린저 트랙 — 우수 아이디어 제안 (크루당 4명)']]}, viz:'숫자 4개 (사이트 stat 방식: 큰 수 + 단위 + 라벨)', how:'라벨 + 값 4줄, 아래 숫자 줄. 원문 6줄을 라벨 4 + 숫자 4로' }),
   P({ no:'6', id:'A-06', title:'마스터 트랙 소개', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -581px', eyebrow:'해커톤 크루 소개', h:'<em>마스터</em> 트랙', sub:'주요 사업회사 임원 FGI를 통해 선정된 과제에 대한 전문가 팀 구성 (도메인 + AX/DX 전문가로 선발)', body:{type:'mcrew', items:MASTERS}, viz:'세 칸 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치', how:'옛 6장과 7~9장(크루원)을 한 장으로 합쳤다(9/9)' }),
-  P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span class="coach" style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
+  P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'ccrew', items:CH.slice(h*4,h*4+4)}})), viz:'네 칸을 2×2 로 — 팀명 · 소속(팀명 아래) · 이름 알약 한 줄 · 코치', how:'4팀씩 두 단계. 캡틴은 이름 옆 「캡」 스티커(이종은 9/10)' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'tools', items:[
       {key:'spartan', short:'S', color:'#E8344E', name:'SPARTA Club', big:'876.4', unit:'hr',
@@ -1331,7 +1374,16 @@ B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), 
 B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
 B.stats=(b)=>el('div','stats'+(b.big?' big':''), b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join(''));
 B.trio=(b)=>{ const w=el('div'); w.innerHTML=(b.lead?`<div class="lines" style="margin-bottom:26px"><p class="ln">${b.lead}</p></div>`:'')+`<div class="trio c${b.n}${b.hero?' hero':''}">${b.items.map(([k,t,body])=>`<div class="it">${/^\d+$/.test(k)?`<div class="no">${k}</div>`:k?`<div class="kk ln">${k}</div>`:'<div class="no">&nbsp;</div>'}<div class="tt ln">${t}</div><div class="bb">${String(body).split('<br>').map(x=>x?`<p class="ln">${x}</p>`:'').join('')}</div></div>`).join('')}</div>`; return w; };
-B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="tp ln">${m.topic}</div>${m.tag?`<div class="tg ln">${m.tag}</div>`:''}<div class="nm">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`).join(''));
+/* 칸 하나가 정확히 다섯 줄(분야 · 팀명 · 과제 설명 · 크루원 · 자문·코치)이어야
+   subgrid 가 가로로 맞는다 — 과제명과 딸림 설명은 한 칸(.desc)에 함께 담는다. */
+B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="desc"><p class="tp ln">${m.topic}</p>${m.tag?`<p class="tg ln">${m.tag}</p>`:''}</div><div class="nm">${m.members.map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`).join(''));
+/* 챌린저 크루 — 팀명 → 소속 → 이름 알약 → 코치. 네 팀이 2×2 로 앉는다. */
+B.ccrew=(b)=>el('div','ccrew', b.items.map(c=>
+  `<div class="it">
+     <div class="hd"><div class="tt ln">${c.team}</div><div class="kk ln">${c.orgs}</div></div>
+     <div class="nm">${c.members.map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div>
+     <div class="co ln">코치 ${c.coach}</div>
+   </div>`).join(''));
 B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
 B.table=(b)=>{ if(b.sched) return sched(b.sched); const rows=b.rows; return el('div','tbl',`<table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'t':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`); };
 function sched(day){
