@@ -23,7 +23,7 @@
   /* ── 무대(1920×1080) 토큰. 두 팀밋업 사이트의 tokens.css 값을 1920 기준 px로 환산 ── */
   --void:#08062A; --st-ink:#EEF0FF; --st-soft:#C3C6EE; --st-faint:#A3A7D8; --violet:#8489F5; --kw:#8AF0C6; --gold:#F2C14E; --st-line:rgba(238,240,255,.14); --panel:rgba(238,240,255,.05);
   --pad:64px; --gap:15px; --brand-h:46px; --brandbar-h:104px;
-  --s00:21px; --s0:24px; --s1:32px; --s2:39px; --s3:56px; --s4:86px; --s5:144px;
+  --s00:26px; --s0:30px; --s1:38px; --s2:46px; --s3:62px; --s4:92px; --s5:150px;
   --head:'Paperlogy','NanumSquare','Pretendard','Malgun Gothic',sans-serif;
   --body:'NanumSquare','Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
   --hand:'Gaegu','Nanum Pen Script','Nanum Brush Script',cursive;
@@ -149,9 +149,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .view{position:absolute;inset:0;transition:opacity .46s cubic-bezier(.22,.61,.36,1),transform .46s cubic-bezier(.22,.61,.36,1)}
 .view.off-r{opacity:0;transform:translateX(64px);pointer-events:none}
 .view.off-l{opacity:0;transform:translateX(-64px);pointer-events:none}
-.stepnav{position:absolute;right:var(--pad);bottom:64px;display:flex;gap:8px;align-items:center;z-index:6;font-size:22px;color:var(--st-faint)}
-.stepnav button{font:inherit;font-size:22px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:4px 14px}
-.stepnav .lab{font-size:20px}
+.stepnav{position:absolute;right:var(--pad);bottom:18px;display:flex;gap:8px;align-items:center;z-index:6;font-size:26px;color:var(--st-faint)}
+.stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:4px 14px}
+.stepnav .lab{font-size:28px}
 
 /* 본문 부품 */
 .lines{display:flex;flex-direction:column;gap:6px;color:var(--st-soft)}
@@ -189,12 +189,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .team .names{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 16px;align-content:start}
 .team .names span{font-family:var(--head);font-weight:800;font-size:44px;color:var(--st-ink);line-height:1.3}
 .team .etc{font-size:var(--s0);color:var(--st-faint);margin-top:28px;line-height:1.7}
-.tbl table{border-collapse:collapse;width:100%;font-size:26px;line-height:1.4}
+.tbl table{border-collapse:collapse;width:100%;font-size:30px;line-height:1.4}
 .tbl th,.tbl td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--st-line)}
 .tbl th{font-size:var(--s00);letter-spacing:.08em;color:var(--st-faint);font-weight:400}
-.tbl td.t{font-family:var(--mono);white-space:nowrap;color:var(--st-ink);font-size:24px;padding-top:12px}
+.tbl td.t{font-family:var(--mono);white-space:nowrap;color:var(--st-ink);font-size:28px;padding-top:12px}
 .tbl td.c{color:#CCE8FE}.tbl td.m{color:#F7DFA5}
-.tbl.sched table{font-size:24px;line-height:1.35}
+.tbl.sched table{font-size:28px;line-height:1.35}
 .tbl.sched th,.tbl.sched td{padding:8px 14px}
 .tl{display:grid;gap:110px;padding-top:40px}
 .tl .row{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
@@ -222,27 +222,31 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ctl .btn,.ctl input,.ctl select{font:inherit;font-size:var(--s0);background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:8px;padding:8px 18px}
 .ctl select{max-width:900px;color:var(--st-ink)} .ctl option{color:#000}
 .frame.done .digits{color:var(--gold)} .frame.over .digits{color:#F28B82}
-.slots{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:20px;height:470px}
+/* 글자를 키운 뒤 아래 조작 줄이 각주와 겹쳤다 — 카드판과 풀을 줄여 자리를 낸다. */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;height:436px}
 .slot{position:relative;border:3px dashed var(--st-line);border-radius:16px;padding:22px;display:flex;align-items:flex-end;cursor:pointer;background:var(--panel)}
 .slot:hover{border-color:var(--st-faint)} .slot.ready{border-style:solid;border-color:var(--gold)} .slot.filled{border-style:solid;border-color:var(--violet);cursor:default}
-.slot .n{position:absolute;left:22px;top:16px;font-family:var(--head);font-weight:900;font-size:var(--s2);color:var(--violet)}
-.slot .part{position:absolute;right:22px;top:22px;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
-.pool{margin-top:20px;height:150px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;border:1px solid var(--st-line);border-radius:12px}
+.slot .n{position:absolute;left:22px;top:16px;width:max-content;font-family:var(--head);font-weight:900;font-size:var(--s2);color:var(--violet)}
+/* .part 는 부 구분 컴포넌트(display:grid, 720px 열)와 이름이 겹친다 — grid 를 물려받으면
+   max-content 가 784px 이 되어 슬롯 번호를 덮는다. block 으로 되돌린다. */
+.slot .part{position:absolute;right:22px;top:22px;display:block;width:max-content;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
+.pool{margin-top:16px;height:126px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;border:1px solid var(--st-line);border-radius:12px}
 .pool .lab{width:100%;font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
-.tcard{border:2px solid var(--st-line);background:var(--panel);color:var(--st-soft);border-radius:10px;padding:8px 20px;font-family:var(--head);font-weight:800;font-size:30px;line-height:1.2;filter:blur(.6px);transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
+.tcard{border:2px solid var(--st-line);background:var(--panel);color:var(--st-soft);border-radius:10px;padding:8px 20px;font-family:var(--head);font-weight:800;font-size:34px;line-height:1.2;filter:blur(.6px);transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
 .tcard.sel{outline:4px solid var(--gold);color:var(--st-ink);filter:none}
 .slot .tcard{filter:none;width:100%;background:rgba(132,137,245,.14);border-color:var(--violet);color:var(--st-ink);font-size:44px;text-align:center;padding:14px}
 .tcard.moving{transition:none}
-.ctl.left{justify-content:flex-start;margin-top:14px;font-size:20px}
-.ctl.left .btn{font-size:20px;padding:4px 12px}
+.ctl.left{justify-content:flex-start;margin-top:14px;font-size:24px}
+.ctl.left .btn{font-size:24px;padding:6px 16px}
 .cere{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,6,42,.92);z-index:7;text-align:center}
 .cere.on{display:flex}
 .cere .in{font-family:var(--head);font-weight:900;font-size:140px;line-height:1.15;color:var(--st-ink)}
 .cere .in small{display:block;font-family:var(--body);font-weight:700;font-size:44px;color:var(--gold);letter-spacing:.06em;margin-bottom:16px}
-.award{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:26px;text-align:center}
+/* 내용이 본문 자리(743px)보다 커지면 가운데 정렬 때문에 위로도 삐져나와 제목과 겹친다. */
+.award{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;text-align:center}
 .award .team{font-family:var(--head);font-weight:900;font-size:176px;line-height:1.1;letter-spacing:-.02em;color:var(--st-ink)}
 .award .team.veil{color:rgba(238,240,255,.18);filter:blur(16px);cursor:pointer}
-.award .topic{font-size:var(--s2);color:var(--st-soft);max-width:1600px}
+.award .topic{font-size:var(--s1);color:var(--st-soft);max-width:1600px}
 .award .prize{font-family:var(--head);font-weight:800;font-size:48px;color:var(--gold)}
 .award .cert{font-size:var(--s0);color:var(--st-faint)}
 .aw{display:grid;gap:22px}
@@ -275,11 +279,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 
 /* 표지 — 가운데 정렬. 상단 바의 이벤트 락업 대신 화면 가운데 큰 락업 */
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--brandbar-h) var(--pad) 200px;gap:18px}
-.cover .lockup{display:flex;align-items:center;gap:15px;font-family:var(--head);font-weight:800;font-size:var(--s3);color:var(--st-ink)}
+.cover .lockup{display:flex;align-items:center;gap:19px;font-family:var(--head);font-weight:800;font-size:84px;color:var(--st-ink)}
 .cover .lockup .ci-mark{height:.82em;opacity:1}
-.cover .big{font-family:var(--head);font-weight:900;font-size:var(--s5);line-height:1.1;letter-spacing:-.02em;color:var(--st-ink)}
+.cover .big{font-family:var(--head);font-weight:900;font-size:260px;line-height:1.08;letter-spacing:-.02em;color:var(--st-ink)}
 .cover .big em{font-style:normal;color:var(--kw)}
-.cover .big.huge{font-size:220px}
+.cover .big.huge{font-size:300px}
 .cover .en{font-family:var(--head);font-weight:800;font-size:var(--s2);color:var(--gold);letter-spacing:.04em}
 .cover .when{font-size:var(--s0);color:var(--st-soft);letter-spacing:.02em}
 .cover .lines{align-items:center;margin-top:8px}
@@ -289,7 +293,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .slogan .pre{font-family:var(--head);font-weight:800;font-size:34px;line-height:1;letter-spacing:0;color:var(--st-ink);padding-left:6px}
 .slogan .impact{display:block;height:96px;aspect-ratio:4710/1294;background:var(--st-ink);-webkit-mask-image:var(--ci-impact);mask-image:var(--ci-impact);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
 .slogan.inline{position:static;justify-content:flex-start;margin-top:8px}
-.slogan.inline .pre{font-size:22px} .slogan.inline .impact{height:60px}
+.slogan.inline .pre{font-size:28px} .slogan.inline .impact{height:76px}
 
 /* 손글씨 — 낱말별 붓글씨 SVG(docs/hand/wNN.svg, 나노바나나 생성 → potrace). 글자색을 그대로 물려받는다 */
 .hand{position:relative;display:inline-flex;align-items:flex-end;gap:.32em;padding:0;vertical-align:baseline}
@@ -319,6 +323,21 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .stagefs .bar .btn{background:transparent;color:#9AA4C0;border-color:#333}
 .stagefs .bar .cur{margin-left:auto}
 .stagefs .frame .fsbtn{display:none}
+/* 키 안내는 개발용이다 — 무대에서는 감춘다. 단계 표시(.stepnav)와 같은 구석을 쓴다. */
+body.stageonly .stagefs .frame .hint-z{display:none}
+/* 대신 무대에 들어온 직후 4초만 조작 안내를 띄운다 — 오퍼레이터용이고, 관객이 보기 전에 사라진다. */
+.stagefs .stagehint{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);z-index:7;
+  font-size:20px;color:#EEF0FF;background:rgba(8,6,42,.62);border:1px solid rgba(238,240,255,.18);
+  border-radius:999px;padding:10px 22px;pointer-events:none;
+  animation:stagehint-out 4s ease forwards}
+@keyframes stagehint-out{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}
+/* ── 무대에서는 로고 바를 프레임 밖에 **하나만** 고정으로 둔다 ──────────────
+   프레임 안에 있으면 장을 넘길 때마다 로고가 글자와 함께 떴다 사라진다(arrive 전환).
+   표지에서 오른쪽 락업을 지우던 규칙도 무대에서는 끈다 — 고정이라는 말은 늘 같은 자리다. */
+.stagefs .host .frame .brandbar{display:none}
+.stagefs .stagebar{position:absolute;left:0;top:0;width:1920px;height:var(--brandbar-h);transform-origin:0 0;z-index:6;pointer-events:none}
+.stagefs .stagebar .brandbar{position:absolute;left:0;right:0;top:0}
+.stagefs .stagebar .event{opacity:1}
 /* ── 무대 배경 층 — 슬롯 두 장으로 컷 없이 넘어간다 ─────────────────────
    같은 그림이 이어지면(구성안의 팬·줌 구간) 슬롯을 갈지 않고 위치·크기만
    트랜지션 → 카메라가 흐른다. 그림이 바뀌면 두 슬롯이 같은 시간에 교차
@@ -347,7 +366,6 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 body.stageonly>.wrap{display:none}
 body.stageonly .stagefs .bar{display:none}
 body.stageonly .stagefs .host .fw{width:min(100vw,calc(100vh * 16 / 9))}
-body.stageonly .stagefs .host{cursor:pointer}
 /* 무대(.stagefs .host .fw)는 이 예외에서 뺐다 — 배경은 움직이는데 글자만 뚝 나타나
    앞뒤가 안 맞았다(9/8 실측: 동작 줄이기가 켜진 PC 에서 글자 전환이 0s). 무대의 움직임은
    UI 장식이 아니라 내용이고, 발표용 PC 의 접근성 설정이 관객이 보는 것을 바꾸면 안 된다.
@@ -585,6 +603,8 @@ body.stageonly:has(.frame.k-cover) .bgslot::after{
 <div class="stagefs" id="stagefs" role="dialog" aria-modal="true">
   <div class="stagebg" id="stageBg" aria-hidden="true"><div class="bgcanvas"><div class="bgslot"></div><div class="bgslot"></div></div><div class="bgveil"></div></div>
   <div class="host" id="stageHost"></div>
+  <div class="stagebar" id="stageBar" aria-hidden="true"></div>
+  <div class="stagehint" id="stageHint">F 전체화면 · 스크롤 또는 ← → 로 넘기기</div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
 
@@ -874,7 +894,7 @@ B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':''), b.lines.map(l=>lnP
 B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
 B.stats=(b)=>el('div','stats'+(b.big?' big':''), b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join(''));
 B.trio=(b)=>{ const w=el('div'); w.innerHTML=(b.lead?`<div class="lines" style="margin-bottom:26px"><p class="ln">${b.lead}</p></div>`:'')+`<div class="trio c${b.n}${b.hero?' hero':''}">${b.items.map(([k,t,body])=>`<div class="it">${/^\d+$/.test(k)?`<div class="no">${k}</div>`:k?`<div class="kk ln">${k}</div>`:'<div class="no">&nbsp;</div>'}<div class="tt ln">${t}</div><div class="bb">${String(body).split('<br>').map(x=>x?`<p class="ln">${x}</p>`:'').join('')}</div></div>`).join('')}</div>`; return w; };
-B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:24px;letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
+B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
 B.table=(b)=>{ if(b.sched) return sched(b.sched); const rows=b.rows; return el('div','tbl',`<table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'t':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`); };
 function sched(day){
   const r1=[['08:00~09:00','참가자 접수 및 굿즈 수령 (컨벤션센터 이벤트홀)'],['09:00~10:00','개회식 및 오리엔테이션 (1hr) **08:40까지 크루별 착석'],['10:00~11:30','전문가 특강 (1.5hr) 박종천 개발자 "실전 개발 노하우"'],['11:30~12:00','현업 AX우수사례 공유 (0.5hr) P-DX 「AX Village」'],['12:00~13:00','네트워킹 파티 (1hr) 불고기 도시락과 함께 신나는 런치 타임'],['13:00~17:00','','과제 수행 (4hr) 24시간 끝장 개발 시작','실사용 솔루션 구현 및 현장 시연 준비 (4hr) 2층 안전 201호 · 물류 202호 · 마켓센싱 203호'],['17:00~18:00','','1차 전문가 코칭 및 피드백 (1hr) *석식 포함','자율 활동 — 과제 보완, 발표 준비 등 팀별 자율 운영 *석식 포함'],['18:00~08:00','','과제 수행 (14hr) ★베네핏 게임 0시','—']];
@@ -1171,13 +1191,25 @@ WIDGETS.awards=()=>{
 
 /* ───────── 무대 보기: 페이지 이동 = 상하, 단계 = 좌우 ───────── */
 const stage=$('#stagefs'), host=$('#stageHost'); let cur=-1, ph=null, moved=null, arriveT=0;
+/* 고정 로고 바 — 프레임 밖에 하나만 두고 프레임과 같은 배율·자리로 맞춘다.
+   fw 를 재면 안 된다: 장을 넘기는 동안 fw 는 arrive 전환으로 48px 떠 있어서, 그 순간의
+   좌표를 물면 바가 그만큼 어긋난 자리에 붙박인다. host 는 움직이지 않으므로 host 안에서
+   16:9 를 가운데 맞추는 **기하**로 직접 구한다. */
+const stageBar=$('#stageBar');
+stageBar.innerHTML=BRANDBAR();
+function fitBar(){ const hr=host.getBoundingClientRect();
+  if(!hr.width||!host.querySelector('.fw')){ stageBar.style.opacity='0'; return; }
+  const w=Math.min(hr.width, hr.height*16/9), h=w*9/16;
+  stageBar.style.opacity='1';
+  stageBar.style.transform=`translate(${hr.left+(hr.width-w)/2}px, ${hr.top+(hr.height-h)/2}px) scale(${w/1920})`; }
+addEventListener('resize',fitBar);
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
 const STAGE_ONLY=true; /* 무대 전용본 */
 /* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
    새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
 const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')]; let active=0, src=null;
-  const canvas=$('#stageBg .bgcanvas'); const fit=()=>{ const sc=Math.max(innerWidth/1920, innerHeight/1080); const dx=(innerWidth-1920*sc)/2, dy=(innerHeight-1080*sc)/2; canvas.style.transform=`translate(${dx}px, ${dy}px) scale(${sc})`; };
+  const canvas=$('#stageBg .bgcanvas'); const fit=()=>{ const sc=Math.max(innerWidth/1920, innerHeight/1080); const dx=(innerWidth-1920*sc)/2, dy=(innerHeight-1080*sc)/2; canvas.style.transform=`translate(${dx}px, ${dy}px) scale(${sc})`; fitBar(); };
   const apply=(e,p)=>{ e.style.backgroundImage=`url("${p.bg}")`; e.style.backgroundSize=p.bgSize||'cover'; e.style.backgroundPosition=p.bgPos||'center'; };
   /* 디졸브는 Web Animations API — openStage 가 무대를 껐다 켜고 프레임을 옮기는 사이에 CSS 트랜지션이
      시작을 놓치는 일이 실측됐다(직접 호출은 되고 openStage 경유만 툭 바뀜). animate() 는 그와 무관하게 돈다. */
@@ -1202,7 +1234,7 @@ function openStage(i, dir){
   if(dir){ clearTimeout(arriveT); const fw=rec.fw; arriveT=setTimeout(()=>fw.classList.remove('arrive-down','arrive-up'), bgMoved?TEXT_DELAY:20); }
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
   if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
-  requestAnimationFrame(stageBg.fit);
+  requestAnimationFrame(()=>{stageBg.fit(); fitBar();});
   if(STAGE_ONLY){ try{ history.replaceState(null,'','#'+FLAT[cur].id); }catch(_){} }
 }
 function closeStage(exit=true){ if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
@@ -1216,6 +1248,27 @@ document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) r
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); openStage(cur+1,1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); openStage(cur-1,-1); }
   if(e.key==='Escape'&&!STAGE_ONLY) closeStage(); /* G 단축키 제거 */ });
+/* 전체화면 — F. 무대만 띄우는 기본 모드에서는 문서 전체를, 문서 안에서 연 무대는 무대만.
+   requestFullscreen 은 사용자 조작에서만 되므로 키 핸들러 안에서 부른다. */
+function toggleFull(){
+  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); return; }
+  (STAGE_ONLY?document.documentElement:stage).requestFullscreen().catch(()=>{});
+}
+/* 마우스 휠 — 내리면 다음, 올리면 뒤로. 클릭은 넘기지 않는다: 발표 순서 카드·시상 팀명
+   공개처럼 눌러야 하는 것들이 무대 위에 있다. 휠은 한 번 튕겨도 이벤트가 수십 개 쏟아지므로
+   (트랙패드 관성) 문턱값 + 잠금으로 한 번의 손짓이 한 장만 넘기게 한다. */
+let wheelLock=0, wheelAcc=0;
+stage.addEventListener('wheel',(e)=>{
+  if(!stage.classList.contains('on')) return;
+  e.preventDefault();
+  const now=performance.now();
+  if(now<wheelLock){ wheelAcc=0; return; }
+  wheelAcc+=e.deltaY;
+  if(Math.abs(wheelAcc)<40) return;
+  const dir=wheelAcc>0?1:-1; wheelAcc=0; wheelLock=now+600;
+  if(dir>0){ if(!stepCur(1)) openStage(cur+1,1); }
+  else { if(!stepCur(-1)) openStage(cur-1,-1); }
+},{passive:false});
 document.addEventListener('fullscreenchange',()=>{ if(!STAGE_ONLY&&!document.fullscreenElement&&stage.classList.contains('on')) closeStage(false); });
 function toggleGrid(){ const on=document.body.classList.toggle('showgrid'); $('#btnGrid').textContent=on?'그리드 보기 끄기':'그리드 보기 켜기'; $('#btnGrid').classList.toggle('on',on); }
 $('#btnGrid').addEventListener('click',toggleGrid); $('#btnStage0').addEventListener('click',()=>openStage(0,0));
@@ -1225,7 +1278,6 @@ $('#btnResetAll').addEventListener('click',()=>{ if(confirm('카운트다운 시
 renderAll(); document.querySelectorAll('.fw').forEach(fw=>ro.observe(fw)); rerender();
 /* 직행 무대 모드는 페이지가 다 그려진 뒤에 연다 */
 if(STAGE_ONLY){ document.body.classList.add('stageonly'); const want=decodeURIComponent(location.hash.slice(1)); const at=Math.max(0,FLAT.findIndex(p=>p.id===want)); openStage(at,0);
-  host.addEventListener('click',(e)=>{ if(e.target.closest('button,a,input,select,textarea,.team,.card,[contenteditable]')) return; if(!stepCur(1)) openStage(cur+1,1); });
   window.addEventListener('hashchange',()=>{ const id=decodeURIComponent(location.hash.slice(1)); const i=FLAT.findIndex(p=>p.id===id); if(i>=0&&i!==cur) openStage(i,i>cur?1:-1); }); }
 document.fonts.ready.then(()=>{ const ok1=document.fonts.check('900 86px Paperlogy'), ok2=document.fonts.check('400 32px NanumSquare'); $('#fontchk').innerHTML=`글꼴 — Paperlogy <b>${ok1?'로딩됨':'없음'}</b> · NanumSquare <b>${ok2?'로딩됨':'없음'}</b> (파일에 내장)`; measure(); });
 

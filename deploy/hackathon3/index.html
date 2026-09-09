@@ -842,7 +842,8 @@ function fitBar(){ const hr=host.getBoundingClientRect();
 addEventListener('resize',fitBar);
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
-const STAGE_ONLY=new URLSearchParams(location.search).has('stage');
+/* 기본이 무대다 — 주소에 아무것도 붙이지 않는다. 검토 문서는 ?doc 으로 본다. */
+const STAGE_ONLY=!new URLSearchParams(location.search).has('doc');
 /* 배경 층: 슬롯 두 장. 같은 그림 → 같은 슬롯의 위치·크기만(팬·줌). 다른 그림 → 빈 슬롯에 넣고 디졸브.
    새 그림을 넣는 순간은 트랜지션을 끈다 — 안 그러면 그 슬롯이 마지막에 있던 자리에서 미끄러져 들어온다. */
 const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')]; let active=0, src=null;
@@ -884,7 +885,8 @@ document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) r
   if(e.key==='ArrowLeft'){ e.preventDefault(); if(!stepCur(-1)) openStage(cur-1,-1); }
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); openStage(cur+1,1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); openStage(cur-1,-1); }
-  if(e.key==='f'||e.key==='F'){ e.preventDefault(); toggleFull(); }
+  /* 'ㄹ' 도 받는다 — 한글 입력 상태에서 F 를 누르면 e.key 가 'ㄹ' 로 온다(마스터 OT 덱에서 배움). */
+  if(e.key==='f'||e.key==='F'||e.key==='ㄹ'){ e.preventDefault(); toggleFull(); }
   if(e.key==='Escape'&&!STAGE_ONLY) closeStage(); if(e.key==='g'||e.key==='G') toggleGrid(); });
 /* 마우스 휠 — 내리면 다음, 올리면 뒤로 (이종은 지시 9/8). 클릭은 넘기지 않는다:
    발표 순서 카드·시상 팀명 공개처럼 눌러야 하는 것들이 무대 위에 있다.
