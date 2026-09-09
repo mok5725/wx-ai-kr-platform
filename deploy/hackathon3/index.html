@@ -356,18 +356,15 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .campus .tag.dim{font-size:30px;color:var(--st-ink);background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.28);font-weight:700}
 .campus .t-conv{left:48%;top:78%}
-.campus .t-resi{left:75%;top:46%}
+.campus .t-resi{left:79%;top:46%}
 .campus .t-rnd{left:24%;top:47%}
-.campus .t-learn{left:54%;top:38%}
+.campus .t-learn{left:54%;top:44%}
 /* 건물별 설명 판 — 사진 좌표(1920×1080) 로 자리를 박는다. */
 .campus .bx{position:absolute;z-index:4;box-sizing:border-box;
   background:rgba(8,6,42,.82);border:1px solid rgba(238,240,255,.32);border-radius:16px;
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   padding:22px 26px;box-shadow:0 14px 44px rgba(0,0,0,.6)}
 .campus .bx.conv{left:36px;top:648px;width:560px}
-.campus .bx.resi{left:1268px;top:28px;width:352px}
-.campus .bn{font-family:var(--head);font-weight:900;font-size:44px;color:#FFE500;
-  letter-spacing:.01em;margin-bottom:14px}
 /* 주로 쓰는 곳은 크게, 곁들이는 곳은 작게(이종은 9/9). */
 .campus .bm{margin:0 0 10px;font-size:32px;line-height:1.4;color:var(--st-ink);font-weight:700}
 .campus .bs{margin:0;font-size:24px;line-height:1.45;color:var(--st-soft)}
@@ -938,10 +935,10 @@ const PARTS = [
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
-        {at:'conv', name:'컨벤션센터',
-         main:['1층 — 이벤트홀 (메인 행사장)','2층 — 컨퍼런스룸 201 · 202 · 203호'],
-         sub:['1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']},
-        {at:'resi', name:'레지던스홀', main:['숙소']},
+        {at:'conv', name:'컨벤션센터', sub:'메인 행사장',
+         main:['1층 — 이벤트홀','2층 — 컨퍼런스룸 201 · 202 · 203호'],
+         small:['1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']},
+        {at:'resi', name:'레지던스홀', sub:'숙소'},
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
   P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'120% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
@@ -1114,10 +1111,10 @@ B.rules=(b)=>{
 B.campus=(b)=>el('div','campus',
   `<div class="map">
      <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
-     ${b.boxes.map(x=>`<div class="bx ${x.at}"><div class="bn ln">${x.name}</div>`
+     ${b.boxes.filter(x=>x.main).map(x=>`<div class="bx ${x.at}">`
        +x.main.map(m=>`<p class="bm ln">${m}</p>`).join('')
-       +(x.sub||[]).map(m=>`<p class="bs ln">${m}</p>`).join('')+`</div>`).join('')}
-     ${b.boxes.map(x=>`<span class="tag key t-${x.at}">${x.name}</span>`).join('')}
+       +(x.small||[]).map(m=>`<p class="bs ln">${m}</p>`).join('')+`</div>`).join('')}
+     ${b.boxes.map(x=>`<span class="tag key t-${x.at}">${x.name}${x.sub?`<i>${x.sub}</i>`:''}</span>`).join('')}
      ${(b.dim||[]).map(([k,n])=>`<span class="tag dim t-${k}">${n}</span>`).join('')}
    </div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
