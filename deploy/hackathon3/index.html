@@ -342,7 +342,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .map{position:relative;width:1180px;height:665px;border-radius:18px;overflow:hidden;
   border:1px solid rgba(238,240,255,.22)}
 .campus .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.campus .base{filter:brightness(.42) saturate(.6) blur(2.5px)}
+/* 부지 밖은 거의 배경으로 내린다. 다만 두 켜의 차이를 너무 벌리면 오려낸 자리가
+   선처럼 드러나므로, 눈에 띄지 않을 만큼만 벌린다. */
+.campus .base.far{filter:brightness(.34) saturate(.32) blur(4.5px)}
+.campus .base.site{filter:brightness(.58) saturate(.78) blur(1.2px)}
 /* 건물만 제자리에서 110% 로 띄운다(이종은: "따로 분리해서 110%로 확대해도 좋아").
    각 건물 한가운데를 축으로 키워서 바탕 사진과 크게 어긋나지 않게 한다. */
 .campus .pop{position:absolute;inset:0;transform:scale(1.1)}
@@ -351,19 +354,16 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .hi{filter:brightness(1.12) saturate(1.1) drop-shadow(0 10px 26px rgba(0,0,0,.75))}
 /* 오려내는 자리는 CAMPUS_CONV · CAMPUS_RESI 에서 style 로 넣는다(값이 두 벌이 되지 않게). */
 .campus .ol{position:absolute;inset:0;width:100%;height:100%}
-.campus .ol .site{fill:none;stroke:var(--gold);stroke-width:.28;stroke-dasharray:1.6 1.1;vector-effect:non-scaling-stroke}
 .campus .ol .key{fill:none;stroke:var(--kw);stroke-width:.5;vector-effect:non-scaling-stroke}
 .campus .tag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
   padding:8px 16px;border-radius:10px;font-weight:700;line-height:1.2}
 .campus .tag i{display:block;font-style:normal;font-weight:400;font-size:22px;opacity:.85;margin-top:3px}
 .campus .tag.key{font-size:34px;color:#08062A;background:var(--kw);box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .campus .tag.dim{font-size:26px;color:var(--st-faint);background:rgba(8,6,42,.6);font-weight:400}
-.campus .tag.site{font-size:24px;color:var(--gold);background:rgba(8,6,42,.6);font-weight:400}
 .campus .t-conv{left:53%;top:79%}
 .campus .t-resi{left:77.5%;top:52%}
 .campus .t-rnd{left:24%;top:47%}
 .campus .t-learn{left:58%;top:52%}
-.campus .t-site{left:9%;top:90%}
 .campus .use{display:flex;flex-direction:column;gap:22px}
 .campus .ub{background:rgba(238,240,255,.09);border:1px solid rgba(238,240,255,.2);border-radius:16px;padding:18px 22px}
 .campus .uh{font-family:var(--head);font-weight:900;font-size:38px;color:var(--kw);margin-bottom:8px;letter-spacing:.01em}
@@ -1104,11 +1104,11 @@ B.rules=(b)=>{
 };
 B.campus=(b)=>el('div','campus',
   `<div class="map">
-     <img class="base" src="img/campus.webp" alt="포스코인재창조원 송도캠퍼스">
+     <img class="base far" src="img/campus.webp" alt="포스코인재창조원 송도캠퍼스">
+     <img class="base site" style="clip-path:polygon(${CAMPUS_SITE})" src="img/campus.webp" alt="">
      <div class="pop conv"><img class="hi" style="clip-path:polygon(${CAMPUS_CONV})" src="img/campus.webp" alt=""></div>
      <div class="pop resi"><img class="hi" style="clip-path:polygon(${CAMPUS_RESI})" src="img/campus.webp" alt=""></div>
      <svg class="ol" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-       <polygon class="site" points="${pgon(CAMPUS_SITE)}"/>
        <polygon class="key" points="${pgon(CAMPUS_CONV)}"/>
        <polygon class="key" points="${pgon(CAMPUS_RESI)}"/>
      </svg>
@@ -1116,7 +1116,6 @@ B.campus=(b)=>el('div','campus',
      <span class="tag key t-resi">레지던스홀<i>숙소</i></span>
      <span class="tag dim t-rnd">R&amp;D센터</span>
      <span class="tag dim t-learn">러닝센터</span>
-     <span class="tag site t-site">전체 부지</span>
    </div>
    <div class="use">${b.use.map(([h,items])=>
      `<div class="ub"><div class="uh ln">${h}</div>${items.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`).join('')}
