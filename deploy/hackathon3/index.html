@@ -250,6 +250,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .cube .face{position:absolute;left:50%;top:0;height:100%;width:max-content;max-width:1720px;margin:0;
   display:flex;align-items:center;justify-content:center;white-space:nowrap;
   backface-visibility:hidden;text-align:center;padding:0 26px;box-sizing:border-box;
+  /* 글월은 span 하나로 묶어 넣는다 — 이 판이 flex 라서 <b> 가 따로 떨어지면
+     그 사이 공백이 눌린다(정상 22px 가 2px 로 짜부라졌다, 9/9 실측). */
   font-size:46px;font-weight:700;line-height:1.3;color:#101538;
   background:rgba(255,255,255,.90);border:1px solid rgba(255,255,255,.95);border-radius:16px;
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
@@ -989,7 +991,7 @@ const B={};
 /* 큰 안내 판 — 한 가지를 크게 알릴 때(건강증진센터). 받은 안내문의 회색 판 모양. */
 /* 큐브가 위로 굴러가며 한 문장씩 보여 준다(1장, 이종은 9/9).
    면을 rotateX(90°×i) 로 세워 두고 큐브를 -90°씩 돌리면 i 번째 면이 정면에 온다. */
-B.cube=(b)=>el('div','cubebox',`<div class="cube">${b.lines.map(l=>`<p class="face ln">${l}</p>`).join('')}</div>`);
+B.cube=(b)=>el('div','cubebox',`<div class="cube">${b.lines.map(l=>`<p class="face"><span class="ln">${l}</span></p>`).join('')}</div>`);
 /* 캠퍼스 안내도 — 우리가 쓰는 두 건물만 또렷하게(이종은 9/9).
    바탕 사진은 어둡게 깔고, 컨벤션센터와 레지던스홀 자리만 원본 밝기의 사진을
    clip-path 로 오려 덧댄다. 나머지 건물은 이름만 흐리게 남긴다.
