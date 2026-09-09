@@ -551,9 +551,13 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   box-shadow:0 22px 60px rgba(4,3,24,.55)}
 .schd table{width:100%;height:100%;border-collapse:collapse;table-layout:fixed;
   font-size:24px;line-height:1.26;color:#1b2430;text-align:center}
-.schd col.c-t{width:320px}
-.schd th{background:#cfe0f5;color:#12314f;font-weight:800;font-size:32px;padding:9px 10px;
-  border:1px solid #bfd2e6}
+.schd col.c-d{width:132px}
+.schd col.c-t{width:300px}
+/* 며칠째인지는 표 위 머리글 행 대신 **맨 왼쪽 칸**이 알린다(이종은 9/9) —
+   행 전체를 세로로 묶어 한 번만 쓴다. */
+.schd td.dy{background:#cfe0f5;color:#12314f;font-weight:800;font-size:31px;line-height:1.3;
+  padding:10px 6px;border:1px solid #bfd2e6;white-space:nowrap}
+.schd td.dy .dd{display:block;font-size:23px;font-weight:700;color:#2a4b6d;margin-top:6px}
 .schd td{border:1px solid #c9d8e8;padding:4px 14px;vertical-align:middle}
 .schd td.t{background:#eaf2fb;font-weight:800;font-size:26px;color:#1b2b3d;white-space:nowrap;padding:4px 8px}
 .schd td.wh{background:#fff}
@@ -1340,11 +1344,11 @@ function schedDay(day){
     ['16:00~17:00',{t:'<b>우수팀 시상 및 폐회식</b> <span class="hr">(1hr)</span>',s:2,c:'pk'}],
     ['17:00~',{t:'<b>기념사진 촬영 및 귀가</b>',s:2,c:'pk'}],
   ];
-  const head = day===1 ? '1일차 (9/10,목)' : '2일차 (9/11,금)';
-  const tr=(r)=>`<tr><td class="t">${r[0]}</td>`+r.slice(1).map(c=>
+  const dy = day===1 ? '1일차<span class="dd">9/10 (목)</span>' : '2일차<span class="dd">9/11 (금)</span>';
+  const tr=(r,i)=>`<tr>`+(i?'':`<td class="dy" rowspan="${R.length}">${dy}</td>`)
+      +`<td class="t">${r[0]}</td>`+r.slice(1).map(c=>
       `<td class="d ${c.c}"${c.s?` colspan="${c.s}"`:''}${c.r?` rowspan="${c.r}"`:''}>${c.t}</td>`).join('')+`</tr>`;
-  return `<div class="schd"><table><colgroup><col class="c-t"><col><col></colgroup>`
-       + `<thead><tr><th colspan="3">${head}</th></tr></thead>`
+  return `<div class="schd"><table><colgroup><col class="c-d"><col class="c-t"><col><col></colgroup>`
        + `<tbody>${R.map(tr).join('')}</tbody></table></div>`;
 }
 B.sched=()=>el('div','schroll',
