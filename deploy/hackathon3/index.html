@@ -806,17 +806,21 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense.join .uframe .ul.ma{stroke:#8FBAFF}
 .tl.dense.join .uframe .ul.ch{stroke:#FFD466}
 /* 버튼은 세로칸 한가운데 — 두 마디 줄이 모여드는 자리다. */
-.tl.dense.join .fin{position:absolute;left:1432px;top:164px;width:344px;height:260px;
-  z-index:2;box-sizing:border-box;padding:0 20px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+.tl.dense.join .fin{position:absolute;left:1400px;top:295.5px;width:380px;height:152px;
+  z-index:2;box-sizing:border-box;padding:0 26px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
   border-radius:32px;text-align:center;
   background:linear-gradient(152deg,rgba(104,156,255,.36),rgba(255,204,88,.32));
   border:3px solid rgba(255,214,110,.62);
   box-shadow:0 26px 62px rgba(4,3,24,.52), inset 0 1px 0 rgba(255,255,255,.34);
   -webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15)}
-.tl.dense.join .fin .one{font-size:25px;letter-spacing:.04em;color:var(--gold);font-weight:700}
-.tl.dense.join .fin b{font-family:var(--head);font-weight:900;font-size:62px;line-height:1.06;color:#fff}
-.tl.dense.join .fin .dd{font-size:26px;line-height:1.35;color:var(--st-ink)}
+.tl.dense.join .fin .one{font-size:23px;letter-spacing:.04em;color:var(--gold);font-weight:700;line-height:1.2}
+.tl.dense.join .fin b{font-family:var(--head);font-weight:900;font-size:54px;line-height:1.06;color:#fff}
+.tl.dense.join .fin .dd{font-size:24px;line-height:1.3;color:var(--st-ink)}
+/* 마스터 줄만 위아래를 뒤집는다 — 점은 그대로 줄 위에, 글씨는 점 **위**로. */
+.tl.dense.join .row.t-ma .steps::before{top:auto;bottom:12px}
+.tl.dense.join .row.t-ma .st{top:auto;bottom:36px}
+.tl.dense.join .row.t-ma .st::before{top:auto;bottom:-36px}
 .tl.dense .st{font-size:30px;line-height:1.4}
 .tl.dense .lab{font-size:var(--s3);padding-top:0;color:var(--dot)}
 .tl .st.last::before{background:var(--kw)}
@@ -1617,18 +1621,19 @@ B.sched=()=>el('div','schroll',
    본문 칸이 1792×743 로 못 박혀 있고 무대에선 통째로 배율만 바뀌므로 픽셀 좌표로
    그려도 어긋나지 않는다. 줄 높이 348.5 · 사이 46 → 오목한 자리는 y 349~394.5,
    세로칸은 x 1340~1792. 위·아래 절반을 트랙 색으로 나누고 y=371.5 에서 만난다.
-   마디 줄 끝(1238, 96 / 1238, 492)에서 나온 선은 **판과 같은 결**로 잇는다(이종은
-   9/10) — 곧게 가다 둥근 모서리(r34)로 꺾이고 다시 곧게. 마스터 선은 버튼 **윗면**,
-   챌린저 선은 **아랫면**에 붙는다(이종은 9/10). 그러려면 버튼이 두 줄 **사이**에
-   있어야 하므로, 두 줄의 한가운데(y=294)에 놓아 위아래 꺾임 길이를 똑같이 맞췄다.
-   두 선 모두 버튼 한가운데 x=1604 로 들어온다. */
+   마스터 줄은 **글씨를 점 위로** 올려 뒤집었다(이종은 9/10). 그러면 마스터 줄이
+   아래로 내려와(y=247) 챌린저 줄(y=490.5)과 마주 보고, 두 줄의 한가운데가 두 판
+   사이의 한가운데(y=371.5)와 맞아떨어진다 — 「본선 참여」는 바로 그 자리에 앉는다.
+   선은 **판과 같은 결**로 잇는다 — 곧게 가다 둥근 모서리(r24)로 꺾이고 다시 곧게.
+   두 선 모두 버튼 세로 한가운데 축(x=1590)을 타고 들어와 윗면·아랫면에 붙으므로,
+   버튼을 관통하는 한 줄기로 보인다. */
 const JOINPIPE=`<svg class="uframe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path class="ub ma" d="M26,0 H1766 Q1792,0 1792,26 V371.5 H1340 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 Z"/>
   <path class="ub ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5 Z"/>
   <path class="uw ma" d="M1340,371.5 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 H1766 Q1792,0 1792,26 V371.5"/>
   <path class="uw ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5"/>
-  <path class="ul ma" d="M1238,96 H1570 Q1604,96 1604,130 V164"/>
-  <path class="ul ch" d="M1238,492 H1570 Q1604,492 1604,458 V424"/>
+  <path class="ul ma" d="M1238,247 H1566 Q1590,247 1590,271 V295.5"/>
+  <path class="ul ch" d="M1238,490.5 H1566 Q1590,490.5 1590,466.5 V447.5"/>
 </svg>`;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
