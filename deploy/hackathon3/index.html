@@ -282,27 +282,33 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    왼쪽 사진 · 오른쪽 이용안내. 사진은 바탕을 어둡고 흐리게 깔고 두 건물만 또렷하게. */
 /* ── 규칙 그림표 (16·18쪽) ────────────────────────────────────────────── */
 /* ── 협업 도구 세 칸 (8쪽) ───────────────────────────────────────────── */
-.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%}
-.tools .tl{display:flex;flex-direction:column;align-items:center;min-height:0}
-.tools .mark{position:relative;width:190px;height:190px;border-radius:34px;
-  background:var(--c);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 16px 40px rgba(0,0,0,.45)}
-.tools .mark img{position:absolute;inset:12%;width:76%;height:76%;object-fit:contain}
-.tools .ini{font-family:var(--head);font-weight:900;font-size:76px;color:#fff;line-height:1}
-.tools .tn{margin-top:22px;font-family:var(--head);font-weight:900;font-size:var(--s2);
-  color:var(--st-ink);text-align:center;line-height:1.25;letter-spacing:.01em}
-/* 받은 숫자를 채운 꼴 — 큰 수 + 딸림 세 줄. slot(점선 자리)은 아직 값이 없는
-   칸에만 쓴다. */
-.tools .big{margin-top:14px;display:flex;align-items:baseline;gap:10px;justify-content:center}
-.tools .big .n{font-family:var(--head);font-weight:900;font-size:96px;line-height:1;color:var(--st-ink)}
-.tools .big .u{font-family:var(--head);font-weight:900;font-size:44px;color:var(--kw)}
-.tools .tls{margin:22px 0 0;padding-left:24px;width:100%;box-sizing:border-box;text-align:left}
-.tools .tls li{font-size:27px;line-height:1.5;color:var(--st-soft);margin-bottom:10px}
-.tools .tls li b{color:var(--st-ink)}
-.tools .slot{margin-top:20px;flex:1;width:100%;min-height:0;
-  border:2px dashed rgba(238,240,255,.3);border-radius:16px;
-  display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
-.tools .ph{font-size:28px;color:var(--st-faint);text-align:center;line-height:1.5}
+/* ── 숫자 판 (A-10) ───────────────────────────────────────────────────────
+   운영이 준 「숫자로 보는 원정대」 이미지 그대로(이종은 9/9) — 밝은 회색 판 위에
+   브랜드 배지 + 큰 초록 숫자를 **가로 한 줄**로 놓고, 그 아래 ▪ 세 줄.
+   판 위쪽 제목(【 숫자로 보는 … 】)은 장 제목과 같은 말이라 넣지 않는다. */
+/* 판은 내용만큼만 크고 칸 한가운데에 앉는다 — 100% 로 두면 아래가 뻥 빈다. */
+.tools{height:100%;display:flex;align-items:center}
+.tools .npanel{width:100%;box-sizing:border-box;background:#E3E4E7;border-radius:36px;
+  padding:54px 46px;
+  box-shadow:0 26px 64px rgba(4,3,24,.52), inset 0 1px 0 rgba(255,255,255,.85)}
+.tools .ncols{display:grid;grid-template-columns:repeat(3,1fr);gap:44px}
+.tools .nc{display:flex;flex-direction:column;min-width:0}
+.tools .nh{display:flex;align-items:center;gap:18px;min-width:0}
+/* 로고 그림이 아직 없다 — 스파르타 로고처럼 브랜드 색 알약에 이름을 적는다.
+   `img/logo/<key>.webp` 를 넣으면 그 그림으로 바뀐다(못 읽으면 알약이 남는다). */
+.tools .mk{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  height:68px;padding:0 18px;border-radius:15px;background:var(--c);color:#fff;white-space:nowrap;
+  font-family:var(--head);font-weight:900;font-size:24px;letter-spacing:.01em;
+  box-shadow:0 8px 18px rgba(0,0,0,.22)}
+.tools .mk img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.tools .nh .n{font-family:var(--head);font-weight:900;font-size:72px;line-height:1;color:#0E9C68;white-space:nowrap}
+.tools .nh .u{font-family:var(--head);font-weight:900;font-size:36px;line-height:1;color:#0E9C68}
+.tools .nl{margin:36px 0 0;padding:0;list-style:none}
+.tools .nl li{position:relative;padding-left:28px;font-size:27px;line-height:1.5;
+  color:#242A31;margin-bottom:20px}
+.tools .nl li::before{content:'';position:absolute;left:3px;top:.52em;
+  width:11px;height:11px;background:#3B434B}
+.tools .nl li b{color:#0E9C68;font-weight:800}
 
 /* ── 17쪽 전용 ─────────────────────────────────────────────────────────────
    사진이 화면을 가득 채우고 레지던스홀은 오른쪽에 있다. 규정은 **왼쪽으로 몰아**
@@ -1077,13 +1083,13 @@ const PARTS = [
   P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span class="coach" style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'tools', items:[
-      {key:'spartan', short:'S', color:'#E8344E', name:'스파르타 코딩클럽', big:'1,333', unit:'hr',
-       lines:['원정대원 <b>1인 평균 22시간</b> 이상 수강','인기 강의는 「ChatGPT 300% 활용하기」','가장 많이 수강한 팀은 <b>총 174.5시간</b> 수강']},
-      {key:'discord', short:'D', color:'#5865F2', name:'디스코드 협업', big:'11,839', unit:'건',
-       lines:['팀 협업을 위한 <b>1일 평균 대화량 845건</b>','소통 1등 원정대원 대화량은 <b>무려 846건</b>','가장 대화가 활발한 팀은 <b>총 2,355건</b> 소통']},
-      {key:'teams',   short:'T', color:'#6264A7', name:'전문 코칭', big:'72', unit:'회',
-       lines:['과제 수행을 위한 전문코칭 <b>총 40시간</b>','음성채팅 최고 팀 채팅 시간은 <b>103시간</b>','가장 코칭을 많이 받은 팀은 <b>총 8회</b> 미팅']},
-    ]}, viz:'세 칸 — 로고 + 이름 + 큰 숫자 + 딸림 세 줄', how:'운영이 준 「숫자로 보는 원정대」 값 그대로(9/9)' }),
+      {key:'spartan', short:'S', color:'#E8344E', name:'SPARTA Club', big:'876.4', unit:'hr',
+       lines:['원정대원 31명이 <b>1인 평균 28.3시간</b> 수강','인기 강의는 「데이터 핸들링을 위한 Python &amp; SQL 기초」 <b>총 355.6시간</b>','가장 많이 수강한 팀은 <b>총 150.7시간</b> 수강']},
+      {key:'discord', short:'D', color:'#5865F2', name:'Discord', big:'9,195', unit:'건',
+       lines:['팀즈 제출 내역까지 포함한 <b>전체 대화 횟수</b>','소통 1등 원정대원 대화량은 <b>무려 896건</b>','가장 대화가 활발한 팀은 <b>총 1,364건</b> 소통']},
+      {key:'teams',   short:'T', color:'#6264A7', name:'Teams', big:'86', unit:'회',
+       lines:['멘토링과 전문코칭을 모두 합한 <b>전체 횟수</b>','과제 수행을 위한 전문코칭 <b>총 40시간</b>','가장 코칭을 많이 받은 팀은 <b>총 9번</b> 미팅']},
+    ]}, viz:'밝은 회색 판 세 칸 — 브랜드 배지 + 큰 초록 숫자 한 줄, 그 아래 ▪ 세 줄', how:'운영이 준 「숫자로 보는 원정대」 이미지 배치·디자인 그대로, 값은 9/9 최종본' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
   P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.0,'tall a-tee'],['리유져블백','img/goods/bag.webp',1.05,'a-bag'],['메모지 & 필기도구','img/goods/stationery.webp',0.9,'a-memo'],['보조배터리','img/goods/battery.webp',0.9,'a-batt'],['덴탈케어세트','img/goods/dental.webp',0.78,'a-dent'],['목베개','img/goods/pillow.webp',1.0,'a-pil']]}, viz:'6칸 — 왼쪽 티셔츠 통칸, 가운데 위 메모지·보조배터리 가로 둘, 오른쪽 리유저블백 넉 줄', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
@@ -1220,20 +1226,16 @@ const CAMPUS_SITE = '0.9% 41.9%, 13.1% 33.2%, 68.9% 29.2%, 83.6% 34.6%, 98.9% 59
 const pgon = (t) => t.split(',').map(p => p.trim().split(/\s+/).map(v => parseFloat(v)).join(',')).join(' ');
 /* 금지·주의 항목을 그림표로 — 큰 기호 + 제목 + 딸린 항목들.
    숙소 이용 규정(16쪽)과 안전 수칙(18쪽)이 같은 틀을 쓴다. */
-/* 도구 세 가지(스파르타 · 디스코드 · 팀즈) — 로고 자리와 그 아래 내용 자리.
-   로고 그림이 아직 없어 브랜드 색 배지로 두었다. `img/logo/<key>.webp` 를 넣으면
-   자동으로 그 그림이 뜬다(못 읽으면 배지가 그대로 남는다). */
-B.tools=(b)=>el('div','tools', b.items.map(t=>
-  `<div class="tl">
-     <div class="mark" style="--c:${t.color}">
-       <img src="img/logo/${t.key}.webp" alt="" onerror="this.remove()">
-       <span class="ini">${t.short}</span>
+/* 도구 세 가지(스파르타 · 디스코드 · 팀즈) — 배지와 큰 숫자가 한 줄, 그 아래 세 줄. */
+B.tools=(b)=>el('div','tools',
+  `<div class="npanel"><div class="ncols">`+b.items.map(t=>
+  `<div class="nc">
+     <div class="nh">
+       <span class="mk" style="--c:${t.color}"><img src="img/logo/${t.key}.webp" alt="" onerror="this.remove()">${t.name}</span>
+       <span class="n">${t.big}</span><span class="u">${t.unit||''}</span>
      </div>
-     <div class="tn ln">${t.name}</div>
-     ${t.big?`<div class="big"><span class="n">${t.big}</span><span class="u">${t.unit||''}</span></div>`:''}
-     ${t.lines?`<ul class="tls">${t.lines.map(x=>`<li class="ln">${x}</li>`).join('')}</ul>`
-        :`<div class="slot"><span class="ph">${t.slot}</span></div>`}
-   </div>`).join(''));
+     <ul class="nl">${t.lines.map(x=>`<li class="ln">${x}</li>`).join('')}</ul>
+   </div>`).join('')+`</div></div>`);
 /* 금지 항목은 **계층이 없다**(이종은 9/9). 위 셋이 가장 중요할 뿐, 나머지 열다섯은
    그 셋의 하위 항목이 아니라 저마다 따로인 안내다. 그래서 3열 표로 세우지 않고
    낱개 알약으로 흘려 놓는다 — 열을 맞추면 위 셋에 딸린 것처럼 읽힌다. */
