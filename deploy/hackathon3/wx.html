@@ -1477,15 +1477,17 @@ const PARTS = [
   pages:[
   P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
   P({ no:'—', id:'D-15s', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상 선택기 (운영용 · 무대에 안 올림)', new:true, ops:true, eyebrow:'운영 도구', h:'심사 결과 <em>입력</em>', widget:'awards', viz:'—', how:'클릭 3번', memo:'다른 팀을 누르면 바뀐다' }),
-  P({ no:'15', id:'D-16', bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 시상 (3단계)', eyebrow:'시상', h:'마스터 트랙 <em>시상</em>', dyn:true, steps:[['mTop','최우수상'],['mGood1','우수상'],['mGood2','우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'마스터 트랙 '+name}})), viz:'상 이름 → 팀명 176px(가림) → 과제 → 상품 → 상장', how:'단계 = 호명 순서. 팀명 클릭으로 공개' }),
-  P({ no:'16', id:'D-17', bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 시상 (2단계)', eyebrow:'시상', h:'챌린저 트랙 <em>시상</em>', dyn:true, steps:[['cGood','우수상'],['cTop','최우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'챌린저 트랙 '+name}})), viz:'같은 틀. 우수 → 최우수', how:'—' }),
+  P({ no:'15', id:'D-16', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 시상 (3단계)', eyebrow:'시상', h:'마스터 트랙 <em>시상</em>', dyn:true, steps:[['mTop','최우수상'],['mGood1','우수상'],['mGood2','우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'마스터 트랙 '+name}})), viz:'상 이름 → 팀명 176px(가림) → 과제 → 상품 → 상장', how:'단계 = 호명 순서. 팀명 클릭으로 공개' }),
+  P({ no:'16', id:'D-17', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 시상 (2단계)', eyebrow:'시상', h:'챌린저 트랙 <em>시상</em>', dyn:true, steps:[['cGood','우수상'],['cTop','최우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'챌린저 트랙 '+name}})), viz:'같은 틀. 우수 → 최우수', how:'—' }),
   P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
   P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
   P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('본선대회'), slogan:true, viz:'A-02 로 돌아온다', how:'—' }),
 ]},
 ];
 /* 운영 전용 장(ops:true)은 참가자 덱에서 통째로 뺀다 — 쪽 수·부 이동 바·진행 점이
-   모두 PARTS 에서 나오므로 여기서 걸러 내면 나머지는 저절로 맞는다. */
+   모두 PARTS 에서 나오므로 여기서 걸러 내면 나머지는 저절로 맞는다.
+   지금 빠지는 장: 시상 선택기(D-15s) · 마스터 트랙 시상(D-16) · 챌린저 트랙 시상(D-17).
+   시상식 개시 표지 · 전원 선물 · 기념사진 · 폐회는 수상팀을 드러내지 않으므로 남긴다. */
 if(!OPS) PARTS.forEach(pt => { pt.pages = pt.pages.filter(x => !x.ops); });
 const FLAT = PARTS.flatMap(p=>p.pages);
 
