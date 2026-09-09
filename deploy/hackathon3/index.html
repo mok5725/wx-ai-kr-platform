@@ -653,6 +653,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 
 /* 표지 — 가운데 정렬. 상단 바의 이벤트 락업 대신 화면 가운데 큰 락업 */
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--brandbar-h) var(--pad) 200px;gap:18px}
+/* 표지에 단계를 준 장(개회사)은 처음에 글을 감췄다가 다음 눌림에 띄운다. */
+.cover{transition:opacity .6s cubic-bezier(.22,.61,.36,1)}
+.cover.hold{opacity:0}
 /* 표지는 홀 전체가 보는 화면이다 — 대회명과 큰 글씨를 따로 키운다(--s3/--s5 를 쓰면
    숫자 지표 같은 다른 자리까지 같이 커진다). 손글씨 폭은 음절수 × 1em 이라 이 값이 곧 폭이다. */
 .cover .lockup{display:flex;align-items:center;gap:19px;font-family:var(--head);font-weight:800;font-size:84px;color:var(--st-ink)}
@@ -1053,7 +1056,7 @@ const PARTS = [
        ]},
 ]},
 viz:'그림표 — 큰 기호 + 제목 + 항목. 1단계 안전 가이드(세 칸), 2단계 화재·지진(두 칸)', how:'운영이 준 안전행동수칙 자료 그대로(9/9)' }),
-  P({ no:'20', id:'A-20', title:'개회사 (표지 스타일)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'140% auto', bgPos:'center 30%', kind:'cover', huge:true, big:'개회사', en:'포스코홀딩스 김기수 미래기술연구원장', viz:'표지 구성 — 위 "개회사", 가운데 이름 손글씨(강렬하게, 144px 이상), 아래 직책. 사진 없음', how:'이름만 손글씨 SVG. 로고 바 오른쪽 락업은 유지' }),
+  P({ no:'20', id:'A-20', title:'개회사 (표지 스타일)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'140% auto', bgPos:'center 30%', kind:'cover', huge:true, big:'개회사', en:'포스코홀딩스 김기수 미래기술연구원장', coverReveal:true, steps:[{label:'배경'},{label:'개회사'}], viz:'표지 구성 — 위 "개회사", 가운데 이름 손글씨(강렬하게, 144px 이상), 아래 직책. 사진 없음', how:'이름만 손글씨 SVG. 로고 바 오른쪽 락업은 유지' }),
   P({ no:'21', id:'A-21', title:'전환 (본선 시작)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'150% auto', bgPos:'center 10%', kind:'cover', lockup:'2026 WX해커톤 본선대회', big:hand('이제 본격적으로 시작합니다'), viz:'없음. 손글씨 후보', how:'—' }),
   P({ no:'22', id:'A-22', title:'전문가 특강 (표지 스타일)', when:'10:00~11:30', kind:'cover', label:'전문가 특강', big:'Age of AI_<br>The Future of Work', link:{href:'age-of-ai.pdf', label:'특강 자료 열기'}, en:'JC Park (박종천 개발자)', when2:'지란지교소프트 CAIO · 『챗GPT 시대 살아남기』 저자', viz:'표지 구성 — 특강 제목이 손글씨', how:'제목은 포스터. 강사 · 소개는 아래 두 줄' }),
   P({ no:'23', id:'A-23', title:'현업 AX 우수사례 (표지 스타일)', when:'11:30~12:00', kind:'cover', label:'현업 AX우수사례 공유', big:hand('AX Village'), link:{href:'ax-village.html', label:'특강 자료 열기'}, linesUp:true, lines:['비개발자가 바이브코딩을 통해 프로토타입 제작부터, 디자인/설계,<br>전사 오픈까지의 경험담 및 시사점 공유'], en:'포스코DX 손영규 부장', when2:'경영기획실 AI Workforce TF팀 · 경영혁신 담당 그룹장', viz:'표지 구성 — 제목 손글씨', how:'발표 내용은 한 줄(길이 검토)' }),
@@ -1273,9 +1276,15 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     `<b>삭제 예정</b>${typeof p.del==='string'?`<i>${p.del}</i>`:''}`));
   if(p.bg){ frame.style.background=`linear-gradient(rgba(8,6,42,.30), rgba(8,6,42,.55)), url("${p.bg}") ${p.bgPos||"center"} / ${p.bgSize||"cover"} no-repeat`; frame.classList.add('has-bg'); }
   if(isCover){
-    const c=el('div','cover z'); c.dataset.z='표지 — 가운데 정렬, 하단 슬로건 자리 200px 비움';
+    const c=el('div','cover z'+(p.coverReveal?' hold':'')); c.dataset.z='표지 — 가운데 정렬, 하단 슬로건 자리 200px 비움';
     c.innerHTML=(p.img?`<img class="cimg" src="${p.img}" alt="">`:'')+(p.lockup?`<div class="lockup"><span>2026</span><span class="ci ci-mark" role="img" aria-label="WX해커톤 마크"></span><span>해커톤</span></div>`:p.label?`<div class="lockup ln"><span>${p.label}</span></div>`:'')+`<div class="big ln${p.huge?' huge':''}">${p.big}</div>`+(p.linesUp&&p.lines?`<div class="lines up">${p.lines.map(l=>lnP(l)).join('')}</div>`:'')+(p.en?`<div class="en ln">${p.en}</div>`:'')+(p.when2?`<div class="when ln">${p.when2}</div>`:'')+(!p.linesUp&&p.lines?`<div class="lines">${p.lines.map(l=>lnP(l)).join('')}</div>`:'');
     frame.appendChild(c);
+    /* 표지에 단계를 두면(개회사) 넘김 단추도 붙는다. 본문 쪽과 같은 틀을 쓴다. */
+    if(p.steps){
+      const nav=el('div','stepnav',`<button data-d="-1">←</button><span class="lab">1 / ${p.steps.length} · ${p.steps[0].label}</span><button data-d="1">→</button>`);
+      nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>stepTo(p, (pageEls.get(p.id).step||0)+ +b.dataset.d)));
+      frame.appendChild(nav);
+    }
     if(p.link) { const a=el('a','openlink'); a.href=p.link.href; a.target='_blank'; a.rel='noopener';
       a.innerHTML=`<span>${p.link.label}</span>`; frame.appendChild(a); }
     if(p.slogan) frame.appendChild(z('slogan',`<span class="stack"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span>`,'슬로건 — 한 줄, 폰트 34 + SVG h96 (첨부 비율)'));
@@ -1308,8 +1317,11 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
 function stepTo(p, n){
   const rec=pageEls.get(p.id); if(!p.steps) return false;
   n=Math.max(0,Math.min(p.steps.length-1,n)); const cur=rec.step||0; if(n===cur) return false;
+  /* 표지는 화면을 갈아 끼우지 않고 글만 띄운다(개회사: 배경 먼저 → 한 번 더 눌러 글). */
+  const cv=p.coverReveal && rec.frame.querySelector('.cover');
   const tr=rec.frame.querySelector('.cards.track');
-  if(tr){
+  if(cv){ cv.classList.toggle('hold', n===0); }
+  else if(tr){
     /* 칸 폭은 offsetWidth 로 잰다 — 무대에서 프레임이 scale 되어 있어
        getBoundingClientRect 로 재면 배율이 섞여 어긋난다. */
     const win=tr.parentElement;              // .tracker
