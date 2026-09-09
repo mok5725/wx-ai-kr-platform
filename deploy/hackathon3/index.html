@@ -351,13 +351,13 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    wx26-screens/scripts/build-campus.mjs 에 자리값과 배율이 있다.
    무대에서 켜를 겹치면 배율에 따라 자리가 어긋나서, 한 장으로 구워 쓴다. */
 .campus .tag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
-  padding:8px 16px;border-radius:10px;font-weight:700;line-height:1.2}
+  padding:8px 16px;border-radius:10px;font-weight:700;line-height:1.2;text-align:center}
 .campus .tag i{display:block;font-style:normal;font-weight:700;font-size:26px;opacity:.9;margin-top:4px}
 .campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .campus .tag.dim{font-size:30px;color:var(--st-ink);background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.28);font-weight:700}
 .campus .t-conv{left:48%;top:78%}
-.campus .t-resi{left:79%;top:46%}
-.campus .t-rnd{left:24%;top:47%}
+.campus .t-resi{left:76%;top:46%}
+.campus .t-rnd{left:21%;top:47%}
 .campus .t-learn{left:54%;top:44%}
 /* 건물별 설명 판 — 사진 좌표(1920×1080) 로 자리를 박는다. */
 .campus .bx{position:absolute;z-index:4;box-sizing:border-box;
@@ -936,7 +936,7 @@ const PARTS = [
   P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
         {at:'conv', name:'컨벤션센터', sub:'메인 행사장',
-         main:['1층 — 이벤트홀','2층 — 컨퍼런스룸 201 · 202 · 203호'],
+         main:['1층 — 이벤트홀','2층 — 컨퍼런스룸'],
          small:['1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']},
         {at:'resi', name:'레지던스홀', sub:'숙소'},
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
