@@ -304,7 +304,22 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules .tc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
   background:rgba(242,90,110,.15);border:2px solid rgba(242,90,110,.55);border-radius:16px;
   padding:14px 16px;text-align:center}
+/* 금지 픽토그램 — 원본 안내문처럼 빨간 원에 사선을 씌운다.
+   이모지만으로는 "금지"가 읽히지 않아 표지 자체를 CSS 로 그린다. */
 .rules .ic{font-size:50px;line-height:1}
+.rules .tc .ic{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:86px;height:86px;font-size:44px}
+.rules .tc .ic::after{content:'';position:absolute;inset:0;border:7px solid #E5372F;border-radius:50%}
+.rules .tc .ic::before{content:'';position:absolute;left:50%;top:50%;width:104%;height:7px;
+  background:#E5372F;transform:translate(-50%,-50%) rotate(-45deg)}
+/* CCTV 촬영중 — 원본 안내문의 노란 삼각 표지 자리 */
+.rules .leadrow{display:flex;align-items:center;gap:20px}
+.rules .leadrow .lead{flex:1}
+.rules .cctv{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:#F5D400;color:#151515;border-radius:12px;padding:12px 18px;
+  font-weight:900;font-size:22px;line-height:1.1;text-align:center;
+  box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.rules .cctv b{font-size:34px;line-height:1}
 .rules .rt{font-family:var(--head);font-weight:900;font-size:38px;letter-spacing:.01em;color:#FFD9DF}
 .rules .rs{font-size:23px;line-height:1.35;color:var(--st-soft)}
 /* 나머지 항목 — 알약으로 흘린다. 줄과 열을 맞추지 않는 것이 요점이다. */
@@ -924,16 +939,16 @@ const PARTS = [
         ['레지던스홀', ['숙소']],
       ], link:'컨벤션센터와 레지던스홀은 1층에서 서로 연결되어 있습니다.'}},
       {label:'이용 규정', body:{type:'rules',
-      lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다. 각 층마다 이용 규정 위반을 살피는 CCTV가 설치되어 있습니다.',
+      lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
-        ['🚭','객실 내 흡연',''],
-        ['🚫🍷','주류 반입 및 음주행위',''],
-        ['🚫🍔','음식물 취식','배달음식 금지 · 음료수 및 과자류 제외'],
+        ['🚬','객실내 흡연',''],
+        ['🍷','주류반입 및 음주행위',''],
+        ['🍔','음식물 취식','배달음식 금지, 음료수 및 과자류 제외'],
       ],
       groups:[
         ['🔇','소음 · 질서',['고성방가 및 수면 방해','공공질서 미준수','불법집회','불순 유인물 배포 및 게시']],
-        ['🚪','출입 · 숙박',['남녀혼숙','외래인 합숙 · 입실','임의전실','입실 및 면회 절차 불이행']],
-        ['🧯','시설 · 안전',['화재 위험요인 · 안전사고 유발','시설물 파손 (변상 포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
+        ['🚪','출입 · 숙박',['남녀혼숙','외래인 합숙, 입실','임의전실','입실 및 면회 절차 불이행']],
+        ['🧯','시설 · 안전',['화재 위험요인 및 안전사고 유발','시설물 파손(변상포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
         ['🚨','범죄 행위',['도박행위','절도행위','폭행']],
       ],
       foot:'위 18가지는 모두 금지 항목입니다. 꼭 지켜 주시기 바랍니다.'}},
@@ -1070,7 +1085,8 @@ B.rules=(b)=>{
       +`</div>`+(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
     return w;
   }
-  w.innerHTML=(b.lead?`<div class="lead ln">${b.lead}</div>`:'')
+  w.innerHTML=(b.lead?`<div class="leadrow"><div class="lead ln">${b.lead}</div>`
+      +(b.cctv?`<div class="cctv"><b>&#128247;</b>CCTV<br>촬영중</div>`:'')+`</div>`:'')
     +`<div class="tops">`+b.top.map(([ic,t,sub])=>
       `<div class="tc"><span class="ic" role="img" aria-hidden="true">${ic}</span>`
       +`<span class="rt ln">${t}</span>`
