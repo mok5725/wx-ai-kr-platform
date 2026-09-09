@@ -536,6 +536,43 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tbl th{font-size:var(--s00);letter-spacing:.08em;color:var(--st-faint);font-weight:400}
 .tbl td.t{font-family:var(--mono);white-space:nowrap;color:var(--st-ink);font-size:28px;padding-top:12px}
 .tbl td.c{color:#CCE8FE}.tbl td.m{color:#F7DFA5}
+/* ── 시간표 (A-14) ────────────────────────────────────────────────────────
+   운영이 준 표를 그대로 옮겼다(이종은 9/9) — 시간 칸 하나 + 내용 칸 둘.
+   공통 일정은 두 칸을 합치고(colspan), 트랙이 갈리면 왼쪽 노랑(챌린저)·
+   오른쪽 파랑(마스터)으로 나눈다. 여러 시간대에 걸친 일은 rowspan 으로 묶는다.
+   1일차 → 2일차는 세로로 밀어 **스크롤 내려가듯** 넘긴다. */
+.schroll{position:absolute;inset:0;overflow:hidden}
+.schtrack{position:absolute;left:0;top:0;right:0;height:200%;
+  display:flex;flex-direction:column;
+  transition:transform .78s cubic-bezier(.3,.7,.25,1);will-change:transform}
+.schtrack > .day{flex:1 1 0;min-height:0;display:flex;justify-content:center}
+.schd{width:1500px;max-width:100%;height:100%;
+  border-radius:14px;overflow:hidden;background:#fff;
+  box-shadow:0 22px 60px rgba(4,3,24,.55)}
+.schd table{width:100%;height:100%;border-collapse:collapse;table-layout:fixed;
+  font-size:24px;line-height:1.26;color:#1b2430;text-align:center}
+.schd col.c-t{width:320px}
+.schd th{background:#cfe0f5;color:#12314f;font-weight:800;font-size:32px;padding:9px 10px;
+  border:1px solid #bfd2e6}
+.schd td{border:1px solid #c9d8e8;padding:4px 14px;vertical-align:middle}
+.schd td.t{background:#eaf2fb;font-weight:800;font-size:26px;color:#1b2b3d;white-space:nowrap;padding:4px 8px}
+.schd td.wh{background:#fff}
+.schd td.pk{background:#fbeef4}
+.schd td.yl{background:#fbf8e4}
+.schd td.bu{background:#e2effa}
+.schd td b{font-weight:800;font-size:28px}
+.schd .hr{font-weight:400;font-size:22px;color:#3c4756}
+.schd .sm{font-size:22px;color:#333e4c}
+.schd .ac{color:#2b5cb8;font-weight:700}
+.schd .bl{display:inline-block;text-align:left;font-size:23px;line-height:1.42}
+.schd .sp{display:block;height:6px}
+/* 표가 커진 만큼 제목을 줄이고 본문 칸을 위로 끌어올린다. 단계 표시는 표 머리글
+   (1일차/2일차)이 대신하므로 감춘다. */
+.frame[data-id="A-14"] .title-z{top:88px;font-size:58px;min-height:0}
+.frame[data-id="A-14"] .body-z{top:162px;height:810px}
+.frame[data-id="A-14"] .stepnav{display:none}
+/* 각주가 길어 아래 진행 점과 겹친다 — 점 위로 올린다. */
+.frame[data-id="A-14"] .foot-z{bottom:62px}
 .tbl.sched table{font-size:30px;line-height:1.35}
 .tbl.sched th,.tbl.sched td{padding:8px 16px}
 /* 배경 사진 위에서는 표가 묻혀 읽기 어렵다 — 반투명 판을 깔아 대비를 만든다(이종은 9/9). */
@@ -1049,7 +1086,7 @@ const PARTS = [
       {no:'2', tt:'몰입해요', groups:[['마스터 트랙',['솔루션을 점검하고 결과물을 실제와 연결']],['챌린저 트랙',['팀 협업을 통한 무박 2일의 끝장 개발']],['스페셜 코치와 학습하기',['특강을 통한 노하우 전수','실시간 전략강화 멘토링']]]},
       {no:'3', tt:'터트려요', groups:[['전문 심사위원과 함께 하는<br>결과 발표회',[]],['완주 기념 축하 파티',['우수팀 시상 및 상품 수여','완주 기념 피날레 촬영']]]},
     ]}, viz:'세 칸 — 번호 · 이름 · 묶음. 옛 17~19장을 한 장으로(9/9)', how:'원문 그대로 "무박 2일"(이종은 9/9 확인)' }),
-  P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'<em>1일차</em> · 2일차 일정', steps:[{label:'1일차', body:{type:'table', sched:1}},{label:'2일차', body:{type:'table', sched:2}}], dynTitle:['<em>1일차</em> 9/10(목) 일정','<em>2일차</em> 9/11(금) 일정'], viz:'표 — 시간 | 내용 두 칸. 챌린저 분홍 · 마스터 노랑', how:'머리글을 빼고 색으로 트랙을 가른다(이종은 9/9). 각주는 표 바로 아래, 1일차만' }),
+  P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'해커톤 <em>전체 일정</em>', steps:[{label:'1일차'},{label:'2일차'}], trackOf:{type:'sched'}, foot:'★ 과제 수행 및 베네핏 게임(9.11(금) 0시)은 자율 참여이며, 야식은 9.10(목) 22시에 제공됩니다.', viz:'운영이 준 시간표 그대로 — 시간 칸 + 내용 칸 둘(공통은 합치고, 챌린저 노랑 · 마스터 파랑)', how:'1일차 → 2일차를 세로로 밀어 스크롤 내려가듯 넘긴다(이종은 9/9)' }),
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
   P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
@@ -1273,6 +1310,45 @@ function sched(day){
     : '';
   return el('div','tbl sched',`<table><tbody>${rows.map(tr).join('')}</tbody></table>${note}`);
 }
+/* 표 한 벌. 행은 [시간, 셀…] 이고 셀은 {t:내용, s:colspan, r:rowspan, c:색}.
+   앞 행이 rowspan 으로 덮은 자리에는 셀을 적지 않는다 — 이미지의 병합 그대로. */
+function schedDay(day){
+  const rooms='<span class="ac bl">• 안전 201호<br>• 물류 202호<br>• 마켓센싱 203호</span>';
+  const R = day===1 ? [
+    ['08:00~09:00',{t:'<b>참가자 접수 및 굿즈 수령 (컨벤션센터 이벤트홀)</b>',s:2,c:'wh'}],
+    ['09:00~10:00',{t:'<b>개회식 및 오리엔테이션</b> <span class="hr">(1hr)</span><br><span class="ac">**08:40까지 크루별 착석</span>',s:2,c:'pk'}],
+    ['10:00~11:30',{t:'<b>전문가 특강</b> <span class="hr">(1.5hr)</span><br><span class="sm">박종천 개발자 "실전 개발 노하우"</span>',s:2,c:'pk'}],
+    ['11:30~12:00',{t:'<b>현업 AX우수사례 공유</b> <span class="hr">(0.5hr)</span><br><span class="sm">P-DX 「AX Village」</span>',s:2,c:'pk'}],
+    ['12:00~13:00',{t:'<b>네트워킹 파티</b> <span class="hr">(1hr)</span><br><span class="sm">불고기 도시락과 함께 신나는 런치 타임</span>',s:2,c:'pk'}],
+    ['13:00~14:00',{t:'<b>과제 수행</b> <span class="hr">(4hr)</span><span class="sp"></span><span class="sm">24시간 끝장 개발 시작</span>',r:4,c:'yl'},
+                   {t:'<b>실사용 솔루션 구현 및<br>현장 시연 준비</b> <span class="hr">(4hr)</span><span class="sp"></span>'+rooms,r:4,c:'bu'}],
+    ['14:00~15:00'],['15:00~16:00'],['16:00~17:00'],
+    ['17:00~18:00',{t:'<b>1차 전문가 코칭 및<br>피드백</b> <span class="hr">(1hr)</span><br><span class="sm">*석식 포함</span>',c:'yl'},
+                   {t:'<b>자율 활동</b><br><span class="sm">과제 보완, 발표 준비 등<br>팀별 자율 운영<br>*석식 포함</span>',c:'bu'}],
+    ['18:00~08:00',{t:'<b>과제 수행</b> <span class="hr">(14hr)</span><br><span class="ac">★베네핏 게임 0시</span>',c:'yl'},
+                   {t:'-',c:'wh'}],
+  ] : [
+    ['08:00~09:00',{t:'<b>2차 전문가 코칭 및<br>피드백</b> <span class="hr">(1hr)</span>',c:'yl'},
+                   {t:'<b>최종 전문가 코칭 및<br>평가 준비</b> <span class="hr">(1hr)</span>',c:'bu'}],
+    ['09:00~10:00',{t:'<b>과제 수행</b> <span class="hr">(3hr)</span>',r:3,c:'yl'},
+                   {t:'<b>전문 평가단 실사용<br>검증 및 평가</b> <span class="hr">(3hr)</span><span class="sp"></span>'+rooms,r:3,c:'bu'}],
+    ['10:00~11:00'],['11:00~12:00'],
+    ['12:00~13:00',{t:'<b>최종 전문가 코칭 및<br>평가 준비</b> <span class="hr">(1hr)</span><br><span class="sm">*중식(샌드위치) 포함</span>',c:'yl'},
+                   {t:'<b>과제 성과<br>공유 준비</b> <span class="hr">(1hr)</span><br><span class="sm">*이벤트홀 이동 후<br>중식(샌드위치) 진행</span>',c:'bu'}],
+    ['13:00~14:00',{t:'<b>최종 결과 발표회</b> <span class="hr">(3hr)</span><span class="sp"></span><span class="ac bl">• 챌린저 : 크루별 발표 및 평가<br>• 마스터 : 크루별 과제 성과 공유</span>',s:2,r:3,c:'pk'}],
+    ['14:00~15:00'],['15:00~16:00'],
+    ['16:00~17:00',{t:'<b>우수팀 시상 및 폐회식</b> <span class="hr">(1hr)</span>',s:2,c:'pk'}],
+    ['17:00~',{t:'<b>기념사진 촬영 및 귀가</b>',s:2,c:'pk'}],
+  ];
+  const head = day===1 ? '1일차 (9/10,목)' : '2일차 (9/11,금)';
+  const tr=(r)=>`<tr><td class="t">${r[0]}</td>`+r.slice(1).map(c=>
+      `<td class="d ${c.c}"${c.s?` colspan="${c.s}"`:''}${c.r?` rowspan="${c.r}"`:''}>${c.t}</td>`).join('')+`</tr>`;
+  return `<div class="schd"><table><colgroup><col class="c-t"><col><col></colgroup>`
+       + `<thead><tr><th colspan="3">${head}</th></tr></thead>`
+       + `<tbody>${R.map(tr).join('')}</tbody></table></div>`;
+}
+B.sched=()=>el('div','schroll',
+  `<div class="schtrack"><div class="day">${schedDay(1)}</div><div class="day">${schedDay(2)}</div></div>`);
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':''), b.rows.map(([lab,steps])=>`<div class="row"><div class="lab">${lab}</div><div class="steps" style="--n:${steps.length}">${steps.map((s,i)=>`<div class="st ${i===steps.length-1?'last':''}">${s}</div>`).join('')}</div></div>`).join(''));
 B.enjoy=(b)=>el('div','enjoy', b.items.map(it=>`<div class="it"><div class="no">${it.no}</div><div class="tt ln">${it.tt}</div>${it.groups.map(([gl,gis])=>`<div class="grp"><div class="gl ln">${gl}</div><div class="gi">${gis.map(x=>`<p class="ln">${x}</p>`).join('')}</div></div>`).join('')}</div>`).join(''));
 B.criteria=(b)=>el('div','crit',`<div class="lines"><p class="ln em">${b.h}</p></div><div class="critbar">${b.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div><div class="txt">${b.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`);
@@ -1361,7 +1437,10 @@ function stepTo(p, n){
   /* 표지는 화면을 갈아 끼우지 않고 글만 띄운다(개회사: 배경 먼저 → 한 번 더 눌러 글). */
   const cv=p.coverReveal && rec.frame.querySelector('.cover');
   const tr=rec.frame.querySelector('.cards.track');
+  /* 시간표는 세로로 민다 — 1일차에서 2일차로 스크롤 내려가듯(이종은 9/9). */
+  const vt=rec.frame.querySelector('.schtrack');
   if(cv){ cv.classList.toggle('hold', n===0); }
+  else if(vt){ vt.style.transform=`translateY(${-n*vt.parentElement.offsetHeight}px)`; }
   else if(tr){
     /* 칸 폭은 offsetWidth 로 잰다 — 무대에서 프레임이 scale 되어 있어
        getBoundingClientRect 로 재면 배율이 섞여 어긋난다. */
