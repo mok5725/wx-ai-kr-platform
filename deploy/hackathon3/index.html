@@ -288,13 +288,23 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
 .tools .ph{font-size:28px;color:var(--st-faint);text-align:center;line-height:1.5}
 
+/* ── 17쪽 전용 ─────────────────────────────────────────────────────────────
+   사진이 화면을 가득 채우고 레지던스홀은 오른쪽에 있다. 규정은 **왼쪽으로 몰아**
+   건물을 가리지 않게 하고, 판을 더 진하게 깔아 사진 위에서도 글이 읽히게 한다. */
+.frame[data-id="A-18r"] .body-z{width:1180px}
+.frame[data-id="A-18r"] .title-z{text-shadow:0 3px 18px rgba(8,6,42,.95)}
+.rules .nmtag{position:absolute;left:1386px;top:224px;transform:translate(-50%,-50%);
+  white-space:nowrap;text-align:center;z-index:6;
+  padding:12px 26px;border-radius:12px;font-weight:700;line-height:1.2;
+  font-size:46px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.rules .nmtag i{display:block;font-style:normal;font-weight:700;font-size:26px;opacity:.9;margin-top:4px}
 .rules{display:flex;flex-direction:column;height:100%;gap:18px}
-.rules .lead{background:rgba(242,90,110,.16);border:1px solid rgba(242,90,110,.5);border-radius:14px;
+.rules .lead{background:rgba(120,20,36,.86);border:1px solid rgba(242,90,110,.7);border-radius:14px;
   padding:14px 22px;font-size:30px;line-height:1.45;font-weight:700;color:#FFD9DF}
 .rules .cards{display:grid;gap:20px;flex:1;min-height:0}
 .rules .cards.c2{grid-template-columns:repeat(2,1fr)}
 .rules .cards.c3{grid-template-columns:repeat(3,1fr)}
-.rules .rc{background:rgba(238,240,255,.08);border:1px solid rgba(238,240,255,.2);border-radius:16px;
+.rules .rc{background:rgba(8,6,42,.86);border:1px solid rgba(238,240,255,.28);border-radius:16px;
   padding:18px 20px;display:flex;flex-direction:column;min-height:0}
 .rules .rt2{font-family:var(--head);font-weight:900;font-size:38px;letter-spacing:.01em;
   color:var(--kw);margin:6px 0 10px}
@@ -302,7 +312,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules li{font-size:27px;line-height:1.5;color:var(--st-ink);margin-bottom:5px}
 .rules .tops{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .rules .tc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  background:rgba(242,90,110,.15);border:2px solid rgba(242,90,110,.55);border-radius:16px;
+  background:rgba(120,20,36,.86);border:2px solid rgba(242,90,110,.75);border-radius:16px;
   padding:14px 16px;text-align:center}
 /* 금지 픽토그램 — 원본 안내문처럼 빨간 원에 사선을 씌운다.
    이모지만으로는 "금지"가 읽히지 않아 표지 자체를 CSS 로 그린다. */
@@ -330,7 +340,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules .rfoot{margin:0;font-size:26px;color:var(--gold);font-weight:700}
 /* 주제 묶음 — 금지 항목 열다섯을 넷으로 갈라 담는다. */
 .rules .grps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex:1;min-height:0}
-.rules .gc{background:rgba(238,240,255,.07);border:1px solid rgba(238,240,255,.2);border-radius:14px;
+.rules .gc{background:rgba(8,6,42,.86);border:1px solid rgba(238,240,255,.28);border-radius:14px;
   padding:14px 16px;display:flex;flex-direction:column;min-height:0}
 .rules .gh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .rules .gi{font-size:34px;line-height:1}
@@ -954,8 +964,8 @@ const PARTS = [
         {at:'resi', name:'레지던스홀', sub:'숙소'},
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
-  P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'120% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
-      body:{type:'rules',
+  P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, bg:'img/residence-hero.webp', bgSize:'cover', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
+      body:{type:'rules', nameTag:['레지던스홀','숙소'],
       lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
         ['🚬','객실내 흡연',''],
@@ -1090,6 +1100,8 @@ B.tools=(b)=>el('div','tools', b.items.map(t=>
    낱개 알약으로 흘려 놓는다 — 열을 맞추면 위 셋에 딸린 것처럼 읽힌다. */
 B.rules=(b)=>{
   const w=el('div','rules'+(b.lead?'':' nolead'));
+  /* 건물 이름표는 16쪽과 같은 노란 박스로(이종은 9/9). */
+  const nameTag=b.nameTag?`<div class="nmtag">${b.nameTag[0]}<i>${b.nameTag[1]}</i></div>`:'';
   /* 두 가지 꼴을 받는다.
        items — 분류가 실제로 있는 경우(18쪽 안전수칙: 교육장·통행로·야외활동, 화재·지진)
        top+list — 계층이 없는 경우(16쪽 숙소 규정: 위 셋이 중할 뿐 나머지는 낱개) */
@@ -1099,7 +1111,7 @@ B.rules=(b)=>{
         `<div class="rc"><div class="ic" role="img" aria-hidden="true">${ic}</div>`
         +`<div class="rt2 ln">${t}</div>`
         +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`).join('')
-      +`</div>`+(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
+      +`</div>`+(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'')+nameTag;
     return w;
   }
   w.innerHTML=(b.lead?`<div class="leadrow"><div class="lead ln">${b.lead}</div>`
@@ -1116,7 +1128,7 @@ B.rules=(b)=>{
           +`<span class="gt ln">${t}</span></div>`
           +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`).join('')+`</div>`
       : `<div class="chips">`+b.list.map(x=>`<span class="chip ln">${x}</span>`).join('')+`</div>`)
-    +(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
+    +(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'')+nameTag;
   return w;
 };
 /* 건물마다 딴 판을 붙인다(이종은 9/9) — 화면 한쪽에 큰 판 하나로 몰지 않는다.
