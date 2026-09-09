@@ -883,19 +883,24 @@ partBar.innerHTML=PARTS.map((p,i)=>{
   const bits=p.name.split('·');
   return `<button type="button" data-part="${i}"><b>${bits[0].trim()}</b><i>${bits.slice(1).join('·').trim()}</i></button>`;
 }).join('');
-partBar.addEventListener('click',(e)=>{ const b=e.target.closest('button'); if(!b) return;
-  openStage(partStart[+b.dataset.part], 1); });
-let partT=0;
+let partT=0, partHold=false;
 function showPartBar(on){
   partBar.classList.toggle('on',on);
   if(!on) return;
   let at=0; partStart.forEach((s,i)=>{ if(cur>=s) at=i; });
   [...partBar.children].forEach((b,i)=>b.classList.toggle('now',i===at));
 }
+partBar.addEventListener('click',(e)=>{ const b=e.target.closest('button'); if(!b) return;
+  openStage(partStart[+b.dataset.part], 1);
+  /* 고르면 바로 닫는다. 다만 마우스는 아직 오른쪽 가장자리에 있어 mousemove 가 곧바로 다시
+     열어 버린다 — 한 번 가장자리를 벗어나기 전까지 열지 않도록 붙잡아 둔다. */
+  clearTimeout(partT); partHold=true; showPartBar(false); });
 stage.addEventListener('mousemove',(e)=>{
   const near = e.clientX > innerWidth-90 || partBar.contains(e.target);
+  if(!near) partHold=false;
   clearTimeout(partT);
-  if(near) showPartBar(true); else partT=setTimeout(()=>showPartBar(false), 600);
+  if(near && !partHold) showPartBar(true);
+  else if(!near) partT=setTimeout(()=>showPartBar(false), 600);
 });
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
