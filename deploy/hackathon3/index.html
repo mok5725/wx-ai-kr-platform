@@ -187,6 +187,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 오른쪽 아래 단서 — 각주보다 짧고, 화면 안내(hint-z) 위에 앉는다. */
 .noter-z{position:absolute;right:var(--pad);bottom:64px;max-width:900px;text-align:right;
   font-size:26px;line-height:1.45;font-weight:700;color:var(--st-soft)}
+/* 14쪽은 그림 칸 바로 아래에 왼쪽 맞춤으로 붙인다(이종은 9/10). 칸 왼쪽 모서리는
+   x=522 (본문 1792 안에서 876 폭 그림 칸을 가운데 놓았을 때). */
+.frame[data-id="A-16"] .obj-z.has-img{height:528px}
+.frame[data-id="A-16"] .noter-z{left:522px;right:auto;top:938px;bottom:auto;
+  max-width:900px;text-align:left}
 /* ── 음영 판(scrim:true) ───────────────────────────────────────────────────
    배경 사진 위에서 글줄이 잘 안 읽히는 장에만 켠다. 판을 화면 전체에 깔지 않고
    **글자 뒤에만** 깐다 — 배경을 살리면서 대비만 확보한다. */
@@ -445,6 +450,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 /* 행사에 쓰지 않는 건물은 회색으로 — 노란 이름표(쓰는 건물)와 한눈에 갈린다. */
 .campus .tag.dim{font-size:30px;color:#F2F3F8;background:rgba(74,78,92,.88);border:1px solid rgba(255,255,255,.3);font-weight:700}
+/* 러닝센터 회색 이름표 아래에 민트 딱지를 붙여 "여기에 뭐가 있다"를 알린다 —
+   18쪽 건강증진센터와 같은 색으로 이어 준다(이종은 9/10). */
+.campus .tag.dim .care{display:block;margin:8px -8px -4px;padding:6px 12px;border-radius:9px;
+  font-style:normal;font-size:24px;font-weight:800;line-height:1.15;letter-spacing:0;
+  color:#062A1C;background:var(--kw);box-shadow:0 8px 22px rgba(0,0,0,.5);opacity:1}
 .campus .t-conv{left:48%;top:78%}
 .campus .t-resi{left:76%;top:46%}
 .campus .t-rnd{left:21%;top:47%}
@@ -775,19 +785,24 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    한 줄은 348.5, 위 줄 한가운데 y=174.25 · 아래 줄 y=568.75 · 만나는 곳 y=371.5.
    파이프는 굵기 56(벽 안팎이 ±28), 꺾이는 중심은 x=1566, 세로 줄기는 x=1622. */
 .tl.dense.join{position:relative;grid-template-columns:1340px;grid-template-rows:1fr 1fr;gap:46px 0}
-.tl.dense.join .row{position:relative;z-index:1;grid-template-columns:150px 1fr;padding:34px 26px 40px}
+/* 판은 'ㄷ' 한 덩이(uframe)가 그린다 — 줄 자체는 배경도 테두리도 갖지 않는다. */
+.tl.dense.join .row{position:relative;z-index:1;grid-template-columns:150px 1fr;padding:34px 26px 40px;
+  background:none;border:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .tl.dense.join .st{max-width:176px;font-size:26px}
 .tl.dense.join .row.t-ma{grid-area:1 / 1}
 .tl.dense.join .row.t-ch{grid-area:2 / 1}
-.tl.dense.join .pipe{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.tl.dense.join .pipe .tb{stroke:none}
-.tl.dense.join .pipe .tb.ma{fill:rgba(104,156,255,.15)}
-.tl.dense.join .pipe .tb.ch{fill:rgba(255,204,88,.13)}
-.tl.dense.join .pipe .tw{fill:none;stroke-width:3}
-.tl.dense.join .pipe .tw.ma{stroke:rgba(152,192,255,.36)}
-.tl.dense.join .pipe .tw.ch{stroke:rgba(255,214,110,.36)}
-/* 버튼은 파이프 세로 줄기(x=1622) 한가운데에 얹는다 — 파이프가 버튼을 통과한다. */
-.tl.dense.join .fin{position:absolute;left:1452px;top:261px;width:340px;height:221px;
+.tl.dense.join .uframe{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.tl.dense.join .uframe .ub{stroke:none}
+.tl.dense.join .uframe .ub.ma{fill:rgba(104,156,255,.15)}
+.tl.dense.join .uframe .ub.ch{fill:rgba(255,204,88,.13)}
+.tl.dense.join .uframe .uw{fill:none;stroke-width:3}
+.tl.dense.join .uframe .uw.ma{stroke:rgba(152,192,255,.40)}
+.tl.dense.join .uframe .uw.ch{stroke:rgba(255,214,110,.40)}
+.tl.dense.join .uframe .ul{fill:none;stroke-width:3}
+.tl.dense.join .uframe .ul.ma{stroke:#8FBAFF}
+.tl.dense.join .uframe .ul.ch{stroke:#FFD466}
+/* 버튼은 세로칸 한가운데 — 두 마디 줄이 모여드는 자리다. */
+.tl.dense.join .fin{position:absolute;left:1386px;top:256px;width:360px;height:231px;
   z-index:2;box-sizing:border-box;padding:0 20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   border-radius:32px;text-align:center;
@@ -945,7 +960,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .cover .lines{align-items:center;margin-top:8px}
 /* 표지에서 바깥 자료를 여는 단추(22쪽 특강 자료). 무대에서 실수로 눌리지 않게
    아래쪽 한 귀퉁이에 두고, 새 탭으로 연다. */
-.openlink{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);z-index:7;
+/* 자료 열기 단추는 왼쪽 위 — 가운데 아래에 두면 표지 문구와 겹쳐 보인다(이종은 9/10). */
+.openlink{position:absolute;left:var(--pad);top:132px;transform:none;z-index:7;
   text-decoration:none;display:inline-flex;align-items:center;gap:10px;
   padding:14px 30px;border-radius:999px;
   background:var(--kw);color:#08062A;font-family:var(--head);font-weight:800;font-size:30px;
@@ -1305,7 +1321,7 @@ const PARTS = [
          main:[['1층','이벤트홀'],['2층','컨퍼런스룸']],
          small:[['1층','커피숍 · 무인편의점'],['B1','식당 · 주차장']]},
         {at:'resi', name:'레지던스홀', sub:'숙소'},
-      ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
+      ], dim:[['rnd','R&D센터'],['learn','러닝센터','🩺 2층 건강증진센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
   P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, heroBg:'img/residence-hero.webp', heroUnder:'img/campus-hero.webp', softIn:true, eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
       body:{type:'rules',
@@ -1491,7 +1507,7 @@ B.campus=(b)=>el('div','campus',
        +x.main.map(([f,t])=>`<p class="bm"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')
        +(x.small||[]).map(([f,t])=>`<p class="bs"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')+`</div>`).join('')}
      ${b.boxes.map(x=>`<span class="tag key t-${x.at}">${x.name}${x.sub?`<i>${x.sub}</i>`:''}</span>`).join('')}
-     ${(b.dim||[]).map(([k,n])=>`<span class="tag dim t-${k}">${n}</span>`).join('')}
+     ${(b.dim||[]).map(([k,n,c])=>`<span class="tag dim t-${k}">${n}${c?`<i class="care">${c}</i>`:''}</span>`).join('')}
    </div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
 B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), b.lines.map(l=>lnP(l)).join(''));
@@ -1592,13 +1608,19 @@ B.sched=()=>el('div','schroll',
   `<div class="schtrack"><div class="day">${schedDay(1)}</div><div class="day">${schedDay(2)}</div></div>`);
 /* 판에서 뻗어 나와 하나로 합쳐지는 파이프. 채움(tb)은 판 속살과, 벽(tw)은 판
    테두리와 같은 색이라 판이 그대로 이어져 나온 것처럼 보인다. */
-const JOINPIPE=`<svg class="pipe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <path class="tb ma" d="M1340,146.25 H1566 A84,84 0 0 1 1650,230.25 V285 H1594 V230.25 A28,28 0 0 0 1566,202.25 H1340 Z"/>
-  <path class="tb ch" d="M1340,596.75 H1566 A84,84 0 0 0 1650,512.75 V458 H1594 V512.75 A28,28 0 0 1 1566,540.75 H1340 Z"/>
-  <path class="tw ma" d="M1340,146.25 H1566 A84,84 0 0 1 1650,230.25 V285"/>
-  <path class="tw ma" d="M1340,202.25 H1566 A28,28 0 0 1 1594,230.25 V285"/>
-  <path class="tw ch" d="M1340,596.75 H1566 A84,84 0 0 0 1650,512.75 V458"/>
-  <path class="tw ch" d="M1340,540.75 H1566 A28,28 0 0 0 1594,512.75 V458"/>
+/* 두 트랙 판을 따로 두지 않고 **한 덩이 'ㄷ'(뒤집힌) 판**으로 그린다 —
+   위 가로칸(마스터) · 아래 가로칸(챌린저) · 오른쪽 세로칸이 테두리째 이어진다.
+   본문 칸이 1792×743 로 못 박혀 있고 무대에선 통째로 배율만 바뀌므로 픽셀 좌표로
+   그려도 어긋나지 않는다. 줄 높이 348.5 · 사이 46 → 오목한 자리는 y 349~394.5,
+   세로칸은 x 1340~1792. 위·아래 절반을 트랙 색으로 나누고 y=371.5 에서 만난다.
+   마디 줄 끝(1236, 96 / 1236, 492)에서 곡선이 나와 버튼 왼쪽 한 점으로 모인다. */
+const JOINPIPE=`<svg class="uframe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="ub ma" d="M26,0 H1766 Q1792,0 1792,26 V371.5 H1340 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 Z"/>
+  <path class="ub ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5 Z"/>
+  <path class="uw ma" d="M1340,371.5 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 H1766 Q1792,0 1792,26 V371.5"/>
+  <path class="uw ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5"/>
+  <path class="ul ma" d="M1236,96 C1300,96 1310,371.5 1386,371.5"/>
+  <path class="ul ch" d="M1236,492 C1300,492 1310,371.5 1386,371.5"/>
 </svg>`;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
@@ -1685,7 +1707,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     frame.appendChild(body);
     if(p.obj) frame.appendChild(z('obj-z'+(p.objImgs?' has-img':''), p.objImgs ? `<div class="oi">${p.objImgs.map(([s,l,m],i)=>`<figure class="k${i}">${m?`<span class="rank">${l}</span>`:''}<img src="${s}" alt="${m||l}"><figcaption>${m||l}</figcaption></figure>`).join('')}</div>` : p.obj, '이미지 자리 (1280,273) 576×743'));
     frame.appendChild(z('progress', partPages.map((_,i)=>`<i class="${i<pageIdxInPart?'past':i===pageIdxInPart?'cur':''}"></i>`).join(''), ''));
-    frame.appendChild(el('div','hint-z','F 전체화면 · 스크롤 · ← → 단계 · ↑ ↓ 페이지 · G 그리드 · Esc'));
+    frame.appendChild(el('div','hint-z','F 전체화면 · 스크롤 · ← → ↑ ↓ 단계 후 페이지 · G 그리드 · Esc'));
   }
   if(p.foot) frame.appendChild(z('foot-z ln', p.foot, '각주 21px (64,976)'));
   if(p.noteR) frame.appendChild(z('noter-z ln', p.noteR, '오른쪽 아래 단서'));
@@ -2026,8 +2048,10 @@ $('#stClose').addEventListener('click',()=>closeStage()); $('#stGrid').addEventL
 document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) return; if(e.target.matches('input,select,textarea')) return;
   if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); if(!stepCur(1)) openStage(cur+1,1); }
   if(e.key==='ArrowLeft'){ e.preventDefault(); if(!stepCur(-1)) openStage(cur-1,-1); }
-  if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); openStage(cur+1,1); }
-  if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); openStage(cur-1,-1); }
+  /* ↓ ↑ 도 단계가 먼저다 — 12쪽에서 아래로 누르면 다음 장이 아니라 2일차가
+     내려온다(이종은 9/10). 남은 단계가 없을 때에만 장을 넘긴다. */
+  if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); if(!stepCur(1)) openStage(cur+1,1); }
+  if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); if(!stepCur(-1)) openStage(cur-1,-1); }
   /* 'ㄹ' 도 받는다 — 한글 입력 상태에서 F 를 누르면 e.key 가 'ㄹ' 로 온다(마스터 OT 덱에서 배움). */
   if(e.key==='f'||e.key==='F'||e.key==='ㄹ'){ e.preventDefault(); toggleFull(); }
   if(e.key==='Escape'&&!STAGE_ONLY) closeStage(); if(e.key==='g'||e.key==='G') toggleGrid(); });
