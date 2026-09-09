@@ -846,6 +846,16 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .state{font-size:var(--s2);color:var(--st-soft)}
 .who{font-family:var(--head);font-weight:900;font-size:var(--s3);color:var(--st-ink);line-height:1.2}
 .phase{font-size:var(--s1);color:var(--st-soft);letter-spacing:.06em}
+/* 24시간 카운트다운의 조작 줄 — 평소엔 보이지 않다가 화면 아래쪽에 마우스를
+   가져가면 뜬다. 자리(220px 띠)는 늘 잡아 두어 나타날 때 화면이 흔들리지 않고,
+   띠 자체가 마우스를 받으므로 어디를 겨눌지 몰라도 손이 내려가면 뜬다. */
+.opswrap{position:absolute;left:0;right:0;bottom:0;height:220px;z-index:8;box-sizing:border-box;
+  align-items:flex-end;justify-content:center;padding-bottom:30px}
+.opswrap .ctl{opacity:0;transition:opacity .22s ease;
+  background:rgba(8,6,42,.74);border-radius:999px;padding:12px 24px;
+  -webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
+.opswrap:hover .ctl{opacity:1}
+
 /* 조작 줄(.ctl)은 운영 주소에서만 보인다 — 카운트다운 맞추기, 발표 순서 카드,
    시상 선택, 발표 타이머가 모두 여기에 걸린다. 참가자 화면에는 아예 안 뜬다.
    무대에 그대로 걸리는 화면이라 "운영 모드"라는 딱지도 붙이지 않는다. */
@@ -1887,18 +1897,22 @@ const WIDGETS={};
    조작 줄은 운영 모드에서만 보인다(body.ops). */
 WIDGETS.countdown=(frame)=>{
   const w=el('div','center-col');
-  w.innerHTML=`<div class="digits" id="cdD">24:00:00</div><div class="state" id="cdS"></div>`
-    +`<div class="ctl ops-only"><label>종료 시각 <input type="datetime-local" id="cdEnd" step="60"></label>`
+  w.innerHTML=`<div class="digits" id="cdD">24:00:00</div><div class="state" id="cdS"></div>`;
+  /* 조작 줄은 화면에 두되 보이지 않게 둔다 — 아래쪽에 마우스를 가져가면 뜬다
+     (이종은 9/10). 24시간 내내 걸려 있는 화면이라 평소엔 숫자만 보여야 한다. */
+  const zone=el('div','opswrap ops-only',
+     `<div class="ctl"><label>종료 시각 <input type="datetime-local" id="cdEnd" step="60"></label>`
     +`<button class="btn" id="cdSync">지금 맞추기</button>`
     +`<button class="btn" id="cdNow">지금부터 24시간</button>`
-    +`<button class="btn" id="cdDef">9/11 13:00 종료</button><span id="cdClock"></span></div>`;
-  const inp=w.querySelector('#cdEnd');
+    +`<button class="btn" id="cdDef">9/11 13:00 종료</button><span id="cdClock"></span></div>`);
+  frame.appendChild(zone);
+  const inp=zone.querySelector('#cdEnd');
   const setEnd=(v)=>{ inp.value=v; S.cdEnd=v; save(); tick(); };
   inp.value=S.cdEnd;
   inp.addEventListener('change',()=>{ if(inp.value) setEnd(inp.value); });
-  w.querySelector('#cdSync').addEventListener('click',()=>tick());
-  w.querySelector('#cdNow').addEventListener('click',()=>{ const d=new Date(Date.now()+86400000); d.setSeconds(0,0); setEnd(toLocalInput(d)); });
-  w.querySelector('#cdDef').addEventListener('click',()=>setEnd(CD_END_DEFAULT));
+  zone.querySelector('#cdSync').addEventListener('click',()=>tick());
+  zone.querySelector('#cdNow').addEventListener('click',()=>{ const d=new Date(Date.now()+86400000); d.setSeconds(0,0); setEnd(toLocalInput(d)); });
+  zone.querySelector('#cdDef').addEventListener('click',()=>setEnd(CD_END_DEFAULT));
   function tick(){
     /* 아직 24시간이 더 남았으면(리허설·시작 전) 24:00:00 에서 멈춰 세워 둔다 —
        "24시간 끝장 개발" 화면에 33시간이 떠 있으면 이상하다. */
@@ -1910,7 +1924,7 @@ WIDGETS.countdown=(frame)=>{
     w.querySelector('#cdD').textContent=fmtHMS(rem);
     w.querySelector('#cdD').classList.toggle('days',rem>86400);
     w.querySelector('#cdS').textContent=s;
-    w.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false});
+    zone.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false});
   }
   tick(); setInterval(tick,1000); return w;
 };
