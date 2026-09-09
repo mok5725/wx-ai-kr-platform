@@ -313,13 +313,27 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   background:rgba(238,240,255,.09);border:1px solid rgba(238,240,255,.26);
   border-radius:999px;padding:9px 20px}
 .rules .rfoot{margin:0;font-size:26px;color:var(--gold);font-weight:700}
+/* 주제 묶음 — 금지 항목 열다섯을 넷으로 갈라 담는다. */
+.rules .grps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex:1;min-height:0}
+.rules .gc{background:rgba(238,240,255,.07);border:1px solid rgba(238,240,255,.2);border-radius:14px;
+  padding:14px 16px;display:flex;flex-direction:column;min-height:0}
+.rules .gh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rules .gi{font-size:34px;line-height:1}
+.rules .gt{font-family:var(--head);font-weight:900;font-size:30px;color:var(--kw);letter-spacing:.01em}
+.rules .gc ul{margin:0;padding-left:22px}
+.rules .gc li{font-size:25px;line-height:1.45;color:var(--st-ink);margin-bottom:7px}
 
-.campus{display:grid;grid-template-columns:1100px 1fr;gap:44px;height:100%;align-items:start}
-.campus .map{position:relative;width:1100px;height:620px;border-radius:18px;overflow:hidden;
+.campus{display:grid;grid-template-columns:1180px 1fr;gap:40px;height:100%;align-items:start}
+.campus .map{position:relative;width:1180px;height:665px;border-radius:18px;overflow:hidden;
   border:1px solid rgba(238,240,255,.22)}
 .campus .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .campus .base{filter:brightness(.42) saturate(.6) blur(2.5px)}
-.campus .hi{filter:brightness(1.06) saturate(1.05)}
+/* 건물만 제자리에서 110% 로 띄운다(이종은: "따로 분리해서 110%로 확대해도 좋아").
+   각 건물 한가운데를 축으로 키워서 바탕 사진과 크게 어긋나지 않게 한다. */
+.campus .pop{position:absolute;inset:0;transform:scale(1.1)}
+.campus .pop.conv{transform-origin:53% 77%}
+.campus .pop.resi{transform-origin:76% 53%}
+.campus .hi{filter:brightness(1.12) saturate(1.1) drop-shadow(0 10px 26px rgba(0,0,0,.75))}
 /* 오려내는 자리는 CAMPUS_CONV · CAMPUS_RESI 에서 style 로 넣는다(값이 두 벌이 되지 않게). */
 .campus .ol{position:absolute;inset:0;width:100%;height:100%}
 .campus .ol .site{fill:none;stroke:var(--gold);stroke-width:.28;stroke-dasharray:1.6 1.1;vector-effect:non-scaling-stroke}
@@ -916,9 +930,14 @@ const PARTS = [
         ['🚫🍷','주류 반입 및 음주행위',''],
         ['🚫🍔','음식물 취식','배달음식 금지 · 음료수 및 과자류 제외'],
       ],
-      list:['도박행위','남녀혼숙','화재 위험요인 및 안전사고 유발','고성방가 및 수면 방해','정리정돈 및 청소 불량','절도행위','외래인 합숙 · 입실','임의전실','불법집회','시설집기 임의이동','폭행','시설물 파손 (변상 포함)','입실 및 면회 절차 불이행','공공질서 미준수','불순 유인물 배포 및 게시'],
+      groups:[
+        ['🔇','소음 · 질서',['고성방가 및 수면 방해','공공질서 미준수','불법집회','불순 유인물 배포 및 게시']],
+        ['🚪','출입 · 숙박',['남녀혼숙','외래인 합숙 · 입실','임의전실','입실 및 면회 절차 불이행']],
+        ['🧯','시설 · 안전',['화재 위험요인 · 안전사고 유발','시설물 파손 (변상 포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
+        ['🚨','범죄 행위',['도박행위','절도행위','폭행']],
+      ],
       foot:'위 18가지는 모두 금지 항목입니다. 꼭 지켜 주시기 바랍니다.'}},
-    ], viz:'1단계 안내도(두 건물만 또렷) + 건물 이용안내 · 2단계 가장 중요한 3가지 + 낱개 15항목', how:'안내도 자리값은 운영이 준 표시 그림에서 읽었다(9/9)' }),
+    ], viz:'1단계 안내도(두 건물만 또렷·110% 팝업) + 건물 이용안내 · 2단계 특히 중요한 3가지 + 주제 넷으로 묶은 15항목', how:'안내도 자리값은 운영이 준 표시 그림에서 읽었다(9/9). 금지 항목은 낱개로 늘어놓으면 안 읽혀 주제로 묶었다' }),
   P({ no:'19', id:'A-19', title:'건강증진센터', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'124% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'가장 중요한 것은 <em>건강과 안전</em>!', sub:'몸이 아프거나, 컨디션이 안 좋으면 무리하지 않고 쉬어야 합니다.', body:{type:'note', big:'러닝센터 2층 <em>건강증진센터</em>', lines:['09:00 - 18:00 · 간호사 상주','운영시간이 아닐 경우, 운영진에게 말씀 주세요','간단한 비상의약품은 운영진에게 요청하시면 됩니다']}, viz:'가운데 큰 안내 판 — 받은 안내문 그대로', how:'비상의약품 한 줄 추가(이종은 9/9)' }),
   P({ no:'—', id:'A-19b', title:'안전행동수칙 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'132% auto', bgPos:'center', new:true, eyebrow:'교육장소 이용 안내', h:'교육 시 <em>안전행동수칙</em>', steps:[
       {label:'안전 가이드', body:{type:'rules',
@@ -1056,15 +1075,22 @@ B.rules=(b)=>{
       `<div class="tc"><span class="ic" role="img" aria-hidden="true">${ic}</span>`
       +`<span class="rt ln">${t}</span>`
       +(sub?`<span class="rs ln">${sub}</span>`:'')+`</div>`).join('')
-    +`</div><div class="chips">`+b.list.map(x=>`<span class="chip ln">${x}</span>`).join('')
-    +`</div>`+(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
+    +`</div>`
+    /* 낱개로 열다섯을 늘어놓으면 읽히지 않는다. 주제로 묶어 도해한다(이종은 9/9). */
+    +(b.groups
+      ? `<div class="grps">`+b.groups.map(([ic,t,list])=>
+          `<div class="gc"><div class="gh"><span class="gi" role="img" aria-hidden="true">${ic}</span>`
+          +`<span class="gt ln">${t}</span></div>`
+          +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`).join('')+`</div>`
+      : `<div class="chips">`+b.list.map(x=>`<span class="chip ln">${x}</span>`).join('')+`</div>`)
+    +(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
   return w;
 };
 B.campus=(b)=>el('div','campus',
   `<div class="map">
      <img class="base" src="img/campus.webp" alt="포스코인재창조원 송도캠퍼스">
-     <img class="hi conv" style="clip-path:polygon(${CAMPUS_CONV})" src="img/campus.webp" alt="">
-     <img class="hi resi" style="clip-path:polygon(${CAMPUS_RESI})" src="img/campus.webp" alt="">
+     <div class="pop conv"><img class="hi" style="clip-path:polygon(${CAMPUS_CONV})" src="img/campus.webp" alt=""></div>
+     <div class="pop resi"><img class="hi" style="clip-path:polygon(${CAMPUS_RESI})" src="img/campus.webp" alt=""></div>
      <svg class="ol" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
        <polygon class="site" points="${pgon(CAMPUS_SITE)}"/>
        <polygon class="key" points="${pgon(CAMPUS_CONV)}"/>
