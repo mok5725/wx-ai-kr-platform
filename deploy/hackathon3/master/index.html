@@ -331,6 +331,13 @@ body.stageonly .stagefs .frame .hint-z{display:none}
   border-radius:999px;padding:10px 22px;pointer-events:none;
   animation:stagehint-out 4s ease forwards}
 @keyframes stagehint-out{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}
+/* 끝 안내 — 마지막/첫 장에서 더 넘기려 할 때만 잠깐 뜬다. 되감기를 막았기 때문에
+   아무 반응이 없으면 오퍼레이터가 리모컨이 죽은 줄 안다. */
+.stagefs .stageend{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:8;
+  font-size:26px;font-weight:700;color:#EEF0FF;background:rgba(8,6,42,.82);
+  border:1px solid rgba(238,240,255,.26);border-radius:999px;padding:12px 30px;
+  pointer-events:none;opacity:0;transition:opacity 200ms ease}
+.stagefs .stageend.on{opacity:1}
 /* ── 무대에서는 로고 바를 프레임 밖에 **하나만** 고정으로 둔다 ──────────────
    프레임 안에 있으면 장을 넘길 때마다 로고가 글자와 함께 떴다 사라진다(arrive 전환).
    표지에서 오른쪽 락업을 지우던 규칙도 무대에서는 끈다 — 고정이라는 말은 늘 같은 자리다. */
@@ -605,6 +612,7 @@ body.stageonly:has(.frame.k-cover) .bgslot::after{
   <div class="host" id="stageHost"></div>
   <div class="stagebar" id="stageBar" aria-hidden="true"></div>
   <div class="stagehint" id="stageHint">F 전체화면 · 스크롤 또는 ← → 로 넘기기</div>
+  <div class="stageend" id="stageEnd" aria-live="polite"></div>
   <div class="bar"><button class="btn small" id="stPrev">↑ 이전 페이지</button><button class="btn small" id="stNext">↓ 다음 페이지</button><button class="btn small" id="stStepL">← 단계</button><button class="btn small" id="stStepR">단계 →</button><button class="btn small" id="stGrid">그리드 (G)</button><button class="btn small" id="stClose">닫기 (Esc)</button><span class="cur" id="stCur"></span></div>
 </div>
 
@@ -1203,6 +1211,14 @@ function fitBar(){ const hr=host.getBoundingClientRect();
   stageBar.style.opacity='1';
   stageBar.style.transform=`translate(${hr.left+(hr.width-w)/2}px, ${hr.top+(hr.height-h)/2}px) scale(${w/1920})`; }
 addEventListener('resize',fitBar);
+/* 마지막 장에서 한 번 더 넘겨 표지로 돌아가면 행사 중 사고다 — 되감지 않고 안내만 띄운다
+   (이종은 지시 9/9). 첫 장에서 뒤로도 같다. */
+const stageEnd=$('#stageEnd'); let endT=0;
+function flashEnd(msg){
+  stageEnd.textContent=msg;
+  stageEnd.classList.remove('on'); void stageEnd.offsetWidth; stageEnd.classList.add('on');
+  clearTimeout(endT); endT=setTimeout(()=>stageEnd.classList.remove('on'), 1600);
+}
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
 const STAGE_ONLY=true; /* 무대 전용본 */
@@ -1223,7 +1239,10 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
 /* 무대 배경 8장은 미리 받아 둔다 — 디졸브 도중에 그림이 뒤늦게 뜨지 않게 */
 [...new Set(FLAT.map(p=>p.bg).filter(Boolean))].forEach(u=>{ const im=new Image(); im.src=u; });
 function openStage(i, dir){
-  const prev=cur; closeStage(false); cur=(i+FLAT.length)%FLAT.length; const rec=pageEls.get(FLAT[cur].id);
+  /* 되감지 않는다. 범위를 벗어나면 화면을 그대로 두고 안내만 띄운다. */
+  if(i>=FLAT.length){ flashEnd('마지막 장입니다'); return; }
+  if(i<0){ flashEnd('첫 장입니다'); return; }
+  const prev=cur; closeStage(false); cur=i; const rec=pageEls.get(FLAT[cur].id);
   ph=document.createComment('fw'); rec.fw.parentNode.insertBefore(ph, rec.fw); host.appendChild(rec.fw); moved=rec.fw;
   if(dir) rec.fw.classList.add(dir>0?'arrive-down':'arrive-up');
   stage.classList.add('on'); document.body.style.overflow='hidden';
