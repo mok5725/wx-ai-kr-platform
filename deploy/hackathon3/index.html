@@ -806,7 +806,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense.join .uframe .ul.ma{stroke:#8FBAFF}
 .tl.dense.join .uframe .ul.ch{stroke:#FFD466}
 /* 버튼은 세로칸 한가운데 — 두 마디 줄이 모여드는 자리다. */
-.tl.dense.join .fin{position:absolute;left:1432px;top:256px;width:344px;height:231px;
+.tl.dense.join .fin{position:absolute;left:1432px;top:164px;width:344px;height:260px;
   z-index:2;box-sizing:border-box;padding:0 20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   border-radius:32px;text-align:center;
@@ -1618,15 +1618,17 @@ B.sched=()=>el('div','schroll',
    그려도 어긋나지 않는다. 줄 높이 348.5 · 사이 46 → 오목한 자리는 y 349~394.5,
    세로칸은 x 1340~1792. 위·아래 절반을 트랙 색으로 나누고 y=371.5 에서 만난다.
    마디 줄 끝(1238, 96 / 1238, 492)에서 나온 선은 **판과 같은 결**로 잇는다(이종은
-   9/10) — 곧게 가다 둥근 모서리로 꺾이고 다시 곧게. 세로 줄기는 x=1372, 모서리
-   반지름 34, 버튼 왼쪽 모서리(1432, 371.5)에서 만난다. */
+   9/10) — 곧게 가다 둥근 모서리(r34)로 꺾이고 다시 곧게. 마스터 선은 버튼 **윗면**,
+   챌린저 선은 **아랫면**에 붙는다(이종은 9/10). 그러려면 버튼이 두 줄 **사이**에
+   있어야 하므로, 두 줄의 한가운데(y=294)에 놓아 위아래 꺾임 길이를 똑같이 맞췄다.
+   두 선 모두 버튼 한가운데 x=1604 로 들어온다. */
 const JOINPIPE=`<svg class="uframe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path class="ub ma" d="M26,0 H1766 Q1792,0 1792,26 V371.5 H1340 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 Z"/>
   <path class="ub ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5 Z"/>
   <path class="uw ma" d="M1340,371.5 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 H1766 Q1792,0 1792,26 V371.5"/>
   <path class="uw ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5"/>
-  <path class="ul ma" d="M1238,96 H1338 Q1372,96 1372,130 V337.5 Q1372,371.5 1406,371.5 H1432"/>
-  <path class="ul ch" d="M1238,492 H1338 Q1372,492 1372,458 V405.5 Q1372,371.5 1406,371.5 H1432"/>
+  <path class="ul ma" d="M1238,96 H1570 Q1604,96 1604,130 V164"/>
+  <path class="ul ch" d="M1238,492 H1570 Q1604,492 1604,458 V424"/>
 </svg>`;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
