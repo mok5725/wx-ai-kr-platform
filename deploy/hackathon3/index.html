@@ -218,7 +218,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   background:rgba(255,255,255,.84);border:1px solid rgba(255,255,255,.75);border-radius:18px;
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   box-shadow:0 14px 46px rgba(8,6,42,.45), inset 0 1px 0 rgba(255,255,255,.9);
-  padding:24px 26px;font-size:29px;font-weight:700;line-height:1.6;color:#101538}
+  padding:24px 26px;font-size:28px;font-weight:700;line-height:1.6;color:#101538}
 .teed .cap.l{left:0}
 /* 슬로건 판은 아래에 둔다(이종은 9/9). 지시선이 ㄱ자로 꺾여 올라가 슬로건을 집는다. */
 .teed .cap.r{left:1352px;top:480px;justify-content:flex-end;text-align:right}
@@ -863,7 +863,7 @@ const PARTS = [
   P({ no:'1', id:'A-01', title:'웰컴 (시작 전)', when:'08:00~08:50', bg:'bg/hf_20260907_082042_bce623cc-048d-4c07-8fd0-b217b7d0f120.jpg', bgVideo:'bg/a01-yacht-loop.mp4', eyebrow:'2026 포스코그룹 WX해커톤 본선대회', h:'WX해커톤에 함께해 주신 크루 여러분!<br>진심으로 <em>환영</em>합니다.', two:true, topSlogan:true, body:{type:'cube', lines:['등록 데스크에서 <b>명찰 수령</b> 후, 우리 크루 자리로 이동','웰컴 굿즈의 <b>기념 티셔츠로 환복</b> 후, <b>8시 40분까지 착석</b>','주변 크루와 인사 나누며 분위기 만들기','포토존에서 우리 크루들과 즐거운 기념사진 촬영']}, foot:'강의장 사외망 와이파이: SD-ET-EXTR / songdo@1<br>원활한 행사 진행 및 과제 수행을 위해 개인 단말기의 와이파이 접속은 지양 바랍니다.', viz:'맨 위 슬로건 → 가운데 제목 → 안내 4줄(한 줄씩 순차 노출)', how:'안내는 명사형으로 줄였다(9/9). 와이파이는 각주 두 줄', memo:'착석 08:40(포스터). 이 장에서만 오른쪽 위 "2026 ∞ 해커톤" 락업이 보이고, 다음 표지에서 숨긴다' }),
   P({ no:'2', id:'A-02', title:'메인 타이틀 (표지)', when:'08:50~', kind:'cover', deck:true, bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center 0px', lockup:'2026 WX해커톤', big:hand('본선대회'), when2:'2026. 9. 10(목) - 9. 11(금) · 포스코인재창조원 송도캠퍼스 컨벤션센터', slogan:true, viz:'키비주얼 ∞ — 사이트 표지와 같은 구성: 가운데 락업 → 손글씨 → 날짜 · 장소 → 하단 슬로건', how:'"본선대회"는 손글씨 SVG 자리(사이트의 "마스터 트랙" 레터링과 같은 역할). 로고 바 오른쪽 락업은 표지에서 숨김' }),
   P({ no:'3', id:'A-03', title:'스페셜 장착템 (티셔츠)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -194px', eyebrow:'웰컴 굿즈', h:'해커톤 크루를 위한 <em>스페셜 장착템</em>!', sub:'아이디어가 임팩트가 되는 모든 순간, 크루 여러분의 열정과 함께할 공식 티셔츠입니다.', body:{type:'teed', front:'img/goods/tshirt-front.webp', back:'img/goods/tshirt-back.webp',
-      left:'포스코그룹<br>일하는 방식의 변화(WX)<br>+ 디지털 기술의<br>무한한 가능성',
+      left:'포스코그룹<br>일하는 방식의 변화(WX)<br>+ 디지털 기술의 무한한 가능성',
       right:'시작부터 끝까지<br>워크 플로우를 새롭게,<br>아이디어를 가치로 전환하는<br>끝장 개발대회!'},
     viz:'상세페이지식 — 가운데 티셔츠 둘, 로고와 슬로건을 화살표로 집어 바깥 박스 설명과 연결', how:'"앞면/뒷면" 딱지와 "해커톤 로고 · 슬로건" 되풀이를 뺐다(이종은 9/9)' }),
   P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -388px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], stats:[['11','크루',''],['54','명',''],['3','크루 · 22명','마스터 트랙 — Top-down 과제 선발 (크루당 7~8명)'],['8','크루 · 32명','챌린저 트랙 — 우수 아이디어 제안 (크루당 4명)']]}, viz:'숫자 4개 (사이트 stat 방식: 큰 수 + 단위 + 라벨)', how:'라벨 + 값 4줄, 아래 숫자 줄. 원문 6줄을 라벨 4 + 숫자 4로' }),
@@ -884,8 +884,8 @@ const PARTS = [
     ]}, viz:'세 칸 — 번호 · 이름 · 묶음. 옛 17~19장을 한 장으로(9/9)', how:'원문 그대로 "무박 2일"(이종은 9/9 확인)' }),
   P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'<em>1일차</em> · 2일차 일정', steps:[{label:'1일차', body:{type:'table', sched:1}},{label:'2일차', body:{type:'table', sched:2}}], dynTitle:['<em>1일차</em> 9/10(목) 일정','<em>2일차</em> 9/11(금) 일정'], viz:'표 — 시간 | 내용 두 칸. 챌린저 분홍 · 마스터 노랑', how:'머리글을 빼고 색으로 트랙을 가른다(이종은 9/9). 각주는 표 바로 아래, 1일차만' }),
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
-  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', body:{type:'lines', lines:['포스코인재창조원장 명의 수료증 수여','에어팟']}, obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
-  P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', body:{type:'lines', lines:['최우수상 — '+PRIZE.top,'우수상 — '+PRIZE.good]}, obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
+  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
+  P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'교육장소 이용 안내 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'오시는 길 · <em>숙소</em> 이용 규정', steps:[
       {label:'오시는 길', body:{type:'campus', use:[
         ['컨벤션센터', ['1층 — 이벤트홀 (메인 행사장)','1층 — 커피숍 · 무인편의점','2층 — 컨퍼런스룸 201 · 202 · 203호','지하 1층 — 식당 · 주차장']],
@@ -936,7 +936,7 @@ const PARTS = [
   ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:`center -${2360-118*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true, body:()=>({type:'trio', n:1+PART_IDX[k].length, items:[[`마스터 · ${MASTERS[k].dom}`, MASTERS[k].team, MASTERS[k].members.join('<br>')], ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return [`발표 ${i+1}번`, t?t.team:'—', t?t.members.join('<br>'):'(발표 순서 결정 후)']; })]}), viz:'칸 — 마스터 1 + 챌린저 칸', how:'순서는 발표 순서 결정 결과' })),
   P({ no:'3', id:'D-04', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1770px', title:'마스터 최종 선발 프로젝트', eyebrow:'최종 선발 프로젝트 · 마스터 트랙', h:'마스터 트랙 <em>과제</em> 셋', body:{type:'trio', n:3, items:MASTERS.map(m=>[`【${m.dom}】`, m.topic, m.desc])}, viz:'세 칸 — 분야 · 과제명 · 설명 원문', how:'원문 그대로. 칸 본문은 24px' }),
   P({ no:'3', id:'D-05', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1652px', title:'챌린저 최종 선발 프로젝트 (2단계)', eyebrow:'최종 선발 프로젝트 · 챌린저 트랙', h:'챌린저 트랙 <em>과제</em> 여덟', dyn:true, steps:[0,1].map(h=>({label:`발표 ${h*4+1}~${h*4+4}번`, body:()=>({type:'trio', n:2, items:[0,1,2,3].map(j=>{ const i=h*4+j; const t=slotTeam(i); return [`발표 ${i+1}번 · ${t?t.team:'—'}`, t?t.title:'(발표 순서 결정 후)', t?t.desc:'']; })})})), viz:'2×2 칸 — 팀 · 과제명 · 설명 원문. 4과제씩 두 단계', how:'설명은 원문 그대로, 칸 안에서 24px 여러 줄(표처럼 허용)' }),
-  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', body:{type:'lines', lines:['최우수상 — '+PRIZE.top,'우수상 — '+PRIZE.good]}, obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
+  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
   P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가자 <em>전원</em>에게 드리는 선물', body:{type:'lines', lines:['인재창조원장님 명의 수료증 + 에어팟']}, obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'A-16 과 같음', how:'한 줄' }),
   P({ no:'6', id:'D-06', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1298px', title:'심사기준 (2단계)', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', steps:[
       {label:'챌린저 트랙', body:{type:'criteria', h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']}},
@@ -1116,7 +1116,8 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     frame.appendChild(z('title-z ttl'+(p.center?' center':''), p.h, '제목 86px (64,119) · 한 낱말 강조 · 위에는 로고만'));
     if(p.sub) frame.appendChild(z('sub-z ln', p.sub, '부제 39px (64,273)'));
     const body=z('body-z'+(p.obj&&!p.objImgs?' narrow':''),'', (p.obj&&!p.objImgs)?'본문 (64,273) 1120×743':'본문 (64,273) 1792×743');
-    if(p.steps){
+    if(!p.steps && !p.body){ /* 그림만 있는 장 — 본문 칸은 비워 둔다 */ }
+    else if(p.steps){
       const views=el('div','views');
       p.steps.forEach((st,i)=>{ const v=el('div','view'+(i?' off-r':'')); v.dataset.step=i; v.appendChild(buildBody(st.body,p)); views.appendChild(v); });
       body.appendChild(views);
@@ -1157,7 +1158,7 @@ function rerender(){
   for(const rec of pageEls.values()){
     const p=rec.p; if(!p.dyn) continue;
     if(p.steps){ rec.frame.querySelectorAll('.view').forEach((v,i)=>{ v.innerHTML=''; v.appendChild(buildBody(p.steps[i].body,p)); }); }
-    else { const bz=rec.frame.querySelector('.body-z'); bz.innerHTML=''; bz.appendChild(buildBody(p.body,p)); }
+    else if(p.body){ const bz=rec.frame.querySelector('.body-z'); bz.innerHTML=''; bz.appendChild(buildBody(p.body,p)); }
   }
   scheduleMeasure();
 }
