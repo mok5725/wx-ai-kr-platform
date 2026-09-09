@@ -105,8 +105,13 @@ function fit(vp1){
   return Number.isFinite(s) && s > 0 ? s : 1;
 }
 
+/* draw 는 **언제나** want 를 먼저 맞춘다. 예전에는 그리기로 들어갈 때 want 를
+   두고 가서, 다 그린 뒤 finally 의 `want !== cur` 이 늘 참이 되어 앞장·뒷장을
+   번갈아 다시 그렸다 — 화면이 미친 듯이 깜박인 까닭이다(이종은 9/10). */
 async function draw(n){
-  if(!doc || busy) { want = n; return; }
+  n = Math.max(1, total ? Math.min(total, n) : n);
+  want = n;
+  if(!doc || busy) return;
   busy = true;
   try{
     const page = await doc.getPage(n);
@@ -127,11 +132,12 @@ async function draw(n){
     location.hash = 'p' + n;
   } finally {
     busy = false;
-    if(want !== cur) { const w2 = want; want = cur; draw(w2); }
+    /* 그리는 동안 더 눌렀으면 마지막으로 원한 장으로 한 번 더. */
+    if(want !== cur) draw(want);
   }
 }
 
-const go = (d) => { const n = Math.min(total, Math.max(1, (want !== cur ? want : cur) + d)); if(n !== cur || want !== cur) draw(n); };
+const go = (d) => draw(want + d);
 
 /* 가만히 있으면 안내를 감춘다 — 무대에서는 교안만 보이는 게 낫다. */
 let idleT;
