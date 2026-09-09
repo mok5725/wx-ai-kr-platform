@@ -392,8 +392,10 @@ body.stageonly .stagefs .frame .hint-z{display:none}
   display:flex;flex-direction:column;gap:8px;padding:14px;
   background:rgba(8,6,42,.88);border:1px solid rgba(238,240,255,.22);border-right:0;
   border-radius:16px 0 0 16px;opacity:0;
+  /* 닫힐 때는 빠르게(140ms), 열릴 때는 부드럽게(260ms). 닫기가 굼뜨면 화면을 가린다. */
+  transition:transform 140ms ease,opacity 140ms ease}
+.stagefs .partbar.on{transform:translate(0,-50%);opacity:1;
   transition:transform 260ms cubic-bezier(.22,.61,.36,1),opacity 260ms ease}
-.stagefs .partbar.on{transform:translate(0,-50%);opacity:1}
 .stagefs .partbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
   min-width:200px;padding:12px 18px;border-radius:10px;cursor:pointer;font:inherit;text-align:left;
   background:transparent;border:1px solid rgba(238,240,255,.16);color:#C3C6EE}
@@ -883,7 +885,7 @@ partBar.innerHTML=PARTS.map((p,i)=>{
   const bits=p.name.split('·');
   return `<button type="button" data-part="${i}"><b>${bits[0].trim()}</b><i>${bits.slice(1).join('·').trim()}</i></button>`;
 }).join('');
-let partT=0, partHold=false;
+let partHold=false;
 function showPartBar(on){
   partBar.classList.toggle('on',on);
   if(!on) return;
@@ -894,13 +896,12 @@ partBar.addEventListener('click',(e)=>{ const b=e.target.closest('button'); if(!
   openStage(partStart[+b.dataset.part], 1);
   /* 고르면 바로 닫는다. 다만 마우스는 아직 오른쪽 가장자리에 있어 mousemove 가 곧바로 다시
      열어 버린다 — 한 번 가장자리를 벗어나기 전까지 열지 않도록 붙잡아 둔다. */
-  clearTimeout(partT); partHold=true; showPartBar(false); });
+  partHold=true; showPartBar(false); });
+/* 가장자리를 벗어나면 **곧바로** 닫는다. 시간차를 두면 바가 화면을 가린 채로 남는다. */
 stage.addEventListener('mousemove',(e)=>{
   const near = e.clientX > innerWidth-90 || partBar.contains(e.target);
   if(!near) partHold=false;
-  clearTimeout(partT);
-  if(near && !partHold) showPartBar(true);
-  else if(!near) partT=setTimeout(()=>showPartBar(false), 600);
+  showPartBar(near && !partHold);
 });
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
