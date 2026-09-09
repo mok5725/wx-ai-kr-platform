@@ -147,7 +147,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    사진이 든 경우에는 본문 아래 전폭 띠로 내려 **가운데 정렬**하고, 굿즈(A-12)와
    같은 반투명 크리스탈 박스에 넣는다. 상품 원본은 배경을 지운 투명 WebP 다
    (wx26-screens/scripts/build-prizes.mjs). */
-.obj-z.has-img{border-color:transparent;color:inherit;left:var(--pad);top:520px;width:1792px;height:496px}
+/* 그림이 너무 아래에 있었다 — 위로 올린다(이종은 9/9). */
+.obj-z.has-img{border-color:transparent;color:inherit;left:var(--pad);top:452px;width:1792px;height:564px}
 .obj-z.has-img .oi{flex-direction:row;justify-content:center;align-items:stretch;gap:40px;width:auto;height:100%}
 /* flex-basis 를 0 으로 두면 안 된다 — 그림은 absolute 라 폭을 만들지 않아 상자가
    캡션 글자 폭(113px)으로 쪼그라든다(9/8 실측). 기준 폭을 주고 늘어나게 한다. */
@@ -220,7 +221,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   padding:24px 26px;font-size:29px;font-weight:700;line-height:1.6;color:#101538}
 .teed .cap.l{left:0}
 /* 슬로건 판은 아래에 둔다(이종은 9/9). 지시선이 ㄱ자로 꺾여 올라가 슬로건을 집는다. */
-.teed .cap.r{left:1352px;top:480px}
+.teed .cap.r{left:1352px;top:480px;justify-content:flex-end;text-align:right}
 .teed .cap p{margin:0}
 .hint-z{position:absolute;right:var(--pad);bottom:22px;font-size:18px;color:var(--st-faint);opacity:.7;letter-spacing:.02em}
 .progress{position:absolute;left:0;right:0;bottom:38px;display:flex;justify-content:center;gap:11px;pointer-events:none}
@@ -282,6 +283,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .lines.tight p{line-height:1.5}
 .kv{display:grid;grid-template-columns:200px 1fr;gap:4px 24px;align-content:start}
 .kv .k{font-size:var(--s0);color:var(--st-faint);letter-spacing:.06em;padding-top:8px}
+/* 4쪽(대회 개요)은 홀 뒤에서도 읽히도록 더 진하고 굵게(이종은 9/9). */
+.frame[data-id="A-05"] .kv .k{color:var(--st-soft);font-weight:700}
+.frame[data-id="A-05"] .kv .v{color:var(--st-ink);font-weight:700}
+.frame[data-id="A-05"] .stat .l{color:var(--st-ink);font-weight:600}
 .kv .v{font-size:var(--s1);color:var(--st-soft);line-height:1.7}
 .stats{display:flex;gap:64px;align-items:flex-end;margin-top:36px}
 .stat .n{font-family:var(--head);font-weight:900;font-size:76px;line-height:1;letter-spacing:-.01em;color:var(--st-ink)}
@@ -300,6 +305,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .trio .kk{font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
 .trio .tt{font-size:var(--s2);font-weight:700;margin:10px 0 6px;color:var(--st-ink);line-height:1.3}
 .trio .bb{font-size:var(--s0);color:var(--st-soft);line-height:1.7}
+/* 챌린저 크루(6·7쪽) — 크루명이 한눈에 들어오게 색을 달리하고, 코치는 한 칸 띄운다. */
+.frame[data-id="A-07"] .trio .tt{color:var(--kw);font-weight:900;font-family:var(--head)}
+.trio .bb .coach{display:inline-block;margin-top:18px}
 .trio .bb p{margin:0}
 .trio .bb p.em{color:var(--st-ink)}
 .trio.hero .tt{font-size:var(--s3);font-family:var(--head);font-weight:900}
@@ -307,11 +315,13 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    옛 17·18·19장(단계 셋)을 한 장으로 합쳤다(이종은 9/9).
    한 칸이 한 갈래 — 번호 · 이름 · 묶음 여럿(묶음 제목 + 항목들). */
 .enjoy{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%}
-.enjoy .it{border-left:2px solid var(--violet);padding:6px 14px 6px 18px;display:flex;flex-direction:column;min-height:0}
+/* 세로 줄이 칸 끝까지 내려와 너무 길었다 — 내용 높이만큼만 긋는다(이종은 9/9). */
+.enjoy .it{position:relative;padding:6px 14px 6px 18px;display:flex;flex-direction:column;min-height:0}
+.enjoy .it::before{content:"";position:absolute;left:0;top:0;width:2px;height:76%;background:var(--violet)}
 .enjoy .no{font-family:var(--head);font-weight:900;font-size:var(--s3);color:var(--violet);line-height:1}
 .enjoy .tt{font-family:var(--head);font-weight:900;font-size:var(--s3);line-height:1.1;letter-spacing:.01em;margin:6px 0 24px;color:var(--st-ink)}
 .enjoy .grp{margin-bottom:26px}
-.enjoy .gl{font-size:38px;font-weight:700;line-height:1.35;color:var(--st-ink)}
+.enjoy .gl{font-size:38px;font-weight:700;line-height:1.35;color:var(--kw)}
 .enjoy .gi{font-size:32px;line-height:1.55;color:var(--st-soft);margin-top:8px}
 .enjoy .gi p{margin:0}
 .team{display:grid;grid-template-columns:720px 1fr;gap:64px;height:100%}
@@ -331,7 +341,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .mcrew .tp{font-size:28px;line-height:1.5;color:var(--st-soft)}
 .mcrew .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:20px}
 .mcrew .nm span{font-family:var(--head);font-weight:800;font-size:36px;line-height:1.25;color:var(--st-ink)}
-.mcrew .etc{margin-top:auto;padding-top:18px;font-size:26px;line-height:1.6;color:var(--st-faint)}
+/* margin-top:auto 면 칸 맨 아래로 밀려 제목과 멀어진다 — 크루원 바로 아래에 붙인다. */
+.mcrew .etc{margin-top:24px;padding-top:0;font-size:26px;line-height:1.6;color:var(--st-faint)}
 .mcrew .etc p{margin:0}
 .tbl table{border-collapse:collapse;width:100%;font-size:30px;line-height:1.4}
 .tbl th,.tbl td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--st-line)}
@@ -344,7 +355,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl .row{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
 .tl .lab{font-family:var(--head);font-weight:900;font-size:var(--s2);padding-top:4px}
 .tl .steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:12px;position:relative;padding-top:36px}
-.tl .steps::before{content:"";position:absolute;left:0;right:0;top:12px;height:3px;background:var(--st-line)}
+/* 마디 동그라미는 각 칸 왼쪽에 찍힌다. 선을 오른쪽 끝까지 그으면 마지막 동그라미
+   뒤로 빈 줄이 남는다 — 마지막 동그라미에서 끊는다(이종은 9/9). */
+.tl .steps::before{content:"";position:absolute;left:12px;right:calc(100% / var(--n,5) - 12px);top:12px;height:3px;background:var(--st-line)}
 .tl .st{position:relative;font-size:var(--s0);line-height:1.4;color:var(--st-soft);padding-right:10px}
 .tl .st::before{content:"";position:absolute;left:0;top:-36px;width:24px;height:24px;border-radius:50%;background:var(--violet)}
 .tl .st.last{color:var(--st-ink)}
@@ -751,7 +764,7 @@ const PARTS = [
     viz:'상세페이지식 — 가운데 티셔츠 둘, 로고와 슬로건을 화살표로 집어 바깥 박스 설명과 연결', how:'"앞면/뒷면" 딱지와 "해커톤 로고 · 슬로건" 되풀이를 뺐다(이종은 9/9)' }),
   P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -388px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], stats:[['11','크루',''],['54','명',''],['3','크루 · 22명','마스터 트랙 — Top-down 과제 선발 (크루당 7~8명)'],['8','크루 · 32명','챌린저 트랙 — 우수 아이디어 제안 (크루당 4명)']]}, viz:'숫자 4개 (사이트 stat 방식: 큰 수 + 단위 + 라벨)', how:'라벨 + 값 4줄, 아래 숫자 줄. 원문 6줄을 라벨 4 + 숫자 4로' }),
   P({ no:'6', id:'A-06', title:'마스터 트랙 소개', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -581px', eyebrow:'해커톤 크루 소개', h:'<em>마스터</em> 트랙', sub:'주요 사업회사 임원 FGI를 통해 선정된 과제에 대한 전문가 팀 구성 (도메인 + AX/DX 전문가로 선발)', body:{type:'mcrew', items:MASTERS}, viz:'세 칸 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치', how:'옛 6장과 7~9장(크루원)을 한 장으로 합쳤다(9/9)' }),
-  P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
+  P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span class="coach" style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'stats', big:true, stats:[['❓','','스파르타 코딩클럽 학습 내역'],['❓','','디스코드 협업'],['❓','','코칭 시간']]}, viz:'숫자 3개 144px', how:'항목명 + 숫자 + 단위', wait:'값 3건 — 9/9' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
@@ -780,7 +793,7 @@ const PARTS = [
 { id:'p2', name:'2부 · 과제 수행 (24시간)', full:'2부 · 과제 수행 — 이벤트홀 메인 화면 (24시간)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 원본 2일차 4 + 신규 2장',
   note:'카운트다운 한 장이 상주하고, 22:00 야식과 0시 베네핏 게임 때만 타이틀 슬라이드로 잠깐 바꿉니다. 베네핏 게임이 끝나면 3부의 "발표 순서 결정" 화면을 엽니다.',
   pages:[
-  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'현재 시각 기준 실시간. 24시간이 넘으면 "N일 HH:MM:SS". 시작 시각은 아래에서(리허설용)', memo:'PC 절전 해제' }),
+  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'현재 시각 기준 실시간. 24시간이 넘으면 "N일 HH:MM:SS". 시작 시각은 아래에서(리허설용)', memo:'PC 절전 해제' }),
   P({ no:'—', id:'B-03', title:'야식 타임', new:true, when:'22:00', kind:'cover', big:hand('야식 타임'), en:'같이 먹고 힘내요', when2:'9/10(목) 22:00 · 24시간 부스트업존', viz:'없음 — 타이틀 한 장. 손글씨 후보', how:'원문 13페이지 · 포스터 각주' }),
   P({ no:'—', id:'B-04', title:'베네핏 게임', new:true, when:'0:00', kind:'cover', big:hand('베네핏 게임'), en:'0시의 데이트', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권이 제공됩니다','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바랍니다'], viz:'없음. 손글씨 후보', how:'A-15 와 같은 문구' }),
   P({ no:'—', id:'B-05', title:'발표 순서 결정 (카드)', new:true, when:'0시 베네핏 게임 직후', h:'<em>발표 순서</em>를 정합니다', sub:'베네핏 게임 등수대로 — 팀 카드를 고른 뒤 자리 번호를 누르면 카드가 그 자리로 갑니다', widget:'cards', foot:'1부 1·2·3번 · 2부 4·5·6번 · 3부 7·8번 · 마스터는 안전 → 물류 → 마켓센싱으로 확정', viz:'자리 2×4 + 카드 대기줄. 앉으면 "N번째 발표 · 팀명" 전면 세리모니', how:'운영 조작 화면. 결과는 저장돼 3부 발표 순서 · 크루 · 과제 화면에 그대로 쓰인다', memo:'브라우저에 저장. PC 가 다르면 "현재 상태 내보내기"' }),
@@ -864,7 +877,7 @@ function sched(day){
   const tr=(r)=>`<tr><td class="t">${r[0]}</td>${r.length===2?`<td colspan="2">${r[1]}</td>`:`<td class="c">${r[2]}</td><td class="m">${r[3]}</td>`}</tr>`;
   return el('div','tbl sched',`<table><thead><tr><th style="width:230px">${day===1?'1일차 9/10(목)':'2일차 9/11(금)'}</th><th>공통 / 챌린저</th><th>마스터</th></tr></thead><tbody>${rows.map(tr).join('')}</tbody></table>`);
 }
-B.timeline=(b)=>el('div','tl'+(b.dense?' dense':''), b.rows.map(([lab,steps])=>`<div class="row"><div class="lab">${lab}</div><div class="steps">${steps.map((s,i)=>`<div class="st ${i===steps.length-1?'last':''}">${s}</div>`).join('')}</div></div>`).join(''));
+B.timeline=(b)=>el('div','tl'+(b.dense?' dense':''), b.rows.map(([lab,steps])=>`<div class="row"><div class="lab">${lab}</div><div class="steps" style="--n:${steps.length}">${steps.map((s,i)=>`<div class="st ${i===steps.length-1?'last':''}">${s}</div>`).join('')}</div></div>`).join(''));
 B.enjoy=(b)=>el('div','enjoy', b.items.map(it=>`<div class="it"><div class="no">${it.no}</div><div class="tt ln">${it.tt}</div>${it.groups.map(([gl,gis])=>`<div class="grp"><div class="gl ln">${gl}</div><div class="gi">${gis.map(x=>`<p class="ln">${x}</p>`).join('')}</div></div>`).join('')}</div>`).join(''));
 B.criteria=(b)=>el('div','crit',`<div class="lines"><p class="ln em">${b.h}</p></div><div class="critbar">${b.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div><div class="txt">${b.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`);
 B.award=(b,p,stepKey)=>{ const [t,prize]=awardOf(b.kind); const key=p.id+':'+b.kind; const rev=!!S.reveal[key]; const w=el('div','award',`<div class="phase">${b.name}</div><div class="team ln ${rev?'':'veil'}" title="클릭하면 팀명이 드러납니다">${t?t.team:'미정'}</div><div class="topic ln">${t?(t.topic||t.title):''}</div><img class="pimg" src="${prize===PRIZE.top?'img/perks/macbook-air.webp':'img/perks/macbook-neo.webp'}" alt=""><div class="prize">상품 — ${prize}</div><div class="cert">회장님 상장</div><div class="ctl left" style="justify-content:center"><button class="btn">${rev?'팀명 가리기':'팀명 공개'}</button></div>`); const tog=()=>{ S.reveal[key]=!S.reveal[key]; save(); rerender(); }; w.querySelector('.team').addEventListener('click',tog); w.querySelector('button').addEventListener('click',tog); return w; };
