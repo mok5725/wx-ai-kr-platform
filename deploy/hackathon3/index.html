@@ -1478,6 +1478,12 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
 /* 순차 노출 — 줄이 하나씩 올라온다(1장). CSS 애니메이션은 화면을 만들 때 이미 다 돌아
    버려서 장을 다시 열어도 다시 돌지 않는다. 그래서 열 때마다 animate() 로 새로 먹인다.
    fill:'backwards' 라야 차례를 기다리는 동안 줄이 보이지 않는다. */
+function fadeBg(fw, delay){
+  fw.querySelectorAll('.map img').forEach(n=>{
+    n.animate([{opacity:0},{opacity:1}],
+      {duration:620, delay:delay, easing:'cubic-bezier(.33,0,.2,1)', fill:'backwards'});
+  });
+}
 function runSeq(fw, delay){
   /* 큐브는 CSS 무한 애니메이션이라 그냥 두면 중간 면부터 보인다 — 열 때마다 되감는다. */
   fw.querySelectorAll('.cube').forEach(c=>{ c.style.animation='none'; void c.offsetWidth; c.style.animation=''; });
@@ -1508,6 +1514,7 @@ function openStage(i, dir){
   const bgMoved=stageBg.show(FLAT[cur]);
   /* 글자는 배경이 자리를 잡기 시작한 뒤에 올라온다. 배경이 그대로인 장(단색·같은 자리)에서는 기다리지 않는다. */
   if(dir){ clearTimeout(arriveT); const fw=rec.fw; arriveT=setTimeout(()=>fw.classList.remove('arrive-down','arrive-up'), bgMoved?TEXT_DELAY:20); }
+  fadeBg(rec.fw, 0);
   runSeq(rec.fw, bgMoved?TEXT_DELAY:20);
   showPageNo();
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
