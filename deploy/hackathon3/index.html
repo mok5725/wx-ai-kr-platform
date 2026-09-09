@@ -683,16 +683,16 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ph.pic img{width:100%;height:100%;object-fit:contain;display:block;border-radius:12px}
 /* 여섯 칸을 똑같이 나누지 않고 **자리 이름으로 끼워 맞춘다**(이종은 9/9).
    티셔츠는 왼쪽에서 세로로 길게 통째로, 오른쪽은 여섯 줄 격자에 나눠 담는다.
-     tee | bag  | memo        보조배터리 아래가 덴탈케어세트다.
-     tee | bag  | batt        줄을 여섯으로 잡아야 2:2:2 와 3:3 이
-     tee | pil  | dent        같은 격자에서 딱 맞아떨어진다. */
+     tee | memo batt | bag    가운데 윗자리는 메모지·보조배터리를 **가로로** 나눠 쓰고,
+     tee | memo batt | bag    리유저블백은 오른쪽으로 옮겨 그 둘을 합친 만큼(넉 줄)
+     tee | pil       | dent   한 칸을 통째로 쓴다(이종은 9/9). 아래는 목베개·덴탈케어. */
 .ph.grid6{display:grid;
-  grid-template-columns:0.92fr 1.16fr 0.92fr;
+  grid-template-columns:0.92fr 0.58fr 0.58fr 0.92fr;
   grid-template-rows:repeat(6,1fr);
   grid-template-areas:
-    "tee bag memo" "tee bag memo"
-    "tee bag batt" "tee pil batt"
-    "tee pil dent" "tee pil dent";
+    "tee memo batt bag" "tee memo batt bag"
+    "tee memo batt bag" "tee pil  pil  bag"
+    "tee pil  pil  dent" "tee pil  pil  dent";
   gap:18px;padding:18px;height:100%;box-sizing:border-box;
   align-items:stretch;justify-items:stretch}
 /* .ph 가 flex 라 칸이 제 내용만큼만 커졌다 — 격자 칸을 꽉 채우라고 못 박는다. */
@@ -703,8 +703,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ph.grid6 .a-batt{grid-area:batt}
 .ph.grid6 .a-dent{grid-area:dent}
 .ph.grid6 .a-pil{grid-area:pil}
-/* 티셔츠 칸은 세로로 기니 그림도 세로로 꽉 채운다 — 옷 전체가 보인다. */
-.ph.grid6 span.pic.tall img{width:calc(88% * var(--s,1));height:calc(84% * var(--s,1))}
+/* 티셔츠 칸은 세로로 기니 그림도 세로로 꽉 채운다 — 옷 전체가 보인다.
+   가운데를 46% 로 내려 잡아 그림이 칸 안에서 조금 아래에 앉는다(이종은 9/9). */
+.ph.grid6 span.pic.tall img{top:46%;width:calc(88% * var(--s,1));height:calc(84% * var(--s,1))}
 .ph.grid6 span,.ph.grid5 span{border:2px dashed var(--st-line);border-radius:10px;display:flex;align-items:flex-end;justify-content:center;padding:12px;font-size:var(--s0)}
 /* 사진이 온 칸 — 투명 배경 제품이 **반투명 크리스탈 박스** 안에 떠 있다.
    원본 `<이름>2.png` 가 알파를 갖고 있어(build-goods.mjs) 흰 판때기가 생기지 않는다.
@@ -1084,7 +1085,7 @@ const PARTS = [
        lines:['과제 수행을 위한 전문코칭 <b>총 40시간</b>','음성채팅 최고 팀 채팅 시간은 <b>103시간</b>','가장 코칭을 많이 받은 팀은 <b>총 8회</b> 미팅']},
     ]}, viz:'세 칸 — 로고 + 이름 + 큰 숫자 + 딸림 세 줄', how:'운영이 준 「숫자로 보는 원정대」 값 그대로(9/9)' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
-  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.0,'tall a-tee'],['리유져블백','img/goods/bag.webp',1.05,'a-bag'],['메모지 & 필기도구','img/goods/stationery.webp',0.9,'a-memo'],['보조배터리','img/goods/battery.webp',0.9,'a-batt'],['덴탈케어세트','img/goods/dental.webp',0.5,'a-dent'],['목베개','img/goods/pillow.webp',1.0,'a-pil']]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
+  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.0,'tall a-tee'],['리유져블백','img/goods/bag.webp',1.05,'a-bag'],['메모지 & 필기도구','img/goods/stationery.webp',0.9,'a-memo'],['보조배터리','img/goods/battery.webp',0.9,'a-batt'],['덴탈케어세트','img/goods/dental.webp',0.78,'a-dent'],['목베개','img/goods/pillow.webp',1.0,'a-pil']]}, viz:'6칸 — 왼쪽 티셔츠 통칸, 가운데 위 메모지·보조배터리 가로 둘, 오른쪽 리유저블백 넉 줄', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
       {no:'1', tt:'함께 해요', groups:[['팀원들과 함께 하는 시간',['베네핏 게임','포토존','아이디어존']],['같이 먹고 힘내요',['24시간, 부스트업존','야식 타임']]]},
       {no:'2', tt:'몰입해요', groups:[['마스터 트랙',['솔루션을 점검하고 결과물을 실제와 연결']],['챌린저 트랙',['팀 협업을 통한 무박 2일의 끝장 개발']],['스페셜 코치와 학습하기',['특강을 통한 노하우 전수','실시간 전략강화 멘토링']]]},
