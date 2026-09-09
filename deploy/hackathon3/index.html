@@ -346,8 +346,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 건물만 제자리에서 110% 로 띄운다(이종은: "따로 분리해서 110%로 확대해도 좋아").
    각 건물 한가운데를 축으로 키워서 바탕 사진과 크게 어긋나지 않게 한다. */
 .campus .pop{position:absolute;inset:0;transform:scale(1.1)}
-.campus .pop.conv{transform-origin:53% 77%}
-.campus .pop.resi{transform-origin:76% 53%}
+.campus .pop.conv{transform-origin:53.6% 74.5%}
+.campus .pop.resi{transform-origin:77.8% 53.3%}
 .campus .hi{filter:brightness(1.12) saturate(1.1) drop-shadow(0 10px 26px rgba(0,0,0,.75))}
 /* 오려내는 자리는 CAMPUS_CONV · CAMPUS_RESI 에서 style 로 넣는다(값이 두 벌이 되지 않게). */
 .campus .ol{position:absolute;inset:0;width:100%;height:100%}
@@ -359,8 +359,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .tag.key{font-size:34px;color:#08062A;background:var(--kw);box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .campus .tag.dim{font-size:26px;color:var(--st-faint);background:rgba(8,6,42,.6);font-weight:400}
 .campus .tag.site{font-size:24px;color:var(--gold);background:rgba(8,6,42,.6);font-weight:400}
-.campus .t-conv{left:50%;top:72%}
-.campus .t-resi{left:76%;top:52%}
+.campus .t-conv{left:53%;top:79%}
+.campus .t-resi{left:77.5%;top:52%}
 .campus .t-rnd{left:24%;top:47%}
 .campus .t-learn{left:58%;top:52%}
 .campus .t-site{left:9%;top:90%}
@@ -1050,8 +1050,8 @@ B.cube=(b)=>el('div','cubebox',`<div class="cube">${b.lines.map(l=>`<p class="fa
    바탕 사진은 어둡게 깔고, 컨벤션센터와 레지던스홀 자리만 원본 밝기의 사진을
    clip-path 로 오려 덧댄다. 나머지 건물은 이름만 흐리게 남긴다.
    자리값은 운영이 준 표시 그림(시설안내02)에서 읽어 백분율로 옮겼다. */
-const CAMPUS_CONV = '41.1% 64.6%, 51.3% 55.4%, 67.2% 66%, 66.1% 83.6%, 64.8% 94.2%, 51.3% 98.3%, 41.8% 88%, 40.8% 72%';
-const CAMPUS_RESI = '68.2% 35.1%, 81.3% 32.5%, 83.3% 43.4%, 83.3% 64.6%, 82.5% 74.5%, 80.5% 77.5%, 69.3% 73.9%, 67.7% 59.1%';
+const CAMPUS_CONV = '48.8% 57.8%, 65.5% 62.2%, 66.6% 75.1%, 60.8% 97.1%, 40.0% 83.4%, 39.8% 71.1%';
+const CAMPUS_RESI = '69.3% 30.7%, 83.0% 30.9%, 86.1% 35.6%, 85.8% 66.2%, 83.0% 71.1%, 69.5% 72.2%, 67.6% 66.5%';
 const CAMPUS_SITE = '0.9% 41.9%, 13.1% 33.2%, 68.9% 29.2%, 83.6% 34.6%, 98.9% 59.3%, 87.8% 96.8%, 22.2% 94.9%, 1.1% 59.3%';
 const pgon = (t) => t.split(',').map(p => p.trim().split(/\s+/).map(v => parseFloat(v)).join(',')).join(' ');
 /* 금지·주의 항목을 그림표로 — 큰 기호 + 제목 + 딸린 항목들.
