@@ -355,10 +355,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .tag i{display:block;font-style:normal;font-weight:700;font-size:26px;opacity:.9;margin-top:4px}
 .campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .campus .tag.dim{font-size:30px;color:var(--st-ink);background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.28);font-weight:700}
-.campus .t-conv{left:50%;top:90%}
-.campus .t-resi{left:75%;top:62%}
+.campus .t-conv{left:48%;top:78%}
+.campus .t-resi{left:75%;top:46%}
 .campus .t-rnd{left:24%;top:47%}
-.campus .t-learn{left:54%;top:43%}
+.campus .t-learn{left:54%;top:38%}
 /* 건물별 설명 판 — 사진 좌표(1920×1080) 로 자리를 박는다. */
 .campus .bx{position:absolute;z-index:4;box-sizing:border-box;
   background:rgba(8,6,42,.82);border:1px solid rgba(238,240,255,.32);border-radius:16px;
@@ -1117,6 +1117,7 @@ B.campus=(b)=>el('div','campus',
      ${b.boxes.map(x=>`<div class="bx ${x.at}"><div class="bn ln">${x.name}</div>`
        +x.main.map(m=>`<p class="bm ln">${m}</p>`).join('')
        +(x.sub||[]).map(m=>`<p class="bs ln">${m}</p>`).join('')+`</div>`).join('')}
+     ${b.boxes.map(x=>`<span class="tag key t-${x.at}">${x.name}</span>`).join('')}
      ${(b.dim||[]).map(([k,n])=>`<span class="tag dim t-${k}">${n}</span>`).join('')}
    </div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
