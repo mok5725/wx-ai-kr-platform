@@ -796,12 +796,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense.join .lab{align-self:center}
 /* 줄은 칸 한가운데. 점은 줄 위에 얹히고, 글씨는 마스터는 위 · 챌린저는 아래. */
 .tl.dense.join .steps{min-height:0;height:100%}
-.tl.dense.join .steps::before{top:50%;bottom:auto;margin-top:-1.5px}
+.tl.dense.join .steps::before{top:50%;bottom:auto;margin-top:-1.5px;right:-17.5943%}
 .tl.dense.join .row.t-ma .st{top:auto;bottom:calc(50% + 26px)}
 .tl.dense.join .row.t-ma .st::before{top:auto;bottom:-38px}
 .tl.dense.join .row.t-ch .st{top:calc(50% + 26px);bottom:auto}
 .tl.dense.join .row.t-ch .st::before{top:-38px;bottom:auto}
-.tl.dense.join .st{max-width:176px;font-size:26px}
+.tl.dense.join .st{max-width:200px;font-size:27px}
 .tl.dense.join .row.t-ma{grid-area:1 / 1}
 .tl.dense.join .row.t-ch{grid-area:2 / 1}
 .tl.dense.join .uframe{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -1639,14 +1639,21 @@ const JOINPIPE=`<svg class="uframe" viewBox="0 0 1792 743" xmlns="http://www.w3.
   <path class="ub ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5 Z"/>
   <path class="uw ma" d="M1340,371.5 V367 Q1340,349 1322,349 H26 Q0,349 0,323 V26 Q0,0 26,0 H1766 Q1792,0 1792,26 V371.5"/>
   <path class="uw ch" d="M1340,371.5 V376.5 Q1340,394.5 1322,394.5 H26 Q0,394.5 0,420.5 V717 Q0,743 26,743 H1766 Q1792,743 1792,717 V371.5"/>
-  <path class="ul ma" d="M1238,174.25 H1556 Q1590,174.25 1590,208.25 V241.5"/>
-  <path class="ul ch" d="M1238,568.75 H1556 Q1590,568.75 1590,534.75 V501.5"/>
+  <path class="ul ma" d="M1510,174.25 H1556 Q1590,174.25 1590,208.25 V241.5"/>
+  <path class="ul ch" d="M1510,568.75 H1556 Q1590,568.75 1590,534.75 V501.5"/>
 </svg>`;
+/* 이어 붙는 장(A-09)은 마지막 마디를 **꺾이는 모서리 바로 앞**까지 민다(이종은 9/10).
+   마디 칸(.steps)은 1114px 이고 그 왼쪽 끝이 화면 x=200 이므로, 마지막 마디를
+   x=1510 에 두려면 칸 폭의 1310/1114 지점이다. 첫 마디(1/14)에서 거기까지를
+   마디 수로 고르게 나눈다 — 줄마다 마디 수가 달라도 간격은 줄 안에서 일정하다. */
+const JF0 = 1/14, JF1 = 1310/1114;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
   const cls=b.dense?(/마스터/.test(lab)?' t-ma':' t-ch'):'';
+  const at=(i)=>b.join ? `left:${((JF0+i*(JF1-JF0)/(n-1))*100).toFixed(4)}%`
+                       : `left:calc(100% * ${1+i*u} / 14)`;
   return `<div class="row${cls}"><div class="lab">${lab}</div><div class="steps" style="--n:${n}">`
-    + steps.map((s,i)=>`<div class="st ${i===n-1?'last':''}"${b.dense?` style="left:calc(100% * ${1+i*u} / 14)"`:''}>${s}</div>`).join('')
+    + steps.map((s,i)=>`<div class="st ${i===n-1?'last':''}"${b.dense?` style="${at(i)}"`:''}>${s}</div>`).join('')
     + `</div></div>`;
 }).join('') + (b.join ? JOINPIPE
   + `<div class="fin"><span class="one ln">${b.join.k}</span><b class="ln">${b.join.t}</b><span class="dd ln">${b.join.d}</span></div>`
