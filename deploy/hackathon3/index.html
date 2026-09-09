@@ -219,7 +219,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   box-shadow:0 14px 46px rgba(8,6,42,.45), inset 0 1px 0 rgba(255,255,255,.9);
   padding:24px 26px;font-size:29px;font-weight:700;line-height:1.6;color:#101538}
 .teed .cap.l{left:0}
-.teed .cap.r{left:1352px}
+/* 슬로건 판은 아래에 둔다(이종은 9/9). 지시선이 ㄱ자로 꺾여 올라가 슬로건을 집는다. */
+.teed .cap.r{left:1352px;top:480px}
 .teed .cap p{margin:0}
 .hint-z{position:absolute;right:var(--pad);bottom:22px;font-size:18px;color:var(--st-faint);opacity:.7;letter-spacing:.02em}
 .progress{position:absolute;left:0;right:0;bottom:38px;display:flex;justify-content:center;gap:11px;pointer-events:none}
@@ -699,7 +700,7 @@ const PARTS = [
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'stats', big:true, stats:[['❓','','스파르타 코딩클럽 학습 내역'],['❓','','디스코드 협업'],['❓','','코칭 시간']]}, viz:'숫자 3개 144px', how:'항목명 + 숫자 + 단위', wait:'값 3건 — 9/9' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
-  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.18,'crop'],['리유져블백','img/goods/bag.webp',0.89],['메모지 & 필기도구','img/goods/stationery.webp',0.71],['보조배터리','img/goods/battery.webp',0.58],['덴탈케어세트','img/goods/dental.webp',0.31],['목베개','img/goods/pillow.webp',0.58]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
+  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',0.85,'crop'],['리유져블백','img/goods/bag.webp',1.05],['메모지 & 필기도구','img/goods/stationery.webp',0.88],['보조배터리','img/goods/battery.webp',0.72],['덴탈케어세트','img/goods/dental.webp',0.39],['목베개','img/goods/pillow.webp',0.72]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
       {no:'1', tt:'함께 해요', groups:[['팀원들과 함께 하는 시간',['베네핏 게임','포토존','아이디어존']],['같이 먹고 힘내요',['24시간, 부스트업존','야식 타임']]]},
       {no:'2', tt:'몰입해요', groups:[['마스터 트랙',['솔루션을 점검하고 결과물을 실제와 연결']],['챌린저 트랙',['팀 협업을 통한 1박 2일의 끝장 개발']],['스페셜 코치와 학습하기',['특강을 통한 노하우 전수','실시간 전략강화 멘토링']]]},
@@ -814,9 +815,9 @@ B.teed=(b)=>el('div','teed',
      <defs><marker id="teeArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
        <path d="M0,0 L10,5 L0,10 z" fill="var(--kw)"/></marker></defs>
      <line x1="440" y1="185" x2="640" y2="185" stroke="var(--kw)" stroke-width="5" marker-end="url(#teeArrow)"/>
-     <line x1="1352" y1="185" x2="1310" y2="185" stroke="var(--kw)" stroke-width="5" marker-end="url(#teeArrow)"/>
+     <polyline points="1572,354 1572,185 1310,185" fill="none" stroke="var(--kw)" stroke-width="5" stroke-linejoin="round" marker-end="url(#teeArrow)"/>
      <circle cx="440" cy="185" r="8" fill="var(--kw)"/>
-     <circle cx="1352" cy="185" r="8" fill="var(--kw)"/>
+     <circle cx="1572" cy="354" r="8" fill="var(--kw)"/>
    </svg>
    <img class="tee f" src="${b.front}" alt="">
    <img class="tee b" src="${b.back}" alt="">
