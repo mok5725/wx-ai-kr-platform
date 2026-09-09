@@ -312,6 +312,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 가장 지켜야 할 대목은 노란 배지로 — 굵게만 해서는 문장 안에서 묻힌다. */
 .rules .lead .hot{font-style:normal;font-weight:900;color:#08062A;background:#FFE500;
   border-radius:8px;padding:2px 12px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+/* ── 밀어 보는 칸(19쪽) ────────────────────────────────────────────────────
+   다섯 칸을 한 줄로 이어 붙이고 창(tracker)만큼만 보여 준다. 다음을 누르면
+   세 칸씩 왼쪽으로 밀린다 — 화면이 통째로 바뀌지 않고 칸이 이어져 흐른다. */
+.rules .tracker{overflow:hidden;flex:1;min-height:0;display:flex}
+.rules .cards.track{display:flex;gap:20px;flex:1;min-height:0;
+  transition:transform .55s cubic-bezier(.22,.61,.36,1);will-change:transform}
+.rules .grp{flex:0 0 100%;display:flex;flex-direction:column;gap:18px;min-height:0}
+.rules .grp .row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;min-height:0}
 .rules .cards{display:grid;gap:20px;flex:1;min-height:0}
 .rules .cards.c2{grid-template-columns:repeat(2,1fr)}
 .rules .cards.c3{grid-template-columns:repeat(3,1fr)}
@@ -997,19 +1005,23 @@ const PARTS = [
     viz:'특히 중요한 3가지(빨간 금지 표지) + 주제 넷으로 묶은 15항목 · 오른쪽 위 CCTV 표지', how:'금지 항목은 낱개로 늘어놓으면 안 읽혀 주제로 묶었다(9/9)' }),
   P({ no:'19', id:'A-19', title:'건강증진센터', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'124% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'가장 중요한 것은 <em>건강과 안전</em>!', sub:'몸이 아프거나, 컨디션이 안 좋으면 무리하지 않고 쉬어야 합니다.', body:{type:'note', big:'러닝센터 2층 <em>건강증진센터</em>', lines:['09:00 - 18:00 · 간호사 상주','운영시간이 아닐 경우, 운영진에게 말씀 주세요','간단한 비상의약품은 운영진에게 요청하시면 됩니다']}, viz:'가운데 큰 안내 판 — 받은 안내문 그대로', how:'비상의약품 한 줄 추가(이종은 9/9)' }),
   P({ no:'—', id:'A-19b', title:'안전행동수칙 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'132% auto', bgPos:'center', new:true, eyebrow:'교육장소 이용 안내', h:'교육 시 <em>안전행동수칙</em>', steps:[
-      {label:'안전 가이드', body:{type:'rules',
-        lead:'교육 중 계단과 야외 활동에서 걸려 넘어지는 사고를 막기 위해,<br>시설 안에서 <b>이동 중 전방 주시</b>하고 <em class="hot">스마트폰 보기는 금지</em>합니다.',
-        items:[
-          ['🏫','교육장',['책상·문 등 돌출물 부딪힘 및 틈새 끼임 주의','계단 및 경사로 미끄럼 · 걸려 넘어짐 주의']],
-          ['🚶','통행로',['계단 통행 시 발 위치 확인 및 핸드레일 사용','물품 운반 시 주위 확인 및 시야 확보','우천 시 미끄럼 주의']],
-          ['🌳','야외 활동',['조형물 · 풀숲 등 위험장소 접근 금지','배수로 등 개구부 확인, 발 빠짐 주의','활동 전 충분한 몸풀기 실시']],
-        ]}},
-      {label:'화재 · 지진', body:{type:'rules',
-        items:[
-          ['🔥','화재 발생 시',['화재 발견 시 <b>119</b> 에 즉시 신고','젖은 수건·옷소매로 호흡기를 막고 낮은 자세로 이동','비상구 · 완강기 등 대피로 파악 후 신속히 대피','엘리베이터 사용 금지, <b>계단</b>으로 이동']],
-          ['🌐','지진 발생 시',['흔들리는 동안 탁자 <b>아래로 피난</b>','흔들림이 멈춘 뒤 대피로를 파악해 신속히 이동','엘리베이터 사용 금지, <b>계단</b>을 이용해 대피','머리를 보호하며 건물과 떨어진 넓은 공간으로 대피']],
-        ], foot:'층별 비상대피로는 각 층 안내도를 확인해 주세요.'}},
-    ], viz:'그림표 — 큰 기호 + 제목 + 항목. 1단계 안전 가이드(세 칸), 2단계 화재·지진(두 칸)', how:'운영이 준 안전행동수칙 자료 그대로(9/9)' }),
+      {label:'1~3'},{label:'4~5'},
+    ],
+    /* 다섯 칸을 한 줄로 이어 붙인다. 다음을 누르면 세 칸씩 밀려 4·5 칸이 나온다.
+       19·20 쪽이 한 갈래라 화면을 갈아 끼우지 않고 이어서 흐르게 했다(이종은 9/9). */
+    trackOf:{type:'rules', track:[
+      {lead:'교육 중 계단과 야외 활동에서 걸려 넘어지는 사고를 막기 위해,<br>시설 안에서 <b>이동 중 전방 주시</b>하고 <em class="hot">스마트폰 보기는 금지</em>합니다.',
+       items:[
+        ['🏫','교육장',['책상·문 등 돌출물 부딪힘 및 틈새 끼임 주의','계단 및 경사로 미끄럼 · 걸려 넘어짐 주의']],
+        ['🚶','통행로',['계단 통행 시 발 위치 확인 및 핸드레일 사용','물품 운반 시 주위 확인 및 시야 확보','우천 시 미끄럼 주의']],
+        ['🌳','야외 활동',['조형물 · 풀숲 등 위험장소 접근 금지','배수로 등 개구부 확인, 발 빠짐 주의','활동 전 충분한 몸풀기 실시']],
+       ]},
+      {items:[
+        ['🔥','화재 발생 시',['화재 발견 시 <b>119</b> 에 즉시 신고','젖은 수건·옷소매로 호흡기를 막고 낮은 자세로 이동','비상구 · 완강기 등 대피로 파악 후 신속히 대피','엘리베이터 사용 금지, <b>계단</b>으로 이동']],
+        ['🌐','지진 발생 시',['흔들리는 동안 탁자 <b>아래로 피난</b>','흔들림이 멈춘 뒤 대피로를 파악해 신속히 이동','엘리베이터 사용 금지, <b>계단</b>을 이용해 대피','머리를 보호하며 건물과 떨어진 넓은 공간으로 대피']],
+       ]},
+], foot:'층별 비상대피로는 각 층 안내도를 확인해 주세요.'},
+viz:'그림표 — 큰 기호 + 제목 + 항목. 1단계 안전 가이드(세 칸), 2단계 화재·지진(두 칸)', how:'운영이 준 안전행동수칙 자료 그대로(9/9)' }),
   P({ no:'20', id:'A-20', title:'개회사 (표지 스타일)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'140% auto', bgPos:'center 30%', kind:'cover', huge:true, big:'개회사', en:'포스코홀딩스 김기수 미래기술연구원장', viz:'표지 구성 — 위 "개회사", 가운데 이름 손글씨(강렬하게, 144px 이상), 아래 직책. 사진 없음', how:'이름만 손글씨 SVG. 로고 바 오른쪽 락업은 유지' }),
   P({ no:'21', id:'A-21', title:'전환 (본선 시작)', bg:'bg/hf_20260907_083639_2e69959c-0e0e-4989-9e96-4ca39eed047c.jpg', bgSize:'150% auto', bgPos:'center 10%', kind:'cover', lockup:'2026 WX해커톤 본선대회', big:hand('이제 본격적으로 시작합니다'), viz:'없음. 손글씨 후보', how:'—' }),
   P({ no:'22', id:'A-22', title:'전문가 특강 (표지 스타일)', when:'10:00~11:30', kind:'cover', label:'전문가 특강', big:'Age of AI_<br>The Future of Work', link:{href:'age-of-ai.pdf', label:'특강 자료 열기'}, en:'JC Park (박종천 개발자)', when2:'지란지교소프트 CAIO · 『챗GPT 시대 살아남기』 저자', viz:'표지 구성 — 특강 제목이 손글씨', how:'제목은 포스터. 강사 · 소개는 아래 두 줄' }),
@@ -1121,13 +1133,20 @@ B.rules=(b)=>{
   /* 두 가지 꼴을 받는다.
        items — 분류가 실제로 있는 경우(18쪽 안전수칙: 교육장·통행로·야외활동, 화재·지진)
        top+list — 계층이 없는 경우(16쪽 숙소 규정: 위 셋이 중할 뿐 나머지는 낱개) */
-  if(b.items){
-    w.innerHTML=(b.lead?`<div class="lead ln">${b.lead}</div>`:'')
-      +`<div class="cards c${b.items.length}">`+b.items.map(([ic,t,list])=>
+  if(b.items||b.track){
+    const card=([ic,t,list])=>
         `<div class="rc"><div class="ic" role="img" aria-hidden="true">${ic}</div>`
         +`<div class="rt2 ln">${t}</div>`
-        +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`).join('')
-      +`</div>`+(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'')+nameTag;
+        +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`;
+    /* 묶음마다 안내 문구를 함께 담는다 — 칸이 밀릴 때 문구도 같이 나간다(이종은 9/9). */
+    const inner=b.track
+      ? `<div class="cards track">`+b.track.map(g=>`<div class="grp">`
+          +(g.lead?`<div class="lead ln">${g.lead}</div>`:'')
+          +`<div class="row">`+g.items.map(card).join('')+`</div></div>`).join('')+`</div>`
+      : `<div class="cards c${b.items.length}">`+b.items.map(card).join('')+`</div>`;
+    w.innerHTML=(b.lead?`<div class="lead ln">${b.lead}</div>`:'')
+      +(b.track?`<div class="tracker">${inner}</div>`:inner)
+      +(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'')+nameTag;
     return w;
   }
   w.innerHTML=(b.lead?`<div class="leadrow"><div class="lead ln">${b.lead}</div>`
@@ -1236,7 +1255,9 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     if(!p.steps && !p.body){ /* 그림만 있는 장 — 본문 칸은 비워 둔다 */ }
     else if(p.steps){
       const views=el('div','views');
-      p.steps.forEach((st,i)=>{ const v=el('div','view'+(i?' off-r':'')); v.dataset.step=i; v.appendChild(buildBody(st.body,p)); views.appendChild(v); });
+      /* 트랙 방식(19쪽)은 화면을 여러 벌 만들지 않는다 — 한 벌을 밀어서 보여 준다. */
+      if(p.trackOf){ const v=el('div','view'); v.appendChild(buildBody(p.trackOf,p)); views.appendChild(v); }
+      else p.steps.forEach((st,i)=>{ const v=el('div','view'+(i?' off-r':'')); v.dataset.step=i; v.appendChild(buildBody(st.body,p)); views.appendChild(v); });
       body.appendChild(views);
       const nav=el('div','stepnav',`<button data-d="-1">←</button><span class="lab">1 / ${p.steps.length} · ${p.steps[0].label}</span><button data-d="1">→</button>`);
       nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>stepTo(p, (pageEls.get(p.id).step||0)+ +b.dataset.d)));
@@ -1254,7 +1275,16 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
 function stepTo(p, n){
   const rec=pageEls.get(p.id); if(!p.steps) return false;
   n=Math.max(0,Math.min(p.steps.length-1,n)); const cur=rec.step||0; if(n===cur) return false;
-  const views=rec.frame.querySelectorAll('.view'); views.forEach((v,i)=>{ v.classList.remove('off-l','off-r'); if(i<n) v.classList.add('off-l'); else if(i>n) v.classList.add('off-r'); });
+  const tr=rec.frame.querySelector('.cards.track');
+  if(tr){
+    /* 칸 폭은 offsetWidth 로 잰다 — 무대에서 프레임이 scale 되어 있어
+       getBoundingClientRect 로 재면 배율이 섞여 어긋난다. */
+    const win=tr.parentElement;              // .tracker
+    const gap=parseFloat(getComputedStyle(tr).columnGap)||20;
+    tr.style.transform=`translateX(${-n*(win.offsetWidth+gap)}px)`;
+  } else {
+    const views=rec.frame.querySelectorAll('.view'); views.forEach((v,i)=>{ v.classList.remove('off-l','off-r'); if(i<n) v.classList.add('off-l'); else if(i>n) v.classList.add('off-r'); });
+  }
   rec.step=n; rec.frame.querySelector('.stepnav .lab').textContent=`${n+1} / ${p.steps.length} · ${p.steps[n].label}`;
   if(p.dynTitle){ rec.frame.querySelector('.title-z').innerHTML=p.dynTitle[n]; }
   return true;
@@ -1274,7 +1304,9 @@ function renderPage(p, fi, partPages, idxInPart){
 function rerender(){
   for(const rec of pageEls.values()){
     const p=rec.p; if(!p.dyn) continue;
-    if(p.steps){ rec.frame.querySelectorAll('.view').forEach((v,i)=>{ v.innerHTML=''; v.appendChild(buildBody(p.steps[i].body,p)); }); }
+    /* 트랙 방식은 화면이 한 벌뿐이라 steps[i].body 가 없다 — trackOf 로 다시 그린다. */
+    if(p.trackOf){ const v=rec.frame.querySelector('.view'); v.innerHTML=''; v.appendChild(buildBody(p.trackOf,p)); }
+    else if(p.steps){ rec.frame.querySelectorAll('.view').forEach((v,i)=>{ v.innerHTML=''; v.appendChild(buildBody(p.steps[i].body,p)); }); }
     else if(p.body){ const bz=rec.frame.querySelector('.body-z'); bz.innerHTML=''; bz.appendChild(buildBody(p.body,p)); }
   }
   scheduleMeasure();
