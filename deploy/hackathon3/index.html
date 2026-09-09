@@ -283,6 +283,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tools .ini{font-family:var(--head);font-weight:900;font-size:76px;color:#fff;line-height:1}
 .tools .tn{margin-top:22px;font-family:var(--head);font-weight:900;font-size:var(--s2);
   color:var(--st-ink);text-align:center;line-height:1.25;letter-spacing:.01em}
+/* 받은 숫자를 채운 꼴 — 큰 수 + 딸림 세 줄. slot(점선 자리)은 아직 값이 없는
+   칸에만 쓴다. */
+.tools .big{margin-top:14px;display:flex;align-items:baseline;gap:10px;justify-content:center}
+.tools .big .n{font-family:var(--head);font-weight:900;font-size:96px;line-height:1;color:var(--st-ink)}
+.tools .big .u{font-family:var(--head);font-weight:900;font-size:44px;color:var(--kw)}
+.tools .tls{margin:22px 0 0;padding-left:24px;width:100%;box-sizing:border-box;text-align:left}
+.tools .tls li{font-size:27px;line-height:1.5;color:var(--st-soft);margin-bottom:10px}
+.tools .tls li b{color:var(--st-ink)}
 .tools .slot{margin-top:20px;flex:1;width:100%;min-height:0;
   border:2px dashed rgba(238,240,255,.3);border-radius:16px;
   display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
@@ -499,6 +507,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .mcrew .kk{font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)}
 .mcrew .tt{font-family:var(--head);font-weight:900;font-size:var(--s3);line-height:1.1;letter-spacing:.01em;margin:8px 0 10px;color:var(--st-ink)}
 .mcrew .tp{font-size:28px;line-height:1.5;color:var(--st-soft)}
+/* 과제명 아래 한 줄 설명(있는 크루만). */
+.mcrew .tg{font-size:24px;line-height:1.45;color:var(--st-faint);margin-top:10px}
 .mcrew .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:20px}
 .mcrew .nm span{font-family:var(--head);font-weight:800;font-size:36px;line-height:1.25;color:var(--st-ink)}
 /* margin-top:auto 면 칸 맨 아래로 밀려 제목과 멀어진다 — 크루원 바로 아래에 붙인다. */
@@ -538,6 +548,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl .st::before{content:"";position:absolute;left:0;top:-36px;width:24px;height:24px;border-radius:50%;background:var(--violet)}
 .tl .st.last{color:var(--st-ink)}
 /* 마디가 7개까지 늘어나면 한 칸이 224px 밖에 안 된다 — 그 줄만 글씨를 줄인다. */
+/* 마스터는 마디가 일곱, 챌린저는 다섯이다. 줄마다 고르게 나누면 마지막 마디
+   (본선 참여)가 서로 다른 자리에서 끝나 같은 날임이 드러나지 않는다.
+   두 줄 모두 일곱 칸으로 잡고 **마지막 마디를 맨 끝 칸에 못 박는다**. */
+.tl.dense .steps{grid-template-columns:repeat(7,1fr)}
+.tl.dense .steps .st:last-child{grid-column:7}
+.tl.dense .steps::before{right:calc(100% / 7 - 12px)}
 .tl.dense{gap:190px;padding-top:64px}
 .tl.dense .st{font-size:30px;line-height:1.4}
 .tl.dense .lab{font-size:var(--s3)}
@@ -917,7 +933,7 @@ HAND["AX Village"] = `<svg xmlns="http://www.w3.org/2000/svg" version="1.1"     
 /* ───────── 데이터 ───────── */
 const SLOGAN_PRE = 'End to End:';
 const MASTERS = [
-  { key:'m1', dom:'안전', team:'PSM해결단', topic:'AI Permit Advisor', desc:'과거의 안전 경험을 작업 전 의사결정으로 전환합니다. 작업허가와 위험성평가의 누락을 줄이는 현장형 AI 안전 가이드', members:['김동현 (캡틴)','김천석','정병수','박정용','이치헌','장정우','김민서'], orgs:'포스코 · 포스코DX', advisor:'자문 김현중 수석연구원 (미래기술연구원)', coaches:'코치 김민수 · 임지연 (팀스파르타)', room:'201호' },
+  { key:'m1', dom:'안전', team:'PSM해결단', topic:'AI Permit Advisor', tag:'작업허가와 위험성평가의 누락을 줄이는 현장형 AI 안전 가이드', desc:'과거의 안전 경험을 작업 전 의사결정으로 전환합니다. 작업허가와 위험성평가의 누락을 줄이는 현장형 AI 안전 가이드', members:['김동현 (캡틴)','김천석','정병수','박정용','이치헌','장정우','김민서'], orgs:'포스코 · 포스코DX', advisor:'자문 김현중 수석연구원 (미래기술연구원)', coaches:'코치 김민수 · 임지연 (팀스파르타)', room:'201호' },
   { key:'m2', dom:'물류', team:'포브스', topic:'POSCO BRIDGE SYSTEM<br>— 수출 배선 지능형 모니터링(관제) 체계', desc:'부서/그룹사 간 데이터 장벽으로 인한 납기 지연 및 물류비 상승 문제를 해결하기 위해, 공동 데이터 관리 관점의 통합 데이터 허브 및 AI 이상 탐지 기능 구현', members:['이수형 (캡틴)','정훈','전영창','박재은','김동우','김재웅','현진원','경승환'], orgs:'포스코플로우 · 포스코 · 포스코DX', advisor:'자문 이수장 수석연구원 (미래기술연구원)', coaches:'코치 김나연 · 정수현 (팀스파르타)', room:'202호' },
   { key:'m3', dom:'마켓센싱', team:'MyPIN', topic:'포스코그룹 공통 AI 기반 마켓센싱 및 의사결정 자산화 플랫폼', desc:'공개 마켓 지표와 뉴스·공식 자료를 AI로 탐색·분석하고, 수리과학적 검증과 전문가 판단을 결합해 포스코그룹 각 사에 중요한 변화를 선별합니다. 근거와 사업 영향을 연결해 지금 무엇을 보고, 왜 믿고, 무엇을 판단할지 지원하며, 그 판단과 이력을 조직의 자산으로 축적합니다.', members:['오명철 (캡틴)','조재형','이강원','조아라','황혁기','이영채','한예원'], orgs:'포스코 · 포스코경영연구원 · 포스코인터내셔널 · RIST · 포스코DX', advisor:'자문 안치경 수석연구원 (미래기술연구원)', coaches:'코치 이경복 · 신동호 (팀스파르타)', room:'203호' },
 ];
@@ -976,10 +992,13 @@ const PARTS = [
   P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span class="coach" style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'tools', items:[
-      {key:'spartan', short:'S', color:'#E8344E', name:'스파르타 코딩클럽<br>학습 내역', slot:'학습 시간 · 강의 수 등<br>받는 대로 채웁니다'},
-      {key:'discord', short:'D', color:'#5865F2', name:'디스코드 협업', slot:'메시지 수 · 활동 시간 등<br>받는 대로 채웁니다'},
-      {key:'teams',   short:'T', color:'#6264A7', name:'코칭 시간', slot:'코칭 횟수 · 누적 시간 등<br>받는 대로 채웁니다'},
-    ]}, viz:'세 칸 — 로고 자리 + 이름 + 아래 내용 자리(점선)', how:'로고 그림이 오면 img/logo/<key>.webp 로 넣으면 된다', wait:'로고 3종 · 값 3건' }),
+      {key:'spartan', short:'S', color:'#E8344E', name:'스파르타 코딩클럽', big:'1,333', unit:'hr',
+       lines:['원정대원 <b>1인 평균 22시간</b> 이상 수강','인기 강의는 「ChatGPT 300% 활용하기」','가장 많이 수강한 팀은 <b>총 174.5시간</b> 수강']},
+      {key:'discord', short:'D', color:'#5865F2', name:'디스코드 협업', big:'11,839', unit:'건',
+       lines:['팀 협업을 위한 <b>1일 평균 대화량 845건</b>','소통 1등 원정대원 대화량은 <b>무려 846건</b>','가장 대화가 활발한 팀은 <b>총 2,355건</b> 소통']},
+      {key:'teams',   short:'T', color:'#6264A7', name:'전문 코칭', big:'72', unit:'회',
+       lines:['과제 수행을 위한 전문코칭 <b>총 40시간</b>','음성채팅 최고 팀 채팅 시간은 <b>103시간</b>','가장 코칭을 많이 받은 팀은 <b>총 8회</b> 미팅']},
+    ]}, viz:'세 칸 — 로고 + 이름 + 큰 숫자 + 딸림 세 줄', how:'운영이 준 「숫자로 보는 원정대」 값 그대로(9/9)' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
   P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',0.85,'crop'],['리유져블백','img/goods/bag.webp',1.05],['메모지 & 필기도구','img/goods/stationery.webp',0.94],['보조배터리','img/goods/battery.webp',0.83],['덴탈케어세트','img/goods/dental.webp',0.44],['목베개','img/goods/pillow.webp',0.76]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
@@ -1132,7 +1151,9 @@ B.tools=(b)=>el('div','tools', b.items.map(t=>
        <span class="ini">${t.short}</span>
      </div>
      <div class="tn ln">${t.name}</div>
-     <div class="slot"><span class="ph">${t.slot}</span></div>
+     ${t.big?`<div class="big"><span class="n">${t.big}</span><span class="u">${t.unit||''}</span></div>`:''}
+     ${t.lines?`<ul class="tls">${t.lines.map(x=>`<li class="ln">${x}</li>`).join('')}</ul>`
+        :`<div class="slot"><span class="ph">${t.slot}</span></div>`}
    </div>`).join(''));
 /* 금지 항목은 **계층이 없다**(이종은 9/9). 위 셋이 가장 중요할 뿐, 나머지 열다섯은
    그 셋의 하위 항목이 아니라 저마다 따로인 안내다. 그래서 3열 표로 세우지 않고
@@ -1194,7 +1215,7 @@ B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), 
 B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
 B.stats=(b)=>el('div','stats'+(b.big?' big':''), b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join(''));
 B.trio=(b)=>{ const w=el('div'); w.innerHTML=(b.lead?`<div class="lines" style="margin-bottom:26px"><p class="ln">${b.lead}</p></div>`:'')+`<div class="trio c${b.n}${b.hero?' hero':''}">${b.items.map(([k,t,body])=>`<div class="it">${/^\d+$/.test(k)?`<div class="no">${k}</div>`:k?`<div class="kk ln">${k}</div>`:'<div class="no">&nbsp;</div>'}<div class="tt ln">${t}</div><div class="bb">${String(body).split('<br>').map(x=>x?`<p class="ln">${x}</p>`:'').join('')}</div></div>`).join('')}</div>`; return w; };
-B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="tp ln">${m.topic}</div><div class="nm">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`).join(''));
+B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="tp ln">${m.topic}</div>${m.tag?`<div class="tg ln">${m.tag}</div>`:''}<div class="nm">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`).join(''));
 B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${m.advisor}</p><p class="ln">${m.coaches}</p></div></div>`); };
 B.table=(b)=>{ if(b.sched) return sched(b.sched); const rows=b.rows; return el('div','tbl',`<table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'t':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`); };
 function sched(day){
