@@ -403,7 +403,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    본문 칸을 벗어나야 하므로 --pad 와 본문 y(273) 만큼 되민다. */
 .campus{display:block;height:100%}
 .campus .map,.rules .map{position:absolute;left:calc(var(--pad) * -1);top:-273px;
-  width:1920px;height:1080px;overflow:hidden;z-index:0}
+  width:1920px;height:1080px;overflow:hidden;z-index:0;pointer-events:none}
+/* 프레임에 바로 붙는 배경 그림 층 — 본문 칸 밖이라 프레임 안이 바뀌어도 그대로다. */
+.herobg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.herobg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.herobg .hero.under{z-index:0}
+.herobg .hero:not(.under){z-index:1}
 .rules .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 /* 아래 깔린 그림은 앞 장의 사진이다. 위 그림만 떠오르므로 두 장이 겹쳐 녹는다.
    fadeBg 가 .hero(밑에 깔린 under 는 빼고)만 띄운다. */
@@ -1048,7 +1053,7 @@ const PARTS = [
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
   P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
-  P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
+  P({ no:'18', id:'A-18', title:'시설 안내', heroBg:'img/campus-hero.webp', softIn:true, eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
         {at:'conv', name:'컨벤션센터', sub:'메인 행사장',
          main:[['1층','이벤트홀'],['2층','컨퍼런스룸']],
@@ -1056,8 +1061,8 @@ const PARTS = [
         {at:'resi', name:'레지던스홀', sub:'숙소'},
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
-  P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
-      body:{type:'rules', under:'img/campus-hero.webp', hero:'img/residence-hero.webp',
+  P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, heroBg:'img/residence-hero.webp', heroUnder:'img/campus-hero.webp', softIn:true, eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
+      body:{type:'rules',
       lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
         ['🚬','객실내 흡연',''],
@@ -1199,8 +1204,7 @@ B.tools=(b)=>el('div','tools', b.items.map(t=>
 B.rules=(b)=>{
   const w=el('div','rules'+(b.lead?'':' nolead'));
   /* 건물 이름표는 16쪽과 같은 노란 박스로(이종은 9/9). */
-  const nameTag=(b.under?`<div class="map"><img class="hero under" src="${b.under}" alt="" aria-hidden="true"><img class="hero" src="${b.hero}" alt=""></div>`:'')
-    +(b.nameTag?`<div class="nmtag">${b.nameTag[0]}<i>${b.nameTag[1]}</i></div>`:'');
+  const nameTag=(b.nameTag?`<div class="nmtag">${b.nameTag[0]}<i>${b.nameTag[1]}</i></div>`:'');
   /* 두 가지 꼴을 받는다.
        items — 분류가 실제로 있는 경우(18쪽 안전수칙: 교육장·통행로·야외활동, 화재·지진)
        top+list — 계층이 없는 경우(16쪽 숙소 규정: 위 셋이 중할 뿐 나머지는 낱개) */
@@ -1241,8 +1245,6 @@ B.rules=(b)=>{
    판과 이름표는 모두 .map 안에 둔다. 그래야 자리값 % 가 사진(1920×1080) 기준이 된다. */
 B.campus=(b)=>el('div','campus',
   `<div class="map">
-     <img class="hero under" src="img/campus-hero.webp" alt="" aria-hidden="true">
-     <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
      ${b.boxes.filter(x=>x.main).map(x=>`<div class="bx ${x.at}">`
        +x.main.map(([f,t])=>`<p class="bm"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')
        +(x.small||[]).map(([f,t])=>`<p class="bs"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')+`</div>`).join('')}
@@ -1310,6 +1312,15 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
   /* 삭제 예정 — 지우지 않고 크게 표시만 한다(쪽번호를 지키려고). */
   if(p.del) frame.appendChild(el('div','wd',
     `<b>삭제 예정</b>${typeof p.del==='string'?`<i>${p.del}</i>`:''}`));
+  /* 배경 그림은 프레임 직계로 둔다 — 본문 칸 안에 있으면 프레임이 미끄러질 때
+     같이 움직여 두 장이 겹쳐 녹는 것이 보이지 않는다(9/9). under 는 앞 장의
+     사진이라 그 위로 이 장 사진이 떠오르며 겹친다. */
+  if(p.heroBg){
+    const hb=el('div','herobg');
+    hb.innerHTML=(p.heroUnder?`<img class="hero under" src="${p.heroUnder}" alt="" aria-hidden="true">`:'')
+      +`<img class="hero" src="${p.heroBg}" alt="">`;
+    frame.appendChild(hb);
+  }
   if(p.bg){ frame.style.background=`linear-gradient(rgba(8,6,42,.30), rgba(8,6,42,.55)), url("${p.bg}") ${p.bgPos||"center"} / ${p.bgSize||"cover"} no-repeat`; frame.classList.add('has-bg'); }
   if(isCover){
     const c=el('div','cover z'+(p.coverReveal?' hold':'')); c.dataset.z='표지 — 가운데 정렬, 하단 슬로건 자리 200px 비움';
@@ -1600,7 +1611,7 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
    버려서 장을 다시 열어도 다시 돌지 않는다. 그래서 열 때마다 animate() 로 새로 먹인다.
    fill:'backwards' 라야 차례를 기다리는 동안 줄이 보이지 않는다. */
 function fadeBg(fw, delay){
-  fw.querySelectorAll('.map img').forEach(n=>{
+  fw.querySelectorAll('.herobg img').forEach(n=>{
     if(n.classList.contains('under')) return;
     n.animate([{opacity:0},{opacity:1}],
       {duration:620, delay:delay, easing:'cubic-bezier(.33,0,.2,1)', fill:'backwards'});
@@ -1629,7 +1640,13 @@ function openStage(i, dir){
   if(i<0){ flashEnd('첫 장입니다'); return; }
   const prev=cur; closeStage(false); cur=i; const rec=pageEls.get(FLAT[cur].id);
   ph=document.createComment('fw'); rec.fw.parentNode.insertBefore(ph, rec.fw); host.appendChild(rec.fw); moved=rec.fw;
-  if(dir) rec.fw.classList.add(dir>0?'arrive-down':'arrive-up');
+  /* softIn 인 장은 프레임을 미끄러뜨리지 않는다 — 배경이 겹쳐 녹는 것을 보여야 한다.
+     대신 배경 층(.herobg)만 빼고 내용만 부드럽게 띄운다. */
+  const soft=!!(dir && FLAT[cur].softIn);
+  if(dir && !soft) rec.fw.classList.add(dir>0?'arrive-down':'arrive-up');
+  if(soft) [...rec.frame.children].filter(e=>!e.classList.contains('herobg')).forEach(e=>{
+    e.animate([{opacity:0},{opacity:1}],{duration:540,delay:180,easing:'cubic-bezier(.22,.61,.36,1)',fill:'backwards'});
+  });
   stage.classList.add('on'); document.body.style.overflow='hidden';
   /* 배경이 **먼저** 움직인다. 디졸브는 CSS 트랜지션이 아니라 animate()(시간 기반)라 같은 틱의 display
      토글과 무관하게 돈다. rAF 로 미루면 탭이 가려졌을 때 수 초 늦어진다(실측) — 미루지 않는다. */
