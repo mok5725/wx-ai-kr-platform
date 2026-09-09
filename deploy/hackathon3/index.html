@@ -148,22 +148,30 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    같은 반투명 크리스탈 박스에 넣는다. 상품 원본은 배경을 지운 투명 WebP 다
    (wx26-screens/scripts/build-prizes.mjs). */
 /* 그림이 너무 아래에 있었다 — 위로 올린다(이종은 9/9). */
-.obj-z.has-img{border-color:transparent;color:inherit;left:var(--pad);top:452px;width:1792px;height:564px}
+.obj-z.has-img{border-color:transparent;color:inherit;left:var(--pad);top:396px;width:1792px;height:620px}
 .obj-z.has-img .oi{flex-direction:row;justify-content:center;align-items:stretch;gap:40px;width:auto;height:100%}
 /* flex-basis 를 0 으로 두면 안 된다 — 그림은 absolute 라 폭을 만들지 않아 상자가
    캡션 글자 폭(113px)으로 쪼그라든다(9/8 실측). 기준 폭을 주고 늘어나게 한다. */
-.obj-z.has-img figure{position:relative;flex:1 1 480px;max-width:760px;min-width:420px;justify-content:flex-end;gap:0;padding:0;overflow:hidden;
+.obj-z.has-img figure{position:relative;flex:1 1 580px;max-width:840px;min-width:460px;justify-content:flex-end;gap:0;padding:0;overflow:visible;
   border:1px solid rgba(255,255,255,.24);border-radius:20px;
   background:linear-gradient(155deg,rgba(255,255,255,.17),rgba(255,255,255,.05) 45%,rgba(150,175,255,.12));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -24px 48px rgba(130,155,255,.10),0 20px 46px rgba(0,0,0,.34);
   -webkit-backdrop-filter:blur(13px) saturate(1.18);backdrop-filter:blur(13px) saturate(1.18)}
 .obj-z.has-img figure::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(118deg,transparent 28%,rgba(255,255,255,.17) 46%,transparent 62%)}
-.obj-z.has-img img{position:absolute;left:8%;top:7%;width:84%;height:64%;max-width:none;max-height:none;
+.obj-z.has-img img{position:absolute;left:7%;top:9%;width:86%;height:66%;max-width:none;max-height:none;
   object-fit:contain;border-radius:0;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5))}
 .obj-z.has-img figcaption{position:relative;z-index:1;width:100%;text-align:center;font-weight:700;color:#fff;
-  font-size:var(--s1);padding:16px 14px 18px;text-shadow:0 2px 10px rgba(8,6,42,.75);
-  background:linear-gradient(transparent,rgba(8,6,42,.5))}
+  font-size:38px;padding:18px 14px 20px;text-shadow:0 2px 10px rgba(8,6,42,.75);white-space:nowrap;
+  background:linear-gradient(transparent,rgba(8,6,42,.55));border-radius:0 0 20px 20px}
+/* 등급은 박스 윗변에 걸치는 띠로 올린다(이종은 9/9). figure 의 overflow 를
+   visible 로 열어야 띠가 잘리지 않는다. */
+.obj-z.has-img .rank{position:absolute;left:50%;top:-28px;transform:translateX(-50%);z-index:3;
+  font-family:var(--head);font-weight:900;font-size:42px;letter-spacing:.02em;white-space:nowrap;
+  padding:12px 40px;border-radius:999px;
+  color:#3A2A00;background:linear-gradient(180deg,#FFEFA6,#F3C41F);
+  box-shadow:0 12px 30px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.85)}
+.obj-z.has-img figure.k1 .rank{color:#242A36;background:linear-gradient(180deg,#F6F9FF,#C3CBD9)}
 .obj-z .oi{display:flex;flex-direction:column;gap:28px;align-items:center;width:100%}
 .obj-z figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px}
 .obj-z img{max-width:100%;max-height:300px;object-fit:contain;border-radius:12px}
@@ -397,6 +405,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .campus .map,.rules .map{position:absolute;left:calc(var(--pad) * -1);top:-273px;
   width:1920px;height:1080px;overflow:hidden;z-index:0}
 .rules .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* 아래 깔린 그림은 앞 장의 사진이다. 위 그림만 떠오르므로 두 장이 겹쳐 녹는다.
+   fadeBg 가 .hero(밑에 깔린 under 는 빼고)만 띄운다. */
+.campus .map .hero.under,.rules .map .hero.under{z-index:0}
+.campus .map .hero:not(.under),.rules .map .hero:not(.under){z-index:1}
 .frame[data-id="A-18"] .brandbar,.frame[data-id="A-18"] .title-z{z-index:5}
 .frame[data-id="A-18"] .title-z{text-shadow:0 3px 18px rgba(8,6,42,.95)}
 .campus .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -815,7 +827,7 @@ body.stageonly .stagefs .frame .hint-z{display:none}
    bgdrift 로 흔들지 않는다 — 영상이 이미 제 움직임을 갖고 있다. */
 .stagefs .stagebg .bgvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;pointer-events:none}
-.stagefs .stagebg .bgveil{position:absolute;inset:0;background:linear-gradient(rgba(8,6,42,.30),rgba(8,6,42,.55))}
+.stagefs .stagebg .bgveil{position:absolute;inset:0;background:linear-gradient(rgba(8,6,42,.30),rgba(8,6,42,.55));transition:opacity .45s ease}
 .stagefs .host{position:relative;z-index:1}
 .stagefs .host .fw{background:transparent}
 .stagefs .frame{background:transparent!important}
@@ -1012,7 +1024,7 @@ const PARTS = [
   P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'<em>1일차</em> · 2일차 일정', steps:[{label:'1일차', body:{type:'table', sched:1}},{label:'2일차', body:{type:'table', sched:2}}], dynTitle:['<em>1일차</em> 9/10(목) 일정','<em>2일차</em> 9/11(금) 일정'], viz:'표 — 시간 | 내용 두 칸. 챌린저 분홍 · 마스터 노랑', how:'머리글을 빼고 색으로 트랙을 가른다(이종은 9/9). 각주는 표 바로 아래, 1일차만' }),
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
   P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
-  P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
+  P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
         {at:'conv', name:'컨벤션센터', sub:'메인 행사장',
@@ -1022,7 +1034,7 @@ const PARTS = [
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
   P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
-      body:{type:'rules', hero:'img/residence-hero.webp',
+      body:{type:'rules', under:'img/campus-hero.webp', hero:'img/residence-hero.webp',
       lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
         ['🚬','객실내 흡연',''],
@@ -1078,7 +1090,7 @@ viz:'그림표 — 큰 기호 + 제목 + 항목. 1단계 안전 가이드(세 �
   ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:`center -${2360-118*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true, body:()=>({type:'trio', n:1+PART_IDX[k].length, items:[[`마스터 · ${MASTERS[k].dom}`, MASTERS[k].team, MASTERS[k].members.join('<br>')], ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return [`발표 ${i+1}번`, t?t.team:'—', t?t.members.join('<br>'):'(발표 순서 결정 후)']; })]}), viz:'칸 — 마스터 1 + 챌린저 칸', how:'순서는 발표 순서 결정 결과' })),
   P({ no:'3', id:'D-04', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1770px', title:'마스터 최종 선발 프로젝트', eyebrow:'최종 선발 프로젝트 · 마스터 트랙', h:'마스터 트랙 <em>과제</em> 셋', body:{type:'trio', n:3, items:MASTERS.map(m=>[`【${m.dom}】`, m.topic, m.desc])}, viz:'세 칸 — 분야 · 과제명 · 설명 원문', how:'원문 그대로. 칸 본문은 24px' }),
   P({ no:'3', id:'D-05', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1652px', title:'챌린저 최종 선발 프로젝트 (2단계)', eyebrow:'최종 선발 프로젝트 · 챌린저 트랙', h:'챌린저 트랙 <em>과제</em> 여덟', dyn:true, steps:[0,1].map(h=>({label:`발표 ${h*4+1}~${h*4+4}번`, body:()=>({type:'trio', n:2, items:[0,1,2,3].map(j=>{ const i=h*4+j; const t=slotTeam(i); return [`발표 ${i+1}번 · ${t?t.team:'—'}`, t?t.title:'(발표 순서 결정 후)', t?t.desc:'']; })})})), viz:'2×2 칸 — 팀 · 과제명 · 설명 원문. 4과제씩 두 단계', how:'설명은 원문 그대로, 칸 안에서 24px 여러 줄(표처럼 허용)' }),
-  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
+  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
   P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가자 <em>전원</em>에게 드리는 선물', body:{type:'lines', lines:['인재창조원장님 명의 수료증 + 에어팟']}, obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'A-16 과 같음', how:'한 줄' }),
   P({ no:'6', id:'D-06', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1298px', title:'심사기준 (2단계)', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', steps:[
       {label:'챌린저 트랙', body:{type:'criteria', h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']}},
@@ -1164,7 +1176,7 @@ B.tools=(b)=>el('div','tools', b.items.map(t=>
 B.rules=(b)=>{
   const w=el('div','rules'+(b.lead?'':' nolead'));
   /* 건물 이름표는 16쪽과 같은 노란 박스로(이종은 9/9). */
-  const nameTag=(b.hero?`<div class="map"><img src="${b.hero}" alt=""></div>`:'')
+  const nameTag=(b.under?`<div class="map"><img class="hero under" src="${b.under}" alt="" aria-hidden="true"><img class="hero" src="${b.hero}" alt=""></div>`:'')
     +(b.nameTag?`<div class="nmtag">${b.nameTag[0]}<i>${b.nameTag[1]}</i></div>`:'');
   /* 두 가지 꼴을 받는다.
        items — 분류가 실제로 있는 경우(18쪽 안전수칙: 교육장·통행로·야외활동, 화재·지진)
@@ -1206,6 +1218,7 @@ B.rules=(b)=>{
    판과 이름표는 모두 .map 안에 둔다. 그래야 자리값 % 가 사진(1920×1080) 기준이 된다. */
 B.campus=(b)=>el('div','campus',
   `<div class="map">
+     <img class="hero under" src="img/campus-hero.webp" alt="" aria-hidden="true">
      <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
      ${b.boxes.filter(x=>x.main).map(x=>`<div class="bx ${x.at}">`
        +x.main.map(([f,t])=>`<p class="bm"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')
@@ -1307,7 +1320,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     } else if(p.body){ body.appendChild(buildBody(p.body,p)); }
     if(p.widget){ body.appendChild(WIDGETS[p.widget](frame)); }
     frame.appendChild(body);
-    if(p.obj) frame.appendChild(z('obj-z'+(p.objImgs?' has-img':''), p.objImgs ? `<div class="oi">${p.objImgs.map(([s,l])=>`<figure><img src="${s}" alt="${l}"><figcaption>${l}</figcaption></figure>`).join('')}</div>` : p.obj, '이미지 자리 (1280,273) 576×743'));
+    if(p.obj) frame.appendChild(z('obj-z'+(p.objImgs?' has-img':''), p.objImgs ? `<div class="oi">${p.objImgs.map(([s,l,m],i)=>`<figure class="k${i}">${m?`<span class="rank">${l}</span>`:''}<img src="${s}" alt="${m||l}"><figcaption>${m||l}</figcaption></figure>`).join('')}</div>` : p.obj, '이미지 자리 (1280,273) 576×743'));
     frame.appendChild(z('progress', partPages.map((_,i)=>`<i class="${i<pageIdxInPart?'past':i===pageIdxInPart?'cur':''}"></i>`).join(''), ''));
     frame.appendChild(el('div','hint-z','F 전체화면 · 스크롤 · ← → 단계 · ↑ ↓ 페이지 · G 그리드 · Esc'));
   }
@@ -1550,7 +1563,11 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
     if(vid.readyState>=3) fade(vid,1);
   };
   /* 반환값: 배경이 실제로 움직였는가. openStage 가 글자를 얼마나 늦출지 이걸로 정한다. */
-  const show=(p)=>{ fit(); showVideo(p); if(!p||!p.bg){ if(src===null) return false; fade(slots[active],0); src=null; return true; }
+  /* 어두운 막(veil)은 장마다 끌 수 있다. 운영이 이미 어둡게 손본 사진(16·17쪽)에
+     덧씌우면 너무 어두워진다. */
+  const veilEl=$('#stageBg .bgveil');
+  const setVeil=(p)=>{ veilEl.style.opacity=(p&&p.veil===0)?'0':'1'; };
+  const show=(p)=>{ fit(); showVideo(p); setVeil(p); if(!p||!p.bg){ if(src===null) return false; fade(slots[active],0); src=null; return true; }
     if(p.bg===src){ const e=slots[active]; const still=e.style.backgroundPosition===(p.bgPos||'center')&&e.style.backgroundSize===(p.bgSize||'cover'); apply(e,p); fade(e,1); return !still; }
     const n=1-active, e=slots[n]; e.style.transition='none'; apply(e,p); void e.offsetWidth; e.style.transition=''; fade(e,1); fade(slots[active],0); active=n; src=p.bg; return true; };
   window.addEventListener('resize',fit); return {show, fit}; })();
@@ -1561,6 +1578,7 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
    fill:'backwards' 라야 차례를 기다리는 동안 줄이 보이지 않는다. */
 function fadeBg(fw, delay){
   fw.querySelectorAll('.map img').forEach(n=>{
+    if(n.classList.contains('under')) return;
     n.animate([{opacity:0},{opacity:1}],
       {duration:620, delay:delay, easing:'cubic-bezier(.33,0,.2,1)', fill:'backwards'});
   });
