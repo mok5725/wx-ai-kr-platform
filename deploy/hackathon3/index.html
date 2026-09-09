@@ -271,6 +271,21 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* ── 캠퍼스 안내도 (16쪽) ─────────────────────────────────────────────────
    왼쪽 사진 · 오른쪽 이용안내. 사진은 바탕을 어둡고 흐리게 깔고 두 건물만 또렷하게. */
 /* ── 규칙 그림표 (16·18쪽) ────────────────────────────────────────────── */
+/* ── 협업 도구 세 칸 (8쪽) ───────────────────────────────────────────── */
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);height:100%}
+.tools .tl{display:flex;flex-direction:column;align-items:center;min-height:0}
+.tools .mark{position:relative;width:190px;height:190px;border-radius:34px;
+  background:var(--c);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.tools .mark img{position:absolute;inset:12%;width:76%;height:76%;object-fit:contain}
+.tools .ini{font-family:var(--head);font-weight:900;font-size:76px;color:#fff;line-height:1}
+.tools .tn{margin-top:22px;font-family:var(--head);font-weight:900;font-size:var(--s2);
+  color:var(--st-ink);text-align:center;line-height:1.25;letter-spacing:.01em}
+.tools .slot{margin-top:20px;flex:1;width:100%;min-height:0;
+  border:2px dashed rgba(238,240,255,.3);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
+.tools .ph{font-size:28px;color:var(--st-faint);text-align:center;line-height:1.5}
+
 .rules{display:flex;flex-direction:column;height:100%;gap:18px}
 .rules .lead{background:rgba(242,90,110,.16);border:1px solid rgba(242,90,110,.5);border-radius:14px;
   padding:14px 22px;font-size:30px;line-height:1.45;font-weight:700;color:#FFD9DF}
@@ -619,6 +634,8 @@ body.stageonly .stagefs .frame .hint-z{display:none}
    행사 당일 실수로 잠기지 않도록, 한 번 풀면 그 브라우저에서는 다시 묻지 않는다. */
 .gate{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;
   background:#08062A;color:#EEF0FF;font-family:var(--head),sans-serif}
+/* display:flex 를 주면 HTML 의 hidden 이 먹지 않는다 — 풀고 나서도 잠금이 남았다(9/9). */
+.gate[hidden]{display:none}
 .gate .gbox{width:min(92vw,520px);text-align:center}
 .gate .gt{font-size:30px;font-weight:800;letter-spacing:.01em;margin:0 0 8px}
 .gate .gs{font-size:16px;color:#A3A7D8;margin:0 0 26px}
@@ -851,7 +868,11 @@ const PARTS = [
   P({ no:'6', id:'A-06', title:'마스터 트랙 소개', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -581px', eyebrow:'해커톤 크루 소개', h:'<em>마스터</em> 트랙', sub:'주요 사업회사 임원 FGI를 통해 선정된 과제에 대한 전문가 팀 구성 (도메인 + AX/DX 전문가로 선발)', body:{type:'mcrew', items:MASTERS}, viz:'세 칸 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치', how:'옛 6장과 7~9장(크루원)을 한 장으로 합쳤다(9/9)' }),
   P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'trio', n:4, items:CH.slice(h*4,h*4+4).map(c=>[c.orgs, c.team, c.members.map(n=>`<b>${n}</b>`).join('<br>')+`<br><span class="coach" style="opacity:.7">코치 ${c.coach}</span>`])}})), viz:'네 칸 — 소속(소제목) · 팀명(칸 제목) · 이름 한 줄씩', how:'4팀씩 두 단계' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
-  P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'stats', big:true, stats:[['❓','','스파르타 코딩클럽 학습 내역'],['❓','','디스코드 협업'],['❓','','코칭 시간']]}, viz:'숫자 3개 144px', how:'항목명 + 숫자 + 단위', wait:'값 3건 — 9/9' }),
+  P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'tools', items:[
+      {key:'spartan', short:'S', color:'#E8344E', name:'스파르타 코딩클럽<br>학습 내역', slot:'학습 시간 · 강의 수 등<br>받는 대로 채웁니다'},
+      {key:'discord', short:'D', color:'#5865F2', name:'디스코드 협업', slot:'메시지 수 · 활동 시간 등<br>받는 대로 채웁니다'},
+      {key:'teams',   short:'T', color:'#6264A7', name:'코칭 시간', slot:'코칭 횟수 · 누적 시간 등<br>받는 대로 채웁니다'},
+    ]}, viz:'세 칸 — 로고 자리 + 이름 + 아래 내용 자리(점선)', how:'로고 그림이 오면 img/logo/<key>.webp 로 넣으면 된다', wait:'로고 3종 · 값 3건' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
   P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',0.85,'crop'],['리유져블백','img/goods/bag.webp',1.05],['메모지 & 필기도구','img/goods/stationery.webp',0.94],['보조배터리','img/goods/battery.webp',0.83],['덴탈케어세트','img/goods/dental.webp',0.44],['목베개','img/goods/pillow.webp',0.76]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
@@ -979,6 +1000,18 @@ const CAMPUS_SITE = '0.9% 41.9%, 13.1% 33.2%, 68.9% 29.2%, 83.6% 34.6%, 98.9% 59
 const pgon = (t) => t.split(',').map(p => p.trim().split(/\s+/).map(v => parseFloat(v)).join(',')).join(' ');
 /* 금지·주의 항목을 그림표로 — 큰 기호 + 제목 + 딸린 항목들.
    숙소 이용 규정(16쪽)과 안전 수칙(18쪽)이 같은 틀을 쓴다. */
+/* 도구 세 가지(스파르타 · 디스코드 · 팀즈) — 로고 자리와 그 아래 내용 자리.
+   로고 그림이 아직 없어 브랜드 색 배지로 두었다. `img/logo/<key>.webp` 를 넣으면
+   자동으로 그 그림이 뜬다(못 읽으면 배지가 그대로 남는다). */
+B.tools=(b)=>el('div','tools', b.items.map(t=>
+  `<div class="tl">
+     <div class="mark" style="--c:${t.color}">
+       <img src="img/logo/${t.key}.webp" alt="" onerror="this.remove()">
+       <span class="ini">${t.short}</span>
+     </div>
+     <div class="tn ln">${t.name}</div>
+     <div class="slot"><span class="ph">${t.slot}</span></div>
+   </div>`).join(''));
 B.rules=(b)=>{
   const w=el('div','rules'+(b.lead?'':' nolead'));
   w.innerHTML=(b.lead?`<div class="lead ln">${b.lead}</div>`:'')
@@ -1285,7 +1318,9 @@ const GATE=true, GATE_HASH='abe6c5838bf22b825feb81d89e93c837871fcef0dbc4cd106fe1
     let ok=false;
     try{ ok = (await sha(i.value)) === GATE_HASH; }catch(e){ ok = false; }
     if(ok){ try{ sessionStorage.setItem('wx26gate','1'); }catch(e){}
-      g.remove(); document.body.style.overflow=''; }
+      /* 그냥 지우면 이미 지나간 첫 화면 준비 단계를 되돌릴 수 없다 —
+         다시 열어 평소 경로로 시작한다(비밀번호는 이미 통과로 기억해 둔다). */
+      location.reload(); }
     else { er.textContent='비밀번호가 맞지 않습니다'; i.value=''; i.focus(); }
   };
   i.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); tryOpen(); } });
