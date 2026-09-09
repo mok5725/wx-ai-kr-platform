@@ -354,21 +354,24 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   padding:8px 16px;border-radius:10px;font-weight:700;line-height:1.2}
 .campus .tag i{display:block;font-style:normal;font-weight:700;font-size:26px;opacity:.9;margin-top:4px}
 .campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
-.campus .tag.dim{font-size:26px;color:var(--st-faint);background:rgba(8,6,42,.6);font-weight:400}
+.campus .tag.dim{font-size:30px;color:var(--st-ink);background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.28);font-weight:700}
 .campus .t-conv{left:50%;top:90%}
 .campus .t-resi{left:75%;top:62%}
 .campus .t-rnd{left:24%;top:47%}
-.campus .t-learn{left:58%;top:52%}
-.campus .use{position:absolute;left:0;top:28px;width:640px;z-index:4;box-sizing:border-box;
-  background:rgba(8,6,42,.8);border:1px solid rgba(238,240,255,.3);border-radius:18px;
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:26px 32px;
-  box-shadow:0 16px 50px rgba(0,0,0,.55)}
-.campus .uh{font-family:var(--head);font-weight:900;font-size:42px;color:#FFE500;
-  letter-spacing:.01em;margin:0 0 14px}
-.campus .use .ub+.ub .uh{margin-top:24px}
-.campus .use p{margin:0 0 9px;font-size:30px;line-height:1.5;color:var(--st-ink)}
-.campus .use hr{border:0;border-top:1px solid rgba(238,240,255,.28);margin:16px 0}
-.campus .link{margin:18px 0 0;font-size:27px;line-height:1.45;color:var(--gold);font-weight:700}
+.campus .t-learn{left:54%;top:43%}
+/* 건물별 설명 판 — 사진 좌표(1920×1080) 로 자리를 박는다. */
+.campus .bx{position:absolute;z-index:4;box-sizing:border-box;
+  background:rgba(8,6,42,.82);border:1px solid rgba(238,240,255,.32);border-radius:16px;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  padding:22px 26px;box-shadow:0 14px 44px rgba(0,0,0,.6)}
+.campus .bx.conv{left:36px;top:648px;width:560px}
+.campus .bx.resi{left:1268px;top:28px;width:352px}
+.campus .bn{font-family:var(--head);font-weight:900;font-size:44px;color:#FFE500;
+  letter-spacing:.01em;margin-bottom:14px}
+/* 주로 쓰는 곳은 크게, 곁들이는 곳은 작게(이종은 9/9). */
+.campus .bm{margin:0 0 10px;font-size:32px;line-height:1.4;color:var(--st-ink);font-weight:700}
+.campus .bs{margin:0;font-size:24px;line-height:1.45;color:var(--st-soft)}
+.campus .bm+.bs{margin-top:14px;padding-top:12px;border-top:1px solid rgba(238,240,255,.22)}
 
 .notewrap{display:flex;align-items:center;justify-content:center;height:100%}
 .note{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -934,10 +937,12 @@ const PARTS = [
   P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
-      body:{type:'campus', use:[
-        ['컨벤션센터', ['1층 — 이벤트홀 (메인 행사장)','2층 — 컨퍼런스룸 201 · 202 · 203호','','1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']],
-        ['레지던스홀', ['숙소']],
-      ], link:'컨벤션센터와 레지던스홀은 1층에서 서로 연결되어 있습니다.'},
+      body:{type:'campus', boxes:[
+        {at:'conv', name:'컨벤션센터',
+         main:['1층 — 이벤트홀 (메인 행사장)','2층 — 컨퍼런스룸 201 · 202 · 203호'],
+         sub:['1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']},
+        {at:'resi', name:'레지던스홀', main:['숙소']},
+      ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
   P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'120% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
       body:{type:'rules',
@@ -1104,15 +1109,16 @@ B.rules=(b)=>{
     +(b.foot?`<p class="rfoot ln">${b.foot}</p>`:'');
   return w;
 };
+/* 건물마다 딴 판을 붙인다(이종은 9/9) — 화면 한쪽에 큰 판 하나로 몰지 않는다.
+   판과 이름표는 모두 .map 안에 둔다. 그래야 자리값 % 가 사진(1920×1080) 기준이 된다. */
 B.campus=(b)=>el('div','campus',
   `<div class="map">
      <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
-     <span class="tag key t-conv">컨벤션센터<i>행사장 · 식당</i></span>
-     <span class="tag key t-resi">레지던스홀<i>숙소</i></span>
-   </div>
-   <div class="use">${b.use.map(([h,items])=>
-     `<div class="ub"><div class="uh ln">${h}</div>${items.map(x=>x?`<p class="ln">${x}</p>`:'<hr>').join('')}</div>`).join('')}
-     <p class="link ln">${b.link}</p></div>`);
+     ${b.boxes.map(x=>`<div class="bx ${x.at}"><div class="bn ln">${x.name}</div>`
+       +x.main.map(m=>`<p class="bm ln">${m}</p>`).join('')
+       +(x.sub||[]).map(m=>`<p class="bs ln">${m}</p>`).join('')+`</div>`).join('')}
+     ${(b.dim||[]).map(([k,n])=>`<span class="tag dim t-${k}">${n}</span>`).join('')}
+   </div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
 B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), b.lines.map(l=>lnP(l)).join(''));
 B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
