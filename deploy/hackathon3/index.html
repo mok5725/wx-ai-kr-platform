@@ -364,10 +364,22 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   background:rgba(8,6,42,.82);border:1px solid rgba(238,240,255,.32);border-radius:16px;
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   padding:22px 26px;box-shadow:0 14px 44px rgba(0,0,0,.6)}
-.campus .bx.conv{left:36px;top:648px;width:560px}
+/* 폭을 못 박지 않는다 — 글이 짧아지면(호실 번호를 뺀 것처럼) 오른쪽이 빈 채로 남는다.
+   내용만큼만 넓히고 위쪽 상한만 둔다. */
+/* **오른쪽 끝**을 컨벤션센터 옆에 못 박는다(left 로 잡으면 글이 짧아질 때
+   판이 왼쪽으로 물러나 건물에서 떨어진다 — 9/9 실제로 그랬다). */
+.campus .bx.conv{right:1324px;top:648px;width:max-content;max-width:508px;
+  /* box-sizing:border-box 와 max-content 를 함께 두면 안쪽 여백만큼 글자 자리가
+     깎여 글이 판 밖으로 새어 나온다. 이 판만 content-box 로 되돌린다. */
+  box-sizing:content-box}
 /* 주로 쓰는 곳은 크게, 곁들이는 곳은 작게(이종은 9/9). */
-.campus .bm{margin:0 0 10px;font-size:32px;line-height:1.4;color:var(--st-ink);font-weight:700}
-.campus .bs{margin:0;font-size:24px;line-height:1.45;color:var(--st-soft)}
+.campus .bm{margin:0 0 10px;font-size:32px;line-height:1.4;color:var(--st-ink);font-weight:700;
+  display:grid;grid-template-columns:66px 1fr;align-items:baseline}
+.campus .bs{margin:0;font-size:24px;line-height:1.45;color:var(--st-soft);
+  display:grid;grid-template-columns:52px 1fr;align-items:baseline}
+.campus .fl{font-weight:700;color:var(--kw)}
+.campus .bs .fl{color:var(--st-faint)}
+.campus .fv{border-left:2px solid rgba(238,240,255,.32);padding-left:16px}
 .campus .bm+.bs{margin-top:14px;padding-top:12px;border-top:1px solid rgba(238,240,255,.22)}
 
 .notewrap{display:flex;align-items:center;justify-content:center;height:100%}
@@ -936,8 +948,8 @@ const PARTS = [
   P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
         {at:'conv', name:'컨벤션센터', sub:'메인 행사장',
-         main:['1층 — 이벤트홀','2층 — 컨퍼런스룸'],
-         small:['1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']},
+         main:[['1층','이벤트홀'],['2층','컨퍼런스룸']],
+         small:[['1층','커피숍 · 무인편의점'],['B1','식당 · 주차장']]},
         {at:'resi', name:'레지던스홀', sub:'숙소'},
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
@@ -1112,8 +1124,8 @@ B.campus=(b)=>el('div','campus',
   `<div class="map">
      <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
      ${b.boxes.filter(x=>x.main).map(x=>`<div class="bx ${x.at}">`
-       +x.main.map(m=>`<p class="bm ln">${m}</p>`).join('')
-       +(x.small||[]).map(m=>`<p class="bs ln">${m}</p>`).join('')+`</div>`).join('')}
+       +x.main.map(([f,t])=>`<p class="bm"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')
+       +(x.small||[]).map(([f,t])=>`<p class="bs"><b class="fl">${f}</b><span class="fv ln">${t}</span></p>`).join('')+`</div>`).join('')}
      ${b.boxes.map(x=>`<span class="tag key t-${x.at}">${x.name}${x.sub?`<i>${x.sub}</i>`:''}</span>`).join('')}
      ${(b.dim||[]).map(([k,n])=>`<span class="tag dim t-${k}">${n}</span>`).join('')}
    </div>`);
