@@ -184,6 +184,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .cover .cimg{height:240px;object-fit:contain;margin-bottom:6px}
 .obj-z{position:absolute;left:1280px;top:273px;width:576px;height:743px;border:2px dashed transparent;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:transparent;font-size:var(--s00);padding:24px}
 .foot-z{position:absolute;left:var(--pad);bottom:40px;width:1500px;font-size:var(--s00);color:var(--st-faint);line-height:1.5}
+/* 오른쪽 아래 단서 — 각주보다 짧고, 화면 안내(hint-z) 위에 앉는다. */
+.noter-z{position:absolute;right:var(--pad);bottom:64px;max-width:900px;text-align:right;
+  font-size:26px;line-height:1.45;font-weight:700;color:var(--st-soft)}
 /* ── 음영 판(scrim:true) ───────────────────────────────────────────────────
    배경 사진 위에서 글줄이 잘 안 읽히는 장에만 켠다. 판을 화면 전체에 깔지 않고
    **글자 뒤에만** 깐다 — 배경을 살리면서 대비만 확보한다. */
@@ -400,7 +403,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 네 갈래의 글 길이가 제각각이다 — 똑같이 넷으로 나누면 긴 항목만 줄이 접힌다.
    소음·질서를 넓혀 '불순 유인물 배포 및 게시' 가 한 줄에 들어가게 하고,
    항목이 셋뿐인 범죄 행위에서 그만큼 덜어 온다. */
-.rules .grps{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;flex:1;min-height:0}
+/* 네 칸을 세로로 늘리면 글 아래가 뻥 빈다 — 가장 긴 칸에 맞춰 내용만큼만 높이고
+   넷의 아래끝은 서로 맞춘다(이종은 9/10). 격자 기본 stretch 가 그 몫을 한다. */
+.rules .grps{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;flex:0 0 auto;min-height:0}
 .rules .gc{background:rgba(8,6,42,.86);border:1px solid rgba(238,240,255,.28);border-radius:14px;
   padding:14px 16px;display:flex;flex-direction:column;min-height:0}
 .rules .gh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -503,6 +508,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .cviz .crews{display:grid;grid-template-rows:auto 1fr;gap:18px;min-width:0}
 .cviz .top{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
 .cviz .stars{letter-spacing:.10em;line-height:1;white-space:nowrap}
+.cviz .stars i{display:inline-block;font-style:normal}
 .cviz .top .stars{font-size:42px}
 .cviz .stars .ma{color:#8FBAFF;text-shadow:0 0 16px rgba(143,186,255,.55)}
 .cviz .stars .ch{color:#FFD466;text-shadow:0 0 16px rgba(255,212,102,.5)}
@@ -1240,7 +1246,7 @@ const PARTS = [
     ]}, viz:'세 칸 판 — 그림 + 이름 한 줄 · 묶음. 옛 17~19장을 한 장으로(9/9)', how:'원문 그대로 "무박 2일"(이종은 9/9 확인)' }),
   P({ no:'14', id:'A-14', title:'전체 코스 (2단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-178px -132px', eyebrow:'전체 코스', h:'해커톤 <em>전체 일정</em>', steps:[{label:'1일차'},{label:'2일차'}], trackOf:{type:'sched'}, foot:'★ 과제 수행 및 베네핏 게임(9.11(금) 0시)은 자율 참여이며, 야식은 9.10(목) 22시에 제공됩니다.', viz:'운영이 준 시간표 그대로 — 시간 칸 + 내용 칸 둘(공통은 합치고, 챌린저 노랑 · 마스터 파랑)', how:'1일차 → 2일차를 세로로 밀어 스크롤 내려가듯 넘긴다(이종은 9/9)' }),
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
-  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
+  P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상 수상자는 제외됩니다', viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄. 오른쪽 아래에 수상자 제외 단서(이종은 9/10)' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
   P({ no:'18', id:'A-18', title:'시설 안내', heroBg:'img/campus-hero.webp', softIn:true, eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
       body:{type:'campus', boxes:[
@@ -1439,7 +1445,7 @@ B.campus=(b)=>el('div','campus',
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
 B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), b.lines.map(l=>lnP(l)).join(''));
 /* 별 열한 개 — 앞 셋은 마스터, 뒤 여덟은 챌린저. 개수는 데이터에서 온다. */
-const stars=(n,cls)=>`<span class="${cls}">${'★'.repeat(n)}</span>`;
+const stars=(n,cls)=>`<span class="${cls}">${'<i>★</i>'.repeat(n)}</span>`;
 B.kv=(b)=>{ const w=el('div'); const c=b.crews;
   w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>`
   + (c?`<div class="cviz">
@@ -1616,6 +1622,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
     frame.appendChild(el('div','hint-z','F 전체화면 · 스크롤 · ← → 단계 · ↑ ↓ 페이지 · G 그리드 · Esc'));
   }
   if(p.foot) frame.appendChild(z('foot-z ln', p.foot, '각주 21px (64,976)'));
+  if(p.noteR) frame.appendChild(z('noter-z ln', p.noteR, '오른쪽 아래 단서'));
   return frame;
 }
 function stepTo(p, n){
@@ -1880,6 +1887,20 @@ function fadeBg(fw, delay){
 function runSeq(fw, delay){
   /* 큐브는 CSS 무한 애니메이션이라 그냥 두면 중간 면부터 보인다 — 열 때마다 되감는다. */
   fw.querySelectorAll('.cube').forEach(c=>{ c.style.animation='none'; void c.offsetWidth; c.style.animation=''; });
+  /* 4쪽 별은 하나씩 반짝이며 켜진다(이종은 9/10) — 위 열한 개가 차례로 켜진 뒤
+     아래 3 · 8 이 함께 켜진다. CSS 전환은 openStage 가 display 를 바꾸는 순간을
+     놓치므로 여기서도 Web Animations 로 돌린다. */
+  const twinkle=[{opacity:0,transform:'scale(.35)',filter:'brightness(2.6)'},
+                 {opacity:1,transform:'scale(1.5)',filter:'brightness(2.8)',offset:.5},
+                 {opacity:1,transform:'none',filter:'brightness(1)'}];
+  let sAt=delay+520, sGi=0;
+  fw.querySelectorAll('.cviz .stars').forEach(g=>{
+    const kids=[...g.children], step=sGi?90:150;
+    kids.forEach((n,i)=>n.animate(twinkle,
+      {duration:620, delay:sAt+i*step, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'}));
+    if(!sGi) sAt += kids.length*step + 240;   /* 위 줄이 다 켜진 뒤 아래로 */
+    sGi++;
+  });
   fw.querySelectorAll('.seq > *').forEach((n,i)=>{
     n.animate([{opacity:0, transform:'translateY(28px)'},{opacity:1, transform:'none'}],
       {duration:520, delay:delay+i*400, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
