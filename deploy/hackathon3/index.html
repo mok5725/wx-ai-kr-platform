@@ -291,11 +291,15 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* ── 17쪽 전용 ─────────────────────────────────────────────────────────────
    사진이 화면을 가득 채우고 레지던스홀은 오른쪽에 있다. 규정은 **왼쪽으로 몰아**
    건물을 가리지 않게 하고, 판을 더 진하게 깔아 사진 위에서도 글이 읽히게 한다. */
-.frame[data-id="A-18r"] .body-z{width:1180px}
+/* 건물 왼쪽 끝이 1361px 이라 본문 칸 왼쪽(64) 에서 1297 까지 넓힐 수 있다.
+   건물에 닿지 않게 27px 남기고 1270 으로 둔다. */
+.frame[data-id="A-18r"] .body-z{width:1270px}
 /* 사진이 화면을 덮으므로 제목과 로고 바를 그 위로 올린다(16쪽과 같다). */
 .frame[data-id="A-18r"] .brandbar,.frame[data-id="A-18r"] .title-z{z-index:5}
 .frame[data-id="A-18r"] .title-z{text-shadow:0 3px 18px rgba(8,6,42,.95)}
-.rules .nmtag{position:absolute;left:1386px;top:224px;transform:translate(-50%,-50%);
+/* 자리값은 사진 속 노란 테두리를 재서 넣는다(건물 한가운데 83.9%, 46.0%).
+   본문 칸(1180px) 기준이라 프레임 좌표에서 --pad 와 본문 y(273)를 뺀다. */
+.rules .nmtag{position:absolute;left:1547px;top:224px;transform:translate(-50%,-50%);
   white-space:nowrap;text-align:center;z-index:6;
   padding:12px 26px;border-radius:12px;font-weight:700;line-height:1.2;
   font-size:46px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
@@ -342,12 +346,15 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   border-radius:999px;padding:9px 20px}
 .rules .rfoot{margin:0;font-size:26px;color:var(--gold);font-weight:700}
 /* 주제 묶음 — 금지 항목 열다섯을 넷으로 갈라 담는다. */
-.rules .grps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex:1;min-height:0}
+/* 네 갈래의 글 길이가 제각각이다 — 똑같이 넷으로 나누면 긴 항목만 줄이 접힌다.
+   소음·질서를 넓혀 '불순 유인물 배포 및 게시' 가 한 줄에 들어가게 하고,
+   항목이 셋뿐인 범죄 행위에서 그만큼 덜어 온다. */
+.rules .grps{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;flex:1;min-height:0}
 .rules .gc{background:rgba(8,6,42,.86);border:1px solid rgba(238,240,255,.28);border-radius:14px;
   padding:14px 16px;display:flex;flex-direction:column;min-height:0}
 .rules .gh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .rules .gi{font-size:34px;line-height:1}
-.rules .gt{font-family:var(--head);font-weight:900;font-size:30px;color:var(--kw);letter-spacing:.01em}
+.rules .gt{font-family:var(--head);font-weight:900;font-size:30px;color:var(--kw);letter-spacing:.01em;white-space:nowrap}
 .rules .gc ul{margin:0;padding-left:22px}
 .rules .gc li{font-size:25px;line-height:1.45;color:var(--st-ink);margin-bottom:7px}
 
@@ -969,7 +976,7 @@ const PARTS = [
       ], dim:[['rnd','R&D센터'],['learn','러닝센터']]},
     viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
   P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
-      body:{type:'rules', hero:'img/residence-hero.webp', nameTag:['레지던스홀','숙소'],
+      body:{type:'rules', hero:'img/residence-hero.webp',
       lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
         ['🚬','객실내 흡연',''],
@@ -979,10 +986,10 @@ const PARTS = [
       groups:[
         ['🔇','소음 · 질서',['고성방가 및 수면 방해','공공질서 미준수','불법집회','불순 유인물 배포 및 게시']],
         ['🚪','출입 · 숙박',['남녀혼숙','외래인 합숙, 입실','임의전실','입실 및 면회 절차 불이행']],
-        ['🧯','시설 · 안전',['화재 위험요인 및 안전사고 유발','시설물 파손(변상포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
+        ['🧯','시설 · 안전',['화재 위험요인 및<br>안전사고 유발','시설물 파손(변상포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
         ['🚨','범죄 행위',['도박행위','절도행위','폭행']],
       ],
-      foot:'위 18가지는 모두 금지 항목입니다. 꼭 지켜 주시기 바랍니다.'},
+      },
     viz:'특히 중요한 3가지(빨간 금지 표지) + 주제 넷으로 묶은 15항목 · 오른쪽 위 CCTV 표지', how:'금지 항목은 낱개로 늘어놓으면 안 읽혀 주제로 묶었다(9/9)' }),
   P({ no:'19', id:'A-19', title:'건강증진센터', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'124% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'가장 중요한 것은 <em>건강과 안전</em>!', sub:'몸이 아프거나, 컨디션이 안 좋으면 무리하지 않고 쉬어야 합니다.', body:{type:'note', big:'러닝센터 2층 <em>건강증진센터</em>', lines:['09:00 - 18:00 · 간호사 상주','운영시간이 아닐 경우, 운영진에게 말씀 주세요','간단한 비상의약품은 운영진에게 요청하시면 됩니다']}, viz:'가운데 큰 안내 판 — 받은 안내문 그대로', how:'비상의약품 한 줄 추가(이종은 9/9)' }),
   P({ no:'—', id:'A-19b', title:'안전행동수칙 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'132% auto', bgPos:'center', new:true, eyebrow:'교육장소 이용 안내', h:'교육 시 <em>안전행동수칙</em>', steps:[
