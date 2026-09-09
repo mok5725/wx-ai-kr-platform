@@ -51,13 +51,10 @@ hackathon.wx.ai.kr {
 	encode gzip
 
 	# /main — 26년 본선 무대 슬라이드(메인 덱). 파일은 deploy/hackathon3.
-	# ⚠ 아직 만드는 중이라 비밀번호로 막아 두었다(이종은 9/9). 행사 전에 풀 것 —
-	#   basicauth 줄 두 개를 지우고 edge 를 다시 띄우면 된다.
+	# ⚠ 아직 만드는 중이다. basicauth 는 아이디를 요구해서 쓰지 않는다 —
+	#   덱 안 화면에서 비밀번호를 받는다(아이디 없이). 행사 전에 GATE 를 false 로.
 	redir /main /main/
 	handle_path /main/* {
-		basicauth {
-			wx $2a$14$RYz.RjgZLNS73FywvvVf9u9BxLwL9eo0ssVjyzdgRRUC2lD8ZPaOG
-		}
 		root * /srv/hackathon3
 		# 발표 직전까지 고쳐 배포한다 — hackathon2 와 같은 이유로 no-cache.
 		header Cache-Control "no-cache"
@@ -99,10 +96,7 @@ hackathon2.wx.ai.kr {
 hackathon3.wx.ai.kr {
 	import secure_headers
 	encode gzip
-	# /main 과 같은 파일이다 — 함께 막아 둔다(이종은 9/9). 행사 전에 풀 것.
-	basicauth {
-		wx $2a$14$RYz.RjgZLNS73FywvvVf9u9BxLwL9eo0ssVjyzdgRRUC2lD8ZPaOG
-	}
+	# /main 과 같은 파일이다. 잠금은 덱 안 화면에서 한다.
 	root * /srv/hackathon3
 	# hackathon2 와 같은 이유로 no-cache. 발표 직전까지 고쳐 배포한다.
 	header Cache-Control "no-cache"
