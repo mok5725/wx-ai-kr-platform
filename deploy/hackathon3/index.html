@@ -486,16 +486,41 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   letter-spacing:.14em;text-indent:.14em;text-align:center;color:var(--st-ink);padding:14px 0;
   background:rgba(238,240,255,.10);border:1px solid rgba(238,240,255,.30);border-radius:13px}
 .frame[data-id="A-05"] .kv .v{color:var(--st-ink);font-weight:700}
-/* 아래 숫자 줄(11 크루 …)도 저마다 칸에 담는다. */
-.frame[data-id="A-05"] .stats{display:grid;grid-template-columns:.72fr .72fr 1.28fr 1.28fr;
-  gap:20px;align-items:stretch;margin-top:44px}
-.frame[data-id="A-05"] .stat{display:flex;flex-direction:column;justify-content:center;
-  background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:20px;
-  padding:20px 24px;
+/* ── 크루 도해 (A-05) ─────────────────────────────────────────────────────
+   왼쪽에 사람 수(54명)를 따로 세우고, 오른쪽은 **위에 11크루, 아래에 3 · 8** 로
+   나뉘는 그림이다(이종은 9/10). 주제곡의 "열한 개의 별"이 떠오르도록 별 열한 개를
+   그리되, 앞 셋은 마스터 색(파랑) 뒤 여덟은 챌린저 색(노랑)으로 칠해 **별 자체가
+   이미 3 + 8 로 갈라져** 보이게 했다. 색은 7쪽 여정 · 12쪽 시간표와 같다. */
+.cviz{display:grid;grid-template-columns:290px 1fr;gap:22px;margin-top:40px}
+.cbx{background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:20px;
+  padding:22px 26px;
   box-shadow:0 16px 40px rgba(4,3,24,.36), inset 0 1px 0 rgba(255,255,255,.18);
   -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
-.frame[data-id="A-05"] .stat .l{color:var(--st-ink);font-weight:600;font-size:24px;line-height:1.4}
-.frame[data-id="A-05"] .stat .l:empty{display:none}
+.cviz .ppl{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.cviz .ppl .n{font-family:var(--head);font-weight:900;font-size:96px;line-height:1;color:var(--st-ink)}
+.cviz .ppl .n small{font-family:var(--head);font-weight:800;font-size:36px;color:var(--st-soft);margin-left:8px}
+.cviz .ppl .l{font-size:26px;color:var(--st-soft)}
+.cviz .crews{display:grid;grid-template-rows:auto 1fr;gap:18px;min-width:0}
+.cviz .top{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.cviz .stars{letter-spacing:.10em;line-height:1;white-space:nowrap}
+.cviz .top .stars{font-size:42px}
+.cviz .stars .ma{color:#8FBAFF;text-shadow:0 0 16px rgba(143,186,255,.55)}
+.cviz .stars .ch{color:#FFD466;text-shadow:0 0 16px rgba(255,212,102,.5)}
+.cviz .tcap{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+.cviz .tcap .ph{font-family:var(--head);font-weight:900;font-size:38px;color:var(--gold)}
+.cviz .tcap .dot{font-size:30px;color:var(--st-faint)}
+.cviz .tcap .nm{font-family:var(--head);font-weight:900;font-size:58px;line-height:1;color:var(--st-ink)}
+.cviz .tcap .nm small{font-family:var(--head);font-weight:800;font-size:28px;color:var(--st-soft);margin-left:7px}
+.cviz .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:0}
+.cviz .cbox{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.cviz .cbox .stars{font-size:30px}
+.cviz .cbox .hd{display:flex;align-items:baseline;gap:12px}
+.cviz .cbox .nn{font-family:var(--head);font-weight:900;font-size:54px;line-height:1;color:var(--st-ink)}
+.cviz .cbox .nn small{font-family:var(--head);font-weight:800;font-size:26px;color:var(--st-soft);margin-left:6px}
+.cviz .cbox .tt{font-family:var(--head);font-weight:800;font-size:28px;color:var(--st-ink)}
+.cviz .cbox .dd{font-size:24px;line-height:1.4;color:var(--st-soft)}
+.cviz .cbox.ma{border-color:rgba(143,186,255,.42);background:rgba(104,156,255,.14)}
+.cviz .cbox.ch{border-color:rgba(255,214,110,.42);background:rgba(255,204,88,.12)}
 .kv .v{font-size:var(--s1);color:var(--st-soft);line-height:1.7}
 .stats{display:flex;gap:64px;align-items:flex-end;margin-top:36px}
 .stat .n{font-family:var(--head);font-weight:900;font-size:76px;line-height:1;letter-spacing:-.01em;color:var(--st-ink)}
@@ -512,10 +537,14 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   background:var(--gold);color:#3A2A00;font-style:normal;font-weight:900;
   font-size:20px;line-height:1;letter-spacing:0;vertical-align:2px;
   box-shadow:0 3px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.55)}
-.cap.r-co{background:var(--violet);color:#0B0930}
-.cap.r-ad{background:var(--kw);color:#062A1C}
-/* 자문·코치 줄은 글씨가 작으니 스티커도 그만큼 줄인다. */
-.mcrew .etc .cap,.ccrew .co .cap{width:27px;height:27px;font-size:16px;margin-left:7px;vertical-align:1px}
+/* 자문·코치는 사람마다 붙이지 않는다 — **이름 앞에 이름표 하나**를 두고 뒤에 이름을
+   잇는다(이종은 9/10). 코치가 둘이면 이름표 하나 뒤에 둘이 연달아 선다. */
+.rl{display:inline-flex;align-items:center;justify-content:center;
+  min-width:74px;height:31px;padding:0 13px;margin-right:12px;border-radius:9px;
+  font-family:var(--head);font-weight:800;font-size:21px;letter-spacing:.08em;text-indent:.08em;
+  line-height:1;vertical-align:2px}
+.rl.r-ad{background:var(--kw);color:#062A1C}
+.rl.r-co{background:var(--violet);color:#0B0930}
 
 /* ── 챌린저 크루 (A-07) ───────────────────────────────────────────────────
    네 팀을 가로로 늘어놓으면 칸이 좁아 이름이 세로로 줄줄이 섰다. 사각형을 넷으로
@@ -1148,11 +1177,12 @@ const capName = (n) => /\(캡틴\)/.test(n)
 /* 자문·코치도 같은 스티커로(이종은 9/10). 앞의 라벨을 떼고 **사람 이름 뒤**에 붙인다.
    '자문 김현중 수석연구원 (미래기술연구원)' → '김현중[자] 수석연구원 (미래기술연구원)'
    '코치 김민수 · 임지연 (팀스파르타)'      → '김민수[코] · 임지연[코] (팀스파르타)' */
-const roleTag = (txt, label, mark, cls) => String(txt)
-  .replace(new RegExp('^\\s*'+label+'\\s*'), '')
-  .split(' · ')
-  .map(part => part.replace(/^([가-힣]{2,4})/, `$1<i class="cap ${cls}" title="${label||mark}">${mark}</i>`))
-  .join(' · ');
+/* '자문 김현중 수석연구원 (미래기술연구원)' → [자문] 김현중 수석연구원 (미래기술연구원)
+   '코치 김민수 · 임지연 (팀스파르타)'      → [코치] 김민수 · 임지연 (팀스파르타)
+   앞에 이미 라벨이 붙어 있으면 떼고 이름표로 바꾼다. */
+const roleTag = (txt, label, cls) =>
+  `<span class="rl ${cls}">${label}</span>`
+  + String(txt).replace(new RegExp('^\\s*'+label+'\\s*'), '');
 MASTERS.forEach(m => { m.members = byName(m.members); });
 CH.forEach(c => { c.members = byName(c.members); });
 
@@ -1186,7 +1216,10 @@ const PARTS = [
       left:'포스코그룹<br>일하는 방식의 변화(WX)<br>+ 디지털 기술의 무한한 가능성',
       right:'시작부터 끝까지<br>워크 플로우를 새롭게,<br>아이디어를 가치로 전환하는<br>끝장 개발대회!'},
     viz:'상세페이지식 — 가운데 티셔츠 둘, 로고와 슬로건을 화살표로 집어 바깥 박스 설명과 연결', how:'"앞면/뒷면" 딱지와 "해커톤 로고 · 슬로건" 되풀이를 뺐다(이종은 9/9)' }),
-  P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -388px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], stats:[['11','크루',''],['54','명',''],['3','크루 · 22명','마스터 트랙 — Top-down 과제 선발 (크루당 7~8명)'],['8','크루 · 32명','챌린저 트랙 — 우수 아이디어 제안 (크루당 4명)']]}, viz:'숫자 4개 (사이트 stat 방식: 큰 수 + 단위 + 라벨)', how:'라벨 + 값 4줄, 아래 숫자 줄. 원문 6줄을 라벨 4 + 숫자 4로' }),
+  P({ no:'5', id:'A-05', title:'대회 개요', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -388px', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['대상','해커톤 11개 크루 54명']], crews:{ phrase:'열한 개의 별', ppl:['54','명','참가 크루원'], all:['11','크루'], split:[
+      {cls:'ma', star:3, n:'3', u:'크루', t:'마스터 트랙 · 22명', d:'Top-down 과제 선발 (크루당 7~8명)'},
+      {cls:'ch', star:8, n:'8', u:'크루', t:'챌린저 트랙 · 32명', d:'우수 아이디어 제안 (크루당 4명)'},
+    ]}}, viz:'왼쪽 54명 칸 + 오른쪽 도해 — 위 별 열한 개(3 파랑 + 8 노랑) · 11크루, 아래 3크루 · 8크루', how:'주제곡의 "열한 개의 별"을 별 열한 개로 그리고, 앞 셋·뒤 여덟 색을 갈라 3+8 이 그림에서 바로 읽히게 했다(이종은 9/10)' }),
   P({ no:'6', id:'A-06', title:'마스터 트랙 소개', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -581px', eyebrow:'해커톤 크루 소개', h:'<em>마스터</em> 트랙', sub:'주요 사업회사 임원 FGI를 통해 선정된 과제에 대한 전문가 팀 구성 (도메인 + AX/DX 전문가로 선발)', body:{type:'mcrew', items:MASTERS}, viz:'세 칸 — 분야 · 크루명 · 과제명 · 크루원 · 자문 · 코치', how:'옛 6장과 7~9장(크루원)을 한 장으로 합쳤다(9/9)' }),
   P({ no:'7', id:'A-07', title:'챌린저 크루 (2단계)', bg:'bg/hf_20260907_173239_54b97fda-3f70-40f8-ad9d-85de5f9ce5ba.jpg', bgSize:'auto', bgPos:'center -968px', eyebrow:'해커톤 크루 소개 · 챌린저 트랙 · 8개 팀', h:'<em>챌린저</em> 트랙', sub:'직원들이 자발적으로 아이디어 제안 및 팀을 구성하여 신청 (전 직원 투표 + 전문가 심사를 통해 선정)', steps:[0,1].map(h=>({label:`${h*4+1}~${h*4+4}팀`, body:{type:'ccrew', items:CH.slice(h*4,h*4+4)}})), viz:'네 칸을 2×2 로 — 팀명 · 소속(팀명 아래) · 이름 알약 한 줄 · 코치', how:'4팀씩 두 단계. 캡틴은 이름 옆 「캡」 스티커(이종은 9/10)' }),
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
@@ -1405,20 +1438,38 @@ B.campus=(b)=>el('div','campus',
    </div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
 B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), b.lines.map(l=>lnP(l)).join(''));
-B.kv=(b)=>{ const w=el('div'); w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>${b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''}`; return w; };
+/* 별 열한 개 — 앞 셋은 마스터, 뒤 여덟은 챌린저. 개수는 데이터에서 온다. */
+const stars=(n,cls)=>`<span class="${cls}">${'★'.repeat(n)}</span>`;
+B.kv=(b)=>{ const w=el('div'); const c=b.crews;
+  w.innerHTML=`<div class="kv">${b.kv.map(([k,v])=>`<div class="k">${k}</div><div class="v ln">${v}</div>`).join('')}</div>`
+  + (c?`<div class="cviz">
+      <div class="cbx ppl"><div class="n">${c.ppl[0]}<small>${c.ppl[1]}</small></div><div class="l ln">${c.ppl[2]}</div></div>
+      <div class="crews">
+        <div class="cbx top">
+          <div class="stars">${stars(c.split[0].star,'ma')}${stars(c.split[1].star,'ch')}</div>
+          <div class="tcap"><span class="ph ln">${c.phrase}</span><span class="dot">·</span><span class="nm">${c.all[0]}<small>${c.all[1]}</small></span></div>
+        </div>
+        <div class="split">${c.split.map(x=>`<div class="cbx cbox ${x.cls}">
+          <div class="stars">${stars(x.star,x.cls)}</div>
+          <div class="hd"><span class="nn">${x.n}<small>${x.u}</small></span><span class="tt ln">${x.t}</span></div>
+          <div class="dd ln">${x.d}</div></div>`).join('')}</div>
+      </div>
+    </div>`
+  : (b.stats?`<div class="stats">${b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join('')}</div>`:''));
+  return w; };
 B.stats=(b)=>el('div','stats'+(b.big?' big':''), b.stats.map(([n,u,l])=>`<div class="stat"><div class="n">${n}${u?`<small>${u}</small>`:''}</div><div class="l ln">${l}</div></div>`).join(''));
 B.trio=(b)=>{ const w=el('div'); w.innerHTML=(b.lead?`<div class="lines" style="margin-bottom:26px"><p class="ln">${b.lead}</p></div>`:'')+`<div class="trio c${b.n}${b.hero?' hero':''}">${b.items.map(([k,t,body])=>`<div class="it">${/^\d+$/.test(k)?`<div class="no">${k}</div>`:k?`<div class="kk ln">${k}</div>`:'<div class="no">&nbsp;</div>'}<div class="tt ln">${t}</div><div class="bb">${String(body).split('<br>').map(x=>x?`<p class="ln">${x}</p>`:'').join('')}</div></div>`).join('')}</div>`; return w; };
 /* 칸 하나가 정확히 다섯 줄(분야 · 팀명 · 과제 설명 · 크루원 · 자문·코치)이어야
    subgrid 가 가로로 맞는다 — 과제명과 딸림 설명은 한 칸(.desc)에 함께 담는다. */
-B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="desc"><p class="tp ln">${m.topic}</p>${m.tag?`<p class="tg ln">${m.tag}</p>`:''}</div><div class="nm">${m.members.map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div><div class="etc"><p class="ln">${roleTag(m.advisor,'자문','자','r-ad')}</p><p class="ln">${roleTag(m.coaches,'코치','코','r-co')}</p></div></div>`).join(''));
+B.mcrew=(b)=>el('div','mcrew', b.items.map(m=>`<div class="it"><div class="kk ln">${m.dom}</div><div class="tt ln">${m.team}</div><div class="desc"><p class="tp ln">${m.topic}</p>${m.tag?`<p class="tg ln">${m.tag}</p>`:''}</div><div class="nm">${m.members.map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div><div class="etc"><p class="ln">${roleTag(m.advisor,'자문','r-ad')}</p><p class="ln">${roleTag(m.coaches,'코치','r-co')}</p></div></div>`).join(''));
 /* 챌린저 크루 — 팀명 → 소속 → 이름 알약 → 코치. 네 팀이 2×2 로 앉는다. */
 B.ccrew=(b)=>el('div','ccrew', b.items.map(c=>
   `<div class="it">
      <div class="hd"><div class="tt ln">${c.team}</div><div class="kk ln">${c.orgs}</div></div>
      <div class="nm">${c.members.map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div>
-     <div class="co ln">${roleTag(c.coach,'','코','r-co')}</div>
+     <div class="co ln">${roleTag(c.coach,'코치','r-co')}</div>
    </div>`).join(''));
-B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${roleTag(m.advisor,'자문','자','r-ad')}</p><p class="ln">${roleTag(m.coaches,'코치','코','r-co')}</p></div></div>`); };
+B.team=(b)=>{ const m=b.m; return el('div','team',`<div><div class="kk" style="font-size:var(--s00);letter-spacing:.1em;color:var(--st-faint)">${m.dom} · ${m.view}</div><div class="name ln">${m.team}</div><div class="topic ln">${m.topic}</div><div class="orgs ln">${m.orgs}</div></div><div><div class="names">${m.members.map(n=>`<span class="ln">${n}</span>`).join('')}</div><div class="etc"><p class="ln">${roleTag(m.advisor,'자문','r-ad')}</p><p class="ln">${roleTag(m.coaches,'코치','r-co')}</p></div></div>`); };
 B.table=(b)=>{ if(b.sched) return sched(b.sched); const rows=b.rows; return el('div','tbl',`<table><thead><tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'t':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`); };
 function sched(day){
   const r1=[['08:00~09:00','참가자 접수 및 굿즈 수령 (컨벤션센터 이벤트홀)'],['09:00~10:00','개회식 및 오리엔테이션 (1hr) **08:40까지 크루별 착석'],['10:00~11:30','전문가 특강 (1.5hr) 박종천 개발자 "실전 개발 노하우"'],['11:30~12:00','현업 AX우수사례 공유 (0.5hr) P-DX 「AX Village」'],['12:00~13:00','네트워킹 파티 (1hr) 불고기 도시락과 함께 신나는 런치 타임'],['13:00~17:00','','과제 수행 (4hr) 24시간 끝장 개발 시작','실사용 솔루션 구현 및 현장 시연 준비 (4hr) 2층 안전 201호 · 물류 202호 · 마켓센싱 203호'],['17:00~18:00','','1차 전문가 코칭 및 피드백 (1hr) *석식 포함','자율 활동 — 과제 보완, 발표 준비 등 팀별 자율 운영 *석식 포함'],['18:00~08:00','','과제 수행 (14hr) ★베네핏 게임 0시','—']];
