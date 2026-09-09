@@ -509,21 +509,23 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .cviz .ppl .n small{font-family:var(--head);font-weight:800;font-size:36px;color:var(--st-soft);margin-left:8px}
 .cviz .ppl .l{font-size:26px;color:var(--st-soft)}
 .cviz .crews{display:grid;grid-template-rows:auto 1fr;gap:18px;min-width:0}
-.cviz .top{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.cviz .top{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap}
 .cviz .stars{letter-spacing:.10em;line-height:1;white-space:nowrap}
 .cviz .stars i{display:inline-block;font-style:normal}
 .cviz .top .stars{font-size:42px}
 .cviz .stars .ma{color:#8FBAFF;text-shadow:0 0 16px rgba(143,186,255,.55)}
 .cviz .stars .ch{color:#FFD466;text-shadow:0 0 16px rgba(255,212,102,.5)}
-.cviz .tcap{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+.cviz .tcap{display:flex;align-items:baseline;gap:20px;white-space:nowrap}
 .cviz .tcap .ph{font-family:var(--head);font-weight:900;font-size:38px;color:var(--gold)}
 .cviz .tcap .dot{font-size:30px;color:var(--st-faint)}
 .cviz .tcap .nm{font-family:var(--head);font-weight:900;font-size:58px;line-height:1;color:var(--st-ink)}
 .cviz .tcap .nm small{font-family:var(--head);font-weight:800;font-size:28px;color:var(--st-soft);margin-left:7px}
 .cviz .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:0}
-.cviz .cbox{display:flex;flex-direction:column;gap:10px;justify-content:center}
+/* 별과 글은 칸 한가운데에 모은다(이종은 9/10). */
+.cviz .cbox{display:flex;flex-direction:column;gap:10px;justify-content:center;
+  align-items:center;text-align:center}
 .cviz .cbox .stars{font-size:30px}
-.cviz .cbox .hd{display:flex;align-items:baseline;gap:12px}
+.cviz .cbox .hd{display:flex;align-items:baseline;justify-content:center;gap:12px}
 .cviz .cbox .nn{font-family:var(--head);font-weight:900;font-size:54px;line-height:1;color:var(--st-ink)}
 .cviz .cbox .nn small{font-family:var(--head);font-weight:800;font-size:26px;color:var(--st-soft);margin-left:6px}
 .cviz .cbox .tt{font-family:var(--head);font-weight:800;font-size:28px;color:var(--st-ink)}
@@ -651,7 +653,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .mcrew .desc p{margin:0}
 .mcrew .tp{font-size:28px;line-height:1.5;color:var(--st-soft)}
 /* 과제명 아래 한 줄 설명(있는 크루만). */
-.mcrew .tg{font-size:28px;line-height:1.5;color:var(--st-faint);margin-top:8px}
+/* 과제명에 딸린 설명은 글머리 기호를 달아 한 단 아래임을 보인다(이종은 9/10). */
+.mcrew .tg{position:relative;padding-left:24px;font-size:28px;line-height:1.5;
+  color:var(--st-faint);margin-top:8px}
+.mcrew .tg::before{content:'▪';position:absolute;left:2px;top:0;color:var(--kw);font-size:22px}
 .mcrew .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:20px;
   align-content:start}
 .mcrew .nm span{font-family:var(--head);font-weight:800;font-size:36px;line-height:1.25;color:var(--st-ink)}
@@ -761,33 +766,38 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense .row .st.last::before{background:#fff;box-shadow:0 0 0 7px var(--dot)}
 .tl.dense .row .steps::before{background:color-mix(in srgb, var(--dot) 46%, transparent)}
 /* ── 두 트랙이 만나는 끝 (A-09) ──────────────────────────────────────────
-   시작도 길도 달랐지만 본선만큼은 하나다(이종은 9/10). 두 판을 왼쪽에 위아래로
-   놓고, 각 판 오른쪽에서 나온 선이 꺾여 **가운데 한 칸**에서 만난다 — ⊐ 자 모양.
-   선은 판의 세로 한가운데에서 나오므로 두 팔의 길이가 정확히 같다
-   (칸 사이 간격이 46px 이라 50% + 23px 씩 내려오고 올라간다). */
-/* 오른쪽 칸을 떼어 준 만큼 왼쪽이 좁아졌다 — 트랙 이름칸과 안쪽 여백을 줄이고
-   마디 글상자를 좁혀야 여섯 마디가 겹치지 않는다. */
-.tl.dense.join{grid-template-columns:1fr 380px;grid-template-rows:1fr 1fr;gap:46px 0}
-.tl.dense.join .row{position:relative;grid-template-columns:160px 1fr;padding:36px 30px 42px}
-.tl.dense.join .st{max-width:190px;font-size:27px}
+   시작도 길도 달랐지만 본선만큼은 하나다(이종은 9/10). 두 판의 오른쪽에서 **판과
+   같은 속살·같은 테두리를 가진 파이프**가 뻗어 나와 꺾여 내려오고 올라와 하나로
+   이어지고, 그 파이프 한가운데에 가장 큰 버튼(본선 참여)이 얹힌다.
+
+   본문 칸은 1792×743 로 못 박혀 있고 무대에서는 통째로 배율만 바뀐다 — 그래서
+   파이프를 픽셀 좌표로 그려도 어긋나지 않는다. 판 폭 1340, 줄 간격 46 이므로
+   한 줄은 348.5, 위 줄 한가운데 y=174.25 · 아래 줄 y=568.75 · 만나는 곳 y=371.5.
+   파이프는 굵기 56(벽 안팎이 ±28), 꺾이는 중심은 x=1566, 세로 줄기는 x=1622. */
+.tl.dense.join{position:relative;grid-template-columns:1340px;grid-template-rows:1fr 1fr;gap:46px 0}
+.tl.dense.join .row{position:relative;z-index:1;grid-template-columns:150px 1fr;padding:34px 26px 40px}
+.tl.dense.join .st{max-width:176px;font-size:26px}
 .tl.dense.join .row.t-ma{grid-area:1 / 1}
 .tl.dense.join .row.t-ch{grid-area:2 / 1}
-.tl.dense.join .row::after{content:'';position:absolute;left:100%;width:120px;
-  border-right:3px solid var(--dot);pointer-events:none}
-.tl.dense.join .row.t-ma::after{top:50%;height:calc(50% + 23px);
-  border-top:3px solid var(--dot);border-radius:0 22px 0 0}
-.tl.dense.join .row.t-ch::after{bottom:50%;height:calc(50% + 23px);
-  border-bottom:3px solid var(--dot);border-radius:0 0 22px 0}
-.tl.dense.join .fin{grid-area:1 / 2 / 3 / 3;align-self:center;margin-left:120px;
+.tl.dense.join .pipe{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.tl.dense.join .pipe .tb{stroke:none}
+.tl.dense.join .pipe .tb.ma{fill:rgba(104,156,255,.15)}
+.tl.dense.join .pipe .tb.ch{fill:rgba(255,204,88,.13)}
+.tl.dense.join .pipe .tw{fill:none;stroke-width:3}
+.tl.dense.join .pipe .tw.ma{stroke:rgba(152,192,255,.36)}
+.tl.dense.join .pipe .tw.ch{stroke:rgba(255,214,110,.36)}
+/* 버튼은 파이프 세로 줄기(x=1622) 한가운데에 얹는다 — 파이프가 버튼을 통과한다. */
+.tl.dense.join .fin{position:absolute;left:1452px;top:261px;width:340px;height:221px;
+  z-index:2;box-sizing:border-box;padding:0 20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  padding:34px 26px;border-radius:26px;text-align:center;
-  background:linear-gradient(152deg,rgba(104,156,255,.24),rgba(255,204,88,.22));
-  border:2px solid rgba(255,214,110,.55);
-  box-shadow:0 22px 54px rgba(4,3,24,.46), inset 0 1px 0 rgba(255,255,255,.26);
-  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
-.tl.dense.join .fin .one{font-size:26px;letter-spacing:.04em;color:var(--gold);font-weight:700}
-.tl.dense.join .fin b{font-family:var(--head);font-weight:900;font-size:54px;line-height:1.08;color:var(--st-ink)}
-.tl.dense.join .fin .dd{font-size:28px;line-height:1.35;color:var(--st-soft)}
+  border-radius:32px;text-align:center;
+  background:linear-gradient(152deg,rgba(104,156,255,.36),rgba(255,204,88,.32));
+  border:3px solid rgba(255,214,110,.62);
+  box-shadow:0 26px 62px rgba(4,3,24,.52), inset 0 1px 0 rgba(255,255,255,.34);
+  -webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15)}
+.tl.dense.join .fin .one{font-size:25px;letter-spacing:.04em;color:var(--gold);font-weight:700}
+.tl.dense.join .fin b{font-family:var(--head);font-weight:900;font-size:62px;line-height:1.06;color:#fff}
+.tl.dense.join .fin .dd{font-size:26px;line-height:1.35;color:var(--st-ink)}
 .tl.dense .st{font-size:30px;line-height:1.4}
 .tl.dense .lab{font-size:var(--s3);padding-top:0;color:var(--dot)}
 .tl .st.last::before{background:var(--kw)}
@@ -1197,7 +1207,7 @@ HAND["AX Village"] = `<svg xmlns="http://www.w3.org/2000/svg" version="1.1"     
 const SLOGAN_PRE = 'End to End:';
 const MASTERS = [
   { key:'m1', dom:'안전', team:'PSM해결단', topic:'AI Permit Advisor', tag:'작업허가와 위험성평가의 누락을 줄이는 현장형 AI 안전 가이드', desc:'과거의 안전 경험을 작업 전 의사결정으로 전환합니다. 작업허가와 위험성평가의 누락을 줄이는 현장형 AI 안전 가이드', members:['김동현 (캡틴)','김천석','정병수','박정용','이치헌','장정우','김민서'], orgs:'포스코 · 포스코DX', advisor:'자문 김현중 수석연구원 (미래기술연구원)', coaches:'코치 김민수 · 임지연 (팀스파르타)', room:'201호' },
-  { key:'m2', dom:'물류', team:'포브스', topic:'POSCO BRIDGE SYSTEM<br>— 수출 배선 지능형 모니터링(관제) 체계', desc:'부서/그룹사 간 데이터 장벽으로 인한 납기 지연 및 물류비 상승 문제를 해결하기 위해, 공동 데이터 관리 관점의 통합 데이터 허브 및 AI 이상 탐지 기능 구현', members:['이수형 (캡틴)','정훈','전영창','박재은','김동우','김재웅','현진원','경승환'], orgs:'포스코플로우 · 포스코 · 포스코DX', advisor:'자문 이수장 수석연구원 (미래기술연구원)', coaches:'코치 김나연 · 정수현 (팀스파르타)', room:'202호' },
+  { key:'m2', dom:'물류', team:'포브스', topic:'POSCO BRIDGE SYSTEM', tag:'수출 배선 지능형 모니터링(관제) 체계', desc:'부서/그룹사 간 데이터 장벽으로 인한 납기 지연 및 물류비 상승 문제를 해결하기 위해, 공동 데이터 관리 관점의 통합 데이터 허브 및 AI 이상 탐지 기능 구현', members:['이수형 (캡틴)','정훈','전영창','박재은','김동우','김재웅','현진원','경승환'], orgs:'포스코플로우 · 포스코 · 포스코DX', advisor:'자문 이수장 수석연구원 (미래기술연구원)', coaches:'코치 김나연 · 정수현 (팀스파르타)', room:'202호' },
   { key:'m3', dom:'마켓센싱', team:'MyPIN', topic:'포스코그룹 공통 AI 기반 마켓센싱 및 의사결정 자산화 플랫폼', desc:'공개 마켓 지표와 뉴스·공식 자료를 AI로 탐색·분석하고, 수리과학적 검증과 전문가 판단을 결합해 포스코그룹 각 사에 중요한 변화를 선별합니다. 근거와 사업 영향을 연결해 지금 무엇을 보고, 왜 믿고, 무엇을 판단할지 지원하며, 그 판단과 이력을 조직의 자산으로 축적합니다.', members:['오명철 (캡틴)','조재형','이강원','조아라','황혁기','이영채','한예원'], orgs:'포스코 · 포스코경영연구원 · 포스코인터내셔널 · RIST · 포스코DX', advisor:'자문 안치경 수석연구원 (미래기술연구원)', coaches:'코치 이경복 · 신동호 (팀스파르타)', room:'203호' },
 ];
 /* 크루원 차례: 캡틴이 맨 앞, 나머지는 가나다순(이종은 9/9).
@@ -1215,7 +1225,7 @@ const CH = [
   { team:'터널 밖 개구리', orgs:'포스코이앤씨', members:['박강호 (캡틴)','박경민','김우열','민경철'], coach:'이보형', title:'현장의 하루, 안전모가 대신 씁니다 - PASS AI Agent', desc:'현장 출입 동선과 작업실적, 투입공수 등 작업기록을 AI가 자동으로 축적하고 연결하여, 안전관리 강화 및 생산성·원가 분석 정밀도 향상' },
   { team:'10x', orgs:'포스코DX', members:['박신유 (캡틴)','나종철','이태훈','김용욱'], coach:'손준서', title:'IDP RAG 기반 E2E 추진계획서 자동작성으로 10x 생산성 혁신', desc:'고객 과제 정의서를 입력하면 요구사항, 아키텍쳐, 일정, 예산, 기대효과를 반영한 추진계획서를 자동으로 작성하여, 제안·기획 리드타임 단축' },
   { team:'포브레인', orgs:'포스코', members:['한소희 (캡틴)','김민우','주하림','한지석'], coach:'김희태', title:'마케팅 브레인(Marketing Brain) : 언제든, 뭐든 물어볼 수 있는 AI 선배', desc:'용어, 프로세스, 과거 사례, 실무 노하우를 AI가 통합해 바로 답해주는 지식형 에이전트로, 암묵지를 조직 자산으로 전환해 업무 생산성 향상' },
-  { team:'HR AX연구소', orgs:'포스코', members:['이진희 (캡틴)','김수미','최주호','하석현'], coach:'구고운', title:'나를 먼저 챙겨주는 나만의 HR AI Agent', desc:'입사, 이동, 승진, 교육 등 생애주기 전반에 대한 안내와 행정처리를 선제적으로 지원하는 HR 에이전트를 개발하여, 반복 업무를 자동화' },
+  { team:'HR AX 연구소', orgs:'포스코', members:['이진희 (캡틴)','김수미','최주호','하석현'], coach:'구고운', title:'나를 먼저 챙겨주는 나만의 HR AI Agent', desc:'입사, 이동, 승진, 교육 등 생애주기 전반에 대한 안내와 행정처리를 선제적으로 지원하는 HR 에이전트를 개발하여, 반복 업무를 자동화' },
 ];
 /* 이름 뒤의 "(캡틴)" 을 떼고 스티커로 바꾼다. 명단은 원본 그대로 두고 표시만 바꾼다. */
 const capName = (n) => /\(캡틴\)/.test(n)
@@ -1497,7 +1507,7 @@ B.kv=(b)=>{ const w=el('div'); const c=b.crews;
       <div class="crews">
         <div class="cbx top">
           <div class="stars">${stars(c.split[0].star,'ma',0)}${stars(c.split[1].star,'ch',c.split[0].star)}</div>
-          <div class="tcap"><span class="ph ln">${c.phrase}</span><span class="dot">·</span><span class="nm">${c.all[0]}<small>${c.all[1]}</small></span></div>
+          <div class="tcap"><span class="ph ln">${c.phrase}</span><span class="nm">${c.all[0]}<small>${c.all[1]}</small></span></div>
         </div>
         <div class="split">${c.split.map(x=>`<div class="cbx cbox ${x.cls}">
           <div class="stars">${stars(x.star,x.cls,x.from)}</div>
@@ -1580,14 +1590,24 @@ function schedDay(day){
 }
 B.sched=()=>el('div','schroll',
   `<div class="schtrack"><div class="day">${schedDay(1)}</div><div class="day">${schedDay(2)}</div></div>`);
+/* 판에서 뻗어 나와 하나로 합쳐지는 파이프. 채움(tb)은 판 속살과, 벽(tw)은 판
+   테두리와 같은 색이라 판이 그대로 이어져 나온 것처럼 보인다. */
+const JOINPIPE=`<svg class="pipe" viewBox="0 0 1792 743" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="tb ma" d="M1340,146.25 H1566 A84,84 0 0 1 1650,230.25 V285 H1594 V230.25 A28,28 0 0 0 1566,202.25 H1340 Z"/>
+  <path class="tb ch" d="M1340,596.75 H1566 A84,84 0 0 0 1650,512.75 V458 H1594 V512.75 A28,28 0 0 1 1566,540.75 H1340 Z"/>
+  <path class="tw ma" d="M1340,146.25 H1566 A84,84 0 0 1 1650,230.25 V285"/>
+  <path class="tw ma" d="M1340,202.25 H1566 A28,28 0 0 1 1594,230.25 V285"/>
+  <path class="tw ch" d="M1340,596.75 H1566 A84,84 0 0 0 1650,512.75 V458"/>
+  <path class="tw ch" d="M1340,540.75 H1566 A28,28 0 0 0 1594,512.75 V458"/>
+</svg>`;
 B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.map(([lab,steps])=>{
   const n=steps.length, u=b.dense?12/(n-1):0;   /* 14칸 격자에서 마디 사이 칸 수 */
   const cls=b.dense?(/마스터/.test(lab)?' t-ma':' t-ch'):'';
   return `<div class="row${cls}"><div class="lab">${lab}</div><div class="steps" style="--n:${n}">`
     + steps.map((s,i)=>`<div class="st ${i===n-1?'last':''}"${b.dense?` style="left:calc(100% * ${1+i*u} / 14)"`:''}>${s}</div>`).join('')
     + `</div></div>`;
-}).join('') + (b.join
-  ? `<div class="fin"><span class="one ln">${b.join.k}</span><b class="ln">${b.join.t}</b><span class="dd ln">${b.join.d}</span></div>`
+}).join('') + (b.join ? JOINPIPE
+  + `<div class="fin"><span class="one ln">${b.join.k}</span><b class="ln">${b.join.t}</b><span class="dd ln">${b.join.d}</span></div>`
   : ''));
 B.enjoy=(b)=>el('div','enjoy', b.items.map(it=>`<div class="it"><div class="hd"><span class="ic">${it.ic||it.no}</span><span class="tt ln">${it.tt}</span></div>${it.groups.map(([gl,gis])=>`<div class="grp"><div class="gl ln">${gl}</div><div class="gi">${gis.map(x=>`<p class="ln">${x}</p>`).join('')}</div></div>`).join('')}</div>`).join(''));
 B.criteria=(b)=>el('div','crit',`<div class="lines"><p class="ln em">${b.h}</p></div><div class="critbar">${b.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div><div class="txt">${b.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`);
@@ -1939,18 +1959,20 @@ function runSeq(fw, delay){
      여기서도 Web Animations 로 돌린다. 다시 들어올 때 겹쳐 쌓이지 않게 먼저 지운다. */
   const st=[...fw.querySelectorAll('.cviz .stars i')];
   if(st.length){
-    const STEP=170, N=11, CYCLE=N*STEP+900;   /* 한 바퀴 = 열한 번 + 잠깐 쉼 */
-    const onAt=delay+520, loopAt=onAt+N*STEP+420;
+    /* 한 별의 반짝임이 **끝난 뒤에** 다음 별로 넘어간다(이종은 9/10) —
+       걸음(STEP)을 번쩍임 길이(FLASH)보다 길게 잡아야 겹치지 않는다. */
+    const N=11, FLASH=420, STEP=470, CYCLE=N*STEP+900, ON=300;
+    const onAt=delay+520, loopAt=onAt+N*ON+460;
     st.forEach(n=>{
       n.getAnimations().forEach(a=>a.cancel());
       const k=+n.dataset.k||0;
       n.animate([{opacity:0,transform:'scale(.35)',filter:'brightness(2.6)'},
                  {opacity:1,transform:'scale(1.5)',filter:'brightness(2.8)',offset:.5},
                  {opacity:1,transform:'none',filter:'brightness(1)'}],
-        {duration:600, delay:onAt+k*STEP, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
+        {duration:600, delay:onAt+k*ON, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
       n.animate([{transform:'none',filter:'brightness(1)',offset:0},
-                 {transform:'scale(1.45)',filter:'brightness(2.9)',offset:.055},
-                 {transform:'none',filter:'brightness(1)',offset:.13},
+                 {transform:'scale(1.5)',filter:'brightness(3)',offset:FLASH*.42/CYCLE},
+                 {transform:'none',filter:'brightness(1)',offset:FLASH/CYCLE},
                  {transform:'none',filter:'brightness(1)',offset:1}],
         {duration:CYCLE, delay:loopAt+k*STEP, iterations:Infinity, easing:'ease-in-out'});
     });
