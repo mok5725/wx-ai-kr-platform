@@ -391,7 +391,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ph.grid6 span.pic::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(118deg,transparent 28%,rgba(255,255,255,.17) 46%,transparent 62%)}
 /* img 는 대체 요소라 width:auto 가 inset 이 아니라 **원본 크기**로 잡힌다 — 그러면 박스를
    넘쳐 잘린다(9/8 실측 760px). 폭·높이를 명시해 상자를 만들고 그 안에서 contain 한다. */
-/* 실물 크기 느낌대로 칸마다 크기를 달리한다(이종은 9/9) — 티셔츠 > 백 > 목베개 > …
+/* 칸마다 크기를 달리해 실물 느낌을 낸다(이종은 9/9) — 티셔츠 > 백 > 목베개 > …
+   **실측 비율을 그대로 쓰지는 않는다.** 그대로 하면 배터리·덴탈이 티셔츠의 1/7 로
+   쪼그라들어 뭔지 알아볼 수 없다(9/9 한 번 그렇게 했다가 되돌렸다).
+   순서만 실물대로 지키고 차이는 눌러서(가장 큰 것과 작은 것이 1.5배쯤) 잡는다.
    --s 로 배율을 준다. 가운데(50%, 41.5%)를 잡고 그 둘레로 키우고 줄인다. */
 .ph.grid6 span.pic img{position:absolute;left:50%;top:41.5%;transform:translate(-50%,-50%);
   width:calc(84% * var(--s,1));height:calc(69% * var(--s,1));object-fit:contain;
@@ -696,7 +699,7 @@ const PARTS = [
   P({ no:'9', id:'A-09', title:'투 트랙 크루의 여정', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-1070px -132px', eyebrow:'지금까지', h:'해커톤 투 트랙 크루의 <em>여정</em>', body:{type:'timeline', dense:true, rows:[['마스터',['주제 선정<br>(5~6월)','오프라인 팀밋업<br>&amp; 스폰서 만남<br>(8/5)','게이트 리뷰 1차<br>(과제 정의)','개발','게이트 리뷰 2차<br>(Draft)','개발 완료<br>(9/9)','본선 참여<br>(9/10~11)']],['챌린저',['참가자 공모<br>(7월)','아굴챌<br>(7월)','온라인 팀밋업<br>(8/12)','사전학습 및<br>개발 연습<br>(~9/9)','본선 참여<br>(9/10~11)']]]}, viz:'타임라인 2줄 — 마지막 마디(본선 참여)를 밝게', how:'운영이 준 문구 그대로(9/9). 마디가 7개라 글씨를 26px 로' }),
   P({ no:'10', id:'A-10', title:'협업의 순간 (지표)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-892px -132px', eyebrow:'지금까지', h:'해커톤 크루의 열정이 만든 <em>협업</em>의 순간들', body:{type:'stats', big:true, stats:[['❓','','스파르타 코딩클럽 학습 내역'],['❓','','디스코드 협업'],['❓','','코칭 시간']]}, viz:'숫자 3개 144px', how:'항목명 + 숫자 + 단위', wait:'값 3건 — 9/9' }),
   P({ no:'11', id:'A-11', title:'전환 (선물)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-713px -132px', kind:'cover', big:hand('특별히 준비한 선물'), viz:'없음. 손글씨 후보', how:'—' }),
-  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.18,'crop'],['리유져블백','img/goods/bag.webp',0.80],['메모지 & 필기도구','img/goods/stationery.webp',0.50],['보조배터리','img/goods/battery.webp',0.34],['덴탈케어세트','img/goods/dental.webp',0.22],['목베개','img/goods/pillow.webp',0.46]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
+  P({ no:'12', id:'A-12', title:'웰컴 굿즈', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-535px -132px', eyebrow:'웰컴 굿즈', h:'크루를 위한 <em>웰컴굿즈</em>', body:{type:'photo', grid6:[['티셔츠','img/goods/tshirt-front.webp',1.18,'crop'],['리유져블백','img/goods/bag.webp',0.89],['메모지 & 필기도구','img/goods/stationery.webp',0.71],['보조배터리','img/goods/battery.webp',0.58],['덴탈케어세트','img/goods/dental.webp',0.31],['목베개','img/goods/pillow.webp',0.58]]}, viz:'6칸 사진 3×2', how:'운영이 준 굿즈 사진(9/8 도착) — 투명 배경 원본을 반투명 크리스탈 박스에 넣었다. 메모지 & 필기도구 칸은 노트패드·펜 두 제품을 한 장으로' }),
   P({ no:'13', id:'A-13', title:'200% 즐기는 방법 (3단계)', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'-357px -132px', eyebrow:'이틀 동안', h:'해커톤을 <em>200%</em> 즐기는 방법', body:{type:'enjoy', items:[
       {no:'1', tt:'함께 해요', groups:[['팀원들과 함께 하는 시간',['베네핏 게임','포토존','아이디어존']],['같이 먹고 힘내요',['24시간, 부스트업존','야식 타임']]]},
       {no:'2', tt:'몰입해요', groups:[['마스터 트랙',['솔루션을 점검하고 결과물을 실제와 연결']],['챌린저 트랙',['팀 협업을 통한 1박 2일의 끝장 개발']],['스페셜 코치와 학습하기',['특강을 통한 노하우 전수','실시간 전략강화 멘토링']]]},
