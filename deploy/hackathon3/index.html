@@ -338,37 +338,37 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules .gc ul{margin:0;padding-left:22px}
 .rules .gc li{font-size:25px;line-height:1.45;color:var(--st-ink);margin-bottom:7px}
 
-.campus{display:grid;grid-template-columns:1180px 1fr;gap:40px;height:100%;align-items:start}
-.campus .map{position:relative;width:1180px;height:665px;border-radius:18px;overflow:hidden;
-  border:1px solid rgba(238,240,255,.22)}
+/* 사진을 슬라이드 가득(1920×1080) 깐다(이종은 9/9: "이미지는 전체화면으로").
+   사진이 1920×1083 이라 프레임에 거의 그대로 들어맞는다(3px 차이).
+   본문 칸을 벗어나야 하므로 --pad 와 본문 y(273) 만큼 되민다. */
+.campus{display:block;height:100%}
+.campus .map{position:absolute;left:calc(var(--pad) * -1);top:-273px;
+  width:1920px;height:1080px;overflow:hidden;z-index:0}
+.frame[data-id="A-18"] .brandbar,.frame[data-id="A-18"] .title-z{z-index:5}
+.frame[data-id="A-18"] .title-z{text-shadow:0 3px 18px rgba(8,6,42,.95)}
 .campus .map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-/* 부지 밖은 거의 배경으로 내린다. 다만 두 켜의 차이를 너무 벌리면 오려낸 자리가
-   선처럼 드러나므로, 눈에 띄지 않을 만큼만 벌린다. */
-.campus .base.far{filter:brightness(.34) saturate(.32) blur(4.5px)}
-.campus .base.site{filter:brightness(.58) saturate(.78) blur(1.2px)}
-/* 건물만 제자리에서 110% 로 띄운다(이종은: "따로 분리해서 110%로 확대해도 좋아").
-   각 건물 한가운데를 축으로 키워서 바탕 사진과 크게 어긋나지 않게 한다. */
-.campus .pop{position:absolute;inset:0;transform:scale(1.1)}
-.campus .pop.conv{transform-origin:53.6% 74.5%}
-.campus .pop.resi{transform-origin:77.8% 53.3%}
-.campus .hi{filter:brightness(1.12) saturate(1.1) drop-shadow(0 10px 26px rgba(0,0,0,.75))}
-/* 오려내는 자리는 CAMPUS_CONV · CAMPUS_RESI 에서 style 로 넣는다(값이 두 벌이 되지 않게). */
-.campus .ol{position:absolute;inset:0;width:100%;height:100%}
-.campus .ol .key{fill:none;stroke:var(--kw);stroke-width:.5;vector-effect:non-scaling-stroke}
+/* 건물 강조(키우기 · 노란 테두리 · 바탕 흐리기)는 **그림을 구울 때** 넣는다 —
+   wx26-screens/scripts/build-campus.mjs 에 자리값과 배율이 있다.
+   무대에서 켜를 겹치면 배율에 따라 자리가 어긋나서, 한 장으로 구워 쓴다. */
 .campus .tag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
   padding:8px 16px;border-radius:10px;font-weight:700;line-height:1.2}
-.campus .tag i{display:block;font-style:normal;font-weight:400;font-size:22px;opacity:.85;margin-top:3px}
-.campus .tag.key{font-size:34px;color:#08062A;background:var(--kw);box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.campus .tag i{display:block;font-style:normal;font-weight:700;font-size:26px;opacity:.9;margin-top:4px}
+.campus .tag.key{font-size:46px;padding:12px 26px;border-radius:12px;color:#08062A;background:#FFE500;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .campus .tag.dim{font-size:26px;color:var(--st-faint);background:rgba(8,6,42,.6);font-weight:400}
-.campus .t-conv{left:53%;top:79%}
-.campus .t-resi{left:77.5%;top:52%}
+.campus .t-conv{left:52%;top:62%}
+.campus .t-resi{left:76.5%;top:21%}
 .campus .t-rnd{left:24%;top:47%}
 .campus .t-learn{left:58%;top:52%}
-.campus .use{display:flex;flex-direction:column;gap:22px}
-.campus .ub{background:rgba(238,240,255,.09);border:1px solid rgba(238,240,255,.2);border-radius:16px;padding:18px 22px}
-.campus .uh{font-family:var(--head);font-weight:900;font-size:38px;color:var(--kw);margin-bottom:8px;letter-spacing:.01em}
-.campus .ub p{margin:0;font-size:28px;line-height:1.55;color:var(--st-ink)}
-.campus .link{margin:0;font-size:27px;line-height:1.5;color:var(--gold);font-weight:700}
+.campus .use{position:absolute;left:0;top:28px;width:640px;z-index:4;box-sizing:border-box;
+  background:rgba(8,6,42,.8);border:1px solid rgba(238,240,255,.3);border-radius:18px;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:26px 32px;
+  box-shadow:0 16px 50px rgba(0,0,0,.55)}
+.campus .uh{font-family:var(--head);font-weight:900;font-size:42px;color:#FFE500;
+  letter-spacing:.01em;margin:0 0 14px}
+.campus .use .ub+.ub .uh{margin-top:24px}
+.campus .use p{margin:0 0 9px;font-size:30px;line-height:1.5;color:var(--st-ink)}
+.campus .use hr{border:0;border-top:1px solid rgba(238,240,255,.28);margin:16px 0}
+.campus .link{margin:18px 0 0;font-size:27px;line-height:1.45;color:var(--gold);font-weight:700}
 
 .notewrap{display:flex;align-items:center;justify-content:center;height:100%}
 .note{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -933,12 +933,14 @@ const PARTS = [
   P({ no:'15', id:'A-15', title:'베네핏 게임 예고', bg:'bg/hf_20260907_174521_5dd60dd7-6aaf-4f81-99f7-20b94f35d861.jpg', bgSize:'auto', bgPos:'0px -132px', eyebrow:'1일차 밤 · 0시', h:'<em>베네핏 게임</em>', sub:hand('0시의 데이트'), body:{type:'lines', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권 제공','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바람','9/11(금) 0시 · 자율 참여']}, viz:'없음. 부제 "0시의 데이트"는 손글씨 후보', how:'혜택 2줄 + 시각 + 발표 안내 2줄' }),
   P({ no:'16', id:'A-16', title:'참가 크루 전원 선물', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'100% auto', bgPos:'center', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'에어팟 사진 · 수료증(문안 대기)', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'오른쪽 이미지 — 에어팟(팀밋업 사이트 그림)', how:'두 줄' }),
   P({ no:'17', id:'A-17', title:'우수팀 특전', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'108% auto', bgPos:'center', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'상장 ❓ · 최우수 상품 · 우수 상품', objImgs:[['img/perks/macbook-air.webp','최우수상 — MacBook Air M5'],['img/perks/macbook-neo.webp','우수상 — MacBook Neo A18 Pro']], viz:'오른쪽 이미지 — 맥북 에어 · 맥북 네오(팀밋업 사이트 그림), 상장은 문안 대기', how:'상 이름 + 상품명', wait:'상장 문안' }),
-  P({ no:'18', id:'A-18', title:'교육장소 이용 안내 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'오시는 길 · <em>숙소</em> 이용 규정', steps:[
-      {label:'오시는 길', body:{type:'campus', use:[
-        ['컨벤션센터', ['1층 — 이벤트홀 (메인 행사장)','1층 — 커피숍 · 무인편의점','2층 — 컨퍼런스룸 201 · 202 · 203호','지하 1층 — 식당 · 주차장']],
+  P({ no:'18', id:'A-18', title:'시설 안내', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'116% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'<em>시설</em> 안내',
+      body:{type:'campus', use:[
+        ['컨벤션센터', ['1층 — 이벤트홀 (메인 행사장)','2층 — 컨퍼런스룸 201 · 202 · 203호','','1층 — 커피숍 · 무인편의점','지하 1층 — 식당 · 주차장']],
         ['레지던스홀', ['숙소']],
-      ], link:'컨벤션센터와 레지던스홀은 1층에서 서로 연결되어 있습니다.'}},
-      {label:'이용 규정', body:{type:'rules',
+      ], link:'컨벤션센터와 레지던스홀은 1층에서 서로 연결되어 있습니다.'},
+    viz:'사진을 화면 가득 깔고 두 건물만 노란 테두리로 짚는다 · 왼쪽에 층별 이용안내', how:'배경 그림은 build-campus.mjs 로 구워 둔다(9/9)' }),
+  P({ no:'—', id:'A-18r', title:'숙소 이용 규정', new:true, bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'120% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'레지던스홀 <em>이용 규정</em>',
+      body:{type:'rules',
       lead:'레지던스홀 이용 규정 위반 시 <b>퇴실조치 및 교육담당자에게 통보</b>됩니다.<br>각 층마다 이용 규정 위반을 모니터링하기 위한 <b>CCTV가 설치</b>되어 있사오니, 꼭 이용 규정을 준수하여 주시길 바랍니다.', cctv:true,
       top:[
         ['🚬','객실내 흡연',''],
@@ -951,8 +953,8 @@ const PARTS = [
         ['🧯','시설 · 안전',['화재 위험요인 및 안전사고 유발','시설물 파손(변상포함)','시설집기 임의이동','정리정돈 및 청소 불량']],
         ['🚨','범죄 행위',['도박행위','절도행위','폭행']],
       ],
-      foot:'위 18가지는 모두 금지 항목입니다. 꼭 지켜 주시기 바랍니다.'}},
-    ], viz:'1단계 안내도(두 건물만 또렷·110% 팝업) + 건물 이용안내 · 2단계 특히 중요한 3가지 + 주제 넷으로 묶은 15항목', how:'안내도 자리값은 운영이 준 표시 그림에서 읽었다(9/9). 금지 항목은 낱개로 늘어놓으면 안 읽혀 주제로 묶었다' }),
+      foot:'위 18가지는 모두 금지 항목입니다. 꼭 지켜 주시기 바랍니다.'},
+    viz:'특히 중요한 3가지(빨간 금지 표지) + 주제 넷으로 묶은 15항목 · 오른쪽 위 CCTV 표지', how:'금지 항목은 낱개로 늘어놓으면 안 읽혀 주제로 묶었다(9/9)' }),
   P({ no:'19', id:'A-19', title:'건강증진센터', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'124% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'가장 중요한 것은 <em>건강과 안전</em>!', sub:'몸이 아프거나, 컨디션이 안 좋으면 무리하지 않고 쉬어야 합니다.', body:{type:'note', big:'러닝센터 2층 <em>건강증진센터</em>', lines:['09:00 - 18:00 · 간호사 상주','운영시간이 아닐 경우, 운영진에게 말씀 주세요','간단한 비상의약품은 운영진에게 요청하시면 됩니다']}, viz:'가운데 큰 안내 판 — 받은 안내문 그대로', how:'비상의약품 한 줄 추가(이종은 9/9)' }),
   P({ no:'—', id:'A-19b', title:'안전행동수칙 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'132% auto', bgPos:'center', new:true, eyebrow:'교육장소 이용 안내', h:'교육 시 <em>안전행동수칙</em>', steps:[
       {label:'안전 가이드', body:{type:'rules',
@@ -1104,21 +1106,12 @@ B.rules=(b)=>{
 };
 B.campus=(b)=>el('div','campus',
   `<div class="map">
-     <img class="base far" src="img/campus.webp" alt="포스코인재창조원 송도캠퍼스">
-     <img class="base site" style="clip-path:polygon(${CAMPUS_SITE})" src="img/campus.webp" alt="">
-     <div class="pop conv"><img class="hi" style="clip-path:polygon(${CAMPUS_CONV})" src="img/campus.webp" alt=""></div>
-     <div class="pop resi"><img class="hi" style="clip-path:polygon(${CAMPUS_RESI})" src="img/campus.webp" alt=""></div>
-     <svg class="ol" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-       <polygon class="key" points="${pgon(CAMPUS_CONV)}"/>
-       <polygon class="key" points="${pgon(CAMPUS_RESI)}"/>
-     </svg>
+     <img class="hero" src="img/campus-hero.webp" alt="포스코인재창조원 송도캠퍼스 — 컨벤션센터와 레지던스홀">
      <span class="tag key t-conv">컨벤션센터<i>행사장 · 식당</i></span>
      <span class="tag key t-resi">레지던스홀<i>숙소</i></span>
-     <span class="tag dim t-rnd">R&amp;D센터</span>
-     <span class="tag dim t-learn">러닝센터</span>
    </div>
    <div class="use">${b.use.map(([h,items])=>
-     `<div class="ub"><div class="uh ln">${h}</div>${items.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`).join('')}
+     `<div class="ub"><div class="uh ln">${h}</div>${items.map(x=>x?`<p class="ln">${x}</p>`:'<hr>').join('')}</div>`).join('')}
      <p class="link ln">${b.link}</p></div>`);
 B.note=(b)=>el('div','notewrap',`<div class="note"><div class="hd ln">${b.big}</div>${b.lines.map(l=>`<p class="ln">${l}</p>`).join('')}</div>`);
 B.lines=(b)=>el('div','lines'+(b.lines.length>6?' tight':'')+(b.seq?' seq':''), b.lines.map(l=>lnP(l)).join(''));
