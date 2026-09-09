@@ -330,6 +330,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
   padding:18px 20px;display:flex;flex-direction:column;min-height:0}
 .rules .rt2{font-family:var(--head);font-weight:900;font-size:38px;letter-spacing:.01em;
   color:var(--kw);margin:6px 0 10px}
+/* 아이콘 + 제목을 한 줄로, 크기는 갑절로(이종은 9/9). */
+.rules .rc .hd{display:flex;align-items:center;gap:18px;margin-bottom:16px}
+.rules .rc .ic{font-size:100px;line-height:1}
+.rules .rc .rt2{font-size:76px;margin:0;line-height:1.05}
 .rules ul{margin:0;padding-left:26px}
 .rules li{font-size:27px;line-height:1.5;color:var(--st-ink);margin-bottom:5px}
 .rules .tops{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -1138,8 +1142,8 @@ B.rules=(b)=>{
        top+list — 계층이 없는 경우(16쪽 숙소 규정: 위 셋이 중할 뿐 나머지는 낱개) */
   if(b.items||b.track){
     const card=([ic,t,list])=>
-        `<div class="rc"><div class="ic" role="img" aria-hidden="true">${ic}</div>`
-        +`<div class="rt2 ln">${t}</div>`
+        `<div class="rc"><div class="hd"><span class="ic" role="img" aria-hidden="true">${ic}</span>`
+        +`<span class="rt2 ln">${t}</span></div>`
         +`<ul>${list.map(x=>`<li class="ln">${x}</li>`).join('')}</ul></div>`;
     /* 묶음마다 안내 문구를 함께 담는다 — 칸이 밀릴 때 문구도 같이 나간다(이종은 9/9). */
     const inner=b.track
