@@ -25,7 +25,10 @@
   --pad:64px; --gap:15px; --brand-h:46px; --brandbar-h:104px;
   /* 대형 이벤트홀 뒷줄에서 읽히도록 올린 값(이종은 지시 9/8). 1920 기준 24px 이하는
      맨 뒤에서 안 읽힌다 — 본문 최소를 30px 로 끌어올렸다. 원래 값은 21/24/32/39/56/86/144. */
-  --s00:26px; --s0:30px; --s1:38px; --s2:46px; --s3:62px; --s4:92px; --s5:150px;
+  /* 9/8 에 전 페이지를 1.2배로 올렸다가 9/9 에 되돌렸다(이종은: "요청하지 않은 페이지도
+     글자가 이상하게 커져서 문제가 많다"). 일정표·크루 목록처럼 빽빽한 장이 눌렸다.
+     **크게 해달라고 한 장은 이 저울을 쓰지 않고 px 를 직접 준다**(1장 44px, 표지 등). */
+  --s00:21px; --s0:24px; --s1:32px; --s2:39px; --s3:56px; --s4:86px; --s5:144px;
   --head:'Paperlogy','NanumSquare','Pretendard','Malgun Gothic',sans-serif;
   --body:'NanumSquare','Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
   --hand:'Gaegu','Nanum Pen Script','Nanum Brush Script',cursive;
