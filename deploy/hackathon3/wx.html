@@ -1285,8 +1285,34 @@ const MUST = '발표에 꼭 포함 — 과제 선정이유 · 협업 과정 · �
 const PART_OF = (n) => n <= 3 ? '1부' : n <= 6 ? '2부' : '3부';
 const PART_IDX = [[0,1,2],[3,4,5],[6,7]];
 
+/* ── 두 주소, 한 파일 ───────────────────────────────────────────────────────
+   같은 파일을 두 자리에 놓고, **주소로** 무엇을 보여 줄지 가른다(이종은 9/10).
+
+     /main/          참가자용. 비밀번호 없이 바로 첫 장. 조작 단추와 운영 전용
+                     장(시상 선택기)은 아예 없다.
+     /main/wx.html   행사장 메인 PC 용. 똑같은 덱에 조작 단추와 운영 전용 장이
+                     함께 나온다. 화면 어디에도 "운영 모드"라는 표시는 없다.
+
+   두 자리에 **같은 파일을 그대로 복사**하므로(배포 스크립트가 한다) 내용을 고치면
+   양쪽이 함께 바뀐다. 폴더(/main/wx/)가 아니라 같은 칸의 파일(wx.html)로 둔 까닭은
+   자산 경로가 상대경로(bg/… img/…)이기 때문이다 — 폴더로 두면 한 칸 아래에서
+   찾아 죄다 404 가 난다.
+
+   숨기는 것이 곧 자물쇠는 아니다. 정적 사이트라 주소를 알아내면 누구나 열 수
+   있다. 그래도 새는 것은 없다 — 카운트다운·발표 순서·시상 결과는 모두 **그
+   브라우저에만** 저장되므로, 참가자가 wx 주소를 열어도 제 화면의 빈 표만 볼 뿐
+   무대 화면도, 시상 결과도 건드리지 못한다. */
+const OPS = /(^|\/)wx(\.html)?\/?$/.test(location.pathname)
+         || new URLSearchParams(location.search).has('ops');
+document.body.classList.toggle('ops', OPS);
+
 /* ───────── 상태 ───────── */
-const LS = 'wx26.slides.v3';
+/* 저장 칸을 두 판이 따로 쓴다(이종은 9/10). localStorage 는 **주소가 아니라 도메인
+   단위**라, 키가 같으면 같은 브라우저에서 /main/ 을 열었을 때 운영자가 넣어 둔
+   발표 순서·시상 결과가 그대로 비친다 — 무대 PC 에서 참가자 화면을 잘못 띄우면
+   수상팀이 미리 드러난다. 키에 판을 박아 두면 운영자가 무엇을 정하든 참가자
+   화면은 늘 처음 상태(미정)다. */
+const LS = 'wx26.slides.v3' + (OPS ? '.ops' : '');
 /* 카운트다운은 **끝나는 시각**을 붙잡는다(이종은 9/10). 시작 버튼을 언제 누르든
    9/11 13:00 에 0 이 되도록, 남은 시간은 늘 "끝나는 시각 − 지금" 으로 센다.
    예전에는 시작 시각 + 24시간이라 늦게 누르면 그만큼 늦게 끝났다.
@@ -1296,8 +1322,12 @@ const S = Object.assign({ cdEnd:CD_END_DEFAULT, order:[null,null,null,null,null,
 if(!S.cdEnd){ const p2=(n)=>String(n).padStart(2,'0'), d=S.cdStart?new Date(new Date(S.cdStart).getTime()+86400000):null;
   S.cdEnd = d ? `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}` : CD_END_DEFAULT; }
 delete S.cdStart;
-function load(){ try{ return JSON.parse(localStorage.getItem(LS)||'{}'); }catch(e){ return {}; } }
-function save(){ try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
+/* 참가자 판은 **읽지도 쓰지도 않는다.** 조작 단추가 없으니 저장할 것도 없고,
+   이 고침 전에 그 브라우저에 남아 있던 옛 값까지 깨끗이 무시할 수 있다.
+   그래서 참가자 화면은 언제 열어도 늘 처음 상태(카운트다운 24:00:00 · 발표 순서
+   미정 · 시상 미정)다. */
+function load(){ if(!OPS) return {}; try{ return JSON.parse(localStorage.getItem(LS)||'{}'); }catch(e){ return {}; } }
+function save(){ if(!OPS) return; try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
 if(!S.pool){ S.pool=[0,1,2,3,4,5,6,7].sort(()=>Math.random()-.5); save(); }
 const slotTeam = (i) => S.order[i]==null ? null : CH[S.order[i]];
 const orderName = (i) => { const t=slotTeam(i); return t ? t.team : `(발표 ${i+1}번 · 미정)`; };
@@ -1325,10 +1355,6 @@ const P = (o) => o;
    있다. 그래도 새는 것은 없다 — 카운트다운·발표 순서·시상 결과는 모두 **그
    브라우저에만** 저장되므로(localStorage), 참가자가 wx 주소를 열어도 제 화면의
    빈 표만 볼 뿐 무대 화면도, 시상 결과도 건드리지 못한다. */
-const OPS = /(^|\/)wx(\.html)?\/?$/.test(location.pathname)
-         || new URLSearchParams(location.search).has('ops');
-document.body.classList.toggle('ops', OPS);
-
 const PARTS = [
 { id:'p1', tag:'1부', name:'1부 · 1일차 오전', full:'1부 · 1일차 오전 — 개회식 · 오리엔테이션 · 특강', when:'9/10(목) 08:00 ~ 13:00 · 컨벤션센터 1층 이벤트홀 · 원본 1일차 1~23 + 2일차 1~3',
   note:'참가자가 처음 보는 화면들. 08:00 접수부터 12:00 네트워킹 파티까지. 원본 한 페이지 = 한 주제 = 한 페이지이고, 이름이 많은 크루 소개만 페이지 안에서 단계로 넘깁니다.',
