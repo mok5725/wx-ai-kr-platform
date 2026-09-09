@@ -308,6 +308,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules>.lead,.rules>.leadrow,.rules>.tops,.rules>.grps,.rules>.cards,.rules>.rfoot{position:relative;z-index:3}
 .rules .lead{background:rgba(120,20,36,.86);border:1px solid rgba(242,90,110,.7);border-radius:14px;
   padding:14px 22px;font-size:30px;line-height:1.45;font-weight:700;color:#FFD9DF}
+.frame[data-id="A-19b"] .rules .lead{font-size:38px;line-height:1.5;padding:18px 26px}
+/* 가장 지켜야 할 대목은 노란 배지로 — 굵게만 해서는 문장 안에서 묻힌다. */
+.rules .lead .hot{font-style:normal;font-weight:900;color:#08062A;background:#FFE500;
+  border-radius:8px;padding:2px 12px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .rules .cards{display:grid;gap:20px;flex:1;min-height:0}
 .rules .cards.c2{grid-template-columns:repeat(2,1fr)}
 .rules .cards.c3{grid-template-columns:repeat(3,1fr)}
@@ -994,7 +998,7 @@ const PARTS = [
   P({ no:'19', id:'A-19', title:'건강증진센터', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'124% auto', bgPos:'center', eyebrow:'교육장소 이용 안내', h:'가장 중요한 것은 <em>건강과 안전</em>!', sub:'몸이 아프거나, 컨디션이 안 좋으면 무리하지 않고 쉬어야 합니다.', body:{type:'note', big:'러닝센터 2층 <em>건강증진센터</em>', lines:['09:00 - 18:00 · 간호사 상주','운영시간이 아닐 경우, 운영진에게 말씀 주세요','간단한 비상의약품은 운영진에게 요청하시면 됩니다']}, viz:'가운데 큰 안내 판 — 받은 안내문 그대로', how:'비상의약품 한 줄 추가(이종은 9/9)' }),
   P({ no:'—', id:'A-19b', title:'안전행동수칙 (2단계)', bg:'bg/hf_20260907_081334_ddd791b5-6149-4110-9600-630c85fcf508.jpg', bgSize:'132% auto', bgPos:'center', new:true, eyebrow:'교육장소 이용 안내', h:'교육 시 <em>안전행동수칙</em>', steps:[
       {label:'안전 가이드', body:{type:'rules',
-        lead:'교육 중 계단과 야외 활동에서 걸려 넘어지는 사고를 막기 위해, 시설 안에서 <b>이동 중 전방 주시</b>하고 <b>스마트폰 보기는 금지</b>합니다.',
+        lead:'교육 중 계단과 야외 활동에서 걸려 넘어지는 사고를 막기 위해,<br>시설 안에서 <b>이동 중 전방 주시</b>하고 <em class="hot">스마트폰 보기는 금지</em>합니다.',
         items:[
           ['🏫','교육장',['책상·문 등 돌출물 부딪힘 및 틈새 끼임 주의','계단 및 경사로 미끄럼 · 걸려 넘어짐 주의']],
           ['🚶','통행로',['계단 통행 시 발 위치 확인 및 핸드레일 사용','물품 운반 시 주위 확인 및 시야 확보','우천 시 미끄럼 주의']],
