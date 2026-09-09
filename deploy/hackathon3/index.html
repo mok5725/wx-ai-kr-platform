@@ -316,12 +316,17 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    다섯 칸을 한 줄로 이어 붙이고 창(tracker)만큼만 보여 준다. 다음을 누르면
    세 칸씩 왼쪽으로 밀린다 — 화면이 통째로 바뀌지 않고 칸이 이어져 흐른다. */
 .rules .tracker{overflow:hidden;flex:1;min-height:0;display:flex}
-.rules .cards.track{display:flex;gap:20px;flex:1;min-height:0;
+/* min-width:0 이 없으면 트랙이 속 내용(묶음 둘)만큼 늘어나고, 그러면 묶음의
+   flex-basis:100% 가 그 늘어난 폭을 가리켜 창을 넘는다 — 9/9 실제로 겪었다.
+   트랙 폭을 창에 못 박아야 묶음 하나가 정확히 창 하나가 된다. */
+.rules .cards.track{display:flex;gap:20px;flex:1;min-height:0;min-width:0;
   transition:transform .55s cubic-bezier(.22,.61,.36,1);will-change:transform}
-.rules .grp{flex:0 0 100%;display:flex;flex-direction:column;gap:18px;min-height:0}
+/* min-width:0 이 없으면 묶음이 **속 내용 최소폭까지 늘어난다** — 글씨를 키우자
+   묶음이 창(1792)보다 넓어져 트랙이 어긋났다(9/9). 창 폭에 못 박는다. */
+.rules .grp{flex:0 0 100%;min-width:0;display:flex;flex-direction:column;gap:18px;min-height:0}
 /* 칸은 창을 **고르게 나눠 채운다**. 셋이면 1/3 씩, 둘이면 1/2 씩 —
    마지막 묶음처럼 칸이 둘일 때 옆이 비지 않는다(이종은 9/9). */
-.rules .grp .row{display:flex;gap:20px;flex:1;min-height:0}
+.rules .grp .row{display:flex;gap:20px;flex:1;min-height:0;min-width:0}
 .rules .grp .row .rc{flex:1 1 0;min-width:0}
 .rules .cards{display:grid;gap:20px;flex:1;min-height:0}
 .rules .cards.c2{grid-template-columns:repeat(2,1fr)}
@@ -334,6 +339,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .rules .rc .hd{display:flex;align-items:center;gap:18px;margin-bottom:16px}
 .rules .rc .ic{font-size:100px;line-height:1}
 .rules .rc .rt2{font-size:76px;margin:0;line-height:1.05}
+/* 칸이 둘뿐인 묶음은 칸이 1.5배 넓다(584 → 886px). 글씨도 그만큼 키워야
+   1~3 칸과 같은 밀도로 읽힌다 — 크기를 맞춰 두면 넓어진 칸이 헐거워 보인다. */
+.rules .row.n2 .rc .ic{font-size:132px}
+.rules .row.n2 .rc .rt2{font-size:100px}
+.rules .row.n2 .rc li{font-size:34px;line-height:1.45;margin-bottom:9px}
 .rules ul{margin:0;padding-left:26px}
 .rules li{font-size:27px;line-height:1.5;color:var(--st-ink);margin-bottom:5px}
 .rules .tops{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -1149,7 +1159,7 @@ B.rules=(b)=>{
     const inner=b.track
       ? `<div class="cards track">`+b.track.map(g=>`<div class="grp">`
           +(g.lead?`<div class="lead ln">${g.lead}</div>`:'')
-          +`<div class="row">`+g.items.map(card).join('')+`</div></div>`).join('')+`</div>`
+          +`<div class="row n${g.items.length}">`+g.items.map(card).join('')+`</div></div>`).join('')+`</div>`
       : `<div class="cards c${b.items.length}">`+b.items.map(card).join('')+`</div>`;
     w.innerHTML=(b.lead?`<div class="lead ln">${b.lead}</div>`:'')
       +(b.track?`<div class="tracker">${inner}</div>`:inner)
