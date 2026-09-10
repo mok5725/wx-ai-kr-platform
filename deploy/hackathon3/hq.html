@@ -937,12 +937,24 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 24시간 카운트다운의 조작 줄 — 평소엔 보이지 않다가 화면 아래쪽에 마우스를
    가져가면 뜬다. 자리(220px 띠)는 늘 잡아 두어 나타날 때 화면이 흔들리지 않고,
    띠 자체가 마우스를 받으므로 어디를 겨눌지 몰라도 손이 내려가면 뜬다. */
-.opswrap{position:absolute;left:0;right:0;bottom:0;height:220px;z-index:8;box-sizing:border-box;
-  align-items:flex-end;justify-content:center;padding-bottom:30px}
+/* 조작거리가 두 줄이 되면서 오른쪽 아래 쪽번호(y970~1053)에 걸쳤다 — 그 위로
+   올리고, 마우스를 대는 자리도 그만큼 넓힌다(이종은 9/11). */
+.opswrap{position:absolute;left:0;right:0;bottom:0;height:300px;z-index:8;box-sizing:border-box;
+  align-items:flex-end;justify-content:center;padding-bottom:116px}
 .opswrap .ctl{opacity:0;transition:opacity .22s ease;
   background:rgba(8,6,42,.74);border-radius:999px;padding:12px 24px;
   -webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
 .opswrap:hover .ctl{opacity:1}
+/* 조작거리가 늘어 한 줄에 안 들어간다 — 접어서 두 줄로(이종은 9/11). */
+.opswrap .ctl.cd2{flex-wrap:wrap;justify-content:center;max-width:1700px;border-radius:26px;row-gap:10px}
+.ctl.cd2 .sep{width:2px;height:26px;background:rgba(238,240,255,.22);margin:0 4px}
+.ctl.cd2 .quick{display:flex;gap:6px}
+.ctl.cd2 .btn.tiny{padding:4px 12px;font-size:22px}
+.ctl.cd2 input[type=number]{width:84px;text-align:center}
+.ctl.cd2 .btn.hold.on{background:var(--gold);color:#08062A;border-color:var(--gold)}
+/* 멈춰 있으면 숫자를 살짝 죽여 둔다 — 멈춘 줄 모르고 지나치면 안 된다. */
+.frame.paused .digits{opacity:.62}
+.frame.paused .state{color:var(--gold)}
 
 /* 조작 줄(.ctl)은 운영 주소에서만 보인다 — 카운트다운 맞추기, 발표 순서 카드,
    시상 선택, 발표 타이머가 모두 여기에 걸린다. 참가자 화면에는 아예 안 뜬다.
@@ -1485,7 +1497,7 @@ const CD_END_DEFAULT='2026-09-11T13:00';
    다시 정할 일이 생기면 ORDER 를 [null,null,null,null,null,null,null,null] 로 되돌리고
    아래 한 줄(S.order=…)을 지우면 28쪽 카드 화면이 다시 살아난다. */
 const ORDER = [5,1,6,7,2,4,0,3];
-const S = Object.assign({ cdEnd:CD_END_DEFAULT, order:[...ORDER], pool:null, awards:{mTop:null,cTop:null,cGood:null}, reveal:{} }, load());
+const S = Object.assign({ cdEnd:CD_END_DEFAULT, cdPause:null, order:[...ORDER], pool:null, awards:{mTop:null,cTop:null,cGood:null}, reveal:{} }, load());
 /* 브라우저마다 다른 옛 순서가 남아 있어도 박아 둔 순서가 이긴다 — 무대 PC 와
    운영 PC 가 늘 같은 화면을 보게 한다. */
 S.order = [...ORDER];
@@ -2134,6 +2146,7 @@ const fmtHMS=(s)=>{ const d=s>86400?Math.floor(s/86400):0, r=s-d*86400; const co
 const fmtMS=(s)=>`${pad(Math.floor(s/60))}:${pad(s%60)}`;
 const fmtKo=(d)=>`${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const toLocalInput=(d)=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const toLocalSec=(d)=>`${toLocalInput(d)}:${pad(d.getSeconds())}`;
 const WIDGETS={};
 /* 남은 시간 = 끝나는 시각 − 지금. 그래서 언제 눌러도 9/11 13:00 에 0 이 된다.
    「지금 맞추기」는 이미 그렇게 세고 있음을 눈으로 확인시키는 단추이고,
@@ -2145,19 +2158,62 @@ WIDGETS.countdown=(frame)=>{
   /* 조작 줄은 화면에 두되 보이지 않게 둔다 — 아래쪽에 마우스를 가져가면 뜬다
      (이종은 9/10). 24시간 내내 걸려 있는 화면이라 평소엔 숫자만 보여야 한다. */
   const zone=el('div','opswrap ops-only',
-     `<div class="ctl"><label>종료 시각 <input type="datetime-local" id="cdEnd" step="60"></label>`
-    +`<button class="btn" id="cdSync">지금 맞추기</button>`
+     `<div class="ctl cd2">`
+    +`<label>종료 시각 <input type="datetime-local" id="cdEnd" step="1"></label>`
     +`<button class="btn" id="cdNow">지금부터 24시간</button>`
-    +`<button class="btn" id="cdDef">9/11 13:00 종료</button><span id="cdClock"></span></div>`);
+    +`<button class="btn" id="cdDef">9/11 13:00 종료</button>`
+    +`<b class="sep"></b>`
+    /* 끝나는 시각과 상관없이 남은 시간을 손으로 맞춘다 — 리허설·지연·앙코르에 쓴다. */
+    +`<label>남은 시간 <input type="number" id="cdH" min="0" max="24" step="1" value="0">시`
+    +` <input type="number" id="cdM" min="0" max="59" step="1" value="30">분</label>`
+    +`<button class="btn" id="cdSet">적용</button>`
+    +`<span class="quick">${[['10분',10],['30분',30],['1시간',60],['3시간',180],['6시간',360],['12시간',720]]
+        .map(([l,m])=>`<button class="btn tiny" data-min="${m}">${l}</button>`).join('')}</span>`
+    +`<b class="sep"></b>`
+    +`<button class="btn hold" id="cdHold">멈춤</button>`
+    +`<span id="cdClock"></span></div>`);
   frame.appendChild(zone);
-  const inp=zone.querySelector('#cdEnd');
-  const setEnd=(v)=>{ inp.value=v; S.cdEnd=v; save(); tick(); };
+  const inp=zone.querySelector('#cdEnd'), hold=zone.querySelector('#cdHold');
+  const setEnd=(v)=>{ inp.value=v; S.cdEnd=v; S.cdPause=null; save(); paintHold(); tick(); };
   inp.value=S.cdEnd;
   inp.addEventListener('change',()=>{ if(inp.value) setEnd(inp.value); });
-  zone.querySelector('#cdSync').addEventListener('click',()=>tick());
   zone.querySelector('#cdNow').addEventListener('click',()=>{ const d=new Date(Date.now()+86400000); d.setSeconds(0,0); setEnd(toLocalInput(d)); });
   zone.querySelector('#cdDef').addEventListener('click',()=>setEnd(CD_END_DEFAULT));
+
+  /* 남은 시간을 손으로 맞춘다 — 지금부터 그만큼 남도록 끝나는 시각을 다시 잡는다.
+     멈춰 있을 때 맞추면 멈춘 채로 그 시간이 되고, 「이어가기」를 눌러야 흐른다. */
+  const setRemain=(sec)=>{
+    sec=Math.max(0,Math.min(86400,Math.round(sec)));
+    if(S.cdPause!=null){ S.cdPause=sec; }
+    else { S.cdEnd=toLocalSec(new Date(Date.now()+sec*1000)); inp.value=S.cdEnd; }
+    save(); tick();
+  };
+  const hEl=zone.querySelector('#cdH'), mEl=zone.querySelector('#cdM');
+  zone.querySelector('#cdSet').addEventListener('click',()=>setRemain((+hEl.value||0)*3600+(+mEl.value||0)*60));
+  zone.querySelectorAll('.quick .btn').forEach(b=>b.addEventListener('click',()=>{
+    const m=+b.dataset.min; hEl.value=Math.floor(m/60); mEl.value=m%60; setRemain(m*60); }));
+
+  /* 멈춤 — 남은 초를 붙들어 둔다. 이어가면 그만큼 남도록 끝나는 시각을 다시 잡는다. */
+  const remNow=()=>{ const left=new Date(S.cdEnd).getTime()-Date.now();
+    return Math.max(0, Math.ceil(Math.min(left,86400000)/1000)); };
+  function paintHold(){ const p=S.cdPause!=null;
+    hold.textContent=p?'이어가기':'멈춤'; hold.classList.toggle('on',p); frame.classList.toggle('paused',p); }
+  hold.addEventListener('click',()=>{
+    if(S.cdPause==null) S.cdPause=remNow();
+    else { S.cdEnd=toLocalSec(new Date(Date.now()+S.cdPause*1000)); inp.value=S.cdEnd; S.cdPause=null; }
+    save(); paintHold(); tick(); });
+  paintHold();
   function tick(){
+    zone.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false});
+    /* 멈춰 두면 숫자를 붙들어 둔다 — 끝나는 시각은 이어갈 때 다시 잡는다. */
+    if(S.cdPause!=null){
+      const rem=S.cdPause;
+      w.querySelector('#cdD').textContent=fmtHMS(rem);
+      w.querySelector('#cdD').classList.toggle('days',rem>86400);
+      w.querySelector('#cdS').textContent = rem>0 ? '멈춤 — 남은 시간을 붙들어 두었습니다' : '과제 수행이 끝났습니다';
+      frame.classList.toggle('done', rem<=0);
+      return;
+    }
     /* 아직 24시간이 더 남았으면(리허설·시작 전) 24:00:00 에서 멈춰 세워 둔다 —
        "24시간 끝장 개발" 화면에 33시간이 떠 있으면 이상하다. */
     const end=new Date(S.cdEnd).getTime(), now=Date.now(), left=end-now; let rem,s;
@@ -2168,7 +2224,6 @@ WIDGETS.countdown=(frame)=>{
     w.querySelector('#cdD').textContent=fmtHMS(rem);
     w.querySelector('#cdD').classList.toggle('days',rem>86400);
     w.querySelector('#cdS').textContent=s;
-    zone.querySelector('#cdClock').textContent='현재 '+new Date().toLocaleTimeString('ko-KR',{hour12:false});
   }
   tick(); setInterval(tick,1000); return w;
 };
@@ -2459,7 +2514,7 @@ stage.addEventListener('wheel',(e)=>{
 document.addEventListener('fullscreenchange',()=>{ if(!STAGE_ONLY&&!document.fullscreenElement&&stage.classList.contains('on')) closeStage(false); });
 function toggleGrid(){ const on=document.body.classList.toggle('showgrid'); $('#btnGrid').textContent=on?'그리드 보기 끄기':'그리드 보기 켜기'; $('#btnGrid').classList.toggle('on',on); }
 $('#btnGrid').addEventListener('click',toggleGrid); $('#btnStage0').addEventListener('click',()=>openStage(0,0));
-$('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdEnd:S.cdEnd, order:S.order.map(i=>i==null?null:CH[i].team), awards:S.awards},null,2); (navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>alert('복사했습니다:\n'+txt)):Promise.reject()).catch(()=>prompt('복사해서 옮기세요',txt)); });
+$('#btnExport').addEventListener('click',()=>{ const txt=JSON.stringify({cdEnd:S.cdEnd, cdPause:S.cdPause, order:S.order.map(i=>i==null?null:CH[i].team), awards:S.awards},null,2); (navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>alert('복사했습니다:\n'+txt)):Promise.reject()).catch(()=>prompt('복사해서 옮기세요',txt)); });
 $('#btnResetAll').addEventListener('click',()=>{ if(confirm('카운트다운 시각 · 발표 순서 · 시상 선택을 전부 지웁니다. 계속할까요?')){ localStorage.removeItem(LS); location.reload(); } });
 
 renderAll(); document.querySelectorAll('.fw').forEach(fw=>ro.observe(fw)); rerender();
