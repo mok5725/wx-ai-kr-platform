@@ -985,7 +985,10 @@ body:not(.ops) .ctl{display:none}
 .aw label:has(input:disabled){opacity:.35;cursor:not-allowed}
 .aw input{accent-color:var(--gold);width:24px;height:24px;margin:0}
 .aw .status{font-size:28px;color:var(--st-ink);line-height:1.5}
-.part{display:grid;grid-template-columns:720px 1fr;gap:64px;height:100%;align-items:center}
+/* 부 번호와 팀 목록을 한 덩이로 묶어 화면 가운데에 놓는다 — 720px 고정 열은
+   목록이 짧을 때 오른쪽이 휑하게 비어 왼쪽으로 쏠려 보였다(이종은 9/10). */
+.part{display:grid;grid-template-columns:auto auto;gap:64px;height:100%;
+  align-items:center;justify-content:center}
 .part .no{font-family:var(--head);font-weight:900;font-size:320px;line-height:1;letter-spacing:-.03em;color:var(--st-ink)}
 .part .list{font-size:44px;line-height:1.6;color:var(--st-soft)}
 .part .list p b{color:var(--st-ink);font-family:var(--head);font-weight:800}
