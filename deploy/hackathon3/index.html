@@ -886,7 +886,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ord11 .rl2{font-size:22px;color:var(--st-faint)}
 
 /* 크루 소개(31~33쪽) — 5쪽과 같은 판, 담는 것만 팀명·과제명·이름. */
-.crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto 1fr auto;align-content:start}
+/* 이름 줄을 1fr 로 두면 칸이 본문 끝까지 늘어나 이름 아래가 휑하게 빈다 —
+   내용만큼만 세운다(이종은 9/11). 네 칸의 가로줄은 subgrid 가 계속 맞춰 준다. */
+.crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto auto auto;align-content:start}
 .crews3.n4{grid-template-columns:repeat(4,1fr)}
 .crews3.n3{grid-template-columns:repeat(3,1fr)}
 .crews3 .it{grid-row:span 4;display:grid;grid-template-rows:subgrid;min-height:0;
@@ -1069,7 +1071,7 @@ body:not(.ops) .ctl{display:none}
 /* 시상 네 장 — 위에 트랙 이름(붓글씨 SVG), 줄 바꿔 아래에 상 이름. 가운데 정렬.
    붓글씨 원본은 밝은 바탕용 짙은 보라(#271758~)라 어두운 배경에서 읽히지 않는다.
    판을 깔지 않고 **글씨 자체를 밝게** 한다 — docs/img/lettering/*.svg 는
-   docs/hand/ref 의 원본에서 그라디언트 밝기만 올린 배포용 사본이다(이종은 9/10). */
+   원본(img/lettering/원본)에서 색만 흰색으로 바꾼 사본이다 — img/lettering/README.md. */
 .frame[data-id="D-16a"] .cover .big,
 .frame[data-id="D-16b"] .cover .big,
 .frame[data-id="D-17a"] .cover .big,
