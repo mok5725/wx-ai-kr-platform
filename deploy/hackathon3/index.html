@@ -192,6 +192,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .frame[data-id="A-16"] .obj-z.has-img{height:528px}
 .frame[data-id="A-16"] .noter-z{left:522px;right:auto;top:938px;bottom:auto;
   max-width:900px;text-align:left}
+/* 35쪽은 같은 단서를 한 줄로 화면 가운데에 놓는다(이종은 9/10).
+   그림 칸이 본문 끝까지 차면 단서가 칸에 겹치므로 칸을 조금 줄여 자리를 낸다. */
+.frame[data-id="D-16재"] .obj-z.has-img{height:540px}
+.frame[data-id="D-16재"] .noter-z{left:var(--pad);right:var(--pad);max-width:none;text-align:center}
 /* ── 음영 판(scrim:true) ───────────────────────────────────────────────────
    배경 사진 위에서 글줄이 잘 안 읽히는 장에만 켠다. 판을 화면 전체에 깔지 않고
    **글자 뒤에만** 깐다 — 배경을 살리면서 대비만 확보한다. */
@@ -495,6 +499,7 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .lines p{font-size:var(--s1);line-height:1.7}
 .lines p.em{color:var(--st-ink);font-weight:700}
 .lines p.q{color:var(--gold)}
+.lines p b{color:var(--st-ink);font-weight:800}
 .lines.tight p{line-height:1.5}
 .kv{display:grid;grid-template-columns:200px 1fr;gap:4px 24px;align-content:start}
 .kv .k{font-size:var(--s0);color:var(--st-faint);letter-spacing:.06em;padding-top:8px}
@@ -855,7 +860,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .jt td{border:1px solid rgba(238,240,255,.24);padding:20px 14px;vertical-align:middle}
 .jt td.cw{font-family:var(--head);font-weight:900;font-size:34px;color:var(--kw)}
 .jt td.mrg{background:rgba(238,240,255,.06)}
-.jt .who{display:block;font-weight:700}
+/* 뒤에 오는 일반 .who 규칙이 글자 크기를 56px 로 키운다 — 표 안에서는
+   다른 이름과 같은 크기여야 한다(이종은 9/10). */
+.jt .who{display:block;font-family:inherit;font-size:inherit;font-weight:700}
 .jt .plus{display:block;margin-top:8px;font-family:var(--head);font-weight:900;font-size:34px;color:var(--gold)}
 
 /* 발표 순서 열한 번 — 부마다 묶고 번호는 1부터 끝까지 이어 센다. */
@@ -875,10 +882,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ord11 .rl2{font-size:22px;color:var(--st-faint)}
 
 /* 크루 소개(31~33쪽) — 5쪽과 같은 판, 담는 것만 팀명·과제명·이름. */
-.crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto auto;align-content:start}
+.crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto 1fr auto;align-content:start}
 .crews3.n4{grid-template-columns:repeat(4,1fr)}
 .crews3.n3{grid-template-columns:repeat(3,1fr)}
-.crews3 .it{grid-row:span 3;display:grid;grid-template-rows:subgrid;min-height:0;
+.crews3 .it{grid-row:span 4;display:grid;grid-template-rows:subgrid;min-height:0;
   background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
   padding:26px 26px 28px;
   box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
@@ -890,6 +897,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .crews3 .nm span{display:flex;align-items:center;font-family:var(--head);font-weight:800;
   font-size:30px;line-height:1.3;color:var(--st-ink)}
 .crews3 .nm .cap{width:26px;height:26px;font-size:15px;margin-left:6px}
+/* 마스터 칸임을 팀명 옆에 한눈에, 자문은 맨 아래 줄에(이종은 9/10). */
+.crews3 .mk{margin-left:12px;font-family:var(--head);font-weight:800;font-size:24px;
+  color:var(--kw);vertical-align:middle;white-space:nowrap}
+.crews3 .adv{margin-top:18px;font-size:23px;line-height:1.4;color:var(--st-soft);align-self:end}
 
 .crit{display:grid;gap:26px}
 /* 이름을 critbar 로 둔다 — .bar 로 두면 무대 조작 막대(.stagefs .bar)의 규칙에 걸려
@@ -1535,24 +1546,24 @@ const PARTS = [
     ]}}, viz:'4쪽과 같은 틀 — 개조식 다섯 줄 + 크루 도해', how:'4쪽 내용 그대로 두되 참여사를 장소와 대상 사이에 넣었다(이종은 9/10)' }),
   ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:`center ${-46*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true,
     body:()=>({type:'crews3', items:[
-      {ma:true, team:MASTERS[k].team, topic:[MASTERS[k].topic, MASTERS[k].tag].filter(Boolean).join(' — '), members:MASTERS[k].members},
+      {ma:true, team:MASTERS[k].team, topic:[MASTERS[k].topic, MASTERS[k].tag].filter(Boolean).join(' — '), members:MASTERS[k].members, adv:MASTERS[k].advisor},
       ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return t ? {team:t.team, topic:t.title, members:t.members} : {team:'(발표 순서 결정 후)', topic:'', members:[]}; })
-    ]}), viz:'5쪽과 같은 판 — 팀명 · 과제명 · 이름. 마스터 한 칸(파랑) + 챌린저 칸', how:'순서는 발표 순서 결정 결과(이종은 9/10)' })),
+    ]}), viz:'5쪽과 같은 판 — 팀명[마스터] · 과제명 · 이름 · 자문. 마스터 한 칸(파랑) + 챌린저 칸', how:'순서는 발표 순서 결정 결과. 마스터 칸은 팀명 옆에 [마스터], 맨 아래 미래기술연구원 자문(이종은 9/10)' })),
   P({ no:'4', id:'D-17재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -322px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
-  P({ no:'5', id:'D-16재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -368px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상<br>수상자는 제외됩니다', viz:'A-16 과 같음', how:'14쪽(A-16)과 같은 내용으로 맞춤(이종은 9/10)' }),
+  P({ no:'5', id:'D-16재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -368px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상 수상자는 제외됩니다', viz:'A-16 과 같음 — 단서만 그림 아래 한 줄 가운데', how:'14쪽(A-16)과 같은 내용으로 맞춤. 단서는 두 줄 오른쪽이 아니라 한 줄 가운데(이종은 9/10)' }),
   P({ no:'6', id:'D-06', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -414px', title:'심사기준', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', body:{type:'criteria2', cols:[
-    {h:'[마스터 트랙]', bar:[['Verification 60%',60],['Validation 40%',40]], txt:['<b>Verification : 비즈니스 임팩트 평가 60%</b> (포스코홀딩스에서 개발한 AIReX 산식 기반, 솔루션이 실제 경영성과와 비즈니스 가치로 연결될 수 있는지 평가)','<b>Validation : 기술·솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','평가 — 9/11(금) 09:00~12:00 2층 호실']},
-    {h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']},
-  ]}, viz:'한 장에 두 칸 — 왼쪽 마스터 · 오른쪽 챌린저', how:'두 기준을 견줘 보도록 한 장에 모았다(이종은 9/10). 원문은 한 글자도 줄이지 않는다', memo:'가장 엄격하게' }),
+    {h:'마스터 트랙', bar:[['비즈니스 임팩트 60%',60],['기술 · 솔루션 검증 40%',40]], txt:['<b>비즈니스 임팩트 60%</b> (AIReX 산식 기반의 비즈니스 가치화)','<b>기술 · 솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','※ 평가 : 9/11(금) 09:00~12:00 컨퍼런스룸']},
+    {h:'챌린저 트랙', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현 가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (사전학습 참여도, 온/오프라인 팀밋업, 디스코드 소통 지수)','※ 평가 : 9/11(금) 13:00~16:00 이벤트홀']},
+  ]}, viz:'한 장에 두 칸 — 왼쪽 마스터 · 오른쪽 챌린저', how:'두 기준을 견줘 보도록 한 장에 모았다. 문안은 이종은 9/10 확정본 그대로', memo:'가장 엄격하게' }),
   P({ no:'7', id:'D-07', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -460px', title:'심사위원 — 마스터', eyebrow:'심사위원 소개 · 마스터 트랙', h:'마스터 트랙 <em>심사위원</em>', body:{type:'judges',
     head:['비즈니스 임팩트 평가 (60%)','기술·솔루션 검증 (40%)'],
     common:'정석모 본부장',
-    tech:'정규호 실장 · 김미영 실장 · 윤일용 소장',
+    tech:'윤일용 소장<br>정규호 실장<br>김미영 실장',
     rows:[['PSM해결단','유재홍 실장','유재홍 실장 · 김정훈 실장'],
           ['포브스','하종범 실장','권영주 실장 · 김경철 센터장'],
           ['MyPIN','박용삼 연구위원','박용삼 연구위원 · 함동은 실장']]},
     foot:'편성 — 비즈니스 임팩트 평가: 도메인별 실장급 2명 + 포스코홀딩스 본부장급 1명 · 기술·솔루션 검증: DX분야 실장급 3명 · ❓ 소속', viz:'표 — 크루 × 역할. 세 크루가 함께 쓰는 분은 세로로 묶어 한 번만', how:'분야 대신 크루명으로. 공통 심사위원은 앞에 묶고 + 뒤에 크루별 두 분(이종은 9/10)', wait:'심사위원 소속' }),
-  P({ no:'8', id:'D-07d', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -506px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'lines', lines:['포스코홀딩스 AI로봇융합연구소 윤일용 연구소장','포스코 DX전략실 정규호 실장','포스코인터내셔널 DX혁신실 신대호 실장','포스코인재창조원 혁신기술센터 김경철 센터장']}, viz:'없음 — 4줄', how:'그대로' }),
+  P({ no:'8', id:'D-07d', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -506px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'lines', lines:['포스코홀딩스 AI로봇융합연구소 <b>윤일용</b> 연구소장','포스코 DX전략실 <b>정규호</b> 실장','포스코인터내셔널 DX혁신실 <b>신대호</b> 실장','포스코인재창조원 혁신기술센터 <b>김경철</b> 센터장']}, viz:'없음 — 4줄, 이름만 진하게', how:'소속은 옅게 두고 이름만 도드라지게(이종은 9/10)' }),
   P({ no:'9', id:'D-08', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -552px', title:'발표 순서', when:'0시 결정 → 13:00 표시', eyebrow:'결과발표회', h:'<em>발표 순서</em>', sub:'챌린저 — 발표 8분 + 질의응답 5분 = 13분! 시간을 지켜주세요. *시간 초과 시 감점', dyn:true,
     body:()=>({type:'order11', parts:[0,1,2].map(k=>({ num:`${k+1}부`, items:[
       {team:MASTERS[k].team, role:`마스터 · ${MASTERS[k].dom} · 성과 공유 약 5분`, ma:true},
@@ -1853,9 +1864,10 @@ B.order11=(b)=>{ let no=0;
 
 /* 크루 소개 — 5쪽(마스터 트랙)과 같은 판. 팀명 · 과제명 · 이름만 담는다. */
 B.crews3=(b)=>el('div','crews3 n'+b.items.length, b.items.map(c=>
-  `<div class="it${c.ma?' ma':''}"><div class="tt ln">${c.team}</div>`
+  `<div class="it${c.ma?' ma':''}"><div class="tt ln">${c.team}${c.ma?'<span class="mk">[마스터]</span>':''}</div>`
   + `<div class="tp ln">${c.topic||''}</div>`
-  + `<div class="nm">${(c.members||[]).map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div></div>`).join(''));
+  + `<div class="nm">${(c.members||[]).map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div>`
+  + `<div class="adv ln">${c.adv||''}</div></div>`).join(''));
 
 B.criteria=(b)=>el('div','crit',`<div class="lines"><p class="ln em">${b.h}</p></div><div class="critbar">${b.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div><div class="txt">${b.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`);
 /* 상 하나에 한 장이다(이종은 9/10). 마스터 우수상만 두 팀이 함께 불리므로 그 장은
