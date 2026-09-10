@@ -831,6 +831,58 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .tl.dense .st{font-size:30px;line-height:1.4}
 .tl.dense .lab{font-size:var(--s3);padding-top:0;color:var(--dot)}
 .tl .st.last::before{background:var(--kw)}
+/* 심사기준 두 칸 — 왼쪽 마스터 · 오른쪽 챌린저. */
+.crit2{display:grid;grid-template-columns:1fr 1fr;gap:44px;height:100%;align-content:start}
+.crit2 .crit{gap:20px}
+.crit2 .critbar{height:52px;font-size:26px;max-width:none}
+.crit2 .txt{font-size:25px;line-height:1.55}
+.crit2 .lines p.em{font-size:38px}
+
+/* 심사위원 표 — 묶인 칸(.mrg)은 세로로 이어 붙여 한 번만 적는다. */
+.jt{height:100%}
+.jt table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:27px;line-height:1.4;
+  color:var(--st-ink);text-align:center}
+.jt th{background:rgba(238,240,255,.10);border:1px solid rgba(238,240,255,.28);
+  font-family:var(--head);font-weight:800;font-size:28px;padding:16px 10px;color:var(--st-ink)}
+.jt td{border:1px solid rgba(238,240,255,.24);padding:20px 14px;vertical-align:middle}
+.jt td.cw{font-family:var(--head);font-weight:900;font-size:34px;color:var(--kw)}
+.jt td.mrg{background:rgba(238,240,255,.06)}
+.jt .who{display:block;font-weight:700}
+.jt .plus{display:block;margin-top:8px;font-family:var(--head);font-weight:900;font-size:34px;color:var(--gold)}
+
+/* 발표 순서 열한 번 — 부마다 묶고 번호는 1부터 끝까지 이어 센다. */
+.ord11{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;height:100%;align-content:start}
+.ord11 .grp{background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
+  padding:24px 26px 26px;
+  box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
+  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+.ord11 .gh{font-family:var(--head);font-weight:900;font-size:40px;color:var(--gold);margin-bottom:16px}
+.ord11 ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ord11 li{display:flex;align-items:baseline;gap:14px}
+.ord11 .no{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:24px;
+  color:#08062A;background:var(--st-soft)}
+.ord11 li.ma .no{background:#8FBAFF}
+.ord11 b{font-family:var(--head);font-weight:900;font-size:34px;line-height:1.2;color:var(--st-ink)}
+.ord11 .rl2{font-size:22px;color:var(--st-faint)}
+
+/* 크루 소개(31~33쪽) — 5쪽과 같은 판, 담는 것만 팀명·과제명·이름. */
+.crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto auto;align-content:start}
+.crews3.n4{grid-template-columns:repeat(4,1fr)}
+.crews3.n3{grid-template-columns:repeat(3,1fr)}
+.crews3 .it{grid-row:span 3;display:grid;grid-template-rows:subgrid;min-height:0;
+  background:rgba(8,6,42,.52);border:1px solid rgba(238,240,255,.26);border-radius:22px;
+  padding:26px 26px 28px;
+  box-shadow:0 18px 46px rgba(4,3,24,.38), inset 0 1px 0 rgba(255,255,255,.18);
+  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+.crews3 .it.ma{border-color:rgba(143,186,255,.42);background:rgba(104,156,255,.15)}
+.crews3 .tt{font-family:var(--head);font-weight:900;font-size:44px;line-height:1.12;color:var(--st-ink)}
+.crews3 .tp{margin-top:12px;font-size:25px;line-height:1.45;color:var(--st-soft)}
+.crews3 .nm{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:20px;align-content:start}
+.crews3 .nm span{display:flex;align-items:center;font-family:var(--head);font-weight:800;
+  font-size:30px;line-height:1.3;color:var(--st-ink)}
+.crews3 .nm .cap{width:26px;height:26px;font-size:15px;margin-left:6px}
+
 .crit{display:grid;gap:26px}
 /* 이름을 critbar 로 둔다 — .bar 로 두면 무대 조작 막대(.stagefs .bar)의 규칙에 걸려
    무대에서 display:none 이 먹는다(9/9 실제로 안 보였다). */
@@ -890,7 +942,13 @@ body:not(.ops) .ctl{display:none}
 /* 내용이 본문 자리(743px)보다 커지면 가운데 정렬 때문에 위로도 삐져나와 제목(92px)과
    겹친다(9/8 실측 D-16·D-17). 간격과 상품 그림을 줄여 안에 들어가게 한다. */
 .award{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;text-align:center}
+/* 두 팀이 함께 서는 장(마스터 우수상)은 나란히 놓고 글씨를 줄인다. */
+.award .aws{display:flex;align-items:flex-start;justify-content:center;gap:72px;width:100%}
+.award .aw1{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
 .award .team{font-family:var(--head);font-weight:900;font-size:176px;line-height:1.1;letter-spacing:0;color:var(--st-ink)}
+.award.two .team{font-size:112px}
+.award.two .topic{font-size:26px;max-width:720px}
+.award.two .pimg{height:132px}
 .award .team.veil{color:rgba(238,240,255,.18);filter:blur(16px);cursor:pointer}
 .award .topic{font-size:var(--s1);color:var(--st-soft);max-width:1600px}
 .award .prize{font-family:var(--head);font-weight:800;font-size:48px;color:var(--gold)}
@@ -976,6 +1034,10 @@ body:not(.ops) .ctl{display:none}
 .cover .big{font-family:var(--head);font-weight:900;font-size:260px;line-height:1.08;letter-spacing:0;color:var(--st-ink)}
 .cover .big em{font-style:normal;color:var(--kw)}
 .cover .big.huge{font-size:300px}
+/* 46쪽 「발표가 모두 끝났습니다」는 문장이라 260px 로는 두 줄로 접힌다 —
+   손글씨로 조금 작게 해서 한 줄에 앉힌다(이종은 9/10). */
+.frame[data-id="D-10"] .cover .big{font-size:112px;white-space:nowrap}
+.frame[data-id="D-10"] .cover .big .hand{max-width:none}
 /* 21쪽 제목은 영문 두 줄이라 260px 로는 화면을 넘는다. */
 .frame[data-id="A-22"] .cover .big{font-size:150px}
 /* 22쪽은 글이 많아 위로 밀려 로고 바를 침범했다 — 통째로 내린다(이종은 9/9). */
@@ -1004,6 +1066,14 @@ body:not(.ops) .ctl{display:none}
 .slogan .stack{display:flex;flex-direction:row;align-items:center;gap:22px}
 .slogan .pre{font-family:var(--head);font-weight:800;font-size:34px;line-height:1;letter-spacing:0;color:var(--st-ink);padding-left:6px}
 .slogan .impact{display:block;height:96px;aspect-ratio:4710/1294;background:var(--st-ink);-webkit-mask-image:var(--ci-impact);mask-image:var(--ci-impact);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
+/* 마지막 장은 가운데 「본선대회」를 빼고 **그 자리에** 슬로건을 올린다. 아래에 띄우던
+   슬로건 줄(.slogan)은 쓰지 않는다 — 그대로 두면 락업과 같은 높이에서 겹친다. */
+.cover .big .bigslogan{display:flex;align-items:center;justify-content:center;gap:40px}
+.cover .big .bigslogan .pre{font-family:var(--head);font-weight:800;font-size:84px;line-height:1;
+  letter-spacing:0;color:var(--st-ink)}
+.cover .big .bigslogan .impact{display:block;height:236px;aspect-ratio:4710/1294;background:var(--st-ink);
+  -webkit-mask-image:var(--ci-impact);mask-image:var(--ci-impact);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
 .slogan.inline{position:static;justify-content:flex-start;margin-top:8px}
 .slogan.inline .pre{font-size:28px} .slogan.inline .impact{height:76px}
 
@@ -1266,13 +1336,13 @@ const byName = (ms) => {
 };
 const CH = [
   { team:'배꼽', orgs:'포스코 · 포스코플로우', members:['권도훈 (캡틴)','이경돈','임사현','조용근'], coach:'최대건', title:'원료 부두 선박 스케쥴 최적화 AI 플랫폼', desc:'원료 재고, 체선료, 접안 가능 조건, 하역 능력 등을 동시 고려해 선박 접안·배선 순서를 최적화하여, 비용 절감 및 원료 수급 안정성 확보' },
-  { team:'설루션', orgs:'포스코', members:['이예나 (캡틴)','김혜정','서동민','이예열'], coach:'이지환', title:'AI 자재 재고 최적화 솔루션', desc:'설비 이력, 정비계획, 조달기간 등을 반영해 자재를 자동 분류하고, 적정 재고와 발주 시점을 AI가 추천하여, 재고 운영 효율 향상' },
-  { team:'설비실종수사대', orgs:'포스코 · 포스코DX', members:['최현규 (캡틴)','송영남','박정인','백성문'], coach:'김세연', title:'설비 중심의 설비, 환경 통합 Agent 구축', desc:'흩어진 설비 정보를 표준화하고, 환경 · 안전 · 정비 데이터를 하나로 연결하여, 중복 관리 문제를 줄이고 향후 디지털 트윈까지 확장' },
-  { team:'웰커넥트', orgs:'포스코인터내셔널', members:['이혜선 (캡틴)','오병건','김영주','신소연'], coach:'박형준', title:'Wellsight - 가스전 관리의 새로운 패러다임', desc:'가스전 생산정의 생산량 예측과 분석을 AI · ML 기반으로 자동화하여, 업무 표준화 및 의사결정 품질을 향상시키고, 자산 운영 효율을 개선' },
+  { team:'설루션', orgs:'포스코', members:['이예나 (캡틴)','김혜정','서동민','이예열'], coach:'이지환', title:'많지도 적지도 않게 스스로 수량을 "자제"하는 AI "자재" 솔루션', desc:'설비 이력, 정비계획, 조달기간 등을 반영해 자재를 자동 분류하고, 적정 재고와 발주 시점을 AI가 추천하여, 재고 운영 효율 향상' },
+  { team:'설비실종수사대', orgs:'포스코 · 포스코DX', members:['최현규 (캡틴)','송영남','박정인','백성문'], coach:'김세연', title:'AI에게 일을 시키기 전에, AI가 신뢰하고 활용할 수 있는 설비 Data Foundation 구축', desc:'흩어진 설비 정보를 표준화하고, 환경 · 안전 · 정비 데이터를 하나로 연결하여, 중복 관리 문제를 줄이고 향후 디지털 트윈까지 확장' },
+  { team:'웰커넥트', orgs:'포스코인터내셔널', members:['이혜선 (캡틴)','오병건','김영주','신소연'], coach:'박형준', title:'AI 기반 가스전 생산예측 · 의사결정 플랫폼', desc:'가스전 생산정의 생산량 예측과 분석을 AI · ML 기반으로 자동화하여, 업무 표준화 및 의사결정 품질을 향상시키고, 자산 운영 효율을 개선' },
   { team:'터널 밖 개구리', orgs:'포스코이앤씨', members:['박강호 (캡틴)','박경민','김우열','민경철'], coach:'이보형', title:'현장의 하루, 안전모가 대신 씁니다 - PASS AI Agent', desc:'현장 출입 동선과 작업실적, 투입공수 등 작업기록을 AI가 자동으로 축적하고 연결하여, 안전관리 강화 및 생산성·원가 분석 정밀도 향상' },
   { team:'10x', orgs:'포스코DX', members:['박신유 (캡틴)','나종철','이태훈','김용욱'], coach:'손준서', title:'IDP RAG 기반 E2E 추진계획서 자동작성으로 10x 생산성 혁신', desc:'고객 과제 정의서를 입력하면 요구사항, 아키텍쳐, 일정, 예산, 기대효과를 반영한 추진계획서를 자동으로 작성하여, 제안·기획 리드타임 단축' },
-  { team:'포브레인', orgs:'포스코', members:['한소희 (캡틴)','김민우','주하림','한지석'], coach:'김희태', title:'마케팅 브레인(Marketing Brain) : 언제든, 뭐든 물어볼 수 있는 AI 선배', desc:'용어, 프로세스, 과거 사례, 실무 노하우를 AI가 통합해 바로 답해주는 지식형 에이전트로, 암묵지를 조직 자산으로 전환해 업무 생산성 향상' },
-  { team:'HR AX 연구소', orgs:'포스코', members:['이진희 (캡틴)','김수미','최주호','하석현'], coach:'구고운', title:'나를 먼저 챙겨주는 나만의 HR AI Agent', desc:'입사, 이동, 승진, 교육 등 생애주기 전반에 대한 안내와 행정처리를 선제적으로 지원하는 HR 에이전트를 개발하여, 반복 업무를 자동화' },
+  { team:'포브레인', orgs:'포스코', members:['한소희 (캡틴)','김민우','주하림','한지석'], coach:'김희태', title:'마케팅 브레인 : 언제든, 뭐든 물어볼 수 있는 AI 선배', desc:'용어, 프로세스, 과거 사례, 실무 노하우를 AI가 통합해 바로 답해주는 지식형 에이전트로, 암묵지를 조직 자산으로 전환해 업무 생산성 향상' },
+  { team:'HR AX 연구소', orgs:'포스코', members:['이진희 (캡틴)','김수미','최주호','하석현'], coach:'구고운', title:'AX-Employee Journey(신입부터 리더까지, AI가 연결하는 AX 커리어 케어)', desc:'입사, 이동, 승진, 교육 등 생애주기 전반에 대한 안내와 행정처리를 선제적으로 지원하는 HR 에이전트를 개발하여, 반복 업무를 자동화' },
 ];
 /* 이름 뒤의 "(캡틴)" 을 떼고 스티커로 바꾼다. 명단은 원본 그대로 두고 표시만 바꾼다. */
 const capName = (n) => /\(캡틴\)/.test(n)
@@ -1449,23 +1519,39 @@ const PARTS = [
 { id:'p3', tag:'3부', name:'3부 · 결과발표회', full:'3부 · 최종 결과발표회', when:'9/11(금) 13:00 ~ 16:00 · 이벤트홀 · 원본 2일차 결과발표회 1~13',
   note:'챌린저 8팀 발표 · 심사(13분), 마스터 3팀은 1 · 2 · 3부 사이에 성과 공유 약 5분(심사 없음). 챌린저 순서는 베네핏 게임에서 정한 순서. "발표 순서 결정"에서 카드를 앉히면 크루 · 과제 · 부 시작 화면이 그 순서로 채워집니다.',
   pages:[
-  P({ no:'머리', id:'D-01', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -2360px', title:'결과발표회 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('결과발표회'), when2:'9월 11일(금) 13:00', slogan:true, viz:'키비주얼', how:'A-02 와 같은 구성' }),
-  P({ no:'1', id:'D-02', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -2242px', title:'대회 개요 (다시)', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em>', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['참여사','포스코 · P-DX · 포스리 · P-INT\'L · P-플로우 · RIST · P-이앤씨']], stats:[['7','개 사','포스코그룹'],['11','팀','크루'],['54','명','마스터 크루 22명 · 챌린저 크루 32명']]}, viz:'숫자 3개', how:'A-05 와 같은 틀' }),
-  ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:`center -${2360-118*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true, body:()=>({type:'trio', n:1+PART_IDX[k].length, items:[[`마스터 · ${MASTERS[k].dom}`, MASTERS[k].team, MASTERS[k].members.join('<br>')], ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return [`발표 ${i+1}번`, t?t.team:'—', t?t.members.join('<br>'):'(발표 순서 결정 후)']; })]}), viz:'칸 — 마스터 1 + 챌린저 칸', how:'순서는 발표 순서 결정 결과' })),
-  P({ no:'3', id:'D-04', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1770px', title:'마스터 최종 선발 프로젝트', eyebrow:'최종 선발 프로젝트 · 마스터 트랙', h:'마스터 트랙 <em>과제</em> 셋', body:{type:'trio', n:3, items:MASTERS.map(m=>[`【${m.dom}】`, m.topic, m.desc])}, viz:'세 칸 — 분야 · 과제명 · 설명 원문', how:'원문 그대로. 칸 본문은 24px' }),
-  P({ no:'3', id:'D-05', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1652px', title:'챌린저 최종 선발 프로젝트 (2단계)', eyebrow:'최종 선발 프로젝트 · 챌린저 트랙', h:'챌린저 트랙 <em>과제</em> 여덟', dyn:true, steps:[0,1].map(h=>({label:`발표 ${h*4+1}~${h*4+4}번`, body:()=>({type:'trio', n:2, items:[0,1,2,3].map(j=>{ const i=h*4+j; const t=slotTeam(i); return [`발표 ${i+1}번 · ${t?t.team:'—'}`, t?t.title:'(발표 순서 결정 후)', t?t.desc:'']; })})})), viz:'2×2 칸 — 팀 · 과제명 · 설명 원문. 4과제씩 두 단계', how:'설명은 원문 그대로, 칸 안에서 24px 여러 줄(표처럼 허용)' }),
-  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'트랙별 우수팀에게는 회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
-  P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가자 <em>전원</em>에게 드리는 선물', body:{type:'lines', lines:['인재창조원장님 명의 수료증 + 에어팟']}, obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], viz:'A-16 과 같음', how:'한 줄' }),
-  P({ no:'6', id:'D-06', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1298px', title:'심사기준 (2단계)', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', steps:[
-      {label:'챌린저 트랙', body:{type:'criteria', h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']}},
-      {label:'마스터 트랙', body:{type:'criteria', h:'[마스터 트랙]', bar:[['Verification 60%',60],['Validation 40%',40]], txt:['<b>Verification : 비즈니스 임팩트 평가 60%</b> (포스코홀딩스에서 개발한 AIReX 산식 기반, 솔루션이 실제 경영성과와 비즈니스 가치로 연결될 수 있는지 평가)','<b>Validation : 기술·솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','평가 — 9/11(금) 09:00~12:00 2층 호실']}},
-    ], viz:'배점 막대 + 원문. 트랙마다 한 단계', how:'원문을 한 글자도 줄이지 않는다(공정함). 긴 문장은 검토 목록에서 확인', memo:'가장 엄격하게' }),
-  P({ no:'7', id:'D-07', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1180px', title:'심사위원 — 마스터', eyebrow:'심사위원 소개 · 마스터 트랙', h:'마스터 트랙 <em>심사위원</em>', body:{type:'table', rows:[['분야','스폰서','비즈니스 임팩트 평가 (60%)','기술·솔루션 검증 (40%)'],['안전','유재홍 실장','유재홍 실장 · 김정훈 실장 · 정석모 본부장','정규호 실장 · 김미영 실장 · 윤일용 소장'],['물류','하종범 실장','권영주 실장 · 김경철 센터장 · 정석모 본부장','(공통)'],['마켓센싱','박용삼 연구위원','박용삼 연구위원 · 함동은 실장 · 정석모 본부장','(공통)']]}, foot:'편성 — 비즈니스 임팩트 평가: 도메인별 실장급 2명 + 포스코홀딩스 본부장급 1명 · 기술·솔루션 검증: DX분야 실장급 3명 · ❓ 소속', viz:'표 — 분야 × 역할', how:'이름 · 직책만', wait:'심사위원 소속' }),
+  P({ no:'머리', id:'D-01', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -2360px', title:'결과발표회 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('결과발표회'), when2:'9.11(금) 13:00~16:00<br>포스코인재창조원 송도캠퍼스 컨벤션센터', slogan:true, viz:'키비주얼', how:'A-02 와 같은 구성' }),
+  P({ no:'1', id:'D-02', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -2242px', title:'대회 개요 (다시)', eyebrow:'대회 개요', h:'2026 포스코그룹 <em>WX해커톤</em> 본선대회', body:{type:'kv', kv:[['목적','그룹 차원의 WX 촉진 및 AI를 활용한 가치 창출 역량 개발'],['일시','9. 10(목) 08:00 - 9. 11(금) 17:00, 무박 2일'],['장소','포스코인재창조원 송도캠퍼스 컨벤션센터 이벤트홀, 컨퍼런스룸'],['참여사','포스코 · P-INT\'L · P-이앤씨 · P-DX · P-플로우 · 포스코경영연구원 · RIST'],['대상','해커톤 11개 크루 54명']], crews:{ phrase:'열한 개의 별', ppl:['54','명','참가 크루원'], all:['11','크루'], split:[
+      {cls:'ma', star:3, from:0, n:'3', u:'크루', t:'마스터 트랙 · 22명', d:'Top-down 과제 선발 (크루당 7~8명)'},
+      {cls:'ch', star:8, from:3, n:'8', u:'크루', t:'챌린저 트랙 · 32명', d:'우수 아이디어 제안 (크루당 4명)'},
+    ]}}, viz:'4쪽과 같은 틀 — 개조식 다섯 줄 + 크루 도해', how:'4쪽 내용 그대로 두되 참여사를 장소와 대상 사이에 넣었다(이종은 9/10)' }),
+  ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:`center -${2360-118*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true,
+    body:()=>({type:'crews3', items:[
+      {ma:true, team:MASTERS[k].team, topic:[MASTERS[k].topic, MASTERS[k].tag].filter(Boolean).join(' — '), members:MASTERS[k].members},
+      ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return t ? {team:t.team, topic:t.title, members:t.members} : {team:'(발표 순서 결정 후)', topic:'', members:[]}; })
+    ]}), viz:'5쪽과 같은 판 — 팀명 · 과제명 · 이름. 마스터 한 칸(파랑) + 챌린저 칸', how:'순서는 발표 순서 결정 결과(이종은 9/10)' })),
+  P({ no:'4', id:'D-17재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1534px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
+  P({ no:'5', id:'D-16재', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1416px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상<br>수상자는 제외됩니다', viz:'A-16 과 같음', how:'14쪽(A-16)과 같은 내용으로 맞춤(이종은 9/10)' }),
+  P({ no:'6', id:'D-06', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1298px', title:'심사기준', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', body:{type:'criteria2', cols:[
+    {h:'[마스터 트랙]', bar:[['Verification 60%',60],['Validation 40%',40]], txt:['<b>Verification : 비즈니스 임팩트 평가 60%</b> (포스코홀딩스에서 개발한 AIReX 산식 기반, 솔루션이 실제 경영성과와 비즈니스 가치로 연결될 수 있는지 평가)','<b>Validation : 기술·솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','평가 — 9/11(금) 09:00~12:00 2층 호실']},
+    {h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (온/오프라인 팀미팅 횟수, 디스코드(불가피한 경우 팀즈, 카톡 등) 소통 지수, 사전학습 참여도)','평가 — 9/11(금) 13:00~16:00 이벤트홀']},
+  ]}, viz:'한 장에 두 칸 — 왼쪽 마스터 · 오른쪽 챌린저', how:'두 기준을 견줘 보도록 한 장에 모았다(이종은 9/10). 원문은 한 글자도 줄이지 않는다', memo:'가장 엄격하게' }),
+  P({ no:'7', id:'D-07', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1180px', title:'심사위원 — 마스터', eyebrow:'심사위원 소개 · 마스터 트랙', h:'마스터 트랙 <em>심사위원</em>', body:{type:'judges',
+    head:['비즈니스 임팩트 평가 (60%)','기술·솔루션 검증 (40%)'],
+    common:'정석모 본부장',
+    tech:'정규호 실장 · 김미영 실장 · 윤일용 소장',
+    rows:[['PSM해결단','유재홍 실장','유재홍 실장 · 김정훈 실장'],
+          ['포브스','하종범 실장','권영주 실장 · 김경철 센터장'],
+          ['MyPIN','박용삼 연구위원','박용삼 연구위원 · 함동은 실장']]},
+    foot:'편성 — 비즈니스 임팩트 평가: 도메인별 실장급 2명 + 포스코홀딩스 본부장급 1명 · 기술·솔루션 검증: DX분야 실장급 3명 · ❓ 소속', viz:'표 — 크루 × 역할. 세 크루가 함께 쓰는 분은 세로로 묶어 한 번만', how:'분야 대신 크루명으로. 공통 심사위원은 앞에 묶고 + 뒤에 크루별 두 분(이종은 9/10)', wait:'심사위원 소속' }),
   P({ no:'8', id:'D-07d', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -1062px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'lines', lines:['포스코홀딩스 AI로봇융합연구소 윤일용 연구소장','포스코 DX전략실 정규호 실장','포스코인터내셔널 DX혁신실 신대호 실장','포스코인재창조원 혁신기술센터 김경철 센터장']}, viz:'없음 — 4줄', how:'그대로' }),
-  P({ no:'9', id:'D-08', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -944px', title:'발표 순서 결정 · 발표 순서 (카드)', when:'0시 결정 → 13:00 표시', eyebrow:'결과발표회', h:'<em>발표 순서</em>', sub:'챌린저 — 발표 8분 + 질의응답 5분 = 13분! 시간을 지켜주세요. *시간 초과 시 감점', dyn:true, body:()=>({type:'order'}), foot:MUST+' · 발표자는 크루원 누구나 (단체 발표도 가능) · 마스터는 성과 공유 약 5분', viz:'자리 2×4 에 앉은 카드 8장(B-05 결과) + 마스터 3', how:'조작은 2부 B-05 에서. 여기는 결과 표시만' }),
+  P({ no:'9', id:'D-08', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -944px', title:'발표 순서', when:'0시 결정 → 13:00 표시', eyebrow:'결과발표회', h:'<em>발표 순서</em>', sub:'챌린저 — 발표 8분 + 질의응답 5분 = 13분! 시간을 지켜주세요. *시간 초과 시 감점', dyn:true,
+    body:()=>({type:'order11', parts:[0,1,2].map(k=>({ num:`${k+1}부`, items:[
+      {team:MASTERS[k].team, role:`마스터 · ${MASTERS[k].dom} · 성과 공유 약 5분`, ma:true},
+      ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return {team:t?t.team:'(발표 순서 결정 후)', role:`챌린저 · 발표 ${i+1}번`}; })
+    ]}))}),
+    foot:MUST+' · 발표자는 크루원 누구나 (단체 발표도 가능)', viz:'부마다 한 칸 — 마스터가 먼저, 이어서 챌린저. 번호는 1부터 11까지 이어 센다', how:'마스터와 챌린저를 가리지 않고 한 줄로 보여 준다(이종은 9/10). 조작은 2부 B-05 에서' }),
   ...[0,1,2].map(k=>P({ no:'—', id:'D-08'+'bcd'[k], bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:`center -${2360-118*(13+k)}px`, title:`${k+1}부 시작`, new:true, eyebrow:'결과발표회', h:`<em>${k+1}부</em> 시작`, dyn:true, body:()=>({type:'part', num:`${k+1}부`, list:[`<b>${MASTERS[k].team}</b> (${MASTERS[k].dom}) · 성과 공유`, ...PART_IDX[k].map(i=>`발표 ${i+1}번 · <b>${orderName(i)}</b>`)]}), viz:'부 번호 320px 왼쪽 · 팀 목록 44px 오른쪽', how:'—' })),
-  P({ no:'10', id:'D-09', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -472px', title:'발표 진행 (타이머)', when:'13:00~16:00', center:true, h:'<em>발표</em>를 시작합니다', widget:'timer', viz:'팀명 56px · 단계 32px · 숫자 280px', how:'챌린저 8:00 → 5:00 · 마스터 성과 공유 5:00. 초과하면 빨간 숫자 + 벨' }),
-  P({ no:'—', id:'D-10', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -354px', title:'발표 종료', new:true, kind:'cover', big:'발표가 모두 끝났습니다', en:'심사 중', viz:'—', how:'—' }),
+  P({ no:'—', id:'D-10', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -354px', title:'발표 종료', new:true, kind:'cover', big:hand('발표가 모두 끝났습니다'), en:'심사결과 수합중', viz:'손글씨 한 줄 + 노란 줄', how:'문구는 손글씨로 조금 작게 한 줄(이종은 9/10)' }),
   P({ no:'11', id:'D-12', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -236px', title:'완주 축하', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'손글씨 후보', how:'—' }),
   P({ no:'12', id:'D-13', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -118px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계, 화면 가득', how:'제목 고정, 사진만 좌우로 넘어간다' }),
   P({ no:'13', id:'D-14', bg:'bg/hf_20260907_181308_42dd8ea8-8bfa-4d45-9a60-c9f064c79b28.jpg', bgSize:'100% auto', bgPos:'center -0px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true}, foot:'❓ 설문 링크', viz:'QR 480×480 가운데', how:'QR + 제목', wait:'설문 링크' }),
@@ -1475,11 +1561,17 @@ const PARTS = [
   pages:[
   P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
   P({ no:'—', id:'D-15s', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상 선택기 (운영용 · 무대에 안 올림)', new:true, ops:true, eyebrow:'운영 도구', h:'심사 결과 <em>입력</em>', widget:'awards', viz:'—', how:'클릭 3번', memo:'다른 팀을 누르면 바뀐다' }),
-  P({ no:'15', id:'D-16', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 시상 (3단계)', eyebrow:'시상', h:'마스터 트랙 <em>시상</em>', dyn:true, steps:[['mTop','최우수상'],['mGood1','우수상'],['mGood2','우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'마스터 트랙 '+name}})), viz:'상 이름 → 팀명 176px(가림) → 과제 → 상품 → 상장', how:'단계 = 호명 순서. 팀명 클릭으로 공개' }),
-  P({ no:'16', id:'D-17', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 시상 (2단계)', eyebrow:'시상', h:'챌린저 트랙 <em>시상</em>', dyn:true, steps:[['cGood','우수상'],['cTop','최우수상']].map(([kind,name])=>({label:name, body:{type:'award', kind, name:'챌린저 트랙 '+name}})), viz:'같은 틀. 우수 → 최우수', how:'—' }),
+  P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', eyebrow:'시상', dyn:true, title:'마스터 트랙 최우수상', h:'마스터 트랙 <em>시상</em>',
+    body:()=>({type:'award', kind:'mTop', name:'마스터 트랙 최우수상'}), viz:'상 이름 → 팀명 176px(가림) → 과제 → 상품 → 상장', how:'상 하나에 한 장(이종은 9/10). 팀명 클릭으로 공개' }),
+  P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', eyebrow:'시상', dyn:true, title:'마스터 트랙 우수상', h:'마스터 트랙 <em>시상</em>',
+    body:()=>({type:'award', kinds:['mGood1','mGood2'], name:'마스터 트랙 우수상'}), viz:'두 팀을 나란히 — 팀명은 각각 따로 공개', how:'마스터 우수상은 두 팀이 함께 불린다' }),
+  P({ no:'16', id:'D-17a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', eyebrow:'시상', dyn:true, title:'챌린저 트랙 우수상', h:'챌린저 트랙 <em>시상</em>',
+    body:()=>({type:'award', kind:'cGood', name:'챌린저 트랙 우수상'}), viz:'같은 틀', how:'우수 → 최우수 차례' }),
+  P({ no:'16', id:'D-17b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', eyebrow:'시상', dyn:true, title:'챌린저 트랙 최우수상', h:'챌린저 트랙 <em>시상</em>',
+    body:()=>({type:'award', kind:'cTop', name:'챌린저 트랙 최우수상'}), viz:'같은 틀', how:'마지막에 최우수' }),
   P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
   P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
-  P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('본선대회'), slogan:true, viz:'A-02 로 돌아온다', how:'—' }),
+  P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:`<span class="bigslogan"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span>`, viz:'가운데에 슬로건 하나 — 「본선대회」 자리를 슬로건이 대신한다', how:'마지막 장이라 대회 이름 대신 슬로건으로 닫는다(이종은 9/10). 아래 슬로건 줄은 빼고 그 자리에 올렸다' }),
 ]},
 ];
 /* 운영 전용 장(ops:true)은 참가자 덱에서 통째로 뺀다 — 쪽 수·부 이동 바·진행 점이
@@ -1723,8 +1815,62 @@ B.timeline=(b)=>el('div','tl'+(b.dense?' dense':'')+(b.join?' join':''), b.rows.
   + `<div class="fin"><span class="one ln">${b.join.k}</span><b class="ln">${b.join.t}</b><span class="dd ln">${b.join.d}</span></div>`
   : ''));
 B.enjoy=(b)=>el('div','enjoy', b.items.map(it=>`<div class="it"><div class="hd"><span class="ic">${it.ic||it.no}</span><span class="tt ln">${it.tt}</span></div>${it.groups.map(([gl,gis])=>`<div class="grp"><div class="gl ln">${gl}</div><div class="gi">${gis.map(x=>`<p class="ln">${x}</p>`).join('')}</div></div>`).join('')}</div>`).join(''));
+/* 심사기준 두 트랙을 한 장에 나란히 — 왼쪽 마스터, 오른쪽 챌린저(이종은 9/10).
+   단계로 넘기면 두 기준을 견줘 보기 어렵다. */
+B.criteria2=(b)=>el('div','crit2', b.cols.map(c=>
+  `<div class="crit"><div class="lines"><p class="ln em">${c.h}</p></div>`
+  + `<div class="critbar">${c.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div>`
+  + `<div class="txt">${c.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div></div>`).join(''));
+
+/* 심사위원 표 — 세 크루가 함께 쓰는 사람은 세로로 묶어 한 번만 적는다(이종은 9/10).
+   비즈니스 임팩트는 공통 한 분을 **앞**에 두고 + 뒤에 크루별 두 분을 적는다. */
+B.judges=(b)=>el('div','jt',
+  `<table><thead><tr><th>크루</th><th>스폰서</th><th colspan="2">${b.head[0]}</th><th>${b.head[1]}</th></tr></thead><tbody>`
+  + b.rows.map((r,i)=>`<tr><td class="cw">${r[0]}</td><td>${r[1]}</td>`
+      + (i===0?`<td class="mrg" rowspan="${b.rows.length}"><span class="who">${b.common}</span><span class="plus">+</span></td>`:'')
+      + `<td>${r[2]}</td>`
+      + (i===0?`<td class="mrg" rowspan="${b.rows.length}">${b.tech}</td>`:'')
+      + `</tr>`).join('')
+  + `</tbody></table>`);
+
+/* 발표 순서를 마스터·챌린저 가리지 않고 **한 줄로 열한 번**(이종은 9/10). */
+B.order11=(b)=>{ let no=0;
+  return el('div','ord11', b.parts.map(g=>
+    `<div class="grp"><div class="gh">${g.num}</div><ol>`
+    + g.items.map(it=>`<li class="${it.ma?'ma':''}"><span class="no">${++no}</span>`
+        + `<b class="ln">${it.team}</b><span class="rl2">${it.role}</span></li>`).join('')
+    + `</ol></div>`).join(''));
+};
+
+/* 크루 소개 — 5쪽(마스터 트랙)과 같은 판. 팀명 · 과제명 · 이름만 담는다. */
+B.crews3=(b)=>el('div','crews3 n'+b.items.length, b.items.map(c=>
+  `<div class="it${c.ma?' ma':''}"><div class="tt ln">${c.team}</div>`
+  + `<div class="tp ln">${c.topic||''}</div>`
+  + `<div class="nm">${(c.members||[]).map(n=>`<span class="ln">${capName(n)}</span>`).join('')}</div></div>`).join(''));
+
 B.criteria=(b)=>el('div','crit',`<div class="lines"><p class="ln em">${b.h}</p></div><div class="critbar">${b.bar.map(([l,w],i)=>`<span class="${i?'b':'a'}" style="flex:${w}">${l}</span>`).join('')}</div><div class="txt">${b.txt.map(x=>`<p class="ln">${x}</p>`).join('')}</div>`);
-B.award=(b,p,stepKey)=>{ const [t,prize]=awardOf(b.kind); const key=p.id+':'+b.kind; const rev=!!S.reveal[key]; const w=el('div','award',`<div class="phase">${b.name}</div><div class="team ln ${rev?'':'veil'}" title="클릭하면 팀명이 드러납니다">${t?t.team:'미정'}</div><div class="topic ln">${t?(t.topic||t.title):''}</div><img class="pimg" src="${prize===PRIZE.top?'img/perks/macbook-air.webp':'img/perks/macbook-neo.webp'}" alt=""><div class="prize">상품 — ${prize}</div><div class="cert">회장님 상장</div><div class="ctl left" style="justify-content:center"><button class="btn">${rev?'팀명 가리기':'팀명 공개'}</button></div>`); const tog=()=>{ S.reveal[key]=!S.reveal[key]; save(); rerender(); }; w.querySelector('.team').addEventListener('click',tog); w.querySelector('button').addEventListener('click',tog); return w; };
+/* 상 하나에 한 장이다(이종은 9/10). 마스터 우수상만 두 팀이 함께 불리므로 그 장은
+   kinds 로 둘을 나란히 놓는다 — 팀명은 각각 따로 가리고 드러낸다. */
+B.award=(b,p)=>{
+  const kinds = b.kinds || [b.kind];
+  const two = kinds.length > 1;
+  const one = (kind)=>{ const [t,prize]=awardOf(kind); const rev=!!S.reveal[p.id+':'+kind];
+    return `<div class="aw1">`
+      + `<div class="team ln ${rev?'':'veil'}" title="클릭하면 팀명이 드러납니다">${t?t.team:'미정'}</div>`
+      + `<div class="topic ln">${t?(t.topic||t.title):''}</div>`
+      + `<img class="pimg" src="${prize===PRIZE.top?'img/perks/macbook-air.webp':'img/perks/macbook-neo.webp'}" alt="">`
+      + `<div class="prize">상품 — ${prize}</div></div>`; };
+  const w=el('div','award'+(two?' two':''),
+      `<div class="phase">${b.name}</div>`
+    + `<div class="aws">${kinds.map(one).join('')}</div>`
+    + `<div class="cert">회장님 상장</div>`
+    + `<div class="ctl left ops-only" style="justify-content:center">`
+    + kinds.map((k,i)=>`<button class="btn" data-k="${k}">${S.reveal[p.id+':'+k]?'팀명 가리기':'팀명 공개'}${two?` · ${i+1}팀`:''}</button>`).join('')
+    + `</div>`);
+  const tog=(k)=>{ S.reveal[p.id+':'+k]=!S.reveal[p.id+':'+k]; save(); rerender(); };
+  w.querySelectorAll('.aw1 .team').forEach((e,i)=>e.addEventListener('click',()=>tog(kinds[i])));
+  w.querySelectorAll('.ctl .btn').forEach(btn=>btn.addEventListener('click',()=>tog(btn.dataset.k)));
+  return w; };
 B.order=(b)=>{ const w=el('div'); w.innerHTML=`<div class="slots">${[0,1,2,3,4,5,6,7].map(i=>{const t=slotTeam(i); return `<div class="slot ${t?'filled':''}"><span class="n">${i+1}</span><span class="part">${PART_OF(i+1)}</span>${t?`<span class="tcard" style="filter:none">${esc(t.team)}</span>`:''}</div>`;}).join('')}</div><div class="lines" style="margin-top:22px"><p class="ln">마스터 — 1부 PSM해결단 (안전) · 2부 포브스 (물류) · 3부 MyPIN (마켓센싱) · 성과 공유 약 5분</p></div>`; return w; };
 B.part=(b)=>el('div','part',`<div class="no">${b.num}</div><div class="list">${b.list.map((l,i)=>`<p class="ln ${i===0?'m':''}">${l}</p>`).join('')}</div>`);
 B.teed=(b)=>el('div','teed',
@@ -1766,7 +1912,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
   if(p.bg){ frame.style.background=`linear-gradient(rgba(8,6,42,.30), rgba(8,6,42,.55)), url("${p.bg}") ${p.bgPos||"center"} / ${p.bgSize||"cover"} no-repeat`; frame.classList.add('has-bg'); }
   if(isCover){
     const c=el('div','cover z'+(p.coverReveal?' hold':'')); c.dataset.z='표지 — 가운데 정렬, 하단 슬로건 자리 200px 비움';
-    c.innerHTML=(p.img?`<img class="cimg" src="${p.img}" alt="">`:'')+(p.lockup?`<div class="lockup"><span>2026</span><span class="ci ci-mark" role="img" aria-label="WX해커톤 마크"></span><span>해커톤</span></div>`:p.label?`<div class="lockup ln"><span>${p.label}</span></div>`:'')+`<div class="big ln${p.huge?' huge':''}">${p.big}</div>`+(p.linesUp&&p.lines?`<div class="lines up">${p.lines.map(l=>lnP(l)).join('')}</div>`:'')+(p.en?`<div class="en ln">${p.en}</div>`:'')+(p.when2?`<div class="when ln">${p.when2}</div>`:'')+(!p.linesUp&&p.lines?`<div class="lines">${p.lines.map(l=>lnP(l)).join('')}</div>`:'');
+    c.innerHTML=(p.img?`<img class="cimg" src="${p.img}" alt="">`:'')+(p.lockup?`<div class="lockup"><span>2026</span><span class="ci ci-mark" role="img" aria-label="WX해커톤 마크"></span><span>해커톤</span></div>`:p.label?`<div class="lockup ln"><span>${p.label}</span></div>`:'')+(p.big?`<div class="big ln${p.huge?' huge':''}">${p.big}</div>`:'')+(p.linesUp&&p.lines?`<div class="lines up">${p.lines.map(l=>lnP(l)).join('')}</div>`:'')+(p.en?`<div class="en ln">${p.en}</div>`:'')+(p.when2?`<div class="when ln">${p.when2}</div>`:'')+(!p.linesUp&&p.lines?`<div class="lines">${p.lines.map(l=>lnP(l)).join('')}</div>`:'');
     frame.appendChild(c);
     /* 표지에 단계를 두면(개회사) 넘김 단추도 붙는다. 본문 쪽과 같은 틀을 쓴다. */
     if(p.steps){
