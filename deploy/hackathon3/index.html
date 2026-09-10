@@ -499,12 +499,20 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .kv{display:grid;grid-template-columns:200px 1fr;gap:4px 24px;align-content:start}
 .kv .k{font-size:var(--s0);color:var(--st-faint);letter-spacing:.06em;padding-top:8px}
 /* 4쪽(대회 개요)은 홀 뒤에서도 읽히도록 더 진하고 굵게(이종은 9/9).
-   목적 · 일시 · 장소 · 대상은 글씨를 키우고 **네모 칸**에 담아 값과 가른다(이종은 9/10). */
-.frame[data-id="A-05"] .kv{grid-template-columns:184px 1fr;gap:16px 28px;align-items:start}
-.frame[data-id="A-05"] .kv .k{font-family:var(--head);font-weight:800;font-size:32px;line-height:1;
+   목적 · 일시 · 장소 · 대상은 글씨를 키우고 **네모 칸**에 담아 값과 가른다(이종은 9/10).
+   30쪽은 같은 장을 2부에서 다시 펴는 것이니 같은 틀을 쓴다 — 다만 「참여사」가
+   한 줄 더 있어 칸 높이를 조금 줄여야 도해가 밀리지 않는다(이종은 9/10). */
+.frame[data-id="A-05"] .kv,
+.frame[data-id="D-02"] .kv{grid-template-columns:184px 1fr;gap:16px 28px;align-items:start}
+.frame[data-id="A-05"] .kv .k,
+.frame[data-id="D-02"] .kv .k{font-family:var(--head);font-weight:800;font-size:32px;line-height:1;
   letter-spacing:.14em;text-indent:.14em;text-align:center;color:var(--st-ink);padding:14px 0;
   background:rgba(238,240,255,.10);border:1px solid rgba(238,240,255,.30);border-radius:13px}
-.frame[data-id="A-05"] .kv .v{color:var(--st-ink);font-weight:700}
+.frame[data-id="A-05"] .kv .v,
+.frame[data-id="D-02"] .kv .v{color:var(--st-ink);font-weight:700}
+/* 30쪽만 한 줄 더 많으니 칸을 조금 눌러 도해가 4쪽과 같은 높이에 앉게 한다. */
+.frame[data-id="D-02"] .kv{gap:10px 28px}
+.frame[data-id="D-02"] .kv .k{padding:8px 0}
 /* ── 크루 도해 (A-05) ─────────────────────────────────────────────────────
    왼쪽에 사람 수(54명)를 따로 세우고, 오른쪽은 **위에 11크루, 아래에 3 · 8** 로
    나뉘는 그림이다(이종은 9/10). 주제곡의 "열한 개의 별"이 떠오르도록 별 열한 개를
