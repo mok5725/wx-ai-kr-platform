@@ -908,6 +908,16 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .crews3 .mk{margin-left:12px;font-family:var(--head);font-weight:800;font-size:24px;
   color:var(--kw);vertical-align:middle;white-space:nowrap}
 .crews3 .adv{margin-top:18px;font-size:23px;line-height:1.4;color:var(--st-soft);align-self:end}
+/* 31쪽 — 세 단계(1·2·3부)의 칸 높이를 하나로 못 박는다. 그냥 두면 3부가 팀도 적고
+   과제명도 짧아 36px 낮아, 단계를 넘길 때 칸이 들썩였다(이종은 9/11).
+   515px 은 1·2부가 내용만큼 섰을 때의 높이 — 3부는 이름 줄이 그만큼 넉넉해진다. */
+.frame[data-id="D-03"] .crews3{height:515px;grid-template-rows:auto auto 1fr auto}
+/* 넘길 때는 흐려지지 않고 **칸만 왼쪽으로 민다**. 한 벌이 왼쪽으로 빠지는 동안
+   다음 벌이 오른쪽에서 들어온다 — 밖으로 나간 몫은 .views 가 잘라 낸다. */
+.frame[data-id="D-03"] .views{overflow:hidden}
+.frame[data-id="D-03"] .view{transition:transform .52s cubic-bezier(.22,.61,.36,1)}
+.frame[data-id="D-03"] .view.off-r{opacity:1;transform:translateX(100%)}
+.frame[data-id="D-03"] .view.off-l{opacity:1;transform:translateX(-100%)}
 
 .crit{display:grid;gap:26px}
 /* 이름을 critbar 로 둔다 — .bar 로 두면 무대 조작 막대(.stagefs .bar)의 규칙에 걸려
@@ -2388,7 +2398,11 @@ function openStage(i, dir){
 }
 function closeStage(exit=true){ if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
 const stepCur=(d)=>{ const p=FLAT[cur]; return stepTo(p,(pageEls.get(p.id).step||0)+d); };
-$('#stPrev').addEventListener('click',()=>openStage(cur-1,-1)); $('#stNext').addEventListener('click',()=>openStage(cur+1,1));
+/* 「이전 · 다음」 단추도 단계를 먼저 밟는다 — 키(← →)와 휠은 이미 그랬는데
+   이 단추만 장을 통째로 넘겨 31쪽 세 단계를 건너뛰었다(이종은 9/11).
+   단계를 다 밟은 뒤에야 장이 넘어간다. 「← 단계 / 단계 →」는 단계만 옮긴다. */
+$('#stPrev').addEventListener('click',()=>{ if(!stepCur(-1)) openStage(cur-1,-1); });
+$('#stNext').addEventListener('click',()=>{ if(!stepCur(1)) openStage(cur+1,1); });
 $('#stStepL').addEventListener('click',()=>stepCur(-1)); $('#stStepR').addEventListener('click',()=>stepCur(1));
 $('#stClose').addEventListener('click',()=>closeStage()); $('#stGrid').addEventListener('click',toggleGrid);
 document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) return; if(e.target.matches('input,select,textarea')) return;
