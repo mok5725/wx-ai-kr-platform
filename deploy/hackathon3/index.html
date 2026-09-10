@@ -1644,7 +1644,8 @@ const PARTS = [
 { id:'p4', tag:'4부', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
   note:'"시상 선택기"에서 마스터 최우수 1팀(나머지 2팀 자동 우수), 챌린저 최우수 · 우수를 클릭하면 시상 두 페이지(마스터 3단계 · 챌린저 2단계)가 바로 채워집니다. 팀명은 가려진 채 시작하고 무대에서 클릭하면 드러납니다. 호명: 마스터 최우수 → 우수 → 우수, 챌린저 우수 → 최우수.',
   pages:[
-  P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
+  /* 메달 그림은 뺀다 — 붓글씨만으로 충분하다(이종은 9/11). */
+  P({ no:'14', id:'D-15', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
   P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 최우수상', kind:'cover', big:'<span class="tklock m"><img class="a" src="img/lettering/master.svg" alt="마스터"><img class="b" src="img/lettering/track.svg" alt="트랙"></span><span class="awword">최우수상</span>',
     viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
   P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 우수상', kind:'cover', big:'<span class="tklock m"><img class="a" src="img/lettering/master.svg" alt="마스터"><img class="b" src="img/lettering/track.svg" alt="트랙"></span><span class="awword">우수상</span>',
