@@ -3,17 +3,8 @@
      viewBox="392 789 2897 1557"
      preserveAspectRatio="xMidYMid meet">
   <title>챌린저</title>
-  <defs>
-    <linearGradient id="grad_chal" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#A27AE0"/>
-      <stop offset="25%" stop-color="#A57DE0"/>
-      <stop offset="50%" stop-color="#AD82E2"/>
-      <stop offset="75%" stop-color="#B68AE1"/>
-      <stop offset="100%" stop-color="#BD94E0"/>
-    </linearGradient>
-  </defs>
   <g transform="translate(0,3072) scale(0.1,-0.1)"
-fill="url(#grad_chal)" stroke="none">
+fill="#FFFFFF" stroke="none">
 <path d="M7704 22268 c-39 -18 -46 -52 -23 -105 l20 -47 -29 -28 c-24 -25 -32
 -27 -54 -19 -32 12 -58 -11 -58 -52 0 -15 -5 -27 -10 -27 -22 0 -22 -32 -1
 -54 19 -20 20 -24 7 -36 -11 -8 -13 -17 -6 -29 5 -10 14 -58 21 -107 6 -49 18
