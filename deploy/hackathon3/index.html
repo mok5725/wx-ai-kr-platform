@@ -993,6 +993,9 @@ body:not(.ops) .ctl{display:none}
 .part .list{font-size:44px;line-height:1.6;color:var(--st-soft)}
 .part .list p b{color:var(--st-ink);font-family:var(--head);font-weight:800}
 .part .list p.m{color:var(--st-ink);margin-bottom:30px}
+/* 설문 QR — 흰 판에 남색 점. 그림 안에 이미 네 모듈짜리 여백이 있어 덧댈 것이 없다. */
+.qrimg{width:520px;height:520px;display:block;border-radius:28px;
+  box-shadow:0 22px 60px rgba(4,3,24,.45), inset 0 1px 0 rgba(255,255,255,.2)}
 .ph{border:2px dashed var(--st-line);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--st-faint);font-size:var(--s0);padding:24px;background:var(--panel)}
 .ph.pic{height:100%;padding:0;border:0;background:transparent;overflow:hidden}
 .ph.pic img{width:100%;height:100%;object-fit:contain;display:block;border-radius:12px}
@@ -1063,11 +1066,19 @@ body:not(.ops) .ctl{display:none}
 /* 43쪽 「발표가 모두 끝났습니다」는 열 글자짜리 문장이라 260px 로는 화면을 넘는다 —
    붓글씨 한 줄(hand/p11.svg)을 다른 표지들과 비슷한 크기(가로 1600 안팎)로 앉힌다(이종은 9/10). */
 .frame[data-id="D-10"] .cover .big{font-size:150px;white-space:nowrap}
-/* 49~52쪽은 상 이름 한 줄만 띄운다 — 열 글자라 260px 로는 화면을 넘는다. */
+/* 시상 네 장 — 위에 트랙 이름(붓글씨 SVG), 줄 바꿔 아래에 상 이름. 가운데 정렬.
+   붓글씨는 밝은 바탕에 쓰라고 만든 짙은 보라라서, 어두운 배경에서는 그대로 두면
+   읽히지 않는다 — 글씨 뒤에만 옅은 판을 깔아 대비를 준다(이종은 9/10). */
 .frame[data-id="D-16a"] .cover .big,
 .frame[data-id="D-16b"] .cover .big,
 .frame[data-id="D-17a"] .cover .big,
-.frame[data-id="D-17b"] .cover .big{font-size:160px;white-space:nowrap}
+.frame[data-id="D-17b"] .cover .big{font-size:0;display:flex;flex-direction:column;align-items:center;gap:26px}
+.cover .big .tklock{display:flex;align-items:flex-end;justify-content:center;gap:34px;
+  padding:26px 54px 30px;border-radius:34px;background:rgba(238,240,255,.90);
+  box-shadow:0 24px 64px rgba(4,3,24,.45)}
+.cover .big .tklock img{height:190px;display:block}
+.cover .big .awword{font-family:var(--head);font-weight:900;font-size:150px;line-height:1.05;
+  color:var(--kw);letter-spacing:-.01em}
 .frame[data-id="D-10"] .cover .big .hand{max-width:none}
 /* 21쪽 제목은 영문 두 줄이라 260px 로는 화면을 넘는다. */
 .frame[data-id="A-22"] .cover .big{font-size:150px}
@@ -1586,19 +1597,19 @@ const PARTS = [
   P({ no:'—', id:'D-10', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -782px', title:'발표 종료', new:true, kind:'cover', big:hand('발표가 모두 끝났습니다'), en:'심사결과 수합중', viz:'손글씨 한 줄 + 노란 줄', how:'문구는 손글씨로 조금 작게 한 줄(이종은 9/10)' }),
   P({ no:'11', id:'D-12', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -828px', title:'완주 축하', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'손글씨 후보', how:'—' }),
   P({ no:'12', id:'D-13', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -874px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계, 화면 가득', how:'제목 고정, 사진만 좌우로 넘어간다' }),
-  P({ no:'13', id:'D-14', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -920px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true}, foot:'❓ 설문 링크', viz:'QR 480×480 가운데', how:'QR + 제목', wait:'설문 링크' }),
+  P({ no:'13', id:'D-14', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -920px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true, qrSrc:'img/qr-survey.png'}, sub:'휴대폰 카메라로 QR을 비춰 주세요', viz:'QR 520×520 가운데 — 동그란 점 · 가운데 해커톤 마크', how:'받은 QR(https://qrfy.io/cgKO2TnfKi)을 그대로 다시 그렸다 — 점은 동그라미, 모서리 눈은 둥근 네모(점만으로는 인식이 깨진다), 가운데 마크(이종은 9/10)' }),
 ]},
 { id:'p4', tag:'4부', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
   note:'"시상 선택기"에서 마스터 최우수 1팀(나머지 2팀 자동 우수), 챌린저 최우수 · 우수를 클릭하면 시상 두 페이지(마스터 3단계 · 챌린저 2단계)가 바로 채워집니다. 팀명은 가려진 채 시작하고 무대에서 클릭하면 드러납니다. 호명: 마스터 최우수 → 우수 → 우수, 챌린저 우수 → 최우수.',
   pages:[
   P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
-  P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 최우수상', kind:'cover', big:'마스터 트랙 <em>최우수상</em>',
+  P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 최우수상', kind:'cover', big:'<span class="tklock"><img src="img/lettering/master.svg" alt="마스터"><img src="img/lettering/track.svg" alt="트랙"></span><span class="awword">최우수상</span>',
     viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
-  P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 우수상', kind:'cover', big:'마스터 트랙 <em>우수상</em>',
+  P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 우수상', kind:'cover', big:'<span class="tklock"><img src="img/lettering/master.svg" alt="마스터"><img src="img/lettering/track.svg" alt="트랙"></span><span class="awword">우수상</span>',
     viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
-  P({ no:'16', id:'D-17a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 우수상', kind:'cover', big:'챌린저 트랙 <em>우수상</em>',
+  P({ no:'16', id:'D-17a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 우수상', kind:'cover', big:'<span class="tklock"><img src="img/lettering/challenger.svg" alt="챌린저"><img src="img/lettering/track.svg" alt="트랙"></span><span class="awword">우수상</span>',
     viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
-  P({ no:'16', id:'D-17b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 최우수상', kind:'cover', big:'챌린저 트랙 <em>최우수상</em>',
+  P({ no:'16', id:'D-17b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 최우수상', kind:'cover', big:'<span class="tklock"><img src="img/lettering/challenger.svg" alt="챌린저"><img src="img/lettering/track.svg" alt="트랙"></span><span class="awword">최우수상</span>',
     viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
   P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
   P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
@@ -1919,7 +1930,10 @@ B.teed=(b)=>el('div','teed',
    <img class="tee b" src="${b.back}" alt="">
    <div class="cap l"><p class="ln">${b.left}</p></div>
    <div class="cap r"><p class="ln">${b.right}</p></div>`);
-B.photo=(b)=>{ if(b.src){ const w=el('div','ph pic'); w.innerHTML=`<img src="${b.src}" alt="">`; return w; } if(b.grid6) return el('div','ph grid6', b.grid6.map(g=>Array.isArray(g)?`<span class="pic${g[3]?' '+g[3]:''}" style="--s:${g[2]||1}"><img src="${g[1]}" alt=""><i>${g[0]}</i></span>`:`<span>${g}</span>`).join('')); if(b.grid5) return el('div','ph grid5',[1,2,3,4,5].map(n=>`<span>캡처 ${n}</span>`).join('')); if(b.qr){ const w=el('div','center-col'); w.innerHTML='<div class="ph" style="width:480px;height:480px">QR 480×480</div>'; return w; } const w=el('div','ph',b.ph); w.style.height=b.wide?'560px':'100%'; return w; };
+B.photo=(b)=>{ if(b.src){ const w=el('div','ph pic'); w.innerHTML=`<img src="${b.src}" alt="">`; return w; } if(b.grid6) return el('div','ph grid6', b.grid6.map(g=>Array.isArray(g)?`<span class="pic${g[3]?' '+g[3]:''}" style="--s:${g[2]||1}"><img src="${g[1]}" alt=""><i>${g[0]}</i></span>`:`<span>${g}</span>`).join('')); if(b.grid5) return el('div','ph grid5',[1,2,3,4,5].map(n=>`<span>캡처 ${n}</span>`).join('')); if(b.qr){ const w=el('div','center-col');
+    w.innerHTML = b.qrSrc ? `<img class="qrimg" src="${b.qrSrc}" alt="수료 설문 QR">`
+                          : '<div class="ph" style="width:480px;height:480px">QR 480×480</div>';
+    return w; } const w=el('div','ph',b.ph); w.style.height=b.wide?'560px':'100%'; return w; };
 B.split=(b)=>el('div','split',`<div class="lines">${b.lines.map(l=>lnP(l)).join('')}</div><div class="ph">${b.ph}</div>`);
 
 function buildBody(bdef,p){ const b=val(bdef); return B[b.type](b,p); }
