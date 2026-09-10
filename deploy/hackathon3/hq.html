@@ -254,7 +254,8 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .view{position:absolute;inset:0;transition:opacity .46s cubic-bezier(.22,.61,.36,1),transform .46s cubic-bezier(.22,.61,.36,1)}
 .view.off-r{opacity:0;transform:translateX(64px);pointer-events:none}
 .view.off-l{opacity:0;transform:translateX(-64px);pointer-events:none}
-.stepnav{position:absolute;right:var(--pad);bottom:78px;display:flex;gap:8px;align-items:center;z-index:6;font-size:26px;color:var(--st-faint)}
+/* 쪽번호(오른쪽 아래 y970~1053)와 겹쳐 → 단추가 가려졌다 — 그 위로 올린다(이종은 9/11). */
+.stepnav{position:absolute;right:var(--pad);bottom:124px;display:flex;gap:8px;align-items:center;z-index:6;font-size:26px;color:var(--st-faint)}
 /* 단추 모양은 덱 전체가 하나다 — 알약(이종은 9/10). */
 .stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:999px;padding:4px 18px}
 .stepnav .lab{font-size:28px}
@@ -1593,11 +1594,16 @@ const PARTS = [
       {cls:'ma', star:3, from:0, n:'3', u:'크루', t:'마스터 트랙 · 22명', d:'Top-down 과제 선발 (크루당 7~8명)'},
       {cls:'ch', star:8, from:3, n:'8', u:'크루', t:'챌린저 트랙 · 32명', d:'우수 아이디어 제안 (크루당 4명)'},
     ]}}, viz:'4쪽과 같은 틀 — 개조식 다섯 줄 + 크루 도해', how:'4쪽 내용 그대로 두되 참여사를 장소와 대상 사이에 넣었다(이종은 9/10)' }),
-  ...[0,1,2].map(k=>P({ no:'2', id:'D-03'+'abc'[k], bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:`center ${-46*(2+k)}px`, title:`${k+1}부 크루`, h:`<em>${k+1}부</em> 크루`, sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true,
-    body:()=>({type:'crews3', items:[
+  /* 세 부를 세 장으로 두면 장을 넘길 때마다 배경·제목까지 통째로 갈려 전환이 과했다 —
+     한 장에 세 단계로 두고 칸만 옆으로 밀고 제목의 숫자만 바꾼다(이종은 9/11). */
+  P({ no:'2', id:'D-03', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -138px', title:'부별 크루', h:'<em>1부</em> 크루', sub:'포스코그룹 7개 사, AX를 이끌 11개 크루 소개', dyn:true,
+    dynTitle:[0,1,2].map(k=>`<em>${k+1}부</em> 크루`),
+    steps:[0,1,2].map(k=>({ label:`${k+1}부`, body:()=>({type:'crews3', items:[
       {ma:true, team:MASTERS[k].team, topic:[MASTERS[k].topic, MASTERS[k].tag].filter(Boolean).join(' — '), members:MASTERS[k].members, adv:MASTERS[k].advisor},
       ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return t ? {team:t.team, topic:t.title, members:t.members} : {team:'(발표 순서 결정 후)', topic:'', members:[]}; })
-    ]}), viz:'5쪽과 같은 판 — 팀명[마스터] · 과제명 · 이름 · 자문. 마스터 한 칸(파랑) + 챌린저 칸', how:'순서는 발표 순서 결정 결과. 마스터 칸은 팀명 옆에 [마스터], 맨 아래 미래기술연구원 자문(이종은 9/10)' })),
+    ]}) })),
+    viz:'5쪽과 같은 판 — 팀명[마스터] · 과제명 · 이름 · 자문. 화살표로 1부 → 2부 → 3부, 칸만 옆으로 밀린다',
+    how:'한 장 세 단계. 마스터 칸은 팀명 옆에 [마스터], 맨 아래 미래기술연구원 자문(이종은 9/10~11)' }),
   P({ no:'4', id:'D-17재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -322px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
   P({ no:'5', id:'D-16재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -368px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상 수상자는 제외됩니다', viz:'A-16 과 같음 — 단서만 그림 아래 한 줄 가운데', how:'14쪽(A-16)과 같은 내용으로 맞춤. 단서는 두 줄 오른쪽이 아니라 한 줄 가운데(이종은 9/10)' }),
   P({ no:'6', id:'D-06', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -414px', title:'심사기준', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', body:{type:'criteria2', cols:[
