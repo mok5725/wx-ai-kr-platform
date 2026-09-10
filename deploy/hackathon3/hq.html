@@ -960,6 +960,10 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 멈춰 있으면 숫자를 살짝 죽여 둔다 — 멈춘 줄 모르고 지나치면 안 된다. */
 .frame.paused .digits{opacity:.62}
 .frame.paused .state{color:var(--gold)}
+/* 숫자 아래 상태 문구는 띄우지 않는다 — 24시간 걸려 있는 화면이라 숫자만 남긴다
+   (이종은 9/11). 자리는 남겨 두어 숫자가 움직이지 않는다. 상태는 숫자 자체가
+   말해 준다: 멈추면 흐려지고(.paused), 끝나면 금색이 된다(.done). */
+.frame[data-id="B-02"] .state{visibility:hidden}
 
 /* 조작 줄(.ctl)은 운영 주소에서만 보인다 — 카운트다운 맞추기, 발표 순서 카드,
    시상 선택, 발표 타이머가 모두 여기에 걸린다. 참가자 화면에는 아예 안 뜬다.
