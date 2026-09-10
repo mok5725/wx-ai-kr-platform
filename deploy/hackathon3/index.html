@@ -850,6 +850,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .crit2 .critbar{height:52px;font-size:26px;max-width:none}
 .crit2 .txt{font-size:25px;line-height:1.55}
 .crit2 .lines p.em{font-size:38px}
+/* 굵은 항목 이름은 32px 그대로 두고 괄호 안 풀이만 줄여 한 줄에 앉힌다 —
+   가장 긴 줄(기술·솔루션 검증)이 306+511=817px 로 874px 칸 안에 든다(이종은 9/10). */
+.crit2 .txt small{font-size:23px}
 
 /* 심사위원 표 — 묶인 칸(.mrg)은 세로로 이어 붙여 한 번만 적는다. */
 .jt{height:100%}
@@ -863,7 +866,6 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 뒤에 오는 일반 .who 규칙이 글자 크기를 56px 로 키운다 — 표 안에서는
    다른 이름과 같은 크기여야 한다(이종은 9/10). */
 .jt .who{display:block;font-family:inherit;font-size:inherit;font-weight:700}
-.jt .plus{display:block;margin-top:8px;font-family:var(--head);font-weight:900;font-size:34px;color:var(--gold)}
 
 /* 발표 순서 열한 번 — 부마다 묶고 번호는 1부터 끝까지 이어 센다. */
 .ord11{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;height:100%;align-content:start}
@@ -1559,8 +1561,8 @@ const PARTS = [
   P({ no:'4', id:'D-17재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -322px', title:'우수팀 특전 (다시)', eyebrow:'선물', h:'<em>우수팀</em> 특전', sub:'회장님 상장과 함께 특별한 상품이 주어집니다', obj:'A-17 과 같은 상품 그림', objImgs:[['img/perks/macbook-air.webp','최우수상','MacBook Air M5'],['img/perks/macbook-neo.webp','우수상','MacBook Neo A18 Pro']], viz:'A-17 과 같음', how:'문구는 2일차 4번' }),
   P({ no:'5', id:'D-16재', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -368px', title:'참가자 전원 선물 (다시)', eyebrow:'선물', h:'참가 크루 <em>전원</em>에게 주는 선물', sub:'포스코인재창조원장님 명의 수료증과 상품이 주어집니다', obj:'A-16 과 같은 에어팟 그림', objImgs:[['img/perks/airpods.webp','에어팟']], noteR:'※ 최우수상 · 우수상 수상자는 제외됩니다', viz:'A-16 과 같음 — 단서만 그림 아래 한 줄 가운데', how:'14쪽(A-16)과 같은 내용으로 맞춤. 단서는 두 줄 오른쪽이 아니라 한 줄 가운데(이종은 9/10)' }),
   P({ no:'6', id:'D-06', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -414px', title:'심사기준', eyebrow:'심사기준', h:'우수팀이 되기 위한 <em>비결</em>은?', sub:'트랙별 심사기준을 알려드립니다', body:{type:'criteria2', cols:[
-    {h:'마스터 트랙', bar:[['비즈니스 임팩트 60%',60],['기술 · 솔루션 검증 40%',40]], txt:['<b>비즈니스 임팩트 60%</b> (AIReX 산식 기반의 비즈니스 가치화)','<b>기술 · 솔루션 검증 40%</b> (기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)','※ 평가 : 9/11(금) 09:00~12:00 컨퍼런스룸']},
-    {h:'챌린저 트랙', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> (혁신성 40%, 실현 가능성 30%, 파급력 30%)','<b>협업 점수 25%</b> (사전학습 참여도, 온/오프라인 팀밋업, 디스코드 소통 지수)','※ 평가 : 9/11(금) 13:00~16:00 이벤트홀']},
+    {h:'[마스터 트랙]', bar:[['비즈니스 임팩트 60%',60],['기술 · 솔루션 검증 40%',40]], txt:['<b>비즈니스 임팩트 60%</b> <small>(AIReX 산식 기반의 비즈니스 가치화)</small>','<b>기술 · 솔루션 검증 40%</b> <small>(기술 타당성 40%, 구현 완성도 30%, 개발 확장성 30%)</small>','※ 평가 : 9/11(금) 09:00~12:00 컨퍼런스룸']},
+    {h:'[챌린저 트랙]', bar:[['심사위원 점수 75%',75],['협업 점수 25%',25]], txt:['<b>심사위원 점수 75%</b> <small>(혁신성 40%, 실현 가능성 30%, 파급력 30%)</small>','<b>협업 점수 25%</b> <small>(사전학습 참여도, 온/오프라인 팀밋업, 디스코드 소통 지수)</small>','※ 평가 : 9/11(금) 13:00~16:00 이벤트홀']},
   ]}, viz:'한 장에 두 칸 — 왼쪽 마스터 · 오른쪽 챌린저', how:'두 기준을 견줘 보도록 한 장에 모았다. 문안은 이종은 9/10 확정본 그대로', memo:'가장 엄격하게' }),
   P({ no:'7', id:'D-07', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -460px', title:'심사위원 — 마스터', eyebrow:'심사위원 소개 · 마스터 트랙', h:'마스터 트랙 <em>심사위원</em>', body:{type:'judges',
     head:['비즈니스 임팩트 평가 (60%)','기술·솔루션 검증 (40%)'],
@@ -1854,7 +1856,7 @@ B.criteria2=(b)=>el('div','crit2', b.cols.map(c=>
 B.judges=(b)=>el('div','jt',
   `<table><thead><tr><th>크루</th><th>스폰서</th><th colspan="2">${b.head[0]}</th><th>${b.head[1]}</th></tr></thead><tbody>`
   + b.rows.map((r,i)=>`<tr><td class="cw">${r[0]}</td><td>${r[1]}</td>`
-      + (i===0?`<td class="mrg" rowspan="${b.rows.length}"><span class="who">${b.common}</span><span class="plus">+</span></td>`:'')
+      + (i===0?`<td class="mrg" rowspan="${b.rows.length}"><span class="who">${b.common}</span></td>`:'')
       + `<td>${r[2]}</td>`
       + (i===0?`<td class="mrg" rowspan="${b.rows.length}">${b.tech}</td>`:'')
       + `</tr>`).join('')
