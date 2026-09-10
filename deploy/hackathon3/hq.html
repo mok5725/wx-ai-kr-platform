@@ -2126,7 +2126,7 @@ function runSeq(fw, delay){
   });
 }
 /* 임시 쪽번호 — "N부 03/55". 부는 partStart 로 가른다(부 이동 바와 같은 셈법). */
-const PAGENO=false;
+const PAGENO=true;
 function showPageNo(){
   const el=$('#pageNo'); if(!el) return;
   if(!PAGENO){ el.style.display='none'; return; }
