@@ -941,10 +941,15 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
    올리고, 마우스를 대는 자리도 그만큼 넓힌다(이종은 9/11). */
 .opswrap{position:absolute;left:0;right:0;bottom:0;height:300px;z-index:8;box-sizing:border-box;
   align-items:flex-end;justify-content:center;padding-bottom:116px}
-.opswrap .ctl{opacity:0;transition:opacity .22s ease;
-  background:rgba(8,6,42,.74);border-radius:999px;padding:12px 24px;
+/* opacity:0 만으로는 안 사라진다 — backdrop-filter 는 투명해도 배경을 흐리게
+   그려 어두운 사각형이 남는다(9/11 카운트다운 화면에 검은 띠로 드러났다).
+   숨길 때는 visibility 로 완전히 빼고, 흐림도 보일 때만 건다. */
+.opswrap .ctl{opacity:0;visibility:hidden;background:rgba(8,6,42,.74);
+  border-radius:999px;padding:12px 24px;
+  transition:opacity .22s ease, visibility 0s linear .22s}
+.opswrap:hover .ctl{opacity:1;visibility:visible;
+  transition:opacity .22s ease, visibility 0s;
   -webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
-.opswrap:hover .ctl{opacity:1}
 /* 조작거리가 늘어 한 줄에 안 들어간다 — 접어서 두 줄로(이종은 9/11). */
 .opswrap .ctl.cd2{flex-wrap:wrap;justify-content:center;max-width:1700px;border-radius:26px;row-gap:10px}
 .ctl.cd2 .sep{width:2px;height:26px;background:rgba(238,240,255,.22);margin:0 4px}
