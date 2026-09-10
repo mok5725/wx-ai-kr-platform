@@ -5,11 +5,11 @@
   <title>챌린저</title>
   <defs>
     <linearGradient id="grad_chal" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#391670"/>
-      <stop offset="25%" stop-color="#3f1779"/>
-      <stop offset="50%" stop-color="#4e1e88"/>
-      <stop offset="75%" stop-color="#602798"/>
-      <stop offset="100%" stop-color="#7332aa"/>
+      <stop offset="0%" stop-color="#A27AE0"/>
+      <stop offset="25%" stop-color="#A57DE0"/>
+      <stop offset="50%" stop-color="#AD82E2"/>
+      <stop offset="75%" stop-color="#B68AE1"/>
+      <stop offset="100%" stop-color="#BD94E0"/>
     </linearGradient>
   </defs>
   <g transform="translate(0,3072) scale(0.1,-0.1)"

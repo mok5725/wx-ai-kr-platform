@@ -1067,15 +1067,15 @@ body:not(.ops) .ctl{display:none}
    붓글씨 한 줄(hand/p11.svg)을 다른 표지들과 비슷한 크기(가로 1600 안팎)로 앉힌다(이종은 9/10). */
 .frame[data-id="D-10"] .cover .big{font-size:150px;white-space:nowrap}
 /* 시상 네 장 — 위에 트랙 이름(붓글씨 SVG), 줄 바꿔 아래에 상 이름. 가운데 정렬.
-   붓글씨는 밝은 바탕에 쓰라고 만든 짙은 보라라서, 어두운 배경에서는 그대로 두면
-   읽히지 않는다 — 글씨 뒤에만 옅은 판을 깔아 대비를 준다(이종은 9/10). */
+   붓글씨 원본은 밝은 바탕용 짙은 보라(#271758~)라 어두운 배경에서 읽히지 않는다.
+   판을 깔지 않고 **글씨 자체를 밝게** 한다 — docs/img/lettering/*.svg 는
+   docs/hand/ref 의 원본에서 그라디언트 밝기만 올린 배포용 사본이다(이종은 9/10). */
 .frame[data-id="D-16a"] .cover .big,
 .frame[data-id="D-16b"] .cover .big,
 .frame[data-id="D-17a"] .cover .big,
 .frame[data-id="D-17b"] .cover .big{font-size:0;display:flex;flex-direction:column;align-items:center;gap:26px}
 .cover .big .tklock{display:flex;align-items:flex-end;justify-content:center;gap:34px;
-  padding:26px 54px 30px;border-radius:34px;background:rgba(238,240,255,.90);
-  box-shadow:0 24px 64px rgba(4,3,24,.45)}
+  filter:drop-shadow(0 10px 28px rgba(4,3,24,.55))}
 .cover .big .tklock img{height:190px;display:block}
 .cover .big .awword{font-family:var(--head);font-weight:900;font-size:150px;line-height:1.05;
   color:var(--kw);letter-spacing:-.01em}
