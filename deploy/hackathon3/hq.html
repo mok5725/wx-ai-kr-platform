@@ -877,7 +877,9 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .ord11 .no{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:inline-flex;
   align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:24px;
   color:#08062A;background:var(--st-soft)}
-.ord11 li.ma .no{background:#8FBAFF}
+/* 1 · 5 · 9 번(마스터)은 덱이 마스터를 가리킬 때 쓰는 색(--kw)으로 —
+   옛 #8FBAFF 는 옆 칸 색(#C3C6EE)과 너무 비슷했다(이종은 9/10). */
+.ord11 li.ma .no{background:var(--kw)}
 .ord11 b{font-family:var(--head);font-weight:900;font-size:34px;line-height:1.2;color:var(--st-ink)}
 .ord11 .rl2{font-size:22px;color:var(--st-faint)}
 
@@ -1056,6 +1058,11 @@ body:not(.ops) .ctl{display:none}
 /* 43쪽 「발표가 모두 끝났습니다」는 열 글자짜리 문장이라 260px 로는 화면을 넘는다 —
    붓글씨 한 줄(hand/p11.svg)을 다른 표지들과 비슷한 크기(가로 1600 안팎)로 앉힌다(이종은 9/10). */
 .frame[data-id="D-10"] .cover .big{font-size:150px;white-space:nowrap}
+/* 49~52쪽은 상 이름 한 줄만 띄운다 — 열 글자라 260px 로는 화면을 넘는다. */
+.frame[data-id="D-16a"] .cover .big,
+.frame[data-id="D-16b"] .cover .big,
+.frame[data-id="D-17a"] .cover .big,
+.frame[data-id="D-17b"] .cover .big{font-size:160px;white-space:nowrap}
 .frame[data-id="D-10"] .cover .big .hand{max-width:none}
 /* 21쪽 제목은 영문 두 줄이라 260px 로는 화면을 넘는다. */
 .frame[data-id="A-22"] .cover .big{font-size:150px}
@@ -1566,11 +1573,11 @@ const PARTS = [
   P({ no:'8', id:'D-07d', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -506px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'lines', lines:['포스코홀딩스 AI로봇융합연구소 <b>윤일용</b> 연구소장','포스코 DX전략실 <b>정규호</b> 실장','포스코인터내셔널 DX혁신실 <b>신대호</b> 실장','포스코인재창조원 혁신기술센터 <b>김경철</b> 센터장']}, viz:'없음 — 4줄, 이름만 진하게', how:'소속은 옅게 두고 이름만 도드라지게(이종은 9/10)' }),
   P({ no:'9', id:'D-08', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -552px', title:'발표 순서', when:'0시 결정 → 13:00 표시', eyebrow:'결과발표회', h:'<em>발표 순서</em>', sub:'챌린저 — 발표 8분 + 질의응답 5분 = 13분! 시간을 지켜주세요. *시간 초과 시 감점', dyn:true,
     body:()=>({type:'order11', parts:[0,1,2].map(k=>({ num:`${k+1}부`, items:[
-      {team:MASTERS[k].team, role:`마스터 · ${MASTERS[k].dom} · 성과 공유 약 5분`, ma:true},
+      {team:MASTERS[k].team, role:'마스터', ma:true},
       ...PART_IDX[k].map(i=>{ const t=slotTeam(i); return {team:t?t.team:'(발표 순서 결정 후)', role:`챌린저 · 발표 ${i+1}번`}; })
     ]}))}),
     foot:MUST+' · 발표자는 크루원 누구나 (단체 발표도 가능)', viz:'부마다 한 칸 — 마스터가 먼저, 이어서 챌린저. 번호는 1부터 11까지 이어 센다', how:'마스터와 챌린저를 가리지 않고 한 줄로 보여 준다(이종은 9/10). 조작은 2부 B-05 에서' }),
-  ...[0,1,2].map(k=>P({ no:'—', id:'D-08'+'bcd'[k], bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:`center ${-46*(13+k)}px`, title:`${k+1}부 시작`, new:true, eyebrow:'결과발표회', h:`<em>${k+1}부</em> 시작`, dyn:true, body:()=>({type:'part', num:`${k+1}부`, list:[`<b>${MASTERS[k].team}</b> (${MASTERS[k].dom}) · 성과 공유`, ...PART_IDX[k].map(i=>`발표 ${i+1}번 · <b>${orderName(i)}</b>`)]}), viz:'부 번호 320px 왼쪽 · 팀 목록 44px 오른쪽', how:'—' })),
+  ...[0,1,2].map(k=>P({ no:'—', id:'D-08'+'bcd'[k], bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:`center ${-46*(13+k)}px`, title:`${k+1}부 시작`, new:true, dyn:true, body:()=>({type:'part', num:`${k+1}부`, list:[`<b>${MASTERS[k].team}</b> (${MASTERS[k].dom}) · 성과 공유`, ...PART_IDX[k].map(i=>`발표 ${i+1}번 · <b>${orderName(i)}</b>`)]}), viz:'부 번호 320px 왼쪽 · 팀 목록 44px 오른쪽', how:'가운데 큰 「N부」가 이미 제목 노릇을 하므로 왼쪽 위 「N부 시작」은 뺐다(이종은 9/10)' })),
   P({ no:'—', id:'D-10', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -782px', title:'발표 종료', new:true, kind:'cover', big:hand('발표가 모두 끝났습니다'), en:'심사결과 수합중', viz:'손글씨 한 줄 + 노란 줄', how:'문구는 손글씨로 조금 작게 한 줄(이종은 9/10)' }),
   P({ no:'11', id:'D-12', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -828px', title:'완주 축하', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'손글씨 후보', how:'—' }),
   P({ no:'12', id:'D-13', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -874px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계, 화면 가득', how:'제목 고정, 사진만 좌우로 넘어간다' }),
@@ -1580,15 +1587,14 @@ const PARTS = [
   note:'"시상 선택기"에서 마스터 최우수 1팀(나머지 2팀 자동 우수), 챌린저 최우수 · 우수를 클릭하면 시상 두 페이지(마스터 3단계 · 챌린저 2단계)가 바로 채워집니다. 팀명은 가려진 채 시작하고 무대에서 클릭하면 드러납니다. 호명: 마스터 최우수 → 우수 → 우수, 챌린저 우수 → 최우수.',
   pages:[
   P({ no:'14', id:'D-15', img:'img/perks/medal.webp', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
-  P({ no:'—', id:'D-15s', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상 선택기 (운영용 · 무대에 안 올림)', new:true, ops:true, eyebrow:'운영 도구', h:'심사 결과 <em>입력</em>', widget:'awards', viz:'—', how:'클릭 3번', memo:'다른 팀을 누르면 바뀐다' }),
-  P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', eyebrow:'시상', dyn:true, title:'마스터 트랙 최우수상', h:'마스터 트랙 <em>시상</em>',
-    body:()=>({type:'award', kind:'mTop', name:'마스터 트랙 최우수상'}), viz:'상 이름 → 팀명 176px(가림) → 과제 → 상품 → 상장', how:'상 하나에 한 장(이종은 9/10). 팀명 클릭으로 공개' }),
-  P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', eyebrow:'시상', dyn:true, title:'마스터 트랙 우수상', h:'마스터 트랙 <em>시상</em>',
-    body:()=>({type:'award', kinds:['mGood1','mGood2'], name:'마스터 트랙 우수상'}), viz:'두 팀을 나란히 — 팀명은 각각 따로 공개', how:'마스터 우수상은 두 팀이 함께 불린다' }),
-  P({ no:'16', id:'D-17a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', eyebrow:'시상', dyn:true, title:'챌린저 트랙 우수상', h:'챌린저 트랙 <em>시상</em>',
-    body:()=>({type:'award', kind:'cGood', name:'챌린저 트랙 우수상'}), viz:'같은 틀', how:'우수 → 최우수 차례' }),
-  P({ no:'16', id:'D-17b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', eyebrow:'시상', dyn:true, title:'챌린저 트랙 최우수상', h:'챌린저 트랙 <em>시상</em>',
-    body:()=>({type:'award', kind:'cTop', name:'챌린저 트랙 최우수상'}), viz:'같은 틀', how:'마지막에 최우수' }),
+  P({ no:'15', id:'D-16a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 최우수상', kind:'cover', big:'마스터 트랙 <em>최우수상</em>',
+    viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
+  P({ no:'15', id:'D-16b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 우수상', kind:'cover', big:'마스터 트랙 <em>우수상</em>',
+    viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
+  P({ no:'16', id:'D-17a', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 우수상', kind:'cover', big:'챌린저 트랙 <em>우수상</em>',
+    viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
+  P({ no:'16', id:'D-17b', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 최우수상', kind:'cover', big:'챌린저 트랙 <em>최우수상</em>',
+    viz:'상 이름 한 줄만 — 가운데', how:'무대에는 상 이름만 띄우고 팀은 사회자가 부른다(이종은 9/10)' }),
   P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
   P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
   P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', deck:true, lockup:'2026 WX해커톤', big:`<span class="bigslogan"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span>`, viz:'가운데에 슬로건 하나 — 「본선대회」 자리를 슬로건이 대신한다', how:'마지막 장이라 대회 이름 대신 슬로건으로 닫는다(이종은 9/10). 아래 슬로건 줄은 빼고 그 자리에 올렸다' }),
@@ -1596,7 +1602,8 @@ const PARTS = [
 ];
 /* 운영 전용 장(ops:true)은 참가자 덱에서 통째로 뺀다 — 쪽 수·부 이동 바·진행 점이
    모두 PARTS 에서 나오므로 여기서 걸러 내면 나머지는 저절로 맞는다.
-   지금 빠지는 장: 시상 선택기(D-15s) · 마스터 트랙 시상(D-16) · 챌린저 트랙 시상(D-17).
+   지금 빠지는 장: 마스터 트랙 시상 두 장(D-16a · D-16b) · 챌린저 트랙 시상 두 장(D-17a · D-17b).
+   시상 선택기(D-15s)는 9/10 에 뺐다 — 상 이름만 띄우고 팀은 사회자가 부르기로 해서 쓸 일이 없다.
    시상식 개시 표지 · 전원 선물 · 기념사진 · 폐회는 수상팀을 드러내지 않으므로 남긴다. */
 if(!OPS) PARTS.forEach(pt => { pt.pages = pt.pages.filter(x => !x.ops); });
 const FLAT = PARTS.flatMap(p=>p.pages);
