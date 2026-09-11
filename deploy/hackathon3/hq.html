@@ -2423,28 +2423,29 @@ function fadeBg(fw, delay){
 function runSeq(fw, delay){
   /* 큐브는 CSS 무한 애니메이션이라 그냥 두면 중간 면부터 보인다 — 열 때마다 되감는다. */
   fw.querySelectorAll('.cube').forEach(c=>{ c.style.animation='none'; void c.offsetWidth; c.style.animation=''; });
-  /* 4쪽 별 — 1번부터 11번까지 차례로 켜진 뒤, 이 장을 벗어날 때까지 같은 차례로
-     **끝없이** 반짝인다(이종은 9/10). 위 열한 개와 아래 트랙별 별은 k 가 같으므로
-     한 순간에 함께 빛난다. CSS 전환은 openStage 가 display 를 바꾸는 순간을 놓치니
-     여기서도 Web Animations 로 돌린다. 다시 들어올 때 겹쳐 쌓이지 않게 먼저 지운다. */
+  /* 별 — 1번부터 11번까지 차례로 켜지는 **그 모습 그대로** 끝없이 되풀이한다
+     (이종은 9/11). 켜진 뒤 반짝이던 것은 걷어 냈다 — 처음 나타나는 장면이 곧 반복이다.
+     별 하나에 애니메이션 하나. 한 바퀴(T) 안에서 제 차례(k*ON)에 떠오르고, 다 뜬 뒤
+     잠시 머물다(HOLD) 함께 사라지고(OUT) 다음 바퀴가 시작된다.
+     위 열한 개와 아래 트랙별 별은 k 가 같아 한 순간에 함께 뜬다.
+     CSS 전환은 openStage 가 display 를 바꾸는 순간을 놓치니 Web Animations 로 돌린다.
+     다시 들어올 때 겹쳐 쌓이지 않게 먼저 지운다. */
   const st=[...fw.querySelectorAll('.cviz .stars i')];
   if(st.length){
-    /* 한 별의 반짝임이 **끝난 뒤에** 다음 별로 넘어간다(이종은 9/10) —
-       걸음(STEP)을 번쩍임 길이(FLASH)보다 길게 잡아야 겹치지 않는다. */
-    const N=11, FLASH=420, STEP=470, CYCLE=N*STEP+900, ON=300;
-    const onAt=delay+520, loopAt=onAt+N*ON+460;
+    const N=11, ON=300, APP=600, HOLD=1400, OUT=460;
+    const T=(N-1)*ON+APP+HOLD+OUT;
     st.forEach(n=>{
       n.getAnimations().forEach(a=>a.cancel());
-      const k=+n.dataset.k||0;
-      n.animate([{opacity:0,transform:'scale(.35)',filter:'brightness(2.6)'},
-                 {opacity:1,transform:'scale(1.5)',filter:'brightness(2.8)',offset:.5},
-                 {opacity:1,transform:'none',filter:'brightness(1)'}],
-        {duration:600, delay:onAt+k*ON, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
-      n.animate([{transform:'none',filter:'brightness(1)',offset:0},
-                 {transform:'scale(1.5)',filter:'brightness(3)',offset:FLASH*.42/CYCLE},
-                 {transform:'none',filter:'brightness(1)',offset:FLASH/CYCLE},
-                 {transform:'none',filter:'brightness(1)',offset:1}],
-        {duration:CYCLE, delay:loopAt+k*STEP, iterations:Infinity, easing:'ease-in-out'});
+      const k=+n.dataset.k||0, s=k*ON;
+      n.animate([
+        {offset:0,              opacity:0, transform:'scale(.35)', filter:'brightness(2.6)'},
+        {offset:s/T,            opacity:0, transform:'scale(.35)', filter:'brightness(2.6)'},
+        {offset:(s+APP*.5)/T,   opacity:1, transform:'scale(1.5)', filter:'brightness(2.8)'},
+        {offset:(s+APP)/T,      opacity:1, transform:'none',       filter:'brightness(1)'},
+        {offset:(T-OUT)/T,      opacity:1, transform:'none',       filter:'brightness(1)'},
+        {offset:1,              opacity:0, transform:'none',       filter:'brightness(1)'},
+      ], {duration:T, delay:delay+520, iterations:Infinity,
+          easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
     });
   }
   /* 4부 시상식 — 표지의 큰 글자가 큐브 면처럼 아래에서 굴러 선다(이종은 9/11).
