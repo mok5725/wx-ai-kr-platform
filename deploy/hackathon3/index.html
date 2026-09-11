@@ -1078,7 +1078,12 @@ body:not(.ops) .ctl{display:none}
 .part .list{font-size:44px;line-height:1.6;color:var(--st-soft)}
 .part .list p b{color:var(--st-ink);font-family:var(--head);font-weight:800}
 .part .list p.m{color:var(--st-ink);margin-bottom:30px}
-/* 설문 QR — 흰 판에 남색 점. 그림 안에 이미 네 모듈짜리 여백이 있어 덧댈 것이 없다. */
+/* 설문 QR — 흰 판에 남색 점. 그림 안에 이미 네 모듈짜리 여백이 있어 덧댈 것이 없다.
+   안내 문구는 부제 자리가 아니라 **QR 바로 아래**에 둔다. 덩이째 위로 끌어올린다
+   (아래 여백 50px — 본문 칸 한가운데면 화면에서 처져 보인다, 이종은 9/11.
+   170px 은 제목까지 파고들어 50px 로 줄였다 — QR 윗변 300px, 제목 아랫변 257px). */
+.qrwrap{padding-bottom:50px}
+.qrcap{margin-top:30px;font-size:var(--s2);font-weight:700;color:var(--st-ink);text-align:center}
 .qrimg{width:520px;height:520px;display:block;border-radius:28px;
   box-shadow:0 22px 60px rgba(4,3,24,.45), inset 0 1px 0 rgba(255,255,255,.2)}
 .ph{border:2px dashed var(--st-line);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--st-faint);font-size:var(--s0);padding:24px;background:var(--panel)}
@@ -1199,6 +1204,17 @@ body:not(.ops) .ctl{display:none}
 .cover .big .awcube[data-n="0"] .awface:nth-child(2){transform:translateZ(-84px) rotateX(-90deg) translateZ(84px)}
 .cover .big .awcube[data-n="1"] .awface:nth-child(1){transform:translateZ(-84px) rotateX(90deg)  translateZ(84px)}
 .cover .big .awcube[data-n="1"] .awface:nth-child(2){transform:translateZ(-84px) rotateX(0deg)   translateZ(84px)}
+/* 46→47 — 트랙 이름 자체가 큐브의 두 면이다. 장은 미끄러지지 않고(holdIn)
+   배경만 녹아 넘어가며, 「마스터 트랙」이 굴러 「챌린저 트랙」이 선다(이종은 9/11).
+   멈춰 선 모습(챌린저가 앞면)을 CSS 가 붙들고, 구르는 동안만 animate() 가 덮는다. */
+.cover .big .tkcube{--k:.14;position:relative;display:block;perspective:1400px;
+  width:calc(4715px * var(--k));height:calc(1739px * var(--k))}
+.cover .big .tkface{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  backface-visibility:hidden}
+/* 면 안의 붓글씨는 줄어들지 않는다 — 면의 폭이 0 이라 두면 flex 가 눌러 버린다. */
+.cover .big .tkface .tklock{flex:none}
+.cover .big .tkcube .tkface:nth-child(1){transform:translateZ(-122px) rotateX(90deg) translateZ(122px)}
+.cover .big .tkcube .tkface:nth-child(2){transform:translateZ(-122px) rotateX(0deg)  translateZ(122px)}
 .frame[data-id="D-10"] .cover .big .hand{max-width:none}
 /* 21쪽 제목은 영문 두 줄이라 260px 로는 화면을 넘는다. */
 .frame[data-id="A-22"] .cover .big{font-size:150px}
@@ -1744,24 +1760,24 @@ const PARTS = [
   P({ no:'—', id:'D-10', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -782px', title:'발표 종료', new:true, kind:'cover', big:hand('발표가 모두 끝났습니다'), en:'심사결과를 집계 중입니다.', viz:'손글씨 한 줄 + 노란 줄', how:'문구는 손글씨로 조금 작게 한 줄(이종은 9/10)' }),
   P({ no:'11', id:'D-12', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -828px', title:'완주 축하', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'손글씨 후보', how:'—' }),
   P({ no:'12', id:'D-13', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -874px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계. 사진을 누르면 화면 가득', how:'제목 고정, 사진만 넘어간다. 눌러서 키우면 ← → 로 다섯 장을 넘긴다(이종은 9/11)' }),
-  P({ no:'13', id:'D-14', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -920px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true, qrSrc:'img/qr-survey.png'}, sub:'휴대폰 카메라로 QR을 비춰 주세요', viz:'QR 520×520 가운데 — 동그란 점 · 가운데 해커톤 마크', how:'받은 QR(https://qrfy.io/cgKO2TnfKi)을 그대로 다시 그렸다 — 점은 동그라미, 모서리 눈은 둥근 네모(점만으로는 인식이 깨진다), 가운데 마크(이종은 9/10)' }),
+  P({ no:'13', id:'D-14', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -920px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true, qrSrc:'img/qr-survey.png', cap:'휴대폰 카메라로 QR을 비춰 주세요'}, viz:'QR 520×520 가운데 — 안내는 QR 바로 아래 — 동그란 점 · 가운데 해커톤 마크', how:'받은 QR(https://qrfy.io/cgKO2TnfKi)을 그대로 다시 그렸다 — 점은 동그라미, 모서리 눈은 둥근 네모(점만으로는 인식이 깨진다), 가운데 마크(이종은 9/10)' }),
 ]},
 { id:'p4', tag:'4부', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
   note:'"시상 선택기"에서 마스터 최우수 1팀(나머지 2팀 자동 우수), 챌린저 최우수 · 우수를 클릭하면 시상 두 페이지(마스터 3단계 · 챌린저 2단계)가 바로 채워집니다. 팀명은 가려진 채 시작하고 무대에서 클릭하면 드러납니다. 호명: 마스터 최우수 → 우수 → 우수, 챌린저 우수 → 최우수.',
   pages:[
   /* 메달 그림은 뺀다 — 붓글씨만으로 충분하다(이종은 9/11). */
-  P({ no:'14', id:'D-15', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', cubeIn:true, deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
+  P({ no:'14', id:'D-15', bg:'bg/songdo-infinity.jpg', bgSize:'100% auto', bgPos:'center 50%', title:'시상식 개시 (표지)', kind:'cover', stampIn:true, deck:true, lockup:'2026 WX해커톤', big:hand('시상식'), viz:'키비주얼 가장 화려하게 — 디자인 단계', how:'—' }),
   P({ no:'15', id:'D-16', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'110% auto', bgPos:'center 45%', title:'마스터 트랙 시상', kind:'cover',
-    big:'<span class="tklock m cubein"><img class="a" src="img/lettering/master.svg" alt="마스터"><img class="b" src="img/lettering/track.svg" alt="트랙"></span><span class="awcube" data-n="0"><span class="awface">최우수상</span><span class="awface">우수상</span></span>',
+    big:'<span class="tklock m zoomin"><img class="a" src="img/lettering/master.svg" alt="마스터"><img class="b" src="img/lettering/track.svg" alt="트랙"></span><span class="awcube" data-n="0"><span class="awface">최우수상</span><span class="awface">우수상</span></span>',
     steps:[{label:'최우수상'},{label:'우수상'}],
     viz:'트랙 이름은 고정, 상 이름만 큐브로 굴러 바뀐다', how:'한 장 두 단계 — 트랙 붓글씨는 움직이지 않는다(이종은 9/11)' }),
-  P({ no:'16', id:'D-17', ops:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 시상', kind:'cover',
-    big:'<span class="tklock c cubein"><img class="a" src="img/lettering/challenger.svg" alt="챌린저"><img class="b" src="img/lettering/track.svg" alt="트랙"></span><span class="awcube" data-n="0"><span class="awface">우수상</span><span class="awface">최우수상</span></span>',
+  P({ no:'16', id:'D-17', ops:true, holdIn:true, bg:'bg/songdo-infinity.jpg', bgSize:'120% auto', bgPos:'center 42%', title:'챌린저 트랙 시상', kind:'cover',
+    big:'<span class="tkcube"><span class="tkface"><span class="tklock m"><img class="a" src="img/lettering/master.svg" alt="마스터"><img class="b" src="img/lettering/track.svg" alt="트랙"></span></span><span class="tkface"><span class="tklock c"><img class="a" src="img/lettering/challenger.svg" alt="챌린저"><img class="b" src="img/lettering/track.svg" alt="트랙"></span></span></span><span class="awcube" data-n="0"><span class="awface">우수상</span><span class="awface">최우수상</span></span>',
     steps:[{label:'우수상'},{label:'최우수상'}],
-    viz:'트랙 이름은 고정, 상 이름만 큐브로 굴러 바뀐다', how:'한 장 두 단계 — 트랙 붓글씨는 움직이지 않는다(이종은 9/11)' }),
-  P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', cubeIn:true, big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
-  P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', cubeIn:true, big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
-  P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', cubeIn:true, deck:true, lockup:'2026 WX해커톤', big:`<span class="bigslogan"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span>`, viz:'가운데에 슬로건 하나 — 「본선대회」 자리를 슬로건이 대신한다', how:'마지막 장이라 대회 이름 대신 슬로건으로 닫는다(이종은 9/10). 아래 슬로건 줄은 빼고 그 자리에 올렸다' }),
+    viz:'46쪽에서 배경만 녹아 넘어오고, 트랙 이름이 큐브로 굴러 바뀐다', how:'장을 미끄러뜨리지 않는다 — 글자가 사라졌다 나타나지 않게(이종은 9/11)' }),
+  P({ no:'17', id:'D-20', bg:'bg/songdo-infinity.jpg', bgSize:'130% auto', bgPos:'center 40%', title:'완주 축하 (다시)', kind:'cover', stampIn:true, stampHard:true, big:hand('해커톤 완주를 축하드립니다!'), viz:'D-12 그대로', how:'—' }),
+  P({ no:'18', id:'D-21', bg:'bg/songdo-infinity.jpg', bgSize:'140% auto', bgPos:'center 38%', title:'기념사진 촬영', kind:'cover', zoomIn:true, big:'기념사진 촬영', viz:'없음 — 조용하게', how:'—' }),
+  P({ no:'19', id:'D-22', bg:'bg/songdo-infinity.jpg', bgSize:'150% auto', bgPos:'center 36%', title:'엔딩 (표지)', kind:'cover', zoomIn:true, deck:true, lockup:'2026 WX해커톤', big:`<span class="bigslogan"><span class="pre">${SLOGAN_PRE}</span><span class="impact" role="img" aria-label="Idea to Impact"></span></span>`, viz:'가운데에 슬로건 하나 — 「본선대회」 자리를 슬로건이 대신한다', how:'마지막 장이라 대회 이름 대신 슬로건으로 닫는다(이종은 9/10). 아래 슬로건 줄은 빼고 그 자리에 올렸다' }),
 ]},
 ];
 /* 운영 전용 장(ops:true)은 참가자 덱에서 통째로 뺀다 — 쪽 수·부 이동 바·진행 점이
@@ -2085,9 +2101,10 @@ B.teed=(b)=>el('div','teed',
    <img class="tee b" src="${b.back}" alt="">
    <div class="cap l"><p class="ln">${b.left}</p></div>
    <div class="cap r"><p class="ln">${b.right}</p></div>`);
-B.photo=(b)=>{ if(b.src){ const w=el('div','ph pic'); w.innerHTML=`<img src="${b.src}" alt="">`; return w; } if(b.grid6) return el('div','ph grid6', b.grid6.map(g=>Array.isArray(g)?`<span class="pic${g[3]?' '+g[3]:''}" style="--s:${g[2]||1}"><img src="${g[1]}" alt=""><i>${g[0]}</i></span>`:`<span>${g}</span>`).join('')); if(b.grid5) return el('div','ph grid5',[1,2,3,4,5].map(n=>`<span>캡처 ${n}</span>`).join('')); if(b.qr){ const w=el('div','center-col');
-    w.innerHTML = b.qrSrc ? `<img class="qrimg" src="${b.qrSrc}" alt="수료 설문 QR">`
-                          : '<div class="ph" style="width:480px;height:480px">QR 480×480</div>';
+B.photo=(b)=>{ if(b.src){ const w=el('div','ph pic'); w.innerHTML=`<img src="${b.src}" alt="">`; return w; } if(b.grid6) return el('div','ph grid6', b.grid6.map(g=>Array.isArray(g)?`<span class="pic${g[3]?' '+g[3]:''}" style="--s:${g[2]||1}"><img src="${g[1]}" alt=""><i>${g[0]}</i></span>`:`<span>${g}</span>`).join('')); if(b.grid5) return el('div','ph grid5',[1,2,3,4,5].map(n=>`<span>캡처 ${n}</span>`).join('')); if(b.qr){ const w=el('div','center-col qrwrap');
+    w.innerHTML = (b.qrSrc ? `<img class="qrimg" src="${b.qrSrc}" alt="수료 설문 QR">`
+                           : '<div class="ph" style="width:480px;height:480px">QR 480×480</div>')
+                + (b.cap ? `<div class="qrcap ln">${b.cap}</div>` : '');
     return w; } const w=el('div','ph',b.ph); w.style.height=b.wide?'560px':'100%'; return w; };
 B.split=(b)=>el('div','split',`<div class="lines">${b.lines.map(l=>lnP(l)).join('')}</div><div class="ph">${b.ph}</div>`);
 
@@ -2114,7 +2131,7 @@ function buildFrame(p, partIdx, partPages, pageIdxInPart){
   if(p.bg){ frame.style.background=`linear-gradient(rgba(8,6,42,.30), rgba(8,6,42,.55)), url("${p.bg}") ${p.bgPos||"center"} / ${p.bgSize||"cover"} no-repeat`; frame.classList.add('has-bg'); }
   if(isCover){
     const c=el('div','cover z'+(p.coverReveal?' hold':'')); c.dataset.z='표지 — 가운데 정렬, 하단 슬로건 자리 200px 비움';
-    c.innerHTML=(p.img?`<img class="cimg" src="${p.img}" alt="">`:'')+(p.lockup?`<div class="lockup"><span>2026</span><span class="ci ci-mark" role="img" aria-label="WX해커톤 마크"></span><span>해커톤</span></div>`:p.label?`<div class="lockup ln"><span>${p.label}</span></div>`:'')+(p.big?`<div class="big ln${p.huge?' huge':''}${p.cubeIn?' cubein':''}">${p.big}</div>`:'')+(p.linesUp&&p.lines?`<div class="lines up">${p.lines.map(l=>lnP(l)).join('')}</div>`:'')+(p.en?`<div class="en ln">${p.en}</div>`:'')+(p.when2?`<div class="when ln">${p.when2}</div>`:'')+(!p.linesUp&&p.lines?`<div class="lines">${p.lines.map(l=>lnP(l)).join('')}</div>`:'');
+    c.innerHTML=(p.img?`<img class="cimg" src="${p.img}" alt="">`:'')+(p.lockup?`<div class="lockup"><span>2026</span><span class="ci ci-mark" role="img" aria-label="WX해커톤 마크"></span><span>해커톤</span></div>`:p.label?`<div class="lockup ln"><span>${p.label}</span></div>`:'')+(p.big?`<div class="big ln${p.huge?' huge':''}${p.cubeIn?' cubein':''}${p.stampIn?' stampin':''}${p.stampHard?' hard':''}${p.zoomIn?' zoomin':''}">${p.big}</div>`:'')+(p.linesUp&&p.lines?`<div class="lines up">${p.lines.map(l=>lnP(l)).join('')}</div>`:'')+(p.en?`<div class="en ln">${p.en}</div>`:'')+(p.when2?`<div class="when ln">${p.when2}</div>`:'')+(!p.linesUp&&p.lines?`<div class="lines">${p.lines.map(l=>lnP(l)).join('')}</div>`:'');
     frame.appendChild(c);
     /* 표지에 단계를 두면(개회사) 넘김 단추도 붙는다. 본문 쪽과 같은 틀을 쓴다. */
     if(p.steps){
@@ -2521,6 +2538,38 @@ function runSeq(fw, delay){
                {transform:'perspective(1400px) rotateX(0deg)',   opacity:1}],
       {duration:660, delay:delay+140, easing:'cubic-bezier(.2,.72,.24,1)', fill:'backwards'});
   });
+  /* 45·48쪽 — 도장. 화면 한가득이던 글자가 확 줄어들며 쾅 하고 찍힌다(이종은 9/11).
+     줄어드는 구간만 세게 몰아치고, 닿은 뒤 두어 번 짧게 되튀어 멈춘다.
+     .hard 는 48쪽 「해커톤 완주를 축하드립니다」 — 더 크게, 더 세게. */
+  fw.querySelectorAll('.stampin').forEach(n=>{
+    n.getAnimations().forEach(a=>a.cancel());
+    const hard=n.classList.contains('hard'), Z=hard?4.6:3.4, B=hard?16:12, R=hard?-7:-5;
+    const SLAM='cubic-bezier(.16,.86,.14,1)', SET='cubic-bezier(.3,0,.3,1)';
+    n.animate([
+      {transform:`scale(${Z}) rotate(${R}deg)`, opacity:0, filter:`blur(${B}px) brightness(2.4)`, offset:0,   easing:SLAM},
+      {transform:'scale(1.04) rotate(.5deg)',   opacity:1, filter:'blur(0px) brightness(1.9)',    offset:.52, easing:SET},
+      {transform:'scale(.955) rotate(-.4deg)',  opacity:1, filter:'blur(0px) brightness(1)',      offset:.66, easing:SET},
+      {transform:'scale(1.02)',                 opacity:1, filter:'blur(0px) brightness(1)',      offset:.8,  easing:SET},
+      {transform:'none',                        opacity:1, filter:'blur(0px) brightness(1)',      offset:1}],
+      {duration:hard?820:720, delay:delay+160, easing:'linear', fill:'backwards'});
+  });
+  /* 46·49쪽 이후 — 화면 가운데에서 빠르게 오므라들며 자리를 잡는다(이종은 9/11). */
+  fw.querySelectorAll('.zoomin').forEach(n=>{
+    n.getAnimations().forEach(a=>a.cancel());
+    n.animate([{transform:'scale(2.6)', opacity:0, filter:'blur(8px)'},
+               {transform:'none',       opacity:1, filter:'blur(0px)'}],
+      {duration:460, delay:delay+120, easing:'cubic-bezier(.18,.84,.2,1)', fill:'backwards'});
+  });
+  /* 47쪽 — 트랙 이름이 큐브처럼 굴러 마스터에서 챌린저로 바뀐다.
+     멈춘 자리는 CSS 가 잡고 있으니 fill 은 backwards 만 준다. */
+  fw.querySelectorAll('.tkcube').forEach(c=>{
+    const f=c.querySelectorAll('.tkface'); if(f.length<2) return;
+    const D=122, T=(d)=>`translateZ(${-D}px) rotateX(${d}deg) translateZ(${D}px)`;
+    const opt={duration:860, delay:delay+220, easing:'cubic-bezier(.36,.66,.2,1)', fill:'backwards'};
+    f.forEach(x=>x.getAnimations().forEach(a=>a.cancel()));
+    f[0].animate([{transform:T(0)},  {transform:T(90)}], opt);
+    f[1].animate([{transform:T(-90)},{transform:T(0)}],  opt);
+  });
   fw.querySelectorAll('.seq > *').forEach((n,i)=>{
     n.animate([{opacity:0, transform:'translateY(28px)'},{opacity:1, transform:'none'}],
       {duration:520, delay:delay+i*400, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
@@ -2544,7 +2593,10 @@ function openStage(i, dir){
   /* softIn 인 장은 프레임을 미끄러뜨리지 않는다 — 배경이 겹쳐 녹는 것을 보여야 한다.
      대신 배경 층(.herobg)만 빼고 내용만 부드럽게 띄운다. */
   const soft=!!(dir && FLAT[cur].softIn);
-  if(dir && !soft) rec.fw.classList.add(dir>0?'arrive-down':'arrive-up');
+  /* holdIn 인 장은 아예 멈춰 선 채로 받는다 — 배경만 녹아 넘어오고, 바뀌는 것은
+     장 안에서 스스로 움직인다(47쪽 트랙 큐브). 글자가 사라졌다 나타나지 않는다. */
+  const hold=!!(dir && FLAT[cur].holdIn);
+  if(dir && !soft && !hold) rec.fw.classList.add(dir>0?'arrive-down':'arrive-up');
   if(soft) [...rec.frame.children].filter(e=>!e.classList.contains('herobg')).forEach(e=>{
     e.animate([{opacity:0},{opacity:1}],{duration:540,delay:180,easing:'cubic-bezier(.22,.61,.36,1)',fill:'backwards'});
   });
