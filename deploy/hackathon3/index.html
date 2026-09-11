@@ -261,6 +261,11 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 단추 모양은 덱 전체가 하나다 — 알약(이종은 9/10). */
 .stepnav button{font:inherit;font-size:26px;background:transparent;color:var(--st-soft);border:2px solid var(--st-line);border-radius:999px;padding:4px 18px}
 .stepnav .lab{font-size:28px}
+/* 무대에는 띄우지 않는다 — 조작 단추가 화면에 보이면 안 되고, 「2 / 2」가
+   다음에 무엇이 남았는지 미리 알려 버린다(이종은 9/11). 검토 문서(?doc)의
+   페이지 카드에는 그대로 둔다. 운영은 아래 조작 막대에서 단계를 본다.
+   DOM 은 남겨 둔다 — stepTo 가 이 칸의 글자를 고쳐 쓴다. */
+.stagefs .stepnav{display:none}
 
 /* 본문 부품 */
 .lines{display:flex;flex-direction:column;gap:6px;color:var(--st-soft)}
@@ -2213,6 +2218,7 @@ function stepTo(p, n){
      전체화면을 여닫는 것도 「다음·이전」이다 — 누르는 곳이 한 군데여야 헷갈리지 않는다. */
   if(p.shots){ if(n===0) shotClose(); else if(shotAt<0) shotOpen(n-1); else shotShow(n-1, n>cur?1:-1); }
   rec.step=n; rec.frame.querySelector('.stepnav .lab').textContent=`${n+1} / ${p.steps.length} · ${p.steps[n].label}`;
+  showCur();
   if(p.dynTitle){ rec.frame.querySelector('.title-z').innerHTML=p.dynTitle[n]; }
   return true;
 }
@@ -2609,6 +2615,14 @@ function runSeq(fw, delay, withBg){
       {duration:520, delay:delay+i*400, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
   });
 }
+/* 운영 막대 오른쪽 글. 단계가 있는 장은 몇 단계째인지도 함께 적는다 —
+   무대에서 단계 단추를 감춘 뒤로 여기가 유일한 단계 표시다(이종은 9/11). */
+function showCur(){
+  const el=$('#stCur'); if(!el) return;
+  const p=FLAT[cur], rec=pageEls.get(p.id);
+  const st=p.steps ? ` · 단계 ${(rec.step||0)+1}/${p.steps.length} ${p.steps[(rec.step||0)].label}` : '';
+  el.textContent=`${cur+1} / ${FLAT.length} · ${p.id} ${p.title}${st}`;
+}
 /* 임시 쪽번호 — "N부 03/55". 부는 partStart 로 가른다(부 이동 바와 같은 셈법).
    본선 당일(9/11) 껐다 — 무대에 걸리는 화면에는 쪽번호가 보이면 안 된다(이종은).
    운영은 위 조작 바의 "47 / 51 · D-17 …" 로 자리를 안다. */
@@ -2647,7 +2661,7 @@ function openStage(i, dir){
   fadeBg(rec.fw, 0);
   runSeq(rec.fw, wait, withBg);
   showPageNo();
-  $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
+  showCur();
   /* 사진 장은 늘 슬라이드(0단계)부터 받는다 — 지난번에 전체화면으로 나갔더라도. */
   if(FLAT[cur].shots) stepTo(FLAT[cur], 0);
   if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
