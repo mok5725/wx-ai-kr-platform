@@ -950,26 +950,29 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .opswrap:hover .ctl{opacity:1;visibility:visible;
   transition:opacity .22s ease, visibility 0s;
   -webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
-/* 반투명 글라스 한 줄(이종은 9/11). 뒤를 흐려 사진이 비쳐 보이되 글자는 읽힌다.
-   흰 판(.94)보다 가볍게, 크기도 한 단 줄였다. */
+/* 눈에 띄지 않는 것이 목적이다(이종은 9/11) — 판은 아예 두지 않고 흰 글자만 띄운다.
+   배경을 깔거나 뒤를 흐리면 그 자국이 24시간 걸려 있는 화면에 띠로 남는다.
+   대신 글자에 옅은 그림자를 줘서 사진이 밝은 자리에서도 읽히게 한다. */
 .opswrap .ctl.cd2{flex-wrap:nowrap;width:max-content;max-width:1780px;
-  gap:10px;padding:8px 18px;border-radius:999px;font-size:22px;
-  background:rgba(255,255,255,.30);color:#1C1F44;
-  border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 10px 30px rgba(4,3,24,.26), inset 0 1px 0 rgba(255,255,255,.6)}
-.opswrap:hover .ctl.cd2{-webkit-backdrop-filter:blur(22px) saturate(1.5) brightness(1.25);
-  backdrop-filter:blur(22px) saturate(1.5) brightness(1.25)}
-.ctl.cd2 .btn,.ctl.cd2 input{font-size:22px;padding:5px 12px;color:#1C1F44;
-  border:1px solid rgba(28,31,68,.28);background:rgba(255,255,255,.34);border-radius:999px}
-.ctl.cd2 .btn:hover{background:rgba(255,255,255,.62)}
-.ctl.cd2 .sep{width:1px;height:22px;background:rgba(28,31,68,.22);margin:0 2px}
+  gap:10px;padding:6px 14px;border-radius:999px;font-size:22px;
+  background:transparent;border:0;box-shadow:none;
+  color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(4,3,24,.85)}
+/* 공통 규칙의 흐림도 끈다 — 흐림이 걸리면 그 네모만큼 화면이 달라 보인다. */
+.opswrap:hover .ctl.cd2{-webkit-backdrop-filter:none;backdrop-filter:none}
+.ctl.cd2 .btn,.ctl.cd2 input{font-size:22px;padding:5px 12px;color:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.34);background:transparent;border-radius:999px;
+  text-shadow:0 2px 10px rgba(4,3,24,.85)}
+.ctl.cd2 .btn:hover{border-color:rgba(255,255,255,.85);background:rgba(255,255,255,.14)}
+.ctl.cd2 .sep{width:1px;height:22px;background:rgba(255,255,255,.28);margin:0 2px}
 .ctl.cd2 input[type=number]{width:60px;text-align:center;padding:5px 4px}
 .ctl.cd2 #cdClock{white-space:nowrap}
 /* 시작 · 멈춤 — 켜고 끄는 스위치. 켜져 있으면(흐르는 중) 손잡이가 오른쪽. */
 .ctl.cd2 .sw{display:inline-flex;align-items:center;gap:9px;font:inherit;font-weight:800;
-  color:#1C1F44;background:transparent;border:0;padding:0 2px;cursor:pointer}
+  color:rgba(255,255,255,.92);background:transparent;border:0;padding:0 2px;cursor:pointer;
+  text-shadow:0 2px 10px rgba(4,3,24,.85)}
 .ctl.cd2 .sw i{position:relative;width:54px;height:28px;border-radius:999px;flex:0 0 auto;
-  background:rgba(28,31,68,.26);transition:background .18s ease}
+  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.34);
+  transition:background .18s ease}
 .ctl.cd2 .sw i::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;
   border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(4,3,24,.35);
   transition:left .18s cubic-bezier(.4,0,.2,1)}
@@ -1276,11 +1279,15 @@ body.stageonly .stagefs .frame .hint-z{display:none}
   border:1px solid rgba(255,255,255,.20);border-radius:8px;padding:6px 14px}
 .stagefs .partbar{position:absolute;right:0;top:50%;transform:translate(100%,-50%);z-index:9;
   display:flex;flex-direction:column;gap:8px;padding:14px;
-  background:rgba(8,6,42,.88);border:1px solid rgba(238,240,255,.22);border-right:0;
+  background:rgba(10,8,38,.34);border:1px solid rgba(255,255,255,.30);border-right:0;
   border-radius:16px 0 0 16px;opacity:0;
   /* 닫힐 때는 빠르게(140ms), 열릴 때는 부드럽게(260ms). 닫기가 굼뜨면 화면을 가린다. */
   transition:transform 140ms ease,opacity 140ms ease}
+/* 열려 있을 때만 흐림을 건다 — 닫힌 채로 걸어 두면 투명해도 자국이 남는다
+   (25쪽 조작 줄에서 겪은 것과 같다). */
 .stagefs .partbar.on{transform:translate(0,-50%);opacity:1;
+  -webkit-backdrop-filter:blur(20px) saturate(1.4) brightness(.7);
+  backdrop-filter:blur(20px) saturate(1.4) brightness(.7);
   transition:transform 260ms cubic-bezier(.22,.61,.36,1),opacity 260ms ease}
 .stagefs .partbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
   min-width:200px;padding:12px 18px;border-radius:10px;cursor:pointer;font:inherit;text-align:left;
@@ -1630,17 +1637,17 @@ const PARTS = [
 ]},
 /* 카운트다운 한 장은 어느 부에도 넣지 않는다(이종은 9/10). 과제 수행 24시간 동안
    이벤트홀에 상주하는 화면이라 1부에도 2부에도 속하지 않고 단독으로 센다. */
-{ id:'pc', tag:'카운트다운', name:'카운트다운 · 24시간 끝장 개발', full:'24시간 카운트다운 — 단독 (어느 부에도 속하지 않음)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 이벤트홀 메인 화면 · 원본 2일차 4',
-  note:'과제 수행 24시간 동안 이벤트홀에 상주하는 화면 한 장입니다. 1부와 2부 어느 쪽에도 귀속시키지 않고 단독으로 셉니다.',
-  pages:[
-  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'끝나는 시각(9/11 13:00)까지 남은 시간을 실시간으로 센다 — 언제 켜도 그 시각에 0 이 된다(이종은 9/10)', memo:'PC 절전 해제. 조작 단추는 운영 모드에서만 — 주소 뒤에 ?ops (끄기 ?ops=off)' }),
-]},
 { id:'p2', tag:'2부', name:'2부 · 과제 수행 (24시간)', full:'2부 · 과제 수행 — 야식 · 베네핏 게임 · 발표 순서', when:'9/10(목) 22:00 ~ 9/11(금) 00:30 · 원본 신규 3장',
   note:'22:00 야식과 0시 베네핏 게임 때만 타이틀 슬라이드로 잠깐 바꿉니다. 베네핏 게임이 끝나면 "발표 순서 결정" 화면을 엽니다.',
   pages:[
   P({ no:'—', id:'B-03', title:'야식 타임', new:true, when:'22:00', kind:'cover', big:hand('야식 타임'), en:'같이 먹고 힘내요', when2:'9/10(목) 22:00 · 24시간 부스트업존', viz:'없음 — 타이틀 한 장. 손글씨 후보', how:'원문 13페이지 · 포스터 각주' }),
   P({ no:'—', id:'B-04', title:'베네핏 게임', new:true, when:'0:00', kind:'cover', big:hand('베네핏 게임'), en:'0시의 데이트', lines:['베네핏 게임 우승자에게는 선물과 발표 순서 선택권이 제공됩니다','마스터 트랙은 발표 순서 제외, 선물은 함께 받을 수 있으니 많은 참여 바랍니다'], viz:'없음. 손글씨 후보', how:'A-15 와 같은 문구' }),
   P({ no:'—', id:'B-05', title:'발표 순서 결정 (카드)', new:true, when:'0시 베네핏 게임 직후', h:'<em>발표 순서</em>를 정합니다', sub:'베네핏 게임 등수대로 — 팀 카드를 고른 뒤 자리 번호를 누르면 카드가 그 자리로 갑니다', widget:'cards', foot:'1부 1·2·3번 · 2부 4·5·6번 · 3부 7·8번 · 마스터는 마켓센싱 → 물류 → 안전으로 확정', viz:'자리 2×4 + 카드 대기줄. 앉으면 "N번째 발표 · 팀명" 전면 세리모니', how:'운영 조작 화면. 9/11 0시에 정해진 순서는 이미 화면에 박아 두었다(ORDER) — 여기서 다시 옮겨도 새로고침하면 박아 둔 순서로 돌아온다', memo:'순서 확정 — 박아 둠' }),
+]},
+{ id:'pc', tag:'카운트다운', name:'카운트다운 · 24시간 끝장 개발', full:'24시간 카운트다운 — 단독 (어느 부에도 속하지 않음)', when:'9/10(목) 13:00 ~ 9/11(금) 13:00 · 이벤트홀 메인 화면 · 원본 2일차 4',
+  note:'과제 수행 24시간 동안 이벤트홀에 상주하는 화면 한 장입니다. 1부와 2부 어느 쪽에도 귀속시키지 않고 단독으로 셉니다.',
+  pages:[
+  P({ no:'2일차 4', id:'B-02', title:'24시간 카운트다운 (실시간)', when:'13:00 → 다음 날 13:00', bg:'bg/hf_20260907_080434_c1550b6d-eb45-4099-91d4-018e07913864.jpg', bgVideo:'bg/a24-city-loop.mp4', center:true, h:'24시간 <em>끝장 개발</em>', widget:'countdown', viz:'제목 가운데 정렬 · 숫자 340px 가운데. 배경 외 아무것도 없음', how:'끝나는 시각(9/11 13:00)까지 남은 시간을 실시간으로 센다 — 언제 켜도 그 시각에 0 이 된다(이종은 9/10)', memo:'PC 절전 해제. 조작 단추는 운영 모드에서만 — 주소 뒤에 ?ops (끄기 ?ops=off)' }),
 ]},
 { id:'p3', tag:'3부', name:'3부 · 결과발표회', full:'3부 · 최종 결과발표회', when:'9/11(금) 13:00 ~ 16:00 · 이벤트홀 · 원본 2일차 결과발표회 1~13',
   note:'챌린저 8팀 발표 · 심사(13분), 마스터 3팀은 1 · 2 · 3부 사이에 성과 공유 약 5분(심사 없음). 챌린저 순서는 베네핏 게임에서 정한 순서. "발표 순서 결정"에서 카드를 앉히면 크루 · 과제 · 부 시작 화면이 그 순서로 채워집니다.',
