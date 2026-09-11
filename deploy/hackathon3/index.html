@@ -891,6 +891,19 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 /* 크루 소개(31~33쪽) — 5쪽과 같은 판, 담는 것만 팀명·과제명·이름. */
 /* 이름 줄을 1fr 로 두면 칸이 본문 끝까지 늘어나 이름 아래가 휑하게 빈다 —
    내용만큼만 세운다(이종은 9/11). 네 칸의 가로줄은 subgrid 가 계속 맞춰 준다. */
+/* 심사위원 카드 넉 장 — 반투명 유리. 이름이 주인공이라 가장 크고 밝다. */
+.jcards{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto auto;
+  gap:28px;height:100%;align-content:center}
+.jcards .jc{grid-row:span 3;display:grid;grid-template-rows:subgrid;justify-items:center;
+  text-align:center;padding:42px 24px 38px;border-radius:26px;
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.26);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:0 18px 46px rgba(4,3,24,.34), inset 0 1px 0 rgba(255,255,255,.24)}
+.jcards .org{display:flex;align-items:flex-end;font-size:25px;line-height:1.4;color:var(--st-soft)}
+.jcards .nm{margin:20px 0 12px;font-family:var(--head);font-weight:900;font-size:78px;
+  line-height:1.05;letter-spacing:-.01em;color:var(--st-ink)}
+.jcards .rl{font-size:31px;font-weight:800;color:var(--kw)}
+
 .crews3{display:grid;gap:var(--gap);height:100%;grid-template-rows:auto auto auto auto;align-content:start}
 .crews3.n4{grid-template-columns:repeat(4,1fr)}
 .crews3.n3{grid-template-columns:repeat(3,1fr)}
@@ -1682,8 +1695,13 @@ const PARTS = [
     rows:[['MyPIN','박용삼 연구위원','박용삼 연구위원 · 함동은 실장'],
           ['포브스','하종범 실장','권영주 실장 · 김경철 센터장'],
           ['PSM해결단','유재홍 실장','유재홍 실장 · 김정훈 실장']]},
-    foot:'편성 — 비즈니스 임팩트 평가: 도메인별 실장급 2명 + 포스코홀딩스 본부장급 1명 · 기술·솔루션 검증: DX분야 실장급 3명 · ❓ 소속', viz:'표 — 크루 × 역할. 세 크루가 함께 쓰는 분은 세로로 묶어 한 번만', how:'분야 대신 크루명으로. 공통 심사위원은 앞에 묶고 + 뒤에 크루별 두 분(이종은 9/10)', wait:'심사위원 소속' }),
-  P({ no:'8', id:'D-07d', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -506px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'lines', lines:['포스코홀딩스 AI로봇융합연구소 <b>윤일용</b> 연구소장','포스코 DX전략실 <b>정규호</b> 실장','포스코인터내셔널 DX혁신실 <b>신대호</b> 실장','포스코인재창조원 혁신기술센터 <b>김경철</b> 센터장']}, viz:'없음 — 4줄, 이름만 진하게', how:'소속은 옅게 두고 이름만 도드라지게(이종은 9/10)' }),
+    viz:'표 — 크루 × 역할. 세 크루가 함께 쓰는 분은 세로로 묶어 한 번만', how:'분야 대신 크루명으로. 공통 심사위원은 앞에 묶고 + 뒤에 크루별 두 분(이종은 9/10)', wait:'심사위원 소속' }),
+  P({ no:'8', id:'D-07d', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -506px', title:'심사위원 — 챌린저', eyebrow:'심사위원 소개 · 챌린저 트랙', h:'챌린저 트랙 <em>심사위원</em>', body:{type:'jcards', items:[
+      {org:'포스코홀딩스 AI로봇융합연구소', name:'윤일용', role:'연구소장'},
+      {org:'포스코 DX전략실', name:'정규호', role:'실장'},
+      {org:'포스코인터내셔널 DX혁신실', name:'신대호', role:'실장'},
+      {org:'포스코인재창조원 혁신기술센터', name:'김경철', role:'센터장'},
+    ]}, viz:'유리 카드 넉 장 — 소속(작게) · 이름(가장 크게) · 직책', how:'네 분을 카드로 세우고 이름을 가장 도드라지게(이종은 9/11)' }),
   P({ no:'9', id:'D-08', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -552px', title:'발표 순서', when:'0시 결정 → 13:00 표시', eyebrow:'결과발표회', h:'<em>발표 순서</em>', sub:'챌린저 — 발표 8분 + 질의응답 5분 = 13분! 시간을 지켜주세요. *시간 초과 시 감점', dyn:true,
     body:()=>({type:'order11', parts:[0,1,2].map(k=>({ num:`${k+1}부`, items:[
       {team:MASTERS[k].team, role:'마스터', ma:true},
@@ -1984,6 +2002,13 @@ B.order11=(b)=>{ let no=0;
 };
 
 /* 크루 소개 — 5쪽(마스터 트랙)과 같은 판. 팀명 · 과제명 · 이름만 담는다. */
+/* 심사위원 카드 — 소속은 작게 위에, 이름을 가장 크게, 직책은 그 아래(이종은 9/11).
+   네 칸의 가로줄은 subgrid 가 맞춰 주므로 소속이 두 줄이어도 이름이 나란히 선다. */
+B.jcards=(b)=>el('div','jcards n'+b.items.length, b.items.map(c=>
+  `<div class="jc"><div class="org ln">${c.org}</div>`
+  + `<div class="nm ln">${c.name}</div>`
+  + `<div class="rl ln">${c.role}</div></div>`).join(''));
+
 B.crews3=(b)=>el('div','crews3 n'+b.items.length, b.items.map(c=>
   `<div class="it${c.ma?' ma':''}"><div class="tt ln">${c.team}${c.ma?'<span class="mk">[마스터]</span>':''}</div>`
   + `<div class="tp ln">${c.topic||''}</div>`
