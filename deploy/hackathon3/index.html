@@ -1759,7 +1759,7 @@ const PARTS = [
   ...[0,1,2].map(k=>P({ no:'—', id:'D-08'+'bcd'[k], bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:`center ${-46*(13+k)}px`, title:`${k+1}부 시작`, new:true, dyn:true, body:()=>({type:'part', num:`${k+1}부`, list:[`성과 공유 · <b>${MASTERS[k].team}</b> (${MASTERS[k].dom})`, ...PART_IDX[k].map(i=>`발표 ${i+1}번 · <b>${orderName(i)}</b>`)]}), viz:'부 번호 320px 왼쪽 · 팀 목록 44px 오른쪽', how:'가운데 큰 「N부」가 이미 제목 노릇을 하므로 왼쪽 위 「N부 시작」은 뺐다(이종은 9/10)' })),
   P({ no:'—', id:'D-10', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -782px', title:'발표 종료', new:true, kind:'cover', big:hand('발표가 모두 끝났습니다'), en:'심사결과를 집계 중입니다.', viz:'손글씨 한 줄 + 노란 줄', how:'문구는 손글씨로 조금 작게 한 줄(이종은 9/10)' }),
   P({ no:'11', id:'D-12', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -828px', title:'완주 축하', kind:'cover', big:hand('해커톤 완주를 축하드립니다!'), viz:'손글씨 후보', how:'—' }),
-  P({ no:'12', id:'D-13', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -874px', title:'협업과 몰입, 우리가 걸어온 순간들 (5단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', steps:[1,2,3,4,5].map(n=>({label:'캡처 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}})), viz:'디스코드 캡처 5장 — 한 장이 한 단계. 사진을 누르면 화면 가득', how:'제목 고정, 사진만 넘어간다. 눌러서 키우면 ← → 로 다섯 장을 넘긴다(이종은 9/11)' }),
+  P({ no:'12', id:'D-13', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -874px', title:'협업과 몰입, 우리가 걸어온 순간들 (6단계)', h:'협업과 몰입, 우리가 걸어온 <em>순간들</em>!', shots:true, steps:[{label:'슬라이드', body:{type:'photo', src:'img/discord/1.jpg'}}].concat([1,2,3,4,5].map(n=>({label:'전체화면 '+n, body:{type:'photo', src:'img/discord/'+n+'.jpg'}}))), viz:'디스코드 캡처 5장 — 0단계는 슬라이드, 다음부터는 화면 가득', how:'앞 장에서 넘어오면 여느 장처럼 뜬다. 거기서 「다음」을 누르면 사진이 화면을 가득 채우고, 그 뒤로는 전체화면인 채 다섯 장이 넘어간다(이종은 9/11)' }),
   P({ no:'13', id:'D-14', bg:'bg/sunrise-ridge.jpg', bgSize:'auto', bgPos:'center -920px', title:'수료 설문', eyebrow:'수료', h:'수료 <em>설문</em> 응답', body:{type:'photo', qr:true, qrSrc:'img/qr-survey.png', cap:'휴대폰 카메라로 QR을 비춰 주세요'}, viz:'QR 520×520 가운데 — 안내는 QR 바로 아래 — 동그란 점 · 가운데 해커톤 마크', how:'받은 QR(https://qrfy.io/cgKO2TnfKi)을 그대로 다시 그렸다 — 점은 동그라미, 모서리 눈은 둥근 네모(점만으로는 인식이 깨진다), 가운데 마크(이종은 9/10)' }),
 ]},
 { id:'p4', tag:'4부', name:'4부 · 시상식', full:'4부 · 시상식 · 폐회', when:'9/11(금) 16:00 ~ 17:00 · 이벤트홀 · 원본 2일차 결과발표회 14~19',
@@ -2191,6 +2191,9 @@ function stepTo(p, n){
   } else {
     const views=rec.frame.querySelectorAll('.view'); views.forEach((v,i)=>{ v.classList.remove('off-l','off-r'); if(i<n) v.classList.add('off-l'); else if(i>n) v.classList.add('off-r'); });
   }
+  /* 43쪽 — 0단계는 여느 장처럼, 1단계부터는 사진이 화면을 가득 채운 채로 넘어간다.
+     전체화면을 여닫는 것도 「다음·이전」이다 — 누르는 곳이 한 군데여야 헷갈리지 않는다. */
+  if(p.shots){ if(n===0) shotClose(); else if(shotAt<0) shotOpen(n-1); else shotShow(n-1, n>cur?1:-1); }
   rec.step=n; rec.frame.querySelector('.stepnav .lab').textContent=`${n+1} / ${p.steps.length} · ${p.steps[n].label}`;
   if(p.dynTitle){ rec.frame.querySelector('.title-z').innerHTML=p.dynTitle[n]; }
   return true;
@@ -2610,11 +2613,13 @@ function openStage(i, dir){
   runSeq(rec.fw, bgMoved?TEXT_DELAY:20);
   showPageNo();
   $('#stCur').textContent=`${cur+1} / ${FLAT.length} · ${FLAT[cur].id} ${FLAT[cur].title}`;
+  /* 사진 장은 늘 슬라이드(0단계)부터 받는다 — 지난번에 전체화면으로 나갔더라도. */
+  if(FLAT[cur].shots) stepTo(FLAT[cur], 0);
   if(!STAGE_ONLY&&document.fullscreenEnabled&&!document.fullscreenElement) stage.requestFullscreen().catch(()=>{});
   requestAnimationFrame(()=>{stageBg.fit(); fitBar();});
   if(STAGE_ONLY) history.replaceState(null,'','#'+FLAT[cur].id);
 }
-function closeStage(exit=true){ if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+function closeStage(exit=true){ shotClose(); if(moved&&ph){ ph.parentNode.replaceChild(moved, ph); } moved=null; ph=null; stage.classList.remove('on'); document.body.style.overflow=''; if(exit&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
 const stepCur=(d)=>{ const p=FLAT[cur]; return stepTo(p,(pageEls.get(p.id).step||0)+d); };
 /* 「이전 · 다음」 단추도 단계를 먼저 밟는다 — 키(← →)와 휠은 이미 그랬는데
    이 단추만 장을 통째로 넘겨 31쪽 세 단계를 건너뛰었다(이종은 9/11).
@@ -2623,9 +2628,10 @@ $('#stPrev').addEventListener('click',()=>{ if(!stepCur(-1)) openStage(cur-1,-1)
 $('#stNext').addEventListener('click',()=>{ if(!stepCur(1)) openStage(cur+1,1); });
 $('#stStepL').addEventListener('click',()=>stepCur(-1)); $('#stStepR').addEventListener('click',()=>stepCur(1));
 $('#stClose').addEventListener('click',()=>closeStage()); $('#stGrid').addEventListener('click',toggleGrid);
-/* 43쪽 디스코드 캡처 — 사진을 누르면 화면 가득 채우고, 그 상태에서 ← → 로 넘긴다.
-   넘어가는 결은 장을 넘길 때와 같다(48px 밀며 흐려짐, .5s). 키는 **붙잡기(capture)** 로
-   먼저 받아 stopPropagation 한다 — 그래야 아래 무대 키가 장을 같이 넘기지 않는다. */
+/* 43쪽 디스코드 캡처 — 「다음」이 사진을 화면 가득 띄우고, 그 뒤로도 「다음」이 다섯 장을
+   넘긴다. 여는 것도 닫는 것도 단계(stepTo)가 한다 — 눌러서 여는 길은 없앴다(이종은 9/11).
+   그래서 키·휠을 가로채지 않는다. 무대의 키가 그대로 단계를 밟고, 단계가 여기를 부른다.
+   넘어가는 결은 장을 넘길 때와 같다(48px 밀며 흐려짐, .5s). */
 const SHOTS=[1,2,3,4,5].map(n=>'img/discord/'+n+'.jpg');
 let shotAt=-1;
 const shot=el('div','shotbox','<img alt="디스코드 캡처"><span class="n"></span><button class="x">✕ 닫기 (Esc)</button>');
@@ -2642,26 +2648,21 @@ function shotShow(i,dir){
 }
 function shotOpen(i){ shotAt=-1; shot.classList.add('on'); shotShow(i,1); }
 function shotClose(){ shot.classList.remove('on'); shotAt=-1; }
-shot.querySelector('.x').addEventListener('click',(e)=>{ e.stopPropagation(); shotClose(); });
-shotImg.addEventListener('click',(e)=>{ e.stopPropagation(); shotShow(shotAt+1,1); });
-shot.addEventListener('click',()=>shotClose());
-document.addEventListener('click',(e)=>{
-  const im=e.target.closest && e.target.closest('.frame[data-id="D-13"] .ph.pic img');
-  if(!im) return;
-  const k=SHOTS.findIndex(p=>im.getAttribute('src')===p);
-  shotOpen(k<0?0:k);
-});
+/* 닫기 · 바탕 누르기는 0단계(슬라이드)로 되돌린다 — 단계와 화면이 어긋나지 않게. */
+const shotBack=()=>{ const p=FLAT[cur]; if(p&&p.shots) stepTo(p,0); else shotClose(); };
+shot.querySelector('.x').addEventListener('click',(e)=>{ e.stopPropagation(); shotBack(); });
+shotImg.addEventListener('click',(e)=>{ e.stopPropagation(); stepCur(1)||openStage(cur+1,1); });
+shot.addEventListener('click',shotBack);
 document.addEventListener('keydown',(e)=>{
   if(!shot.classList.contains('on')) return;
-  const nx=['ArrowRight','ArrowDown','PageDown',' '], pv=['ArrowLeft','ArrowUp','PageUp'];
-  if(nx.includes(e.key)){ e.preventDefault(); e.stopPropagation(); shotShow(shotAt+1,1); }
-  else if(pv.includes(e.key)){ e.preventDefault(); e.stopPropagation(); shotShow(shotAt-1,-1); }
-  else if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); shotClose(); }
+  if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); shotBack(); }
 }, true);
+/* 휠 — 덮개가 무대 밖(body)에 있어 무대의 휠 처리가 닿지 않는다. 여기서 단계로 넘긴다. */
 let shotLock=0;
 shot.addEventListener('wheel',(e)=>{ e.preventDefault(); e.stopPropagation();
-  const now=performance.now(); if(now<shotLock) return; shotLock=now+520;
-  shotShow(shotAt+(e.deltaY>0?1:-1), e.deltaY>0?1:-1); },{passive:false,capture:true});
+  const now=performance.now(); if(now<shotLock) return; shotLock=now+560;
+  if(e.deltaY>0){ if(!stepCur(1)) openStage(cur+1,1); } else { if(!stepCur(-1)) openStage(cur-1,-1); }
+  },{passive:false,capture:true});
 
 document.addEventListener('keydown',(e)=>{ if(!stage.classList.contains('on')) return; if(e.target.matches('input,select,textarea')) return;
   if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); if(!stepCur(1)) openStage(cur+1,1); }
