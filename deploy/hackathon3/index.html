@@ -192,10 +192,12 @@ h3{font-size:15px;font-weight:700;margin:22px 0 8px}
 .frame[data-id="A-16"] .obj-z.has-img{height:528px}
 .frame[data-id="A-16"] .noter-z{left:522px;right:auto;top:938px;bottom:auto;
   max-width:900px;text-align:left}
-/* 35쪽은 같은 단서를 한 줄로 화면 가운데에 놓는다(이종은 9/10).
-   그림 칸이 본문 끝까지 차면 단서가 칸에 겹치므로 칸을 조금 줄여 자리를 낸다. */
+/* 33쪽은 같은 단서를 한 줄로 화면 가운데에 놓는다(이종은 9/10).
+   그림 칸이 본문 끝까지 차면 단서가 칸에 겹치므로 칸을 조금 줄여 자리를 낸다.
+   단서는 화면 아래끝이 아니라 **칸 바로 아래**에 붙인다 — 칸 아랫변 910 + 24(이종은 9/11). */
 .frame[data-id="D-16재"] .obj-z.has-img{height:540px}
-.frame[data-id="D-16재"] .noter-z{left:var(--pad);right:var(--pad);max-width:none;text-align:center}
+.frame[data-id="D-16재"] .noter-z{left:var(--pad);right:var(--pad);max-width:none;text-align:center;
+  top:934px;bottom:auto}
 /* ── 음영 판(scrim:true) ───────────────────────────────────────────────────
    배경 사진 위에서 글줄이 잘 안 읽히는 장에만 켠다. 판을 화면 전체에 깔지 않고
    **글자 뒤에만** 깐다 — 배경을 살리면서 대비만 확보한다. */
@@ -2424,7 +2426,8 @@ function runSeq(fw, delay){
   /* 큐브는 CSS 무한 애니메이션이라 그냥 두면 중간 면부터 보인다 — 열 때마다 되감는다. */
   fw.querySelectorAll('.cube').forEach(c=>{ c.style.animation='none'; void c.offsetWidth; c.style.animation=''; });
   /* 별 — 나타날 때의 동작과 간격을 **그대로** 되풀이한다(이종은 9/11).
-     걸음 ON=300ms, 한 동작 APP=600ms, 한 바퀴 = 11×300 = 3300ms.
+     걸음 ON=300ms, 솟는 데 RISE=300ms, 가라앉는 데 FALL=900ms(=한 동작 1200ms),
+     한 바퀴 = 11×300 = 3300ms. 솟는 속도는 그대로 두고 가라앉기만 늦췄다(이종은 9/11).
      11번 별이 뜨는 순간 1번 별이 다시 같은 동작을 시작하니 물결이 끊기지 않는다.
      되풀이 쪽은 opacity 를 건드리지 않아 별이 사라지지는 않는다 — 크기와 밝기만
      등장과 똑같이 움직인다. 위 열한 개와 아래 트랙별 별은 k 가 같아 함께 움직인다.
@@ -2432,19 +2435,20 @@ function runSeq(fw, delay){
      다시 들어올 때 겹쳐 쌓이지 않게 먼저 지운다. */
   const st=[...fw.querySelectorAll('.cviz .stars i')];
   if(st.length){
-    const N=11, ON=300, APP=600, CYCLE=N*ON, EASE='cubic-bezier(.22,.61,.36,1)';
+    const N=11, ON=300, RISE=300, FALL=900, APP=RISE+FALL, CYCLE=N*ON,
+          EASE='cubic-bezier(.22,.61,.36,1)';
     const onAt=delay+520;
     st.forEach(n=>{
       n.getAnimations().forEach(a=>a.cancel());
       const k=+n.dataset.k||0;
       /* 첫 등장 — 없던 별이 생기므로 여기서만 opacity 를 0 에서 올린다. */
-      n.animate([{opacity:0,transform:'scale(.35)',filter:'brightness(2.6)'},
-                 {opacity:1,transform:'scale(1.5)',filter:'brightness(2.8)',offset:.5},
-                 {opacity:1,transform:'none',filter:'brightness(1)'}],
+      n.animate([{opacity:0,transform:'scale(.35)',filter:'brightness(2.6)',offset:0},
+                 {opacity:1,transform:'scale(1.5)',filter:'brightness(2.8)',offset:RISE/APP},
+                 {opacity:1,transform:'none',      filter:'brightness(1)',  offset:1}],
         {duration:APP, delay:onAt+k*ON, easing:EASE, fill:'backwards'});
       /* 그다음부터 — 같은 동작 · 같은 간격. 제 등장이 끝나고 한 바퀴 뒤에 이어붙는다. */
       n.animate([{transform:'scale(.35)',filter:'brightness(2.6)',offset:0},
-                 {transform:'scale(1.5)',filter:'brightness(2.8)',offset:APP*.5/CYCLE},
+                 {transform:'scale(1.5)',filter:'brightness(2.8)',offset:RISE/CYCLE},
                  {transform:'none',      filter:'brightness(1)',  offset:APP/CYCLE},
                  {transform:'none',      filter:'brightness(1)',  offset:1}],
         {duration:CYCLE, delay:onAt+k*ON+CYCLE, iterations:Infinity, easing:EASE});
