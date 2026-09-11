@@ -1135,8 +1135,9 @@ body:not(.ops) .ctl{display:none}
 .cover .big.huge{font-size:300px}
 /* 41쪽 「발표가 모두 끝났습니다」는 열 글자짜리 문장이라 260px 로는 화면을 넘는다 —
    붓글씨 한 줄(hand/p11.svg)을 다른 표지들과 비슷한 크기(가로 1600 안팎)로 앉힌다(이종은 9/10).
-   손으로 쓴 줄이라 오른쪽으로 1도만 기울여 둔다(이종은 9/11). */
-.frame[data-id="D-10"] .cover .big{font-size:150px;white-space:nowrap;transform:rotate(1deg)}
+   손으로 쓴 줄이라 오른쪽으로 2도 기울이고, 오른쪽으로 24px 옮겨 둔다(이종은 9/11). */
+.frame[data-id="D-10"] .cover .big{font-size:150px;white-space:nowrap;
+  transform:translateX(24px) rotate(2deg)}
 /* 시상 네 장 — 위에 트랙 이름(붓글씨 SVG), 줄 바꿔 아래에 상 이름. 가운데 정렬.
    붓글씨 원본은 밝은 바탕용 짙은 보라(#271758~)라 어두운 배경에서 읽히지 않는다.
    판을 깔지 않고 **글씨 자체를 밝게** 한다 — docs/img/lettering/*.svg 는
