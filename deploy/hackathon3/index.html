@@ -1093,9 +1093,16 @@ body:not(.ops) .ctl{display:none}
 .shotbox{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
   background:rgba(4,3,24,.96);cursor:zoom-out}
 .shotbox.on{display:flex}
-.shotbox img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:10px;
-  box-shadow:0 30px 90px rgba(0,0,0,.6);cursor:pointer}
-/* 캡처가 흰 바탕이라 글자·단추는 어두운 알약에 담아야 읽힌다. */
+/* 사진은 두 겹이다 — 한 장에 src 를 갈아 끼우면 새 그림을 받는 동안 칸이 비어
+   깜빡인다(이종은 9/11). 떠나는 장은 그 자리에 그대로 두고, 들어오는 장이 그 위를
+   덮으며 올라온다. 장을 넘길 때와 같은 결(48px 밀며 흐려짐, .5s). */
+.shotbox .shotstack{position:relative;display:grid;place-items:center;width:96vw;height:92vh}
+.shotbox .shotstack img{grid-area:1/1;max-width:96vw;max-height:92vh;object-fit:contain;
+  border-radius:10px;box-shadow:0 30px 90px rgba(0,0,0,.6);cursor:pointer}
+.shotbox .shotstack img.gone{visibility:hidden}
+/* 캡처가 흰 바탕이라 글자·단추는 어두운 알약에 담아야 읽힌다.
+   사진 겹이 z 를 쓰니 이 둘은 그보다 위에 둔다. */
+.shotbox .n,.shotbox .x{z-index:5}
 .shotbox .n{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);
   font-family:var(--mono);font-size:20px;letter-spacing:.08em;color:rgba(255,255,255,.9);
   background:rgba(4,3,24,.72);border-radius:999px;padding:6px 18px}
@@ -2642,24 +2649,35 @@ $('#stClose').addEventListener('click',()=>closeStage()); $('#stGrid').addEventL
    넘어가는 결은 장을 넘길 때와 같다(48px 밀며 흐려짐, .5s). */
 const SHOTS=[1,2,3,4,5].map(n=>'img/discord/'+n+'.jpg');
 let shotAt=-1;
-const shot=el('div','shotbox','<img alt="디스코드 캡처"><span class="n"></span><button class="x">✕ 닫기 (Esc)</button>');
+/* 다섯 장은 미리 받아 둔다 — 넘기는 순간에 받기 시작하면 그 사이가 빈다. */
+SHOTS.forEach(u=>{ const im=new Image(); im.src=u; });
+const shot=el('div','shotbox','<div class="shotstack"><img class="gone" alt="디스코드 캡처"><img class="gone" alt="디스코드 캡처"></div><span class="n"></span><button class="x">✕ 닫기 (Esc)</button>');
 document.body.appendChild(shot);
-const shotImg=shot.querySelector('img'), shotN=shot.querySelector('.n');
+const shotLayers=[...shot.querySelectorAll('.shotstack img')], shotN=shot.querySelector('.n');
+let shotTop=0;
 function shotShow(i,dir){
   const n=Math.max(0,Math.min(SHOTS.length-1,i));
   if(n===shotAt) return;
   const first=shotAt<0; shotAt=n;
-  shotImg.src=SHOTS[n]; shotN.textContent=(n+1)+' / '+SHOTS.length;
-  if(!first) shotImg.animate([{opacity:0,transform:`translateY(${dir>0?48:-48}px)`},
-                              {opacity:1,transform:'none'}],
+  shotN.textContent=(n+1)+' / '+SHOTS.length;
+  const inL=shotLayers[first?shotTop:1-shotTop], outL=shotLayers[first?1-shotTop:shotTop];
+  shotTop=shotLayers.indexOf(inL);
+  inL.getAnimations().forEach(a=>a.cancel());
+  inL.src=SHOTS[n]; inL.classList.remove('gone'); inL.style.zIndex=2; outL.style.zIndex=1;
+  if(first){ outL.classList.add('gone'); return; }
+  /* 떠나는 장은 건드리지 않는다 — 들어오는 장이 다 덮은 뒤에야 감춘다. */
+  const a=inL.animate([{opacity:0,transform:`translateY(${dir>0?48:-48}px)`},
+                       {opacity:1,transform:'none'}],
     {duration:500, easing:'cubic-bezier(.22,.61,.36,1)'});
+  a.finished.then(()=>{ if(shotLayers[shotTop]===inL) outL.classList.add('gone'); }).catch(()=>{});
 }
 function shotOpen(i){ shotAt=-1; shot.classList.add('on'); shotShow(i,1); }
-function shotClose(){ shot.classList.remove('on'); shotAt=-1; }
+function shotClose(){ shot.classList.remove('on'); shotAt=-1;
+  shotLayers.forEach(l=>{ l.getAnimations().forEach(a=>a.cancel()); l.classList.add('gone'); }); }
 /* 닫기 · 바탕 누르기는 0단계(슬라이드)로 되돌린다 — 단계와 화면이 어긋나지 않게. */
 const shotBack=()=>{ const p=FLAT[cur]; if(p&&p.shots) stepTo(p,0); else shotClose(); };
 shot.querySelector('.x').addEventListener('click',(e)=>{ e.stopPropagation(); shotBack(); });
-shotImg.addEventListener('click',(e)=>{ e.stopPropagation(); stepCur(1)||openStage(cur+1,1); });
+shotLayers.forEach(l=>l.addEventListener('click',(e)=>{ e.stopPropagation(); stepCur(1)||openStage(cur+1,1); }));
 shot.addEventListener('click',shotBack);
 document.addEventListener('keydown',(e)=>{
   if(!shot.classList.contains('on')) return;
