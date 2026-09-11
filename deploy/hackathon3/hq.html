@@ -1379,8 +1379,10 @@ body.stageonly .stagefs .frame .hint-z{display:none}
    가운데 맞춤이 깨지고 오른쪽·아래가 비었다(9/8 실측). */
 .stagefs .stagebg .bgcanvas{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;will-change:transform}
 .stagefs .stagebg .bgslot{position:absolute;inset:0;background-repeat:no-repeat;opacity:0;
-  /* 카메라는 **빠르게** 자리를 잡는다 — 글자는 그 뒤에 올라온다(openStage) */
-  transition:background-position 450ms cubic-bezier(.16,.84,.44,1),background-size 450ms cubic-bezier(.16,.84,.44,1);
+  /* 카메라는 **빠르게** 자리를 잡는다 — 글자는 그 뒤에 올라온다(openStage).
+     배경과 함께 움직여야 하는 것(47쪽 트랙 큐브)이 이 시간과 완급을 그대로 읽어 간다. */
+  --bg-move:450ms; --bg-ease:cubic-bezier(.16,.84,.44,1);
+  transition:background-position var(--bg-move) var(--bg-ease),background-size var(--bg-move) var(--bg-ease);
   will-change:opacity,background-position,background-size;
   /* 장이 떠 있는 동안에도 아주 천천히 밀려 들어간다 — 배경이 멈춰 있지 않다 */
   animation:bgdrift 26s ease-in-out infinite alternate}
@@ -2445,6 +2447,12 @@ stage.addEventListener('mousemove',(e)=>{
 });
 /* 배경이 **다 자리 잡은 뒤**(450ms) 글자가 올라온다 — 이종은 지시 9/8: 배경 먼저 빠르게, 글자는 그 뒤 */
 const TEXT_DELAY=550;
+/* 배경 디졸브에 걸리는 시간. 배경과 **함께** 움직여야 하는 것들이 이 값을 같이 쓴다
+   (47쪽 트랙 큐브) — 두 군데에 따로 적어 두면 언젠가 어긋난다. */
+const BG_FADE=450;
+/* 배경이 다가오는(줌) 완급 — .bgslot 의 CSS 전환이 쓰는 그 곡선을 그대로 읽어 온다. */
+const BG_EASE=(()=>{ const e=getComputedStyle($('#stageBg .bgslot')).getPropertyValue('--bg-ease').trim();
+  return e||'cubic-bezier(.16,.84,.44,1)'; })();
 /* 기본이 무대다 — 주소에 아무것도 붙이지 않는다. 검토 문서는 ?doc 으로 본다. */
 /* 제작 중 잠금. 행사 때는 꺼 둔다 — /main/ 은 이미 공개한 주소라 바로 첫 장으로
    들어가고, 조작이 필요한 화면은 /main/hq.html 로 따로 연다(이종은 9/10). */
@@ -2477,7 +2485,7 @@ const stageBg=(()=>{ const slots=[...$('#stageBg').querySelectorAll('.bgslot')];
   const apply=(e,p)=>{ e.style.backgroundImage=`url("${p.bg}")`; e.style.backgroundSize=p.bgSize||'cover'; e.style.backgroundPosition=p.bgPos||'center'; };
   /* 디졸브는 Web Animations API — openStage 가 무대를 껐다 켜고 프레임을 옮기는 사이에 CSS 트랜지션이
      시작을 놓치는 일이 실측됐다(직접 호출은 되고 openStage 경유만 툭 바뀜). animate() 는 그와 무관하게 돈다. */
-  const FADE=450;
+  const FADE=BG_FADE;
   const fade=(e,to)=>{ const from=parseFloat(getComputedStyle(e).opacity); e.getAnimations().filter(a=>a.id==='fade').forEach(a=>a.cancel()); e.style.opacity=String(to); if(from===to) return; const a=e.animate([{opacity:from},{opacity:to}],{duration:FADE,easing:'ease-in-out'}); a.id='fade'; };
   /* 배경 영상. 이미지는 그대로 두고 그 위에 덮는다 — 못 틀면 이미지가 남는다.
      한 번 실패하면(vok=false) 다시 시도하지 않는다: 장을 오갈 때마다 실패를 되풀이하면
@@ -2581,11 +2589,13 @@ function runSeq(fw, delay){
       {duration:460, delay:delay+120, easing:'cubic-bezier(.18,.84,.2,1)', fill:'backwards'});
   });
   /* 47쪽 — 트랙 이름이 큐브처럼 굴러 마스터에서 챌린저로 바뀐다.
-     멈춘 자리는 CSS 가 잡고 있으니 fill 은 backwards 만 준다. */
+     배경이 다가오는(줌) 것과 **같은 박자**로 돈다(이종은 9/11) — 같은 순간에 시작해
+     같은 시간(BG_FADE) 동안, 배경 전환이 쓰는 그 곡선(BG_EASE)으로. 그래서 글자를
+     늦추는 delay 는 쓰지 않는다. 멈춘 자리는 CSS 가 잡고 있으니 fill 은 backwards 만. */
   fw.querySelectorAll('.tkcube').forEach(c=>{
     const f=c.querySelectorAll('.tkface'); if(f.length<2) return;
     const D=122, T=(d)=>`translateZ(${-D}px) rotateX(${d}deg) translateZ(${D}px)`;
-    const opt={duration:860, delay:delay+220, easing:'cubic-bezier(.36,.66,.2,1)', fill:'backwards'};
+    const opt={duration:BG_FADE, delay:0, easing:BG_EASE, fill:'backwards'};
     f.forEach(x=>x.getAnimations().forEach(a=>a.cancel()));
     f[0].animate([{transform:T(0)},  {transform:T(90)}], opt);
     f[1].animate([{transform:T(-90)},{transform:T(0)}],  opt);
