@@ -1325,7 +1325,7 @@ body.stageonly .stagefs .frame .hint-z{display:none}
 
 /* ── 임시 쪽번호 (이종은 9/9) ──────────────────────────────────────────────
    "1부 03/55" 꼴로 오른쪽 아래. 수정할 곳을 주고받기 위한 것이라 **행사 전에 뺀다** —
-   PAGENO 를 false 로 두면 사라진다. */
+   PAGENO 를 false 로 두면 사라진다. 9/11 에 껐다. */
 /* ── 제작 중 잠금 (이종은 9/9) ────────────────────────────────────────────
    아직 만드는 중이라 비밀번호를 넣어야 열린다. 아이디는 받지 않는다.
    비밀번호는 평문으로 두지 않고 SHA-256 만 담는다 — 소스를 봐도 바로 읽히지 않는다.
@@ -2605,8 +2605,10 @@ function runSeq(fw, delay){
       {duration:520, delay:delay+i*400, easing:'cubic-bezier(.22,.61,.36,1)', fill:'backwards'});
   });
 }
-/* 임시 쪽번호 — "N부 03/55". 부는 partStart 로 가른다(부 이동 바와 같은 셈법). */
-const PAGENO=true;
+/* 임시 쪽번호 — "N부 03/55". 부는 partStart 로 가른다(부 이동 바와 같은 셈법).
+   본선 당일(9/11) 껐다 — 무대에 걸리는 화면에는 쪽번호가 보이면 안 된다(이종은).
+   운영은 위 조작 바의 "47 / 51 · D-17 …" 로 자리를 안다. */
+const PAGENO=false;
 function showPageNo(){
   const el=$('#pageNo'); if(!el) return;
   if(!PAGENO){ el.style.display='none'; return; }
