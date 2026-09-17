@@ -1,0 +1,266 @@
+/* 인창원라이브 발표 장표 — 본선 행사 사이트(hackathon.wx.ai.kr/main)의 무대 디자인을 따른다.
+   무대는 1920×1080 한 장을 화면에 맞춰 줄이고 늘린다. 좌표는 모두 1920 기준 px. */
+:root{
+  --void:#08062A; --st-ink:#EEF0FF; --st-soft:#C3C6EE; --st-faint:#A3A7D8;
+  --violet:#8489F5; --kw:#8AF0C6; --gold:#F2C14E; --green:#0E9C68;
+  --st-line:rgba(238,240,255,.14);
+  --pad:64px; --brand-h:46px; --brandbar-h:104px;
+  --head:'Paperlogy','NanumSquare','Pretendard','Malgun Gothic',sans-serif;
+  --body:'NanumSquare','Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased;word-break:keep-all;cursor:default}
+body.idle{cursor:none}
+p{margin:0}
+
+/* ── 무대 ── */
+.viewport{position:fixed;inset:0;background:#000}
+.frame{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  background:var(--void);color:var(--st-ink);font-size:32px;line-height:1.6}
+
+/* 배경 두 겹 — 같은 그림이면 위치만 흘려 옮기고, 다른 그림이면 겹쳐 녹인다 */
+.bg{position:absolute;inset:0;background-repeat:no-repeat;opacity:0;
+  transition:opacity .9s var(--ease),background-position 1.4s var(--ease),background-size 1.4s var(--ease)}
+.bg.on{opacity:1}
+.bg.snap{transition:opacity .9s var(--ease)}
+.shade{position:absolute;inset:0;background:var(--void);opacity:.2;transition:opacity 1s var(--ease);pointer-events:none}
+
+/* 로고 바 — 모든 장에서 같은 자리에 고정 */
+.brandbar{position:absolute;left:0;right:0;top:0;height:var(--brandbar-h);padding:29px var(--pad) 0;
+  display:flex;justify-content:space-between;align-items:flex-start;z-index:5;pointer-events:none}
+.hosts,.event{display:flex;align-items:center;gap:16px;height:var(--brand-h)}
+.event{gap:12px;transition:opacity .6s var(--ease)}
+.frame.cover-on .event{opacity:0}
+.ci{display:block;height:var(--brand-h);background:#FFF;opacity:.92;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
+.ci-holdings{aspect-ratio:5201/2141;-webkit-mask-image:var(--ci-holdings);mask-image:var(--ci-holdings)}
+.ci-hrdi{aspect-ratio:4963/1545;-webkit-mask-image:var(--ci-hrdi);mask-image:var(--ci-hrdi)}
+.ci-mark{height:calc(var(--brand-h) * .82);aspect-ratio:2672/1607;-webkit-mask-image:var(--ci-mark);mask-image:var(--ci-mark);opacity:1}
+.hosts .x{color:#FFF;opacity:.75;font-size:19px;line-height:1}
+.event .name{font-family:var(--head);font-weight:800;font-size:29px;color:#FFF;line-height:1}
+
+/* ── 장과 단계 ── */
+/* 화면(view)은 past · cur · future 셋 중 하나. 제목은 큐브처럼 굴러 오르고(앞으로 가면 아래→위,
+   뒤로 가면 위→아래), 제목 밖의 본문은 겹쳐 페이드된다. 나가는 장은 굴러가는 동안 보이도록
+   visibility 를 늦게 끈다. */
+.slide{position:absolute;inset:0;visibility:hidden;transition:visibility 0s linear .5s}
+.slide.active{visibility:visible;transition-delay:0s}
+.view{position:absolute;inset:0}
+.view:not(.cur){pointer-events:none}
+.view>:not(.title-z){transition:opacity .4s var(--ease)}
+.view:not(.cur)>:not(.title-z){opacity:0}
+.view.cur>:not(.title-z){transition-delay:.12s}
+.view>.title-z{transform-origin:50% 50% -49px;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.view.past>.title-z{transform:perspective(1600px) rotateX(90deg)}
+.view.future>.title-z{transform:perspective(1600px) rotateX(-90deg)}
+/* 같은 이름의 제목이 이어질 때(3장) — 고정 글자(.fx)는 그대로 두고 바뀌는 조각(.cb)만 큐브로 굴린다.
+   조각 자리(.slot)는 장 안에서 가장 긴 조각 폭으로 맞춰 고정 글자가 옆으로 밀리지 않게 한다. */
+.title-z .slot{display:inline-block;text-align:left}
+.title-z .slot:first-child{text-align:right}
+.title-z .cb{display:inline-block;transform-origin:50% 50% -49px;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.view>.title-z.keep{transform:none}
+.title-z.leaving .fx{opacity:0}
+.title-z.to-up .cb,.title-z.from-up .cb{transform:perspective(1600px) rotateX(90deg)}
+.title-z.to-down .cb,.title-z.from-down .cb{transform:perspective(1600px) rotateX(-90deg)}
+
+/* 제목 — 모든 장이 같은 자리(기준선: 무대 위에서 120px). h1 기본 여백은 없앤다 */
+.title-z{position:absolute;margin:0;left:var(--pad);top:120px;width:1792px;text-align:center;font-family:var(--head);font-weight:900;
+  font-size:86px;line-height:1.14;letter-spacing:.01em;color:var(--st-ink);text-shadow:0 3px 22px rgba(8,6,42,.55)}
+.title-z em{font-style:normal;color:var(--kw)}
+.eyebrow{position:absolute;left:var(--pad);top:88px;font-family:var(--head);font-weight:800;font-size:30px;color:var(--gold);letter-spacing:.04em}
+.body-z{position:absolute;left:var(--pad);top:290px;width:1792px;height:726px}
+.foot-z{position:absolute;left:var(--pad);bottom:40px;font-size:21px;color:var(--st-faint);line-height:1.5}
+
+/* ── 표지 ── */
+.cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:var(--brandbar-h) var(--pad) 200px;gap:10px}
+.cover .lockup{display:flex;align-items:center;gap:19px;font-family:var(--head);font-weight:800;font-size:72px;color:var(--st-ink)}
+.cover .lockup .ci-mark{height:.82em;background:var(--st-ink)}
+.cover .big{font-family:var(--head);font-weight:900;font-size:220px;line-height:1.12;color:var(--st-ink);
+  text-shadow:0 8px 40px rgba(8,6,42,.45)}
+.cover .big em{font-style:normal;color:var(--kw)}
+.cover .subtitle{font-family:var(--head);font-weight:800;font-size:64px;line-height:1.3;color:var(--st-ink);margin-top:6px}
+.cover .when{font-size:36px;line-height:1.45;font-weight:700;color:var(--st-ink);margin-top:26px;letter-spacing:.02em;text-shadow:0 2px 14px rgba(8,6,42,.6)}
+.slogan{position:absolute;left:var(--pad);right:var(--pad);bottom:64px;display:flex;justify-content:center;align-items:center;gap:22px}
+.slogan .pre{font-family:var(--head);font-weight:800;font-size:34px;line-height:1;color:var(--st-ink)}
+.slogan .impact{display:block;height:96px;aspect-ratio:4710/1294;background:var(--st-ink);
+  -webkit-mask-image:var(--ci-impact);mask-image:var(--ci-impact);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
+.slogan.hero{position:relative;margin-top:10px;opacity:0}
+/* 엔딩 슬로건 — 화면 밖(크게·흐리게)에서 날아와 도장처럼 쾅 박힌다. 인사말은 그 뒤에 올라온다.
+   .cover.end 는 위아래 여백을 같게 해 슬로건이 화면 한가운데(세로 540)에 박히게 한다. */
+.cover.end{display:block;padding:0}
+.cover.end .lockup{position:absolute;left:0;right:0;top:300px;justify-content:center}
+.cover.end .slogan.hero{position:absolute;left:0;right:0;top:435px;height:210px;margin:0;justify-content:center}
+.cover.end .subtitle{position:absolute;left:0;right:0;top:680px;margin:0}
+.view.shown .slogan.hero{animation:stamp 1.6s linear .45s both}
+.view.shown .cover.end{animation:thud .5s linear 1.57s both}
+.view .slogan.hero + .subtitle{opacity:0}
+.view.shown .slogan.hero + .subtitle{animation:riseup .8s var(--ease) 2.25s both}
+/* 멀리 화면 앞쪽에서 크고 흐릿하게 천천히 다가오다가(0→44%), 가속해 쾅 박히고(→70%),
+   묵직하게 한 번 눌렸다 튕겨 자리 잡는다. 박히는 순간 화면 글자 전체가 짧게 흔들린다(thud). */
+@keyframes stamp{
+  0%{opacity:0;transform:scale(4.2);filter:blur(18px);animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  44%{opacity:.55;transform:scale(2.3);filter:blur(7px);animation-timing-function:cubic-bezier(.75,0,1,.6)}
+  70%{opacity:1;transform:scale(.9);filter:blur(0);animation-timing-function:cubic-bezier(.2,.8,.4,1)}
+  82%{transform:scale(1.05);animation-timing-function:ease-in-out}
+  92%{transform:scale(.985)}
+  100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes thud{
+  0%{transform:translate(0,0)} 15%{transform:translate(-7px,6px)} 30%{transform:translate(6px,-5px)}
+  45%{transform:translate(-4px,3px)} 62%{transform:translate(3px,-2px)} 80%{transform:translate(-1px,1px)} 100%{transform:translate(0,0)}}
+@keyframes riseup{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:none}}
+.slogan.hero .pre{font-size:72px}
+.slogan.hero .impact{height:210px}
+
+/* ── 숫자 판 (본선 A-10 판 셋) ── */
+.tools{height:100%;display:flex;align-items:flex-start;padding-top:30px}
+.ncols{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:stretch}
+.nc{display:flex;flex-direction:column;min-width:0;background:#E3E4E7;border-radius:28px;padding:40px 34px 30px;
+  box-shadow:0 24px 58px rgba(4,3,24,.5),inset 0 1px 0 rgba(255,255,255,.85)}
+.nh{display:flex;flex-direction:column;align-items:center;gap:16px}
+.mk{display:inline-flex;align-items:center;justify-content:center;height:62px;padding:0 26px;border-radius:15px;
+  background:var(--c);color:#fff;white-space:nowrap;font-family:var(--head);font-weight:900;font-size:28px;box-shadow:0 8px 18px rgba(0,0,0,.22)}
+.nn{display:flex;align-items:baseline;gap:10px;color:var(--green);font-family:var(--head);font-weight:900;line-height:1}
+.nn .n{font-size:112px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.nn .u{font-size:48px}
+.nh .k{font-family:var(--head);font-weight:800;font-size:32px;color:#242A31;margin-top:-2px}
+.nl{margin:30px 0 0;padding:26px 0 0;list-style:none;border-top:2px solid rgba(36,42,49,.12)}
+.nl li{position:relative;padding-left:28px;font-size:28px;line-height:1.5;color:#242A31;margin-bottom:14px}
+.nl li::before{content:'';position:absolute;left:3px;top:.55em;width:11px;height:11px;background:#3B434B}
+.nl li b{color:var(--green);font-weight:800}
+
+/* ── 사진 판 — 크리스탈 박스 ── */
+.glass{position:absolute;margin:0;border:1px solid rgba(255,255,255,.26);border-radius:22px;overflow:hidden;
+  background:linear-gradient(155deg,rgba(255,255,255,.17),rgba(255,255,255,.05) 45%,rgba(150,175,255,.12));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 22px 50px rgba(0,0,0,.42)}
+.glass img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.glass figcaption{position:absolute;left:0;right:0;bottom:0;padding:44px 26px 18px;font-weight:700;font-size:30px;line-height:1.35;color:#fff;
+  background:linear-gradient(transparent,rgba(8,6,42,.82));text-shadow:0 2px 10px rgba(8,6,42,.75)}
+.glass figcaption .t{font-family:var(--head);font-weight:800;color:var(--kw);margin-right:14px;font-size:.9em}
+.shots .a{left:0;top:0;width:1100px;height:726px}
+.shots .b{left:1130px;top:0;width:662px;height:348px}
+.shots .c{left:1130px;top:378px;width:662px;height:348px}
+.shots .b figcaption,.shots .c figcaption{font-size:26px;padding:36px 22px 14px}
+
+/* ── 영상 ── */
+.player{position:absolute;left:336px;top:296px;width:1248px;height:702px;border-radius:26px;overflow:hidden;cursor:pointer;
+  background:#000;border:2px solid rgba(255,255,255,.28);
+  box-shadow:0 0 0 10px rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.6),0 0 120px rgba(132,137,245,.25)}
+.player video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.player .play{position:absolute;left:50%;top:50%;width:160px;height:160px;margin:-80px 0 0 -80px;border-radius:50%;
+  background:rgba(238,240,255,.16);border:3px solid rgba(238,240,255,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.player .play::after{content:'';position:absolute;left:62px;top:46px;border-left:52px solid #EEF0FF;border-top:34px solid transparent;border-bottom:34px solid transparent}
+.player.playing .play{opacity:0;transform:scale(.8)}
+.player .empty{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+  background:radial-gradient(circle at 50% 40%,rgba(132,137,245,.28),rgba(8,6,42,.95) 70%)}
+.player.missing .empty{display:flex}
+.player.missing .play,.player.missing video{display:none}
+.empty .ic{font-size:120px;line-height:1}
+.empty .t1{font-family:var(--head);font-weight:900;font-size:56px}
+.empty .t2{font-size:28px;color:var(--st-soft)}
+.empty code{font-family:Consolas,monospace;font-size:26px;color:var(--kw);background:rgba(0,0,0,.35);padding:4px 14px;border-radius:8px}
+
+/* ── 숨은 운영진 공개 — 열한 개의 별 ──
+   가운데 운영진 단체사진(780×520), 그 아래로 이름 별 11개가 부채꼴을 따라 지그재그 한 줄 별자리를 이루고
+   점선이 모두를 잇는다. */
+.stars{position:absolute;inset:0}
+.sphoto{left:570px;top:238px;width:780px;height:520px}
+.constel{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .8s var(--ease) 1.1s}
+.constel polyline{fill:none;stroke:rgba(242,193,78,.6);stroke-width:3;stroke-dasharray:4 12;stroke-linecap:round;stroke-linejoin:round}
+.view.shown .constel{opacity:1}
+.star{position:absolute;display:inline-flex;align-items:center;gap:10px;padding:8px 22px 8px 16px;border-radius:999px;white-space:nowrap;
+  font-family:var(--head);font-weight:800;font-size:34px;line-height:1.2;color:#fff;
+  background:rgba(8,6,42,.78);border:2px solid rgba(242,193,78,.65);box-shadow:0 0 26px rgba(242,193,78,.28),0 12px 28px rgba(0,0,0,.35);
+  opacity:0;transform:translate(-50%,-50%) scale(.6);
+  transition:opacity .4s var(--ease) calc(var(--i) * 90ms),transform .5s cubic-bezier(.34,1.56,.64,1) calc(var(--i) * 90ms)}
+.star::before{content:'★';display:inline-block;color:var(--gold);font-size:28px;text-shadow:0 0 14px rgba(242,193,78,.95);
+  animation:twinkle var(--tw,2.6s) ease-in-out var(--td,0s) infinite}
+/* 별 반짝임 — 별표가 부드럽게 커졌다 작아지며 빛나고, 이름표 테두리 빛도 같은 박자로 숨쉰다.
+   박자(--tw)와 시작(--td)은 별마다 deck.js 가 무작위로 준다. 떠다니는 움직임은 translate 속성(JS). */
+@keyframes twinkle{
+  0%,100%{opacity:.7;transform:scale(.82) rotate(0deg);text-shadow:0 0 6px rgba(242,193,78,.5)}
+  50%{opacity:1;transform:scale(1.18) rotate(18deg);text-shadow:0 0 18px rgba(255,236,170,1),0 0 34px rgba(242,193,78,.8)}}
+@keyframes glow{
+  0%,100%{box-shadow:0 0 14px rgba(242,193,78,.18),0 12px 28px rgba(0,0,0,.35);border-color:rgba(242,193,78,.5)}
+  50%{box-shadow:0 0 34px rgba(242,193,78,.45),0 12px 28px rgba(0,0,0,.35);border-color:rgba(255,226,140,.95)}}
+.view.shown .star{animation:glow var(--tw,2.6s) ease-in-out var(--td,0s) infinite}
+.view.shown .star{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* ── 감사 — 단체사진 전체화면 + 설명선 ── */
+.topfade{position:absolute;left:0;right:0;top:0;height:340px;pointer-events:none;
+  background:linear-gradient(rgba(8,6,42,.82),rgba(8,6,42,.45) 55%,transparent)}
+.anno{position:absolute;inset:0;pointer-events:none}
+.leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;
+  filter:drop-shadow(0 2px 6px rgba(8,6,42,.8))}
+.leaders polyline{fill:none;stroke:#FFFFFF;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:700;stroke-dashoffset:700;transition:stroke-dashoffset .9s var(--ease) var(--d)}
+.leaders circle{fill:#FFFFFF;stroke:#12328F;stroke-width:5;opacity:0;transform-box:fill-box;transform-origin:center;
+  transition:opacity .3s var(--ease) var(--d)}
+.view.shown .leaders polyline{stroke-dashoffset:0}
+.view.shown .leaders circle{opacity:1;animation:ping 2.4s ease-out calc(var(--d) + .9s) infinite}
+@keyframes ping{0%{stroke-width:5;stroke:#12328F}40%{stroke-width:14;stroke:rgba(255,255,255,.55)}100%{stroke-width:5;stroke:#12328F}}
+/* 흰 크리스털 글라스 — 밝은 사진 위에서도 읽히도록 판은 거의 불투명한 흰색, 글자는 짙은 남색 */
+.callout{position:absolute;width:460px;padding:16px 24px 18px;border-radius:18px;
+  background:linear-gradient(155deg,rgba(255,255,255,.94),rgba(255,255,255,.80) 60%,rgba(226,234,255,.86));
+  border:1px solid rgba(255,255,255,.95);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:inset 0 1px 0 #fff,0 16px 40px rgba(8,6,42,.38);
+  opacity:0;transform:translateY(16px) scale(.96);transition:opacity .5s var(--ease) calc(var(--d) + .5s),transform .5s var(--ease) calc(var(--d) + .5s)}
+.view.shown .callout{opacity:1;transform:none}
+.callout b{display:block;font-family:var(--head);font-weight:900;font-size:36px;line-height:1.2;color:#12328F}
+.callout span{display:block;font-size:26px;font-weight:700;line-height:1.4;color:#1A2140;margin-top:4px}
+.photocap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);white-space:nowrap;
+  padding:8px 24px;border-radius:999px;background:rgba(8,6,42,.7);font-size:24px;font-weight:700;color:var(--st-ink)}
+
+/* ── Next Step ── */
+.steps3{position:absolute;left:0;right:0;top:90px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:stretch}
+.st{position:relative;display:flex;flex-direction:column;padding:44px 36px 30px;border-radius:26px;background:rgba(8,6,42,.7);
+  border:1px solid rgba(238,240,255,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 22px 50px rgba(0,0,0,.4)}
+.st .sh{display:flex;align-items:baseline;gap:20px;margin-bottom:34px}
+.st .no{font-family:var(--head);font-weight:900;font-size:48px;color:var(--gold)}
+.st .h{font-family:var(--head);font-weight:900;font-size:84px;line-height:1.1;color:var(--kw)}
+.st ul{margin:0;padding-left:26px}
+.st li{font-size:31px;line-height:1.45;color:var(--st-ink);margin-bottom:20px}
+.dt{position:absolute;left:0;right:0;bottom:150px;height:80px;line-height:80px;text-align:center;
+  font-family:var(--head);font-weight:900;font-size:56px;color:var(--st-ink);text-shadow:0 2px 16px rgba(8,6,42,.9)}
+.dt em{font-style:normal;color:var(--gold)}
+
+/* ── 진행 표시 · 단추 ── */
+.progress{position:absolute;left:0;right:0;bottom:24px;display:flex;justify-content:center;gap:11px;pointer-events:none;z-index:6}
+.progress i{width:8px;height:8px;border-radius:99px;background:rgba(238,240,255,.2);transition:width .4s var(--ease),background .4s}
+.progress i.past{background:rgba(238,240,255,.42)}
+.progress i.cur{width:72px;background:var(--violet)}
+.ctrl{position:absolute;right:var(--pad);bottom:14px;display:flex;gap:10px;align-items:center;z-index:7;transition:opacity .4s}
+body.idle .ctrl{opacity:0}
+.ctrl button{font:inherit;font-size:26px;line-height:1;cursor:pointer;background:rgba(8,6,42,.4);color:var(--st-soft);
+  border:2px solid var(--st-line);border-radius:999px;padding:8px 22px}
+.ctrl button:hover{color:#fff;border-color:rgba(238,240,255,.5)}
+.ctrl .lab{font-size:22px;color:var(--st-faint);min-width:64px;text-align:center}
+.hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;padding:26px 44px;border-radius:20px;
+  background:rgba(8,6,42,.86);border:1px solid var(--st-line);font-size:30px;color:var(--st-soft);text-align:center;line-height:1.7;
+  transition:opacity .8s var(--ease);pointer-events:none}
+.hint b{color:var(--kw);font-family:var(--head)}
+.hint.gone{opacity:0}
+.black{position:absolute;inset:0;background:#000;z-index:20;opacity:0;pointer-events:none;transition:opacity .5s}
+.black.on{opacity:1}
+
+/* ── 발표자 노트 창 (?notes) ── */
+body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-height:1.6}
+.nt{max-width:1100px;margin:0 auto;padding:24px 28px 60px;display:grid;gap:18px}
+.nt .top{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.nt .pos{font-family:var(--head);font-weight:900;font-size:30px;color:var(--kw)}
+.nt .ttl{font-family:var(--head);font-weight:800;font-size:26px}
+.nt .budget{font-size:15px;color:#9AA4C0;border:1px solid #28324B;border-radius:6px;padding:2px 10px}
+.nt .clock{margin-left:auto;font-family:Consolas,monospace;font-size:34px;font-weight:700;color:var(--gold)}
+.nt .clock.over{color:#F09A7C}
+.nt .script{background:#151C2F;border:1px solid #28324B;border-radius:10px;padding:22px 26px;font-size:26px;line-height:1.75;white-space:pre-line}
+.nt .script b{color:var(--kw)}
+.nt .next{color:#9AA4C0;font-size:17px}
+.nt .btns{display:flex;gap:10px}
+.nt button{font:inherit;font-size:18px;background:#151C2F;color:#E9EDF7;border:1px solid #28324B;border-radius:8px;padding:8px 18px;cursor:pointer}
+.nt button:hover{border-color:#7FB0EA}
