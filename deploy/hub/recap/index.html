@@ -131,7 +131,12 @@
            좌표는 1920×1080 무대 기준, 타원 중심 (960,500) · 반지름 바깥 840×430 / 안쪽 740×330 번갈아 · 170°→10° 를 16°씩 -->
       <div class="stars">
         <svg class="constel" viewBox="0 0 1920 1080" aria-hidden="true"><polyline points="231,557 205,688 410,721 515,865 756,817 960,930 1164,817 1405,865 1510,721 1715,688 1689,557"/></svg>
-        <figure class="glass sphoto"><img src="img/photos/p265.jpg" alt="운영진 단체사진"></figure>
+        <!-- 운영진 사진 자리 — 뮤직비디오 속 운영진 11명 합성 이미지로 교체 예정.
+             img/photos/staff_mv.jpg (3:2) 를 넣으면 안내판 위에 그대로 덮인다. -->
+        <figure class="glass sphoto">
+          <div class="todo"><b>사진 교체 예정</b><span>뮤직비디오 속 운영진 11명 합성 이미지</span></div>
+          <img src="img/photos/staff_mv.jpg" alt="운영진 11명" onerror="this.remove()">
+        </figure>
         <span class="star" style="left:231px;top:557px;--i:0">김민정</span>
         <span class="star" style="left:205px;top:688px;--i:1">김두환</span>
         <span class="star" style="left:410px;top:721px;--i:2">이종은</span>
