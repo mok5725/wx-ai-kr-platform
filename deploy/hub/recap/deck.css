@@ -25,6 +25,10 @@ p{margin:0}
   transition:opacity .9s var(--ease),background-position 1.4s var(--ease),background-size 1.4s var(--ease)}
 .bg.on{opacity:1}
 .bg.snap{transition:opacity .9s var(--ease)}
+/* 표지 배경 — 산봉우리가 보이게 내린 자리(-220px)를 기준으로 위아래 14px 씩 10초에 한 번 잔잔하게 오르내린다.
+   data-bob 이 붙은 화면에서만 켠다(deck.js). 기준값을 바꾸면 여기 두 값도 함께 바꿀 것. */
+.frame.bob-on .bg.on{animation:bob 10s ease-in-out infinite}
+@keyframes bob{0%,100%{background-position:center -220px}50%{background-position:center -248px}}
 .shade{position:absolute;inset:0;background:var(--void);opacity:.2;transition:opacity 1s var(--ease);pointer-events:none}
 
 /* 로고 바 — 모든 장에서 같은 자리에 고정 */

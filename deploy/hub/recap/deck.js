@@ -87,6 +87,7 @@
     if (!mv.paused && !view.contains(player)) mv.pause();
     setBg(view.dataset.bg);
     frame.classList.toggle('cover-on', view.hasAttribute('data-cover'));
+    frame.classList.toggle('bob-on', view.hasAttribute('data-bob'));
     if (viewChanged) {
       clearTimeout(shownT); shownT = setTimeout(() => view.classList.add('shown'), slideChanged ? 500 : 250);
       if ($('[data-count]', view)) countUp(view);
