@@ -411,11 +411,11 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .voices.short{top:auto;bottom:2px;height:416px;opacity:0;translate:0 56px;
   transition:opacity .55s var(--ease) .1s,translate .55s var(--ease) .1s}
 .slide[data-step="j4"] .voices.short{opacity:1;translate:0 0}
-.voices.short .face{width:84px;height:84px;margin-bottom:12px}
-.voices.short .face .ini{font-size:34px}
-.voices.short .who{font-size:31px}
-.voices.short .tagline{font-size:21px}
-.voices.short .q{font-size:22px;line-height:1.5;margin-top:14px;padding-top:14px}
+/* 회신 카드 — 이름 / 소속 / 메시지. 동그라미 이니셜과 요약 단어는 뺐다 */
+.voices.short .who{font-size:34px;line-height:1.15}
+.voices.short .org{display:block;font-size:22px;font-weight:700;line-height:1.3;color:var(--st-faint);margin-top:9px}
+.voices.short .org .todo{color:var(--gold);opacity:.8;font-style:italic}
+.voices.short .q{font-size:23px;line-height:1.55;margin-top:18px;padding-top:18px}
 
 /* ── 교육생의 목소리 — 말풍선 3개 (b1~b3) → 자문위원 + 익명 목소리 (b4) ──
    칸 너비는 셋이 같고, 강조는 scale 로만 한다(레이아웃이 다시 돌지 않아 매끄럽다). */
