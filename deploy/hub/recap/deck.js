@@ -80,6 +80,9 @@
       });
     });
     const view = slides[s].views[v];
+    // 현재 단계를 장에 적어 둔다 — 화면 밖에 고정해 둔 박스(말풍선·띠)가 CSS 로 상태만 바꿔
+    // 사라졌다 나타나지 않고 크기·자리·투명도가 이어서 전환되도록 하기 위함이다.
+    slides[s].el.dataset.step = view.dataset.step || '';
     // 같은 장 안에서 제목 이름이 같으면(예: "현장의 생생한 순간들 · …") 큐브를 굴리지 않고 그대로 바꾼다
     const baseOf = vw => { const t = vw && $(':scope>.title-z>.fx', vw); return t ? t.textContent.trim() : null; };
     const prevView = S === s ? slides[S].views[V] : null;
