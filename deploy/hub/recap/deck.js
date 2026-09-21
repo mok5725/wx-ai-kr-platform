@@ -57,7 +57,16 @@
   mv.addEventListener('play', () => player.classList.add('playing'));
   mv.addEventListener('pause', () => player.classList.remove('playing'));
   mv.addEventListener('ended', () => player.classList.remove('playing'));
-  const toggleVideo = () => { if (player.classList.contains('missing') || !player.closest('.view.cur')) return; mv.paused ? mv.play().catch(() => {}) : mv.pause(); };
+  // 영상은 클릭(또는 V)하면 전체화면으로 재생한다. ESC 로 빠져나온다.
+  const toggleVideo = () => {
+    if (player.classList.contains('missing') || !player.closest('.view.cur')) return;
+    if (mv.paused) {
+      const go = mv.requestFullscreen ? mv.requestFullscreen()
+               : mv.webkitEnterFullscreen ? mv.webkitEnterFullscreen() : null;
+      Promise.resolve(go).catch(() => {});
+      mv.play().catch(() => {});
+    } else mv.pause();
+  };
   player.addEventListener('click', toggleVideo);
 
   /* ── 진행 표시 ── */

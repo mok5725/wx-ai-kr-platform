@@ -334,11 +334,15 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .lane .st i{position:absolute;left:0;top:50%;translate:-50% -50%;width:18px;height:18px;border-radius:50%}
 .lane.m .st i{background:#93A8F7;box-shadow:0 0 0 5px rgba(147,168,247,.2)}
 .lane.c .st i{background:var(--gold);box-shadow:0 0 0 5px rgba(242,193,78,.2)}
-.lane .st .tx{position:absolute;left:0;translate:-50% 0;width:240px;text-align:center;
-  font-size:24px;line-height:1.35;font-weight:700;color:var(--st-ink)}
-.lane .st .tx em{display:block;font-style:normal;color:var(--st-soft);margin-top:2px}
-.lane.m .st .tx{bottom:calc(50% + 28px)}
-.lane.c .st .tx{top:calc(50% + 28px)}
+/* 마스터는 내용이 점 위·월이 점 아래, 챌린저는 월이 점 위·내용이 점 아래 */
+.lane .st .tx{position:absolute;left:0;translate:-50% 0;width:250px;text-align:center;
+  font-size:23px;line-height:1.3;font-weight:700;color:var(--st-ink)}
+.lane .st .mo{position:absolute;left:0;translate:-50% 0;width:170px;text-align:center;
+  font-size:21px;font-weight:800;color:var(--st-soft)}
+.lane.m .st .tx{bottom:calc(50% + 26px)}
+.lane.m .st .mo{top:calc(50% + 26px)}
+.lane.c .st .mo{bottom:calc(50% + 26px)}
+.lane.c .st .tx{top:calc(50% + 26px)}
 /* 두 트랙을 잇는 세로선 — 「본선 참여」 상자가 그 위를 덮는다 */
 .joinline{position:absolute;left:1419px;top:156px;width:3px;height:394px;
   background:linear-gradient(rgba(147,168,247,.55),rgba(242,193,78,.55))}
@@ -408,7 +412,7 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .slide[data-step="j1"] .bar:nth-child(1),
 .slide[data-step="j2"] .bar:nth-child(2),
 .slide[data-step="j3"] .bar:nth-child(3){height:318px;opacity:1;filter:none;box-shadow:0 24px 56px rgba(0,0,0,.5)}
-.bar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 26%}
+.bar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 6%}
 .bar .txt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-start;gap:20px;
   padding-top:52px;opacity:0;transition:opacity .4s var(--ease)}
 .slide[data-step="j1"] .bar:nth-child(1) .txt,
@@ -503,16 +507,17 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .nc:nth-child(3) .nl li::before{background:#0E9C68}
 .join .d{display:block;font-size:25px;font-weight:700;color:var(--st-soft)}
 
-/* ── 마스터 과제 실행팀 — 원본 장표 얼개. 요약 3줄이 위, 그림이 아래 ──
-   배경 위에서도 읽히도록 상자는 불투명에 가깝게, 연결선은 굵고 밝게 한다. */
-.orgnote{position:absolute;left:0;right:0;top:0;display:grid;grid-template-columns:1fr;gap:9px}
-.orgnote div{display:flex;align-items:baseline;gap:14px;padding:11px 20px;border-radius:12px;
-  background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.26)}
+/* ── 마스터 과제 실행팀 — 요약 3줄을 한 상자에 담고, 그림은 그 아래 ──
+   ※ 도해 뼈대는 .orgmap 이다. .org 는 회신 카드의 소속 줄이 이미 쓰고 있으므로 쓰지 말 것. */
+.orgnote{position:absolute;left:0;right:0;top:0;padding:16px 26px;border-radius:16px;
+  background:rgba(8,6,42,.78);border:1px solid rgba(238,240,255,.28)}
+.orgnote p{display:flex;align-items:baseline;gap:14px;margin:0}
+.orgnote p + p{margin-top:11px}
 .orgnote b{flex:none;font-family:var(--head);font-weight:900;font-size:24px;color:var(--kw)}
-.orgnote b::before{content:'❑ ';color:var(--gold)}
+.orgnote b::before{content:'❑  ';color:var(--gold)}
 .orgnote span{font-size:21px;line-height:1.4;font-weight:700;color:var(--st-ink)}
 /* 그림 */
-.org{position:absolute;left:0;right:0;top:186px;height:540px}
+.orgmap{position:absolute;left:0;right:0;top:170px;height:556px}
 .ob{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   border-radius:14px;background:rgba(10,20,58,.94);border:2px solid rgba(147,168,247,.7);padding:12px 18px;
   box-shadow:0 10px 26px rgba(0,0,0,.45)}
@@ -520,21 +525,21 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .ob b span{font-size:.76em;color:#fff}
 .ob .s{font-size:22px;font-weight:800;line-height:1.3;color:#fff;margin-top:5px}
 .ob .d{font-size:21px;line-height:1.35;font-weight:700;color:var(--st-soft);margin-top:7px}
-.ob.top{left:520px;width:752px;top:0;height:104px}
-.ob.bot{left:520px;width:752px;top:436px;height:104px}
-.ob.side{width:392px;top:182px;height:176px}
+.ob.top{left:520px;width:752px;top:0;height:100px}
+.ob.bot{left:520px;width:752px;top:456px;height:100px}
+.ob.side{width:392px;top:199px;height:172px}
 .ob.side.left{left:0}
 .ob.side.right{left:1400px}
 /* 가운데 Core Team */
-.core{position:absolute;left:496px;width:800px;top:140px;height:260px;border-radius:16px;
-  background:rgba(12,26,72,.95);border:2px solid rgba(147,168,247,.85);padding:0 0 16px;
+.core{position:absolute;left:496px;width:800px;top:158px;height:254px;border-radius:16px;
+  background:rgba(12,26,72,.95);border:2px solid rgba(147,168,247,.85);padding:0 0 14px;
   display:flex;flex-direction:column;box-shadow:0 14px 34px rgba(0,0,0,.5)}
-.core .ct{display:block;padding:11px 0;border-radius:13px 13px 0 0;background:rgba(41,74,168,.95);
-  font-family:var(--head);font-weight:900;font-size:30px;line-height:1.15;color:#fff;text-align:center}
+.core .ct{display:block;padding:10px 0;border-radius:13px 13px 0 0;background:rgba(41,74,168,.95);
+  font-family:var(--head);font-weight:900;font-size:29px;line-height:1.15;color:#fff;text-align:center}
 .core .ct span{font-size:.78em;color:var(--kw)}
-.crow{flex:1;display:grid;grid-template-columns:1.9fr 1fr;gap:14px;margin:14px 16px 0}
+.crow{flex:1;display:grid;grid-template-columns:1.9fr 1fr;gap:13px;margin:13px 15px 0}
 .cg{position:relative;border-radius:12px;background:rgba(238,240,255,.14);border:1px dashed rgba(242,193,78,.7);
-  padding:30px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  padding:29px 11px 11px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .cg.one{grid-template-columns:1fr;background:rgba(41,74,168,.55);border:1px solid rgba(147,168,247,.7)}
 .cgl{position:absolute;left:0;right:0;top:7px;text-align:center;font-size:19px;font-weight:800;color:#fff}
 .cc{border-radius:9px;background:rgba(255,255,255,.93);padding:9px 8px;text-align:center;
@@ -546,9 +551,9 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
   text-shadow:0 2px 8px rgba(8,6,42,.95)}
 .arw.v{left:50%;translate:-50% 0;text-align:center}
 .arw.v::before{content:'↓';display:block;font-size:26px;line-height:1;color:var(--kw)}
-.arw.a1{top:108px}
-.arw.a4{top:404px}
-.arw.h{top:240px;text-align:center;width:104px;white-space:normal}
+.arw.a1{top:104px}
+.arw.a4{top:418px}
+.arw.h{top:260px;text-align:center;width:104px;white-space:normal}
 .arw.h::before{content:'↔';display:block;font-size:26px;line-height:1;color:var(--kw)}
 .arw.a2{left:392px}
 .arw.a3{left:1296px}
