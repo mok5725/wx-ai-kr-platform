@@ -371,17 +371,23 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 
 /* ── 단계가 있는 장: 제목과 박스는 화면(view) 밖에 고정한다 ──
    단계를 넘겨도 제목이 큐브처럼 굴러가지 않고, 박스도 사라졌다 나타나지 않는다.
-   현재 단계는 deck.js 가 <section class="slide" data-step="…"> 로 적어 준다. */
+   현재 단계는 deck.js 가 <section class="slide" data-step="…"> 로 적어 준다.
+   ※ 전환은 scale·opacity·translate 만 쓴다. flex-grow·font-size 처럼 배치를 다시 계산하게 하는
+      값을 전환하면 프레임마다 레이아웃이 다시 돌아 덜컹거린다. */
 .slide>.title-z.fixed,.slide>.body-z.fixed{opacity:0;transition:opacity .5s var(--ease)}
 .slide.active>.title-z.fixed,.slide.active>.body-z.fixed{opacity:1;transition-delay:.1s}
+/* 머리말 두 갈래 — 단계에 따라 바뀐다 */
+.vnote .s2{display:none}
+.slide[data-step="j4"] .vnote .s1{display:none}
+.slide[data-step="j4"] .vnote .s2{display:inline}
 
-/* ── 심사위원의 목소리 — 가로로 긴 띠 3개 (단계 j1~j3) ──
-   띠는 한 벌뿐이고 자리에 고정돼 있다. 강조가 내려갈 때 높이·투명도만 이어서 바뀐다. */
+/* ── 심사위원의 목소리 — 가로로 긴 띠 3개 (j1~j3) → 회신 카드 (j4) ── */
 .bars{position:absolute;left:0;right:0;top:0;height:726px;
-  display:flex;flex-direction:column;justify-content:center;gap:20px}
+  display:flex;flex-direction:column;justify-content:center;gap:20px;
+  transition:translate .6s var(--ease)}
 .bar{position:relative;height:148px;border-radius:20px;overflow:hidden;opacity:.34;
   filter:saturate(.45) brightness(.9);
-  transition:height .62s var(--ease),opacity .62s var(--ease),filter .62s var(--ease),box-shadow .62s var(--ease)}
+  transition:height .6s var(--ease),opacity .6s var(--ease),filter .6s var(--ease),box-shadow .6s var(--ease)}
 .slide[data-step="j1"] .bar:nth-child(1),
 .slide[data-step="j2"] .bar:nth-child(2),
 .slide[data-step="j3"] .bar:nth-child(3){height:318px;opacity:1;filter:none;box-shadow:0 24px 56px rgba(0,0,0,.5)}
@@ -390,63 +396,65 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
   padding-top:52px;opacity:0;transition:opacity .4s var(--ease)}
 .slide[data-step="j1"] .bar:nth-child(1) .txt,
 .slide[data-step="j2"] .bar:nth-child(2) .txt,
-.slide[data-step="j3"] .bar:nth-child(3) .txt{opacity:1;transition-delay:.28s}
+.slide[data-step="j3"] .bar:nth-child(3) .txt{opacity:1;transition-delay:.26s}
 .bar[data-side="right"] .txt{padding-right:360px;padding-left:64px}
 .bar[data-side="left"] .txt{padding-right:64px;padding-left:450px}
-/* 이름·소속은 사진 쪽에 붙되, 세 띠 모두 같은 높이(띠 위 52px)에 고정된다 */
+/* 이름·소속은 사진 쪽에 붙되, 세 띠 모두 같은 높이(띠 위 52px)에 고정 */
 .bar[data-side="right"] .nm{align-self:flex-end;text-align:right}
 .bar[data-side="left"] .nm{align-self:flex-start;text-align:left}
 .bar .nm b{display:block;font-family:var(--head);font-weight:900;font-size:46px;line-height:1.1;color:#12328F}
 .bar .nm span{display:block;font-size:26px;font-weight:700;line-height:1.3;color:#3C4664;margin-top:8px}
 .bar .msg{font-size:31px;line-height:1.5;font-weight:700;color:#1A2140}
+/* j4 — 띠가 얇아지며 위로 물러나고, 행사 뒤에 온 회신 카드가 아래에서 올라온다 */
+.slide[data-step="j4"] .bars{translate:0 -206px}
+.slide[data-step="j4"] .bar{height:74px;opacity:.3;filter:saturate(.35) brightness(.85)}
+.voices.short{top:auto;bottom:2px;height:416px;opacity:0;translate:0 56px;
+  transition:opacity .55s var(--ease) .1s,translate .55s var(--ease) .1s}
+.slide[data-step="j4"] .voices.short{opacity:1;translate:0 0}
+.voices.short .face{width:84px;height:84px;margin-bottom:12px}
+.voices.short .face .ini{font-size:34px}
+.voices.short .who{font-size:31px}
+.voices.short .tagline{font-size:21px}
+.voices.short .q{font-size:22px;line-height:1.5;margin-top:14px;padding-top:14px}
 
-/* ── 교육생의 목소리 — 말풍선 3개 (단계 b1~b4) ──
-   말풍선도 한 벌뿐이다. 강조가 왼쪽에서 오른쪽으로 옮겨 가며 폭·글자·투명도가 이어서 바뀐다.
-   b4 에서는 셋이 위로 물러나고 자문위원 말씀이 위에서 내려온다. */
+/* ── 교육생의 목소리 — 말풍선 3개 (b1~b3) → 자문위원 + 익명 목소리 (b4) ──
+   칸 너비는 셋이 같고, 강조는 scale 로만 한다(레이아웃이 다시 돌지 않아 매끄럽다). */
 .bubs{position:absolute;left:0;right:0;top:0;height:726px;display:flex;align-items:center;gap:28px;
-  transition:translate .62s var(--ease),scale .62s var(--ease)}
-.bub{position:relative;flex-grow:1;flex-basis:0;min-width:0;display:flex;flex-direction:column;
-  opacity:.3;scale:.93;
-  transition:flex-grow .62s var(--ease),opacity .62s var(--ease),scale .62s var(--ease)}
+  transition:translate .6s var(--ease),scale .6s var(--ease)}
+.bub{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;z-index:1;
+  opacity:.3;scale:.82;will-change:transform,opacity;
+  transition:scale .55s var(--ease),opacity .55s var(--ease)}
 .slide[data-step="b1"] .bub:nth-child(1),
 .slide[data-step="b2"] .bub:nth-child(2),
-.slide[data-step="b3"] .bub:nth-child(3){flex-grow:1.9;opacity:1;scale:1}
+.slide[data-step="b3"] .bub:nth-child(3){opacity:1;scale:1.22;z-index:3}
 /* 말풍선 — 밝은 유리판에 짙은 남색 글자, 왼쪽 아래에 꼬리 */
-.say{position:relative;padding:32px 32px 30px;border-radius:26px;
+.say{position:relative;padding:30px 30px 28px;border-radius:26px;
   background:linear-gradient(155deg,rgba(255,255,255,.95),rgba(255,255,255,.84) 60%,rgba(226,234,255,.9));
   border:1px solid rgba(255,255,255,.95);
   -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
   box-shadow:inset 0 1px 0 #fff,0 18px 44px rgba(8,6,42,.4)}
-.say::after{content:'';position:absolute;left:46px;bottom:-24px;width:0;height:0;border-style:solid;
-  border-width:26px 22px 0 0;border-color:rgba(255,255,255,.88) transparent transparent transparent;
+.say::after{content:'';position:absolute;left:44px;bottom:-22px;width:0;height:0;border-style:solid;
+  border-width:24px 20px 0 0;border-color:rgba(255,255,255,.88) transparent transparent transparent;
   filter:drop-shadow(0 6px 5px rgba(8,6,42,.2))}
-.say p{font-size:20px;line-height:1.55;font-weight:700;color:#1A2140;transition:font-size .62s var(--ease)}
-.slide[data-step="b1"] .bub:nth-child(1) .say p,
-.slide[data-step="b2"] .bub:nth-child(2) .say p,
-.slide[data-step="b3"] .bub:nth-child(3) .say p{font-size:29px}
-.say .punch{margin-top:18px;padding:13px 18px;border-radius:14px;font-size:18px;color:#12328F;
-  background:rgba(18,50,143,.1);border:1px solid rgba(18,50,143,.28);transition:font-size .62s var(--ease)}
-.say .punch b{display:block;font-family:var(--head);font-weight:900;font-size:.8em;color:#2A62C9;margin-bottom:5px}
-.slide[data-step="b1"] .bub:nth-child(1) .say .punch{font-size:26px}
+.say p{font-size:24px;line-height:1.55;font-weight:700;color:#1A2140}
+.say .punch{margin-top:16px;padding:12px 16px;border-radius:14px;font-size:21px;color:#12328F;
+  background:rgba(18,50,143,.1);border:1px solid rgba(18,50,143,.28)}
+.say .punch b{display:block;font-family:var(--head);font-weight:900;font-size:.8em;color:#2A62C9;margin-bottom:4px}
 /* 말한 사람 — 꼬리 아래에 */
-.bub figcaption{margin:44px 0 0 34px}
-.bub figcaption b{display:block;font-family:var(--head);font-weight:900;font-size:26px;line-height:1.15;
-  color:var(--st-ink);transition:font-size .62s var(--ease)}
-.bub figcaption span{display:block;font-size:18px;font-weight:700;color:var(--gold);margin-top:7px;
-  transition:font-size .62s var(--ease)}
-.slide[data-step="b1"] .bub:nth-child(1) figcaption b,
-.slide[data-step="b2"] .bub:nth-child(2) figcaption b,
-.slide[data-step="b3"] .bub:nth-child(3) figcaption b{font-size:40px}
-.slide[data-step="b1"] .bub:nth-child(1) figcaption span,
-.slide[data-step="b2"] .bub:nth-child(2) figcaption span,
-.slide[data-step="b3"] .bub:nth-child(3) figcaption span{font-size:25px}
-/* b4 — 말풍선 셋이 위로 물러나고, 자문위원이 위에서 아래로 내려온다 */
-.slide[data-step="b4"] .bubs{translate:0 -176px;scale:.72}
-.advisor{position:absolute;left:0;right:0;bottom:6px;padding:30px 40px;border-radius:24px;
+.bub figcaption{margin:38px 0 0 30px}
+.bub figcaption b{display:block;font-family:var(--head);font-weight:900;font-size:32px;line-height:1.15;color:var(--st-ink)}
+.bub figcaption span{display:block;font-size:20px;font-weight:700;color:var(--gold);margin-top:6px}
+/* b4 — 말풍선 셋이 물러나고, 자문위원이 내려오고, 익명 목소리가 올라온다 */
+.slide[data-step="b4"] .bubs{translate:0 -196px;scale:.62}
+.advisor{position:absolute;left:0;right:0;bottom:206px;padding:26px 36px;border-radius:24px;
   background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.3);
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 22px 50px rgba(0,0,0,.45);
-  opacity:0;translate:0 -130px;transition:opacity .62s var(--ease),translate .62s var(--ease)}
+  opacity:0;translate:0 -120px;transition:opacity .6s var(--ease),translate .6s var(--ease)}
 .slide[data-step="b4"] .advisor{opacity:1;translate:0 0}
-.advisor .who b{font-family:var(--head);font-weight:900;font-size:36px;color:var(--kw)}
-.advisor .who span{font-size:23px;font-weight:700;color:var(--st-faint);margin-left:16px}
-.advisor p{margin-top:16px;font-size:28px;line-height:1.5;font-weight:700;color:var(--st-ink)}
+.advisor .who b{font-family:var(--head);font-weight:900;font-size:33px;color:var(--kw)}
+.advisor .who span{font-size:21px;font-weight:700;color:var(--st-faint);margin-left:14px}
+.advisor p{margin-top:12px;font-size:26px;line-height:1.45;font-weight:700;color:var(--st-ink)}
+.vmore{bottom:2px;opacity:0;translate:0 56px;
+  transition:opacity .55s var(--ease) .12s,translate .55s var(--ease) .12s}
+.slide[data-step="b4"] .vmore{opacity:1;translate:0 0}
+.vmore p{font-size:22px}

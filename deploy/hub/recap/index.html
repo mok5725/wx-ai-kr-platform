@@ -226,8 +226,12 @@
 
   <!-- ⑦ 핵심 성과 및 소감 — 교육생 / 심사위원 두 트랙 -->
   <!-- ⑦ 교육생의 목소리 — 말풍선 3개가 한 화면에 고정돼 있고, 단계(b1~b4)에 따라
-       강조가 왼쪽에서 오른쪽으로 옮겨 간다. 제목과 박스는 .view 밖에 두어 고정된다. -->
-  <section class="slide" data-title="교육생의 목소리" data-time="2분">
+  <!-- ⑦ 교육생의 목소리 — 말풍선 3개가 한 자리에 고정돼 있고, 단계(b1~b4)에 따라
+       강조가 왼쪽에서 오른쪽으로 옮겨 간다. b4 에서 셋이 물러나고 자문위원과 익명 목소리가 나온다.
+  <!-- ⑦ 교육생의 목소리 — 말풍선 3개가 한 자리에 고정돼 있고, 단계(b1~b4)에 따라
+       강조가 왼쪽에서 오른쪽으로 옮겨 간다. b4 에서 셋이 물러나고 자문위원과 익명 목소리가 나온다.
+       제목과 박스는 .view 밖에 두어 고정된다. 고칠 때는 scratchpad/gen_sec7.py 를 고쳐 다시 찍어낼 것. -->
+  <section class="slide" data-title="교육생의 목소리" data-time="2분 30초">
     <h1 class="title-z fixed">💬 교육생의 <em>목소리</em></h1>
     <div class="body-z fixed">
       <p class="vnote">해커톤 종료 후 Discord 후기</p>
@@ -256,6 +260,13 @@
         <div class="who"><b>김현중 수석연구원</b><span>미래기술연구원 자문위원 · 지원 · 헌신 · 좋은 경험</span></div>
         <p>“크루원들이 너무 열심히 하시니 제가 더 도와드리고 싶었어요. 저는 별로 한 것 없습니다. 팀원들이 너무 애썼어요. 저도 좋은 경험이었습니다.”</p>
       </div>
+      <div class="vmore">
+        <span class="lb">이 외에도 이런 목소리가 있었습니다</span>
+        <p>바이브 코딩으로 아이디어를 직접 구현하며, 현업 적용을 위한 역량 개발의 필요성을 절감했습니다.”</p>
+        <p>해커톤에서 개발한 솔루션을 고도화하여, 타 본부 및 그룹사 전체의 업무 혁신으로 확산하고 싶습니다.”</p>
+        <p>우리가 만든 AI 솔루션이 현업에 안착하려면, 데이터 연계와 사내 보안 환경 등 인프라 뒷받침이 필수적입니다.”</p>
+        <p>향후 AI 심화 학습을 통해 현업의 고질적인 문제를 해결하는 새로운 과제에 도전하겠습니다.”</p>
+      </div>
     </div>
     <div class="view" data-bg="cloud|auto|-89px -132px|.55" data-step="b1" data-note="소감-터널밖개구리"></div>
     <div class="view" data-bg="cloud|auto|-89px -132px|.55" data-step="b2" data-note="소감-설루션"></div>
@@ -263,11 +274,12 @@
     <div class="view" data-bg="cloud|auto|-89px -132px|.55" data-step="b4" data-note="소감-자문위원"></div>
   </section>
 
-  <!-- ⑧ 심사위원의 목소리 — 가로 띠 3개 고정. 단계(j1~j3)에 따라 위에서부터 하나씩 커진다. -->
-  <section class="slide" data-title="심사위원의 목소리" data-time="2분">
+  <!-- ⑧ 심사위원의 목소리 — 가로 띠 3개 고정. 단계(j1~j3)에 따라 위에서부터 하나씩 커지고,
+       j4 에서 띠가 위로 물러나며 행사 뒤에 온 회신 카드가 올라온다. -->
+  <section class="slide" data-title="심사위원의 목소리" data-time="3분">
     <h1 class="title-z fixed">🎖️ 심사위원의 <em>목소리</em></h1>
     <div class="body-z fixed">
-      <p class="vnote">현장 인터뷰</p>
+      <p class="vnote"><span class="s1">현장 인터뷰</span><span class="s2">행사 뒤에 온 회신</span></p>
       <div class="bars">
         <div class="bar" data-side="right">
           <img src="img/photos/bar_jsm.webp" alt="정석모 본부장">
@@ -291,47 +303,31 @@
           </div>
         </div>
       </div>
+      <div class="voices short">
+        <div class="vc">
+          <div class="face"><span class="ini">박</span><img src="img/photos/face_pyj.jpg" alt="박용삼 연구위원" onerror="this.remove()"></div>
+          <b class="who">박용삼 연구위원</b>
+          <span class="tagline">배움 · 보람</span>
+          <p class="q">큰 행사를 잘 마무리하시느라 고생 많으셨습니다. 덕분에 <b>보람을 느끼고 많이 배울 수 있는</b> 기회였습니다.</p>
+        </div>
+        <div class="vc">
+          <div class="face"><span class="ini">김</span><img src="img/photos/face_kjh.jpg" alt="김정훈 실장" onerror="this.remove()"></div>
+          <b class="who">김정훈 실장</b>
+          <span class="tagline">협업 · 성장 · 새로운 제안</span>
+          <p class="q">모두가 최선을 다하고 <b>자신의 영역을 넘어 협업하며</b> 성과를 만드는 모습이 감동적이었습니다. 당장 구현되지 않더라도 좋은 아이디어만으로 겨루는 ‘상상력 경진대회’도 검토해 보면 좋겠습니다.</p>
+        </div>
+        <div class="vc">
+          <div class="face"><span class="ini">함</span><img src="img/photos/face_hde.jpg" alt="함동은 실장" onerror="this.remove()"></div>
+          <b class="who">함동은 실장</b>
+          <span class="tagline">아이디어 중심 평가 · 평가기준 개선</span>
+          <p class="q">직원들의 열정과 기술에서 많은 배움을 얻었습니다. <b>좋은 아이디어라면 기술이 따라갈 수 있어야</b> 하며, 현재 기술 수준만으로 창의적인 아이디어가 낮게 평가되지 않도록 심사 가이드라인을 정교하게 마련할 필요가 있습니다.</p>
+        </div>
+      </div>
     </div>
     <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-step="j1" data-note="소감-정석모"></div>
     <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-step="j2" data-note="소감-김미영"></div>
     <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-step="j3" data-note="소감-정규호"></div>
-  </section>
-
-  <!-- ⑨ 행사 뒤에 온 회신 -->
-  <section class="slide" data-title="행사 뒤에 온 회신" data-time="1분">
-    <div class="view" data-bg="cloud|auto|0px -132px|.55" data-note="소감-심사위원">
-      <h1 class="title-z">✉️ 행사 뒤에 온 <em>회신</em></h1>
-      <div class="body-z">
-        <p class="vnote">행사 종료 후 회신</p>
-        <div class="voices short">
-          <div class="vc">
-            <div class="face"><span class="ini">박</span><img src="img/photos/face_pyj.jpg" alt="박용삼 연구위원" onerror="this.remove()"></div>
-            <b class="who">박용삼 연구위원</b>
-            <span class="tagline">배움 · 보람</span>
-            <p class="q">큰 행사를 잘 마무리하시느라 고생 많으셨습니다. 덕분에 <b>보람을 느끼고 많이 배울 수 있는</b> 기회였습니다.</p>
-          </div>
-          <div class="vc">
-            <div class="face"><span class="ini">김</span><img src="img/photos/face_kjh.jpg" alt="김정훈 실장" onerror="this.remove()"></div>
-            <b class="who">김정훈 실장</b>
-            <span class="tagline">협업 · 성장 · 새로운 제안</span>
-            <p class="q">모두가 최선을 다하고 <b>자신의 영역을 넘어 협업하며</b> 성과를 만드는 모습이 감동적이었습니다. 당장 구현되지 않더라도 좋은 아이디어만으로 겨루는 ‘상상력 경진대회’도 검토해 보면 좋겠습니다. 엉뚱한 발상이 세상을 바꾸니까요. ㅎㅎ</p>
-          </div>
-          <div class="vc">
-            <div class="face"><span class="ini">함</span><img src="img/photos/face_hde.jpg" alt="함동은 실장" onerror="this.remove()"></div>
-            <b class="who">함동은 실장</b>
-            <span class="tagline">아이디어 중심 평가 · 평가기준 개선</span>
-            <p class="q">직원들의 열정과 기술에서 많은 배움을 얻었습니다. <b>좋은 아이디어라면 기술이 따라갈 수 있어야</b> 하며, 현재 기술 수준만으로 창의적인 아이디어가 낮게 평가되지 않도록 향후 심사 가이드라인을 정교하게 마련할 필요가 있습니다.</p>
-          </div>
-        </div>
-        <div class="vmore">
-          <span class="lb">이 외에도 이런 목소리가 있었습니다</span>
-          <p>바이브 코딩으로 아이디어를 직접 구현하며, 현업 적용을 위한 역량 개발의 필요성을 절감했습니다.”</p>
-          <p>해커톤에서 개발한 솔루션을 고도화하여, 타 본부 및 그룹사 전체의 업무 혁신으로 확산하고 싶습니다.”</p>
-          <p>우리가 만든 AI 솔루션이 현업에 제대로 안착하려면, 데이터 연계와 사내 보안 환경 등 인프라 차원의 적극적인 뒷받침이 필수적입니다.”</p>
-          <p>향후 AI 심화 학습을 통해 현업의 고질적인 문제를 해결하는 새로운 과제에 도전하겠습니다.”</p>
-        </div>
-      </div>
-    </div>
+    <div class="view" data-bg="cloud|auto|0px -132px|.55" data-step="j4" data-note="소감-심사위원"></div>
   </section>
 
   <!-- ⑧ 특별 영상 · 숨은 운영진 찾기 -->
