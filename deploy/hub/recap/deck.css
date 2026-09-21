@@ -275,7 +275,7 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 
 /* ── 추진 배경 — 회차 이력 4칸 ──
    앞 3칸은 지난 회차, 마지막 칸(.now)이 올해. 금색 테두리로 올해만 들어 올린다. */
-.hist{position:absolute;left:0;right:0;top:0;height:470px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-items:stretch}
+.hist{position:absolute;left:0;right:0;top:0;height:492px;display:grid;grid-template-columns:1fr 1fr 1.34fr;gap:26px;align-items:stretch}
 .hc{display:flex;flex-direction:column;min-width:0;padding:30px 26px 24px;border-radius:24px;
   background:rgba(8,6,42,.62);border:1px solid rgba(238,240,255,.22);
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 18px 44px rgba(0,0,0,.35)}
@@ -290,7 +290,7 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .hc.now .yr{color:var(--gold)}
 .hc.now .sl{color:var(--kw)}
 .hc.now li{color:var(--st-ink)}
-.hline{position:absolute;left:0;right:0;top:502px;text-align:center;
+.hline{position:absolute;left:0;right:0;top:526px;text-align:center;
   font-family:var(--head);font-weight:800;font-size:38px;line-height:1.4;color:var(--st-ink);text-shadow:0 2px 16px rgba(8,6,42,.9)}
 .hline em{font-style:normal;color:var(--kw)}
 
@@ -313,24 +313,40 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .foot-z.mid{left:50%;right:auto;bottom:62px;transform:translateX(-50%);text-align:center;padding:12px 30px;border-radius:18px;background:rgba(8,6,42,.72);border:1px solid rgba(238,240,255,.2);font-size:24px;color:var(--st-soft)}
 
 /* ── 여정 — 두 트랙이 나란히 흐르다 본선에서 합쳐진다 ── */
-.road{position:absolute;left:0;right:0;top:36px;display:grid;grid-template-columns:148px repeat(4,1fr);gap:16px 16px;align-items:stretch}
-.road .hd{display:flex;align-items:center;justify-content:center;height:62px;border-radius:12px;
-  font-family:var(--head);font-weight:900;font-size:29px;line-height:1;color:var(--void);background:var(--st-faint)}
-.road .hd.dday{background:var(--gold)}
-.road .rl{display:flex;align-items:center;justify-content:center;border-radius:14px;
-  font-family:var(--head);font-weight:900;font-size:27px;color:var(--st-ink);
-  background:rgba(185,190,207,.2);border:1px solid rgba(238,240,255,.28)}
-.road .rl.ma{background:rgba(138,240,198,.14);border-color:rgba(138,240,198,.45);color:var(--kw)}
-.road .cell{display:flex;align-items:center;min-height:196px;padding:18px 22px;border-radius:14px;
-  background:rgba(8,6,42,.6);border:1px solid rgba(238,240,255,.18);
-  font-size:25px;line-height:1.4;color:var(--st-ink)}
-.road .cell.dday{background:rgba(242,193,78,.13);border-color:rgba(242,193,78,.55)}
-.road .cell b{color:var(--kw);font-weight:800}
-.roadend{position:absolute;left:0;right:0;bottom:12px;display:flex;align-items:center;justify-content:center;gap:34px;
-  padding:22px 30px;border-radius:20px;background:rgba(238,240,255,.08);border:1px solid rgba(238,240,255,.22)}
-.roadend .lb{font-family:var(--head);font-weight:900;font-size:30px;color:var(--gold)}
-.roadend .it{font-size:27px;font-weight:700;color:var(--st-ink)}
-.roadend .sep{color:var(--st-faint);font-size:24px}
+/* ── 여정 — 본선 사이트 A-09 배치 ──
+   두 트랙 판이 왼쪽 위아래에 있고, 각 판에서 나온 선이 꺾여 오른쪽 「본선 참여」에서 만난다(⊐ 자). */
+.road2{position:absolute;left:0;right:0;top:0;height:726px}
+.lane{position:absolute;left:0;width:1380px;height:262px;border-radius:26px;
+  background:rgba(8,6,42,.5);border:1px solid rgba(238,240,255,.22);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 18px 44px rgba(0,0,0,.32)}
+.lane.m{top:14px}
+.lane.c{bottom:14px}
+.lane .lb{position:absolute;left:36px;top:50%;translate:0 -50%;
+  font-family:var(--head);font-weight:900;font-size:42px;line-height:1}
+.lane.m .lb{color:var(--kw)}
+.lane.c .lb{color:var(--gold)}
+/* 단계 — 점은 가운데 선 위에, 글자는 마스터는 위·챌린저는 아래 */
+.lane .steps{position:absolute;left:200px;right:0;top:0;bottom:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.lane .steps::before{content:'';position:absolute;left:0;right:0;top:50%;height:3px;translate:0 -1px;
+  background:rgba(238,240,255,.32)}
+.lane .st{position:relative}
+.lane .st i{position:absolute;left:50%;top:50%;translate:-50% -50%;width:17px;height:17px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 6px rgba(242,193,78,.22)}
+.lane.m .st i{background:var(--kw);box-shadow:0 0 0 6px rgba(138,240,198,.2)}
+.lane .st .tx{position:absolute;left:50%;translate:-50% 0;width:210px;text-align:center;
+  font-size:23px;line-height:1.35;font-weight:700;color:var(--st-ink)}
+.lane .st .tx em{display:block;font-style:normal;font-size:20px;color:var(--st-faint);margin-top:4px}
+.lane.m .st .tx{bottom:calc(50% + 26px)}
+.lane.c .st .tx{top:calc(50% + 26px)}
+/* ⊐ 자로 꺾여 만나는 선 */
+.joinline{position:absolute;left:1380px;right:320px;top:145px;bottom:145px;
+  border:3px solid rgba(242,193,78,.5);border-left:none;border-radius:0 20px 20px 0}
+.join{position:absolute;right:0;top:50%;translate:0 -50%;width:300px;padding:30px 22px;border-radius:24px;
+  text-align:center;background:rgba(8,6,42,.74);border:2px solid rgba(242,193,78,.75);
+  box-shadow:0 0 46px rgba(242,193,78,.26),0 22px 50px rgba(0,0,0,.45)}
+.join .t{display:block;font-size:22px;font-weight:700;color:var(--gold)}
+.join b{display:block;font-family:var(--head);font-weight:900;font-size:50px;line-height:1.1;color:var(--st-ink);margin:12px 0 10px}
+.join .d{display:block;font-size:24px;font-weight:700;color:var(--st-soft)}
 
 /* ── 소감 — 목소리 카드 ── */
 .voices{position:absolute;left:0;right:0;top:0;height:540px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:stretch}
@@ -374,8 +390,8 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
    현재 단계는 deck.js 가 <section class="slide" data-step="…"> 로 적어 준다.
    ※ 전환은 scale·opacity·translate 만 쓴다. flex-grow·font-size 처럼 배치를 다시 계산하게 하는
       값을 전환하면 프레임마다 레이아웃이 다시 돌아 덜컹거린다. */
-.slide>.title-z.fixed,.slide>.body-z.fixed{opacity:0;transition:opacity .5s var(--ease)}
-.slide.active>.title-z.fixed,.slide.active>.body-z.fixed{opacity:1;transition-delay:.1s}
+.slide>.title-z.fixed,.slide>.body-z.fixed,.slide>.foot-z.fixed{opacity:0;transition:opacity .5s var(--ease)}
+.slide.active>.title-z.fixed,.slide.active>.body-z.fixed,.slide.active>.foot-z.fixed{opacity:1;transition-delay:.1s}
 /* 머리말 두 갈래 — 단계에 따라 바뀐다 */
 .vnote .s2{display:none}
 .slide[data-step="j4"] .vnote .s1{display:none}
@@ -458,3 +474,29 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
   transition:opacity .55s var(--ease) .12s,translate .55s var(--ease) .12s}
 .slide[data-step="b4"] .vmore{opacity:1;translate:0 0}
 .vmore p{font-size:22px}
+
+/* ── 추진 배경 — '26 을 가장 크게, '25 아래에 제로톤을 작게 ── */
+.hc.now{background:rgba(242,193,78,.14);border-color:rgba(242,193,78,.75);
+  box-shadow:0 0 46px rgba(242,193,78,.24),0 18px 44px rgba(0,0,0,.35)}
+.hc.now .yr{font-size:38px;color:var(--gold)}
+.hc.now .nm{font-size:48px}
+.hc.now .sl{font-size:32px;color:var(--kw)}
+.hc.now li{font-size:29px;color:var(--st-ink)}
+/* 제로톤 — 2회 해커톤 카드 아래에 붙는 작은 칸 */
+.hc .sub{margin-top:auto;padding:16px 18px;border-radius:16px;
+  background:rgba(238,240,255,.07);border:1px solid rgba(238,240,255,.18)}
+.hc .sub b{display:block;font-family:var(--head);font-weight:800;font-size:24px;line-height:1.2;color:var(--st-soft)}
+.hc .sub .sl{display:block;font-size:19px;font-weight:700;color:var(--gold);opacity:.8;margin-top:5px}
+.hc .sub .d{display:block;font-size:19px;line-height:1.4;color:var(--st-faint);margin-top:7px}
+
+/* ── 규모 — 마스터(왼쪽)를 먼저, 넘기면 챌린저(오른쪽) ── */
+.tk{opacity:.4;scale:.955;transition:opacity .55s var(--ease),scale .55s var(--ease),box-shadow .55s var(--ease)}
+.slide[data-step="s1"] .tk:nth-child(1),
+.slide[data-step="s2"] .tk:nth-child(2){opacity:1;scale:1;box-shadow:0 26px 58px rgba(0,0,0,.5)}
+.tk.ma .tag{background:var(--kw)}
+.tk.ch .tag{background:#B9BECF}
+
+/* ── 숫자 카드 — '확실한 성장' 만 색을 달리해 눈에 띄게 ── */
+.nc:nth-child(3){background:linear-gradient(155deg,#DFF1E8,#CDE7DA);border:1px solid rgba(14,156,104,.35)}
+.nc:nth-child(3) .nl{border-top-color:rgba(14,156,104,.25)}
+.nc:nth-child(3) .nl li::before{background:#0E9C68}
