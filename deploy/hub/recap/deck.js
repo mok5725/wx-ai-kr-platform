@@ -210,7 +210,7 @@
 
   /* ── 발표자 노트 창 ── */
   function notesMode() {
-    const meta = slides.map(s => ({ title: s.title, time: s.time, n: s.views.length }));
+    const meta = slides.map(s => ({ title: s.title, time: s.time, n: s.views.length, notes: s.views.map(v => v.dataset.note || '') }));
     document.body.className = 'notes';
     document.title = '발표자 노트 · 해커톤 이모저모';
     document.body.innerHTML = `<div class="nt">
@@ -242,7 +242,7 @@
       const { s, v } = data, m = meta[s];
       $('#pos').textContent = `${s + 1} / ${meta.length}` + (m.n > 1 ? ` · ${v + 1}/${m.n}` : '');
       $('#ttl').textContent = m.title; $('#budget').textContent = `배정 ${m.time}`;
-      $('#script').innerHTML = (window.NOTES || {})[`${s + 1}-${v + 1}`] || '(노트 없음)';
+      $('#script').innerHTML = (window.NOTES || {})[m.notes[v]] || (window.NOTES || {})[`${s + 1}-${v + 1}`] || '(노트 없음)';
       const ns = v < m.n - 1 ? [s, v + 1] : s < meta.length - 1 ? [s + 1, 0] : null;
       $('#nx').textContent = ns ? `다음 → ${ns[0] + 1}. ${meta[ns[0]].title}${meta[ns[0]].n > 1 ? ` (${ns[1] + 1}/${meta[ns[0]].n})` : ''}` : '마지막 장입니다';
       if (s > 0 || v > 0) start();
