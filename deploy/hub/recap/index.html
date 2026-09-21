@@ -225,7 +225,7 @@
   </section>
 
   <!-- ⑦ 핵심 성과 및 소감 — 교육생 / 심사위원 두 트랙 -->
-  <section class="slide" data-title="핵심 성과 및 소감" data-time="3분">
+  <section class="slide" data-title="핵심 성과 및 소감" data-time="4분">
     <div class="view" data-bg="cloud|auto|-89px -132px|.55" data-note="소감-교육생">
       <h1 class="title-z">💬 교육생의 <em>목소리</em></h1>
       <div class="body-z">
@@ -254,44 +254,99 @@
         </div>
       </div>
     </div>
-    <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-note="소감-인터뷰">
+    <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-note="소감-정석모">
       <h1 class="title-z">🎖️ 심사위원의 <em>목소리</em></h1>
       <div class="body-z">
         <p class="vnote">현장 인터뷰</p>
-        <!-- 받은 인터뷰 사진을 손대지 않고 그대로 쓴다. 사진 왼쪽 빈 자리에 이름·소속, 사진 아래에 말씀 전문. -->
-        <div class="voices shots3">
-          <div class="ivcol">
-            <figure class="shot">
-              <img src="img/photos/iv_jsm.webp" alt="정석모 본부장">
-              <figcaption>
-                <b class="who">정석모 본부장</b>
-                <span class="org">포스코홀딩스<br>사업시너지본부</span>
-              </figcaption>
-            </figure>
-            <p class="said">제가 보기에는 단순히 훈련과 교육이 아니라 바로 실제 시스템에 적용해도 손색이 없을 만큼 완성도도 높은 것 같습니다. 이런 활동이 전 직원들에게 확산이 되서 말그대로 AI가 중심이 되는 회사로 포스코그룹이 변모하는 기회가 됐으면 좋겠습니다.</p>
+        <!-- 가로 띠 3개. 강조된 하나만 크고 또렷하고, 나머지는 작고 반투명해진다.
+             세 화면의 띠 묶음은 같고 on 위치만 다르다 — scratchpad/gen_bars.py 로 찍어낸다. -->
+        <div class="bars">
+          <div class="bar on" data-side="right">
+            <img src="img/photos/bar_jsm.webp" alt="정석모 본부장">
+            <div class="txt">
+              <div class="nm"><b>정석모 본부장</b><span>포스코홀딩스 사업시너지본부</span></div>
+              <p class="msg">제가 보기에는 단순히 훈련과 교육이 아니라 실제 시스템에 적용해도 손색이 없을 만큼 완성도가 높았고,<br>이런 활동이 전 직원들에게 확산이 되어 AI가 중심이 되는 회사로 변모하는 기회가 됐으면 좋겠습니다.</p>
+            </div>
           </div>
-          <div class="ivcol">
-            <figure class="shot">
-              <img src="img/photos/iv_kmy.webp" alt="김미영 실장">
-              <figcaption>
-                <b class="who">김미영 실장</b>
-                <span class="org">포스코DX<br>IT사업실</span>
-              </figcaption>
-            </figure>
-            <p class="said">결과물들이 기대 이상으로 좋았고, 특히 그룹사 간에 협업을 통해서 만들어진 결과물들이 그룹에서 이런 시너지가 날 수 있겠구나 하는 것을 많이 느꼈습니다. 시스템도 연동하면서 그룹 전체의 비용 절감이나 성과나 효율이 높아질 수 있는 사례를 만들어 낸 것 같아서 인상적이었습니다.</p>
+          <div class="bar" data-side="left">
+            <img src="img/photos/bar_kmy.webp" alt="김미영 실장">
+            <div class="txt">
+              <div class="nm"><b>김미영 실장</b><span>포스코DX IT사업실</span></div>
+              <p class="msg">결과물들이 기대 이상으로 좋았고, 특히 그룹사 간 협업으로 만들어진 결과물에서<br>그룹 전체의 비용과 효율까지 높아지는 시너지를 봤다는 점이 인상적이었습니다.</p>
+            </div>
           </div>
-          <div class="ivcol">
-            <figure class="shot">
-              <img src="img/photos/iv_jgh.webp" alt="정규호 실장">
-              <figcaption>
-                <b class="who">정규호 실장</b>
-                <span class="org">포스코<br>DX전략실</span>
-              </figcaption>
-            </figure>
-            <p class="said">이런 해커톤 행사들이 그룹사 전체도 그렇지만 각 회사별로도 작은 해커톤이나 경진대회가 이뤄진다고 한다면 그룹사 전체 AX전환의 큰 도움이 될 것으로 생각합니다.</p>
+          <div class="bar" data-side="right">
+            <img src="img/photos/bar_jgh.webp" alt="정규호 실장">
+            <div class="txt">
+              <div class="nm"><b>정규호 실장</b><span>포스코 DX전략실</span></div>
+              <p class="msg">이런 해커톤 행사들이 그룹사 전체도 그렇지만 각 회사별로도 작은 해커톤이나 경진대회가<br>이뤄진다고 한다면 그룹사 전체 AX전환의 큰 도움이 될 것으로 생각합니다.</p>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-note="소감-김미영">
+      <h1 class="title-z">🎖️ 심사위원의 <em>목소리</em></h1>
+      <div class="body-z">
+        <p class="vnote">현장 인터뷰</p>
+        <!-- 가로 띠 3개. 강조된 하나만 크고 또렷하고, 나머지는 작고 반투명해진다.
+             세 화면의 띠 묶음은 같고 on 위치만 다르다 — scratchpad/gen_bars.py 로 찍어낸다. -->
+        <div class="bars">
+          <div class="bar" data-side="right">
+            <img src="img/photos/bar_jsm.webp" alt="정석모 본부장">
+            <div class="txt">
+              <div class="nm"><b>정석모 본부장</b><span>포스코홀딩스 사업시너지본부</span></div>
+              <p class="msg">제가 보기에는 단순히 훈련과 교육이 아니라 실제 시스템에 적용해도 손색이 없을 만큼 완성도가 높았고,<br>이런 활동이 전 직원들에게 확산이 되어 AI가 중심이 되는 회사로 변모하는 기회가 됐으면 좋겠습니다.</p>
+            </div>
+          </div>
+          <div class="bar on" data-side="left">
+            <img src="img/photos/bar_kmy.webp" alt="김미영 실장">
+            <div class="txt">
+              <div class="nm"><b>김미영 실장</b><span>포스코DX IT사업실</span></div>
+              <p class="msg">결과물들이 기대 이상으로 좋았고, 특히 그룹사 간 협업으로 만들어진 결과물에서<br>그룹 전체의 비용과 효율까지 높아지는 시너지를 봤다는 점이 인상적이었습니다.</p>
+            </div>
+          </div>
+          <div class="bar" data-side="right">
+            <img src="img/photos/bar_jgh.webp" alt="정규호 실장">
+            <div class="txt">
+              <div class="nm"><b>정규호 실장</b><span>포스코 DX전략실</span></div>
+              <p class="msg">이런 해커톤 행사들이 그룹사 전체도 그렇지만 각 회사별로도 작은 해커톤이나 경진대회가<br>이뤄진다고 한다면 그룹사 전체 AX전환의 큰 도움이 될 것으로 생각합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="view" data-bg="cloud|auto|-45px -132px|.55" data-note="소감-정규호">
+      <h1 class="title-z">🎖️ 심사위원의 <em>목소리</em></h1>
+      <div class="body-z">
+        <p class="vnote">현장 인터뷰</p>
+        <!-- 가로 띠 3개. 강조된 하나만 크고 또렷하고, 나머지는 작고 반투명해진다.
+             세 화면의 띠 묶음은 같고 on 위치만 다르다 — scratchpad/gen_bars.py 로 찍어낸다. -->
+        <div class="bars">
+          <div class="bar" data-side="right">
+            <img src="img/photos/bar_jsm.webp" alt="정석모 본부장">
+            <div class="txt">
+              <div class="nm"><b>정석모 본부장</b><span>포스코홀딩스 사업시너지본부</span></div>
+              <p class="msg">제가 보기에는 단순히 훈련과 교육이 아니라 실제 시스템에 적용해도 손색이 없을 만큼 완성도가 높았고,<br>이런 활동이 전 직원들에게 확산이 되어 AI가 중심이 되는 회사로 변모하는 기회가 됐으면 좋겠습니다.</p>
+            </div>
+          </div>
+          <div class="bar" data-side="left">
+            <img src="img/photos/bar_kmy.webp" alt="김미영 실장">
+            <div class="txt">
+              <div class="nm"><b>김미영 실장</b><span>포스코DX IT사업실</span></div>
+              <p class="msg">결과물들이 기대 이상으로 좋았고, 특히 그룹사 간 협업으로 만들어진 결과물에서<br>그룹 전체의 비용과 효율까지 높아지는 시너지를 봤다는 점이 인상적이었습니다.</p>
+            </div>
+          </div>
+          <div class="bar on" data-side="right">
+            <img src="img/photos/bar_jgh.webp" alt="정규호 실장">
+            <div class="txt">
+              <div class="nm"><b>정규호 실장</b><span>포스코 DX전략실</span></div>
+              <p class="msg">이런 해커톤 행사들이 그룹사 전체도 그렇지만 각 회사별로도 작은 해커톤이나 경진대회가<br>이뤄진다고 한다면 그룹사 전체 AX전환의 큰 도움이 될 것으로 생각합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="view" data-bg="cloud|auto|0px -132px|.55" data-note="소감-심사위원">
       <h1 class="title-z">✉️ 행사 뒤에 온 <em>회신</em></h1>
       <div class="body-z">
