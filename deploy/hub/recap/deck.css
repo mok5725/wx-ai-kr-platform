@@ -513,7 +513,7 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .orgnote b::before{content:'❑  ';color:var(--gold)}
 .orgnote span{font-size:21px;line-height:1.4;font-weight:700;color:var(--st-ink)}
 /* 그림 */
-.orgmap{position:absolute;left:0;right:0;top:140px;height:566px}
+.orgmap{position:absolute;left:0;right:0;top:170px;height:510px}
 .ob{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   border-radius:14px;background:rgba(10,20,58,.94);border:2px solid rgba(147,168,247,.7);padding:9px 18px;
   box-shadow:0 10px 26px rgba(0,0,0,.45)}
@@ -522,12 +522,12 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .ob .s{font-size:22px;font-weight:800;line-height:1.3;color:#fff;margin-top:5px}
 .ob .d{font-size:21px;line-height:1.35;font-weight:700;color:var(--st-soft);margin-top:7px}
 .ob.top{left:520px;width:752px;top:0;height:92px}
-.ob.bot{left:520px;width:752px;top:472px;height:92px}
-.ob.side{width:392px;top:206px;height:164px}
+.ob.bot{left:520px;width:752px;top:418px;height:92px}
+.ob.side{width:392px;top:170px;height:164px}
 .ob.side.left{left:0}
 .ob.side.right{left:1400px}
 /* 가운데 Core Team */
-.core{position:absolute;left:496px;width:800px;top:148px;height:280px;border-radius:16px;
+.core{position:absolute;left:496px;width:800px;top:148px;height:208px;border-radius:16px;
   background:rgba(12,26,72,.95);border:2px solid rgba(147,168,247,.85);padding:0 0 11px;
   display:flex;flex-direction:column;box-shadow:0 14px 34px rgba(0,0,0,.5)}
 .core .ct{display:block;padding:8px 0;border-radius:13px 13px 0 0;background:rgba(41,74,168,.95);
@@ -538,9 +538,9 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
   padding:36px 10px 10px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .cg.one{grid-template-columns:1fr;background:rgba(41,74,168,.55);border:1px solid rgba(147,168,247,.7)}
 .cgl{position:absolute;left:0;right:0;top:9px;text-align:center;font-size:20px;font-weight:800;color:#fff}
-.cc{border-radius:9px;background:rgba(255,255,255,.93);padding:8px;text-align:center;
+.cc{border-radius:9px;background:rgba(255,255,255,.93);padding:6px 8px;text-align:center;
   display:flex;flex-direction:column;justify-content:center}
-.cc b{display:flex;align-items:center;justify-content:center;min-height:2.4em;
+.cc b{display:flex;align-items:center;justify-content:center;min-height:1.25em;
   font-family:var(--head);font-weight:900;font-size:21px;line-height:1.2;color:#12328F}
 .cc span{display:block;font-size:18px;line-height:1.3;color:#2A3350;margin-top:3px}
 /* 연결선 딱지 */
@@ -549,8 +549,8 @@ body.notes{overflow:auto;background:#0D1220;color:#E9EDF7;font-size:18px;line-he
 .arw.v{left:50%;translate:-50% 0;text-align:center}
 .arw.v::before{content:'↓';display:inline;font-size:26px;line-height:1;color:var(--kw);margin-right:9px}
 .arw.a1{top:102px}
-.arw.a4{top:438px}
-.arw.h{top:275px;text-align:center;width:104px;white-space:normal;font-size:18px}
+.arw.a4{top:384px}
+.arw.h{top:239px;text-align:center;width:104px;white-space:normal;font-size:18px}
 .arw.h::before{content:'↔';display:block;font-size:26px;line-height:1;color:var(--kw)}
 .arw.a2{left:392px}
 .arw.a3{left:1296px}
