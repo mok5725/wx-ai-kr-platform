@@ -12,12 +12,30 @@
 	}
 }
 
-# wx.ai.kr — 허브 랜딩(정적)
+# wx.ai.kr — 허브 랜딩(정적) + 교회 주보 앱 두 개(2026-10-17)
+#   wx.ai.kr/ch    = 천호침례교회 주보 (compose 서비스 chunho)
+#   wx.ai.kr/gaeun = 포항가은교회 주보 (compose 서비스 gaeun)
+# handle_path 가 /ch·/gaeun 을 떼고 넘긴다(앱은 ROOT_PATH 를 쿠키 경로에만 씀).
+# 주보 앱에는 encode 를 걸지 않는다 — 예배 진행 넘김 신호(/api/show/stream, 서버 보냄 이벤트)가
+# 압축에 묶여 늦게 가지 않게. reverse_proxy 는 text/event-stream 을 바로바로 흘려보낸다.
 wx.ai.kr {
 	import secure_headers
-	encode gzip
-	root * /srv/hub
-	file_server
+
+	redir /ch /ch/
+	handle_path /ch/* {
+		reverse_proxy chunho:8000
+	}
+
+	redir /gaeun /gaeun/
+	handle_path /gaeun/* {
+		reverse_proxy gaeun:8000
+	}
+
+	handle {
+		encode gzip
+		root * /srv/hub
+		file_server
+	}
 }
 
 # claude.wx.ai.kr — 클로드코드 교육 사이트(정적)

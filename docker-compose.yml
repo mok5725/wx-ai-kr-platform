@@ -102,6 +102,58 @@ services:
     networks: [dx-internal]
     restart: unless-stopped
 
+  # ── 교회 주보 앱(2026-10-17): wx.ai.kr/ch(천호), wx.ai.kr/gaeun(가은) ──────────
+  # 이미지는 서버에서 만든다(jubo/Dockerfile, pull_policy: build → deploy.sh 의 pull 은 건너뜀).
+  # 앱 코드·자료·글꼴·예배 화면 그림은 전부 ./data/jubo 아래(저장소 밖). 코드는 각 앱 저장소의
+  # deploy/docker_deploy.sh 가 ./data/jubo/<앱>/app 으로 올린 뒤 이 서비스만 다시 켠다.
+  # deploy(1000) 사용자로 돌려 ./data/jubo 에 그대로 쓴다. 인터넷 공개라 앱 로그인 필수.
+  chunho:
+    build: ./jubo
+    image: jubo-app:1
+    pull_policy: build
+    user: "1000:1000"
+    environment: &jubo-env
+      JUBO_SECURE_COOKIE: "1"
+      JUBO_DB: /srv/data/jubo.sqlite3
+      JUBO_BACKUP_DIR: /srv/backups
+      JUBO_PREVIEW_DIR: /srv/preview
+      JUBO_TEXT_DIR: /srv/texts
+      JUBO_SLIDE_LIB: /srv/media/예배그림
+      JUBO_SLIDE_ASSETS: /srv/slide-assets
+      ROOT_PATH: /ch
+    volumes:
+      - ./data/jubo/chunho/app:/app:ro
+      - ./data/jubo/chunho/data:/srv/data
+      - ./data/jubo/chunho/backups:/srv/backups
+      - ./data/jubo/chunho/preview:/srv/preview
+      - ./data/jubo/chunho/texts:/srv/texts:ro
+      - ./data/jubo/chunho/slide-assets:/srv/slide-assets:ro
+      - ./data/jubo/media:/srv/media:ro
+      - ./data/jubo/fonts:/fonts:ro
+    mem_limit: 700m
+    networks: [edge]
+    restart: unless-stopped
+
+  gaeun:
+    image: jubo-app:1          # chunho 가 만든 같은 이미지를 쓴다
+    pull_policy: never
+    user: "1000:1000"
+    environment:
+      <<: *jubo-env
+      ROOT_PATH: /gaeun
+    volumes:
+      - ./data/jubo/gaeun/app:/app:ro
+      - ./data/jubo/gaeun/data:/srv/data
+      - ./data/jubo/gaeun/backups:/srv/backups
+      - ./data/jubo/gaeun/preview:/srv/preview
+      - ./data/jubo/gaeun/texts:/srv/texts:ro
+      - ./data/jubo/gaeun/slide-assets:/srv/slide-assets:ro
+      - ./data/jubo/media:/srv/media:ro
+      - ./data/jubo/fonts:/fonts:ro
+    mem_limit: 700m
+    networks: [edge]
+    restart: unless-stopped
+
 networks:
   edge:
   lab-internal:
