@@ -9,8 +9,10 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends libreoffice-impress-nogui python3-uno poppler-utils fontconfig fonts-nanum \
  && rm -rf /var/lib/apt/lists/*
 
-# (2026-10-19) pymupdf 2.0은 pymupdf_layout·numpy 2.5를 끌어오는데 이 서버 CPU(QEMU, X86_V2 없음)에서 안 돎 → 1.x로 고정
-RUN pip install --no-cache-dir "python-pptx==1.0.2" fastapi uvicorn pillow "pymupdf<2"
+# (2026-10-19) 버전 고정: compose pull_policy: build라 docker compose up 때마다 다시 만들어짐(lab·lms 배포 포함).
+# 그날 고정 없이 다시 만들어진 pymupdf 2.0이 numpy 2.5를 끌어와 이 서버 CPU(QEMU, X86_V2 없음)에서 주보 두 앱이 켜지지 않았음.
+# 아래는 그 뒤 잘 도는 판(2026-10-20 0시 확인). 올릴 때는 서버에서 import pymupdf를 먼저 시험.
+RUN pip install --no-cache-dir "python-pptx==1.0.2" "fastapi==0.148.0" "starlette==1.9.0" "pydantic==2.14.1" \n    "uvicorn==0.54.0" "pillow==13.0.0" "pymupdf==1.28.2" "lxml==6.1.3" "xlsxwriter==3.2.9"
 
 # 주보 글꼴은 ./data/jubo/fonts 를 /fonts 로 붙인다(글꼴 파일은 저장소에 넣지 않음).
 COPY fonts.conf /etc/fonts/conf.d/99-jubo.conf
