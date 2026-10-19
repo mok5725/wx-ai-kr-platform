@@ -2,6 +2,16 @@
 # 영속 상태는 전부 ./data 아래(LUKS 암호화 마운트 /opt/wx-ai-kr).
 # 앱은 GHCR 프리빌트 이미지 pull(서버 빌드 없음). 비밀은 ./.env 한 곳.
 # DB 컨테이너는 edge 망에 올리지 않는다(Caddy·상대 앱이 DB 직접 접근 불가).
+# 주보 서비스 공통 환경(1차 통합 2026-10-19) — 교회(JUBO_CHURCH)·경로(ROOT_PATH)는 서비스마다 따로(기본 교회 없음)
+x-jubo-env: &jubo-env
+  JUBO_SECURE_COOKIE: "1"
+  JUBO_DB: /srv/data/jubo.sqlite3
+  JUBO_BACKUP_DIR: /srv/backups
+  JUBO_PREVIEW_DIR: /srv/preview
+  JUBO_TEXT_DIR: /srv/texts
+  JUBO_SLIDE_LIB: /srv/media/예배그림
+  JUBO_SLIDE_ASSETS: /srv/slide-assets
+
 services:
   edge:
     image: caddy:2
@@ -105,21 +115,15 @@ services:
   # ── 교회 주보 앱(2026-10-17): wx.ai.kr/ch(천호), wx.ai.kr/gaeun(가은) ──────────
   # 이미지는 서버에서 만든다(jubo/Dockerfile, pull_policy: build → deploy.sh 의 pull 은 건너뜀).
   # 앱 코드·자료·글꼴·예배 화면 그림은 전부 ./data/jubo 아래(저장소 밖). 코드는 각 앱 저장소의
-  # deploy/docker_deploy.sh 가 ./data/jubo/<앱>/app 으로 올린 뒤 이 서비스만 다시 켠다.
+  # 주보: deploy/docker_deploy.sh <교회> 가 공통 코드를 ./data/jubo/app 으로 올린 뒤 주보 서비스를 모두 다시 켠다(코드는 한 벌).
   # deploy(1000) 사용자로 돌려 ./data/jubo 에 그대로 쓴다. 인터넷 공개라 앱 로그인 필수.
   chunho:
     build: ./jubo
     image: jubo-app:1
     pull_policy: build
     user: "1000:1000"
-    environment: &jubo-env
-      JUBO_SECURE_COOKIE: "1"
-      JUBO_DB: /srv/data/jubo.sqlite3
-      JUBO_BACKUP_DIR: /srv/backups
-      JUBO_PREVIEW_DIR: /srv/preview
-      JUBO_TEXT_DIR: /srv/texts
-      JUBO_SLIDE_LIB: /srv/media/예배그림
-      JUBO_SLIDE_ASSETS: /srv/slide-assets
+    environment:
+      <<: *jubo-env
       JUBO_CHURCH: chunho        # 1차 통합(2026-10-19): 코드는 한 벌(data/jubo/app), 교회는 이 값으로
       ROOT_PATH: /ch
     volumes:
