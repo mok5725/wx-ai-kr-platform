@@ -120,9 +120,10 @@ services:
       JUBO_TEXT_DIR: /srv/texts
       JUBO_SLIDE_LIB: /srv/media/예배그림
       JUBO_SLIDE_ASSETS: /srv/slide-assets
+      JUBO_CHURCH: chunho        # 1차 통합(2026-10-19): 코드는 한 벌(data/jubo/app), 교회는 이 값으로
       ROOT_PATH: /ch
     volumes:
-      - ./data/jubo/chunho/app:/app:ro
+      - ./data/jubo/app:/app:ro
       - ./data/jubo/chunho/data:/srv/data
       - ./data/jubo/chunho/backups:/srv/backups
       - ./data/jubo/chunho/preview:/srv/preview
@@ -140,9 +141,10 @@ services:
     user: "1000:1000"
     environment:
       <<: *jubo-env
+      JUBO_CHURCH: gaeun
       ROOT_PATH: /gaeun
     volumes:
-      - ./data/jubo/gaeun/app:/app:ro
+      - ./data/jubo/app:/app:ro
       - ./data/jubo/gaeun/data:/srv/data
       - ./data/jubo/gaeun/backups:/srv/backups
       - ./data/jubo/gaeun/preview:/srv/preview
