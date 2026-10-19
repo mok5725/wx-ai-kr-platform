@@ -9,7 +9,8 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends libreoffice-impress-nogui python3-uno poppler-utils fontconfig fonts-nanum \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir "python-pptx==1.0.2" fastapi uvicorn pillow pymupdf
+# (2026-10-19) pymupdf 2.0은 pymupdf_layout·numpy 2.5를 끌어오는데 이 서버 CPU(QEMU, X86_V2 없음)에서 안 돎 → 1.x로 고정
+RUN pip install --no-cache-dir "python-pptx==1.0.2" fastapi uvicorn pillow "pymupdf<2"
 
 # 주보 글꼴은 ./data/jubo/fonts 를 /fonts 로 붙인다(글꼴 파일은 저장소에 넣지 않음).
 COPY fonts.conf /etc/fonts/conf.d/99-jubo.conf
