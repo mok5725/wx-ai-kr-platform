@@ -160,6 +160,26 @@ services:
     networks: [edge]
     restart: unless-stopped
 
+  # (2026-10-24) 말씀과찬양교회 주보 — 주보만(예배 화면 없음, show_mode none)
+  malchan:
+    image: jubo-app:1          # chunho 가 만든 같은 이미지를 쓴다
+    pull_policy: never
+    user: "1000:1000"
+    environment:
+      <<: *jubo-env
+      JUBO_CHURCH: malchan
+      ROOT_PATH: /malchan
+    volumes:
+      - ./data/jubo/app:/app:ro
+      - ./data/jubo/malchan/data:/srv/data
+      - ./data/jubo/malchan/backups:/srv/backups
+      - ./data/jubo/malchan/preview:/srv/preview
+      - ./data/jubo/malchan/texts:/srv/texts:ro
+      - ./data/jubo/fonts:/fonts:ro
+    mem_limit: 700m
+    networks: [edge]
+    restart: unless-stopped
+
 networks:
   edge:
   lab-internal:
